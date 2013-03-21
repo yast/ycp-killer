@@ -191,7 +191,7 @@ Total ERROR(ruby):  0
 Total ERROR(other): 0
 ```
 
-#### yk cleanup
+#### yk clean
 
 Cleans up results of compilation of specified modules.
 
