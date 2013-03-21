@@ -132,7 +132,7 @@ checkouts. If a module doesn't have a patch, this command does not do anything.
 
 ```
 $ ./yk patch testsuite
-[1/1] Patch testsuite...                                              OK
+[1/1] Patching testsuite...                                           OK
 ```
 
 #### yk unpatch
@@ -143,7 +143,7 @@ command does not do anything.
 
 ```
 $ ./yk unpatch testsuite
-[1/1] Unpatch testsuite...                                            OK
+[1/1] Unpatching testsuite...                                         OK
 ```
 
 #### yk compile

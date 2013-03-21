@@ -236,7 +236,7 @@ class CLI < Thor
   desc "patch <module>...", "Patch module(s)"
   def patch(*module_names)
     modules = modules_from_names(module_names)
-    with_modules modules, "Patch", true do |mod|
+    with_modules modules, "Patching", true do |mod|
       mod.patch
     end
   end
@@ -244,7 +244,7 @@ class CLI < Thor
   desc "unpatch <module>...", "Unpatch module(s)"
   def unpatch(*module_names)
     modules = modules_from_names(module_names)
-    with_modules modules, "Unpatch", true do |mod|
+    with_modules modules, "Unpatching", true do |mod|
       mod.unpatch
     end
   end
