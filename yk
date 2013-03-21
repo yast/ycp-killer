@@ -46,7 +46,7 @@ class YastModule
   def clone
     FileUtils.rm_rf(dir)
 
-    Cheetah.run "git", "clone", "git@github.com:yast/yast-#@name", dir
+    Cheetah.run "git", "clone", "git://github.com/yast/yast-#@name.git", dir
   end
 
   def check
