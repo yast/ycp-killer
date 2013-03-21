@@ -1,0 +1,12 @@
+# TODO: Process.
+
+files:
+  - src/OnlineUpdate.ycp
+  - src/OnlineUpdateCallbacks.ycp
+  - src/OnlineUpdateDialogs.ycp
+  - src/cd_update.ycp
+  - src/do_online_update_auto.ycp
+  - src/inst_you.ycp
+  - src/online_update.ycp
+  - src/online_update_install.ycp
+  - src/online_update_select.ycp

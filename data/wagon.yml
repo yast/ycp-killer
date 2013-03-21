@@ -1,0 +1,23 @@
+# TODO: Process.
+
+files:
+  - src/clients/wagon.ycp
+  - src/clients/wagon_congratulate.ycp
+  - src/clients/wagon_custom_url.ycp
+  - src/clients/wagon_dup_repositories.ycp
+  - src/clients/wagon_migration_products.ycp
+  - src/clients/wagon_modify_repositories.ycp
+  - src/clients/wagon_point_of_no_return.ycp
+  - src/clients/wagon_registration_check.ycp
+  - src/clients/wagon_registration_handler.ycp
+  - src/clients/wagon_repositories_handler.ycp
+  - src/clients/wagon_restart_yast.ycp
+  - src/clients/wagon_selfupdate.ycp
+  - src/clients/wagon_update_proposal.ycp
+  - src/clients/wagon_update_url.ycp
+  - src/clients/welcome_in_wagon.ycp
+  - src/include/common_func.ycp
+  - src/include/wagon_helpers.ycp
+  - src/modules/Wagon.ycp
+  - testsuite/tests/FindMountPoint.ycp
+  - testsuite/tests/Wagon_test.ycp

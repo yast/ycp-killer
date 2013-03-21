@@ -1,0 +1,15 @@
+# TODO: Process.
+
+files:
+  - src/Drbd.ycp
+  - src/common.ycp
+  - src/complex.ycp
+  - src/dialogs.ycp
+  - src/drbd.ycp
+  - src/drbd_auto.ycp
+  - src/drbd_proposal.ycp
+  - src/global_conf.ycp
+  - src/helps.ycp
+  - src/resource_conf.ycp
+  - src/startup_conf.ycp
+  - src/wizards.ycp

@@ -1,0 +1,14 @@
+# TODO: Process.
+
+files:
+  - src/IscsiLioData.ycp
+  - src/IscsiLioServer.ycp
+  - src/complex.ycp
+  - src/dialogs.ycp
+  - src/helps.ycp
+  - src/iscsi-lio-server.ycp
+  - src/iscsi-lio-server_auto.ycp
+  - src/iscsi-lio-server_proposal.ycp
+  - src/widgets.ycp
+  - src/wizards.ycp
+  - testsuite/tests/IscsiServer.ycp

@@ -1,0 +1,14 @@
+# TODO: Process.
+
+files:
+  - src/Kerberos.ycp
+  - src/dialogs.ycp
+  - src/kerberos-client.ycp
+  - src/kerberos-client_auto.ycp
+  - src/kerberos.ycp
+  - src/wizards.ycp
+  - testsuite/tests/ImportExport.ycp
+  - testsuite/tests/Read.ycp
+  - testsuite/tests/ReadKrb5ConfValue.ycp
+  - testsuite/tests/Write.ycp
+  - testsuite/tests/WriteKrb5ConfValue.ycp

@@ -1,0 +1,36 @@
+# TODO: Process.
+
+files:
+  - devtools/skeletons/config-python/testsuite/tests/XXPkgXX.ycp
+  - devtools/skeletons/config/src/XXPkgXX.ycp
+  - devtools/skeletons/config/src/XXpkgXX.ycp
+  - devtools/skeletons/config/src/XXpkgXX_auto.ycp
+  - devtools/skeletons/config/src/XXpkgXX_proposal.ycp
+  - devtools/skeletons/config/src/complex.ycp
+  - devtools/skeletons/config/src/dialogs.ycp
+  - devtools/skeletons/config/src/helps.ycp
+  - devtools/skeletons/config/src/wizards.ycp
+  - devtools/skeletons/config/testsuite/tests/XXPkgXX.ycp
+  - ycpdoc/doc/example/deprecated.ycp
+  - ycpdoc/doc/example/example.ycp
+  - ycpdoc/doc/example/example2.ycp
+  - ycpdoc/doc/example/mis.ycp
+  - ycpdoc/doc/example/modules.ycp
+  - ycpdoc/doc/example/struct1.ycp
+  - ycpdoc/testsuite/commented-out.ycp
+  - ycpdoc/testsuite/deprecated.ycp
+  - ycpdoc/testsuite/listmap.ycp
+  - ycpdoc/testsuite/new-types.ycp
+  - ycpdoc/testsuite/nodefine.ycp
+  - ycpdoc/testsuite/qualified.ycp
+  - ycpdoc/testsuite/refparam.ycp
+  - ycpdoc/testsuite/see.ycp
+  - ycpdoc/testsuite/stability-s.ycp
+  - ycpdoc/testsuite/stability-u.ycp
+  - ycpdoc/testsuite/struct1.ycp
+  - ycpdoc/testsuite/t1-example.ycp
+  - ycpdoc/testsuite/t1-mis.ycp
+  - ycpdoc/testsuite/t1-modules.ycp
+  - ycpdoc/testsuite/warnings.ycp
+  - yxp/bitand.ycp
+  - yxp/call_graph.ycp

@@ -1,0 +1,31 @@
+# TODO: Process.
+
+files:
+  - src/UML.ycp
+  - src/cmdline.ycp
+  - src/inst_uml_disks.ycp
+  - src/inst_uml_kickoff.ycp
+  - src/inst_uml_network.ycp
+  - src/inst_uml_options.ycp
+  - src/inst_uml_source.ycp
+  - src/inst_uml_user.ycp
+  - src/uml.ycp
+  - src/uml_disks_proposal.ycp
+  - src/uml_network_proposal.ycp
+  - src/uml_options_proposal.ycp
+  - src/uml_source_proposal.ycp
+  - src/uml_user_proposal.ycp
+  - uml/src/UML.ycp
+  - uml/src/cmdline.ycp
+  - uml/src/inst_uml_disks.ycp
+  - uml/src/inst_uml_kickoff.ycp
+  - uml/src/inst_uml_network.ycp
+  - uml/src/inst_uml_options.ycp
+  - uml/src/inst_uml_source.ycp
+  - uml/src/inst_uml_user.ycp
+  - uml/src/uml.ycp
+  - uml/src/uml_disks_proposal.ycp
+  - uml/src/uml_network_proposal.ycp
+  - uml/src/uml_options_proposal.ycp
+  - uml/src/uml_source_proposal.ycp
+  - uml/src/uml_user_proposal.ycp

@@ -1,0 +1,11 @@
+# TODO: Process.
+
+files:
+  - src/Bluetooth.ycp
+  - src/bluetooth.ycp
+  - src/bluetooth_auto.ycp
+  - src/bluetooth_proposal.ycp
+  - src/complex.ycp
+  - src/dialogs.ycp
+  - src/helps.ycp
+  - src/wizards.ycp

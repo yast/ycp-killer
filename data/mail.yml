@@ -1,0 +1,29 @@
+# TODO: Process.
+
+files:
+  - src/Mail.ycp
+  - src/MailServer.ycp
+  - src/helps.ycp
+  - src/mail-advanced.ycp
+  - src/mail-server.ycp
+  - src/mail-server_auto.ycp
+  - src/mail-server_complex.ycp
+  - src/mail-server_dialogs.ycp
+  - src/mail-server_helps.ycp
+  - src/mail-server_ldap-setup.ycp
+  - src/mail-server_proposal.ycp
+  - src/mail-server_wizards.ycp
+  - src/mail-standard.ycp
+  - src/mail.ycp
+  - src/mail_auto.ycp
+  - src/ui.ycp
+  - src/widgets.ycp
+  - src/wj.ycp
+  - testsuite/tests.epag/fm1.rw.ycp
+  - testsuite/tests.epag/fm2.rw.ycp
+  - testsuite/tests.epag/fm3.rw.ycp
+  - testsuite/tests/mergeTables.ycp
+  - testsuite/tests/readwrite.ycp
+  - testsuite/tests/rootalias.ycp
+  - users-plugin/users_plugin_mail.ycp
+  - users-plugin/users_plugin_mail_groups.ycp

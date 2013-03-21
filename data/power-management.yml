@@ -1,0 +1,12 @@
+# TODO: Process.
+
+files:
+  - src/PowerManagement.ycp
+  - src/commandline.ycp
+  - src/dialogs.ycp
+  - src/helps.ycp
+  - src/power-management.ycp
+  - src/power-management_auto.ycp
+  - src/widgets.ycp
+  - src/wizards.ycp
+  - testsuite/tests/PowerManagement.ycp

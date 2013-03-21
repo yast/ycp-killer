@@ -1,0 +1,28 @@
+# TODO: Process.
+
+files:
+  - src/Backup.ycp
+  - src/backup.ycp
+  - src/backup_available_packages.ycp
+  - src/backup_get_packages.ycp
+  - src/backup_save_profile.ycp
+  - src/functions.ycp
+  - src/help_texts.ycp
+  - src/ui.ycp
+  - testsuite/tests/AddId.ycp
+  - testsuite/tests/AddIdBool.ycp
+  - testsuite/tests/AddIdExt2.ycp
+  - testsuite/tests/AddMissingExtension.ycp
+  - testsuite/tests/ExcludeNodevFS.ycp
+  - testsuite/tests/Ext2Filesystems.ycp
+  - testsuite/tests/Ext2MountPoint.ycp
+  - testsuite/tests/GetBaseName.ycp
+  - testsuite/tests/GetCapacity.ycp
+  - testsuite/tests/GetListWithFlags.ycp
+  - testsuite/tests/GetMountedFilesystems.ycp
+  - testsuite/tests/MapFilesToString.ycp
+  - testsuite/tests/MediaList2UIList.ycp
+  - testsuite/tests/ReadBackupProfiles.ycp
+  - testsuite/tests/RestoreBackupProfile.ycp
+  - testsuite/tests/RestoreBackupSettings.ycp
+  - testsuite/tests/WriteBackupProfiles.ycp

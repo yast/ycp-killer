@@ -1,0 +1,21 @@
+# TODO: Process.
+
+files:
+  - src/Sysconfig.ycp
+  - src/cmdline.ycp
+  - src/complex.ycp
+  - src/dialogs.ycp
+  - src/helps.ycp
+  - src/routines.ycp
+  - src/sysconfig.ycp
+  - src/sysconfig_auto.ycp
+  - src/wizards.ycp
+  - testsuite/tests/Set_Export.ycp
+  - testsuite/tests/get_description.ycp
+  - testsuite/tests/get_file_from_id.ycp
+  - testsuite/tests/get_metadata.ycp
+  - testsuite/tests/get_name_from_id.ycp
+  - testsuite/tests/get_only_comment.ycp
+  - testsuite/tests/parse_metadata.ycp
+  - testsuite/tests/remove_whitespaces.ycp
+  - testsuite/tests/set_value.ycp

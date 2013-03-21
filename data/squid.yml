@@ -1,0 +1,22 @@
+# TODO: Process.
+
+files:
+  - src/Squid.ycp
+  - src/SquidACL.ycp
+  - src/SquidACL_local_functions.ycp
+  - src/SquidErrorMessages.ycp
+  - src/complex.ycp
+  - src/dialogs.ycp
+  - src/handlers.ycp
+  - src/helper_functions.ycp
+  - src/helps.ycp
+  - src/inits.ycp
+  - src/popup_dialogs.ycp
+  - src/squid.ycp
+  - src/squid_auto.ycp
+  - src/store_del.ycp
+  - src/wizards.ycp
+  - testsuite/tests/Squid-Read.ycp
+  - testsuite/tests/Squid.ycp
+  - testsuite/tests/SquidACL.ycp
+  - testsuite/tests/SquidErrorMessages.ycp

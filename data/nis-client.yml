@@ -1,0 +1,9 @@
+# TODO: Process.
+
+files:
+  - src/Nis.ycp
+  - src/nis-client.ycp
+  - src/nis.ycp
+  - src/nis_auto.ycp
+  - src/ui.ycp
+  - testsuite/tests/readwrite.ycp

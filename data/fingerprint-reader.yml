@@ -1,0 +1,9 @@
+# TODO: Process.
+
+files:
+  - src/FingerprintReader.ycp
+  - src/dialogs.ycp
+  - src/fingerprint-reader.ycp
+  - src/helps.ycp
+  - src/users_plugin_fingerprint_reader.ycp
+  - src/wizards.ycp

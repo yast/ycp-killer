@@ -1,0 +1,364 @@
+#!/usr/bin/env ruby
+
+require "cheetah"
+require "thor"
+require "yaml"
+
+BASE_DIR = File.expand_path(File.dirname(__FILE__))
+
+DATA_DIR    = "#{BASE_DIR}/data"
+STUBS_DIR   = "#{BASE_DIR}/stubs"
+PATCHES_DIR = "#{BASE_DIR}/patches"
+
+ERROR_FILE = "#{BASE_DIR}/error.log"
+
+module Messages
+  MAX_MESSAGE_WIDTH = 70
+
+  class << self
+    def start(message)
+      print message
+
+      @last_message_size = message.size
+    end
+
+    def finish(status)
+      spaces = " " * (MAX_MESSAGE_WIDTH - @last_message_size)
+
+      puts spaces + status
+    end
+
+    def info(message)
+      puts message
+    end
+  end
+end
+
+class YastModule
+  attr_reader :name
+
+  def initialize(name, data, config)
+    @name   = name
+    @data   = data
+    @config = config
+  end
+
+  def clone
+    FileUtils.rm_rf(dir)
+
+    Cheetah.run "git", "clone", "git@github.com:yast/yast-#@name", dir
+  end
+
+  def check
+    expected_files = files + excluded
+    actual_files   = Dir.chdir(dir) { Dir["**/*.ycp"] + Dir["**/*.yh"] }
+
+    unexpected_files = actual_files   - expected_files
+    missing_files    = expected_files - actual_files
+
+    if !unexpected_files.empty?
+      raise "Unexpected files: #{unexpected_files.join(", ")}."
+    end
+    if !missing_files.empty?
+      raise "Missing files: #{missing_files.join(", ")}."
+    end
+  end
+
+  def patch
+    patch_file = "#{PATCHES_DIR}/#{@name}.patch"
+    return unless File.exists?(patch_file)
+
+    Dir.chdir dir do
+      Cheetah.run "git", "apply", patch_file
+    end
+  end
+
+  def unpatch
+    patch_file = "#{PATCHES_DIR}/#{@name}.patch"
+    return unless File.exists?(patch_file)
+
+    Dir.chdir dir do
+      Cheetah.run "git", "apply", "--reverse", patch_file
+    end
+  end
+
+  def compile
+    counts = {
+      :ok          => 0,
+      :excluded    => 0,
+      :error_y2r   => 0,
+      :error_ruby  => 0,
+      :error_other => 0
+    }
+
+    files.each do |file|
+      Messages.start "  * #{file}"
+
+      file = "#{dir}/#{file}"
+
+      module_paths  = [STUBS_DIR] + exported_dirs + [File.dirname(file)]
+      include_paths = [STUBS_DIR] + exported_dirs + [File.dirname(file)]
+
+      begin
+        create_ybc file, module_paths, include_paths
+        create_rb  file, module_paths, include_paths
+      rescue Cheetah::ExecutionFailed => e
+        Messages.finish "ERROR(y2r)"
+        log_error(file, e)
+        counts[:error_y2r] += 1
+        next
+      rescue Exception => e
+        Messages.finish "ERROR(other)"
+        counts[:error_other] += 1
+        next
+      end
+
+      begin
+        check_rb file.sub(/\.(ycp|yh)$/, ".rb")
+      rescue Cheetah::ExecutionFailed => e
+        Messages.finish "ERROR(ruby)"
+        log_error(file, e)
+        counts[:error_ruby] += 1
+        next
+      rescue Exception => e
+        Messages.finish "ERROR(other)"
+        counts[:error_other] += 1
+        next
+      end
+
+      Messages.finish "OK"
+      counts[:ok] += 1
+    end
+
+    counts[:excluded] += excluded.size
+
+    counts
+  end
+
+  def clean
+    files.each do |file|
+      file = "#{dir}/#{file}"
+
+      FileUtils.rm_rf(file.sub(/\.ycp$/, ".ybc").sub(/\.yh$/, ".yh.ybc"))
+      FileUtils.rm_rf(file.sub(/\.(ycp|yh)$/, ".rb"))
+    end
+  end
+
+  def exported_dirs
+    exports.map { |e| "#{dir}/#{e}" }
+  end
+
+  private
+
+  def dir
+    "#{@config["yast_dir"]}/#@name"
+  end
+
+  def exports
+    @data["exports"] || ["src"]
+  end
+
+  def files
+    @data["files"] || []
+  end
+
+  def excluded
+    @data["excluded"] || []
+  end
+
+  def create_ybc(file, module_paths, include_paths)
+    cmd = [@config["ycpc"]]
+    module_paths.each do |module_path|
+      cmd << "--module-path" << module_path
+    end
+    include_paths.each do |include_path|
+      cmd << "--include-path" << include_path
+    end
+    cmd << "-c" << file
+
+    Cheetah.run cmd
+  end
+
+  def create_rb(file, module_paths, include_paths)
+    cmd = [@config["y2r"]]
+    cmd << "--ycpc" << @config["ycpc"]
+    module_paths.each do |module_path|
+      cmd << "--module-path" << module_path
+    end
+    include_paths.each do |include_path|
+      cmd << "--include-path" << include_path
+    end
+    cmd << file
+
+    Cheetah.run cmd
+  end
+
+  def check_rb(file)
+    Cheetah.run "ruby", "-c", file
+  end
+
+  def log_error(file, e)
+    File.open(ERROR_FILE, "a") do |f|
+      f.puts file
+      f.puts "-" * file.size
+      f.puts
+      f.puts e.stderr
+      f.puts
+    end
+  end
+
+end
+
+class CLI < Thor
+  def initialize(*args)
+    super *args
+
+    load_config
+    load_module_data
+  end
+
+  desc "clone <module>...", "Clone module(s)"
+  def clone(*module_names)
+    modules = modules_from_names(module_names)
+    with_modules modules, "Checking out", true do |mod|
+      mod.clone
+    end
+  end
+
+  desc "check <module>...", "Check file lists for module(s)"
+  def check(*module_names)
+    modules = modules_from_names(module_names)
+    with_modules modules, "Checking files in", true do |mod|
+      mod.check
+    end
+  end
+
+  desc "patch <module>...", "Patch module(s)"
+  def patch(*module_names)
+    modules = modules_from_names(module_names)
+    with_modules modules, "Patch", true do |mod|
+      mod.patch
+    end
+  end
+
+  desc "unpatch <module>...", "Unpatch module(s)"
+  def unpatch(*module_names)
+    modules = modules_from_names(module_names)
+    with_modules modules, "Unpatch", true do |mod|
+      mod.unpatch
+    end
+  end
+
+  desc "compile <module>...", "Compile module(s)"
+  def compile(*module_names)
+    compile_stubs
+
+    FileUtils.rm_rf(ERROR_FILE)
+
+    counts = {
+      :ok          => 0,
+      :excluded    => 0,
+      :error_y2r   => 0,
+      :error_ruby  => 0,
+      :error_other => 0
+    }
+
+    modules = modules_from_names(module_names)
+    with_modules modules, "Compiling", false do |mod|
+      module_counts = mod.compile
+      counts.keys.each { |k| counts[k] += module_counts[k] }
+    end
+
+    puts
+    puts "-----"
+    puts
+    puts "Total OK:           #{counts[:ok]}"
+    puts "Total EXCLUDED:     #{counts[:excluded]}"
+    puts "Total ERROR(y2r):   #{counts[:error_y2r]}"
+    puts "Total ERROR(ruby):  #{counts[:error_ruby]}"
+    puts "Total ERROR(other): #{counts[:error_other]}"
+  end
+
+  desc "clean <module>...", "Clean up compilation results for module(s)"
+  def clean(*module_names)
+    clean_stubs
+
+    FileUtils.rm_rf(ERROR_FILE)
+
+    modules = modules_from_names(module_names)
+    with_modules modules, "Cleaning up", true do |mod|
+      mod.clean
+    end
+  end
+
+  private
+
+  def compile_stubs
+    Dir["#{STUBS_DIR}/*.ycp"].each do |file|
+      Cheetah.run @config["ycpc"], "-c", file
+    end
+  end
+
+  def clean_stubs
+    Dir["#{STUBS_DIR}/*.ybc"].each do |file|
+      FileUtils.rm(file)
+    end
+  end
+
+  def load_config
+    @config = YAML.load_file("#{BASE_DIR}/config.yml")
+  end
+
+  def load_module_data
+    modules = Dir["#{DATA_DIR}/*.yml"].sort.map do |file|
+      name = File.basename(file, ".yml")
+
+      [name, YastModule.new(name, YAML.load_file(file), @config)]
+    end
+
+    @modules = Hash[modules]
+  end
+
+  def modules_from_names(module_names)
+    module_names = @modules.keys if module_names == ["all"]
+
+    @modules.values_at(*module_names)
+  end
+
+  def with_modules(modules, activity, print_status)
+    max_counter_size = 3 + ((Math.log10(modules.size).to_i + 1) * 2)
+
+    modules.each_index do |i|
+      message = sprintf(
+        "%-#{max_counter_size}s %s",
+        "[#{i + 1}/#{modules.size}]",
+        "#{activity} #{modules[i].name}..."
+      )
+
+      if print_status
+        Messages.start message
+      else
+        Messages.info message
+      end
+
+      begin
+        yield modules[i]
+      rescue Exception => e
+        Messages.finish "ERROR" if print_status
+        raise
+      end
+
+      Messages.finish "OK" if print_status
+    end
+  end
+end
+
+begin
+  CLI.start(ARGV)
+rescue Cheetah::ExecutionFailed => e
+  puts
+  puts e.stderr
+rescue Exception => e
+  puts
+  puts e.message
+end

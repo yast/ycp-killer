@@ -1,0 +1,8 @@
+# TODO: Process.
+
+files:
+  - src/RDP.ycp
+  - src/dialogs.ycp
+  - src/rdp.ycp
+  - src/rdp_proposal.ycp
+  - testsuite/tests/Rdp.ycp

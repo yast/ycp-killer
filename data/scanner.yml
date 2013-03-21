@@ -1,0 +1,8 @@
+# TODO: Process.
+
+files:
+  - src/Scanner.ycp
+  - src/dialogs.ycp
+  - src/helps.ycp
+  - src/scanner.ycp
+  - src/wizards.ycp

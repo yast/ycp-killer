@@ -1,0 +1,23 @@
+# TODO: Process.
+
+files:
+  - src/Printer.ycp
+  - src/Printerlib.ycp
+  - src/autoconfig.ycp
+  - src/basicadd.ycp
+  - src/basicmodify.ycp
+  - src/connectionwizard.ycp
+  - src/dialogs.ycp
+  - src/driveradd.ycp
+  - src/driveroptions.ycp
+  - src/helps.ycp
+  - src/overview.ycp
+  - src/policies.ycp
+  - src/printer.ycp
+  - src/printer_auto.ycp
+  - src/printer_proposal.ycp
+  - src/printingvianetwork.ycp
+  - src/readwrite.ycp
+  - src/sharing.ycp
+  - src/wizards.ycp
+  - testsuite/tests/Printer.ycp

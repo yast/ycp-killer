@@ -1,0 +1,29 @@
+# TODO: Process.
+
+files:
+  - src/DnsFakeTabs.ycp
+  - src/DnsServerHelperFunctions.ycp
+  - src/DnsServerUI.ycp
+  - src/cmdline.ycp
+  - src/dialog-installwizard.ycp
+  - src/dialog-main.ycp
+  - src/dialog-masterzone.ycp
+  - src/dialogs.ycp
+  - src/dns-server.ycp
+  - src/dns-server_auto.ycp
+  - src/helps.ycp
+  - src/misc.ycp
+  - src/options.ycp
+  - src/widgets.ycp
+  - src/wizards.ycp
+  - testsuite/tests.ag/zoneag.ycp
+  - testsuite/tests/DnsServerAPI.ycp
+  - testsuite/tests/DnsServerHelperFunctions.ycp
+  - testsuite/tests/DnsServerUI.ycp
+  - testsuite/tests/Read.ycp
+  - testsuite/tests/Write.ycp
+  - testsuite/tests/YaPIReadGlobalOptions.ycp
+  - testsuite/tests/YaPIReadZones.ycp
+  - testsuite/tests/YaPIStartStopDnsService.ycp
+  - testsuite/tests/YaPIWriteGlobalOptions.ycp
+  - testsuite/tests/YaPIWriteZones.ycp

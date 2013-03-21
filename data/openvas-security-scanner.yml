@@ -1,0 +1,9 @@
+# TODO: Process.
+
+files:
+  - src/OpenvasSecurityScanner.ycp
+  - src/complex.ycp
+  - src/dialogs.ycp
+  - src/helps.ycp
+  - src/openvas-security-scanner.ycp
+  - src/wizards.ycp

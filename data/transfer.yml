@@ -1,0 +1,6 @@
+# TODO: Process.
+
+files:
+  - module/FTP.ycp
+  - module/HTTP.ycp
+  - module/TFTP.ycp

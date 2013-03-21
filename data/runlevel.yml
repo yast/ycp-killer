@@ -1,0 +1,27 @@
+# TODO: Process.
+
+files:
+  - src/RunlevelEd.ycp
+  - src/depviz.ycp
+  - src/runlevel.ycp
+  - src/runlevel_auto.ycp
+  - src/runlevel_finish.ycp
+  - src/runlevel_proposal.ycp
+  - src/services_proposal.ycp
+  - src/toposort.ycp
+  - src/ui.ycp
+  - src/wizard.ycp
+  - testsuite/tests/Filters.ycp
+  - testsuite/tests/RunlevelEd.ycp
+  - testsuite/tests/ServiceDependencies.ycp
+  - testsuite/tests/dirtyServices.ycp
+  - testsuite/tests/formatLine.ycp
+  - testsuite/tests/getDefaultPicker.ycp
+  - testsuite/tests/getRunlevelDescr.ycp
+  - testsuite/tests/getScripts.ycp
+  - testsuite/tests/isDisabled.ycp
+  - testsuite/tests/overviewText.ycp
+  - testsuite/tests/saveServices.ycp
+  - testsuite/tests/servicesToTable.ycp
+  - testsuite/tests/setServiceToDefault.ycp
+  - testsuite/tests/toposort.ycp

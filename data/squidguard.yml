@@ -1,0 +1,12 @@
+# TODO: Process.
+
+files:
+  - src/Squidguard.ycp
+  - src/complex.ycp
+  - src/dialogs.ycp
+  - src/helps.ycp
+  - src/squidguard.ycp
+  - src/squidguard_auto.ycp
+  - src/squidguard_proposal.ycp
+  - src/wizards.ycp
+  - testsuite/tests/Squidguard.ycp

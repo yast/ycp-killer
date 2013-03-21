@@ -1,0 +1,14 @@
+# TODO: Process.
+
+files:
+  - src/Kdump.ycp
+  - src/complex.ycp
+  - src/dialogs.ycp
+  - src/helps.ycp
+  - src/kdump.ycp
+  - src/kdump_auto.ycp
+  - src/kdump_finish.ycp
+  - src/kdump_proposal.ycp
+  - src/uifunctions.ycp
+  - src/wizards.ycp
+  - testsuite/tests/Kdump.ycp

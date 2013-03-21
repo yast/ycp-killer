@@ -1,0 +1,15 @@
+# TODO: Process.
+
+files:
+  - src/LdapDatabase.ycp
+  - src/complex.ycp
+  - src/dialogs.ycp
+  - src/helps.ycp
+  - src/ldap-server.ycp
+  - src/ldap-server_auto.ycp
+  - src/ldap-server_proposal.ycp
+  - src/mirrormode-wizard.ycp
+  - src/openldap-mirrormode.ycp
+  - src/tree_structure.ycp
+  - src/widgets.ycp
+  - src/wizards.ycp

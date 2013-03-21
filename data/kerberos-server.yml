@@ -1,0 +1,9 @@
+# TODO: Process.
+
+files:
+  - src/advanced_items.ycp
+  - src/complex.ycp
+  - src/helps.ycp
+  - src/kerberos-server.ycp
+  - src/wizards.ycp
+  - testsuite/tests/KerberosServer.ycp

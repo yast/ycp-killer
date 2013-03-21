@@ -1,0 +1,24 @@
+# TODO: Process.
+
+files:
+  - src/Firstboot.ycp
+  - src/firstboot.ycp
+  - src/firstboot_auto.ycp
+  - src/firstboot_bootloader_reconfigure.ycp
+  - src/firstboot_config.ycp
+  - src/firstboot_desktop.ycp
+  - src/firstboot_finish.ycp
+  - src/firstboot_keyboard.ycp
+  - src/firstboot_language.ycp
+  - src/firstboot_language_keyboard.ycp
+  - src/firstboot_license.ycp
+  - src/firstboot_license_novell.ycp
+  - src/firstboot_licenses.ycp
+  - src/firstboot_network_write.ycp
+  - src/firstboot_ntp.ycp
+  - src/firstboot_ssh.ycp
+  - src/firstboot_timezone.ycp
+  - src/firstboot_welcome.ycp
+  - src/firstboot_write.ycp
+  - src/product_start.ycp
+  - src/routines.ycp

@@ -1,0 +1,21 @@
+# TODO: Process.
+
+files:
+  - src/Security.ycp
+  - src/complex.ycp
+  - src/dialogs.ycp
+  - src/helps.ycp
+  - src/levels.ycp
+  - src/routines.ycp
+  - src/security.ycp
+  - src/security_auto.ycp
+  - src/security_summary.ycp
+  - src/users.ycp
+  - src/widgets.ycp
+  - src/wizards.ycp
+  - testsuite/tests/Import.ycp
+  - testsuite/tests/Level1.ycp
+  - testsuite/tests/Level2.ycp
+  - testsuite/tests/Level3.ycp
+  - testsuite/tests/Read.ycp
+  - testsuite/tests/Write.ycp

@@ -1,0 +1,25 @@
+# TODO: Process.
+
+files:
+  - src/clients/AA_AddProfile.ycp
+  - src/clients/AA_DeleteProfile.ycp
+  - src/clients/AA_EditProfile.ycp
+  - src/clients/AA_Report.ycp
+  - src/clients/GenProf.ycp
+  - src/clients/LogProf.ycp
+  - src/clients/apparmor-settings.ycp
+  - src/clients/apparmor.ycp
+  - src/clients/apparmor_no_impl.ycp
+  - src/include/apparmor/aa-config.ycp
+  - src/include/apparmor/apparmor_packages.ycp
+  - src/include/apparmor/apparmor_profile_check.ycp
+  - src/include/apparmor/apparmor_ycp_utils.ycp
+  - src/include/apparmor/capabilities.ycp
+  - src/include/apparmor/config_complain.ycp
+  - src/include/apparmor/helps.ycp
+  - src/include/apparmor/profile_dialogs.ycp
+  - src/include/apparmor/report_helptext.ycp
+  - src/include/apparmor/reporting_archived_dialogs.ycp
+  - src/include/apparmor/reporting_dialogues.ycp
+  - src/include/apparmor/reporting_utils.ycp
+  - src/modules/AppArmorDialogs.ycp

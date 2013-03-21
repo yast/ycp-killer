@@ -1,0 +1,21 @@
+# TODO: Process.
+
+files:
+  - db2/src/9.1/DB2DATA.ycp
+  - db2/src/9.1/DB2GUI.ycp
+  - db2/src/9.1/DB2INSTALL.ycp
+  - db2/src/9.1/db2_install.ycp
+  - db2/src/DB2DATA.ycp
+  - db2/src/DB2GUI.ycp
+  - db2/src/DB2INSTALL.ycp
+  - db2/src/SLES9/DB2DATA.new.ycp
+  - db2/src/SLES9/DB2DATA.ycp
+  - db2/src/SLES9/DB2GUI.ycp
+  - db2/src/SLES9/DB2INSTALL.ycp
+  - db2/src/SLES9/db2_install.ycp
+  - db2/src/db2_install.ycp
+  - db2/src/sles8/DB2DATA.ycp
+  - db2/src/sles8/DB2GUI.ycp
+  - db2/src/sles8/DB2INSTALL.ycp
+  - db2/src/sles8/db2_install.ycp
+  - oracle/src/yast2-orainst.ycp

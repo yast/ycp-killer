@@ -1,0 +1,14 @@
+# TODO: Process.
+
+files:
+  - src/FtpServer.ycp
+  - src/complex.ycp
+  - src/dialogs.ycp
+  - src/ftp-server.ycp
+  - src/ftp-server_auto.ycp
+  - src/helps.ycp
+  - src/wid_functions.ycp
+  - src/wizards.ycp
+  - src/write_load.ycp
+  - testsuite/tests/FtpServer.ycp
+  - testsuite/tests/PassivePortRange.ycp

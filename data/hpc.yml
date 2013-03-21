@@ -1,0 +1,8 @@
+# TODO: Process.
+
+files:
+  - src/HPCControl.ycp
+  - src/HPCMain.ycp
+  - src/HPCMessages.ycp
+  - src/dialog/HPCDialog.ycp
+  - src/hpc.ycp

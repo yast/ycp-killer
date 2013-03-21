@@ -1,0 +1,25 @@
+/* Stubbed because the original module is written in Perl. */
+
+{
+  module "MailTable";
+
+  global list<map<string,any> > Read(string kind) {
+    return [];
+  }
+
+  global boolean Write(string kind, list<map<any, any> > value) {
+    return false;
+  }
+
+  global boolean Flush(string kind) {
+    return false;
+  }
+
+  global string FileName(string kind) {
+    return "";
+  }
+
+  global string SetFileName(string kind, string new) {
+    return "";
+  }
+}

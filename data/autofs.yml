@@ -1,0 +1,11 @@
+# TODO: Process.
+
+files:
+  - src/AutofsUI.ycp
+  - src/autofs.ycp
+  - src/autofs_auto.ycp
+  - src/autofs_proposal.ycp
+  - src/complex.ycp
+  - src/dialogs.ycp
+  - src/helps.ycp
+  - src/wizards.ycp

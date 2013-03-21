@@ -1,0 +1,5 @@
+# TODO: Process.
+
+files:
+  - testsuite/devel/cim-browser.ycp
+  - testsuite/devel/file-browser.ycp

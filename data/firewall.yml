@@ -1,0 +1,17 @@
+# TODO: Process.
+
+files:
+  - src/SuSEFirewallCMDLine.ycp
+  - src/SuSEFirewallUI.ycp
+  - src/complex.ycp
+  - src/dialogs.ycp
+  - src/firewall.ycp
+  - src/firewall_auto.ycp
+  - src/firewall_proposal.ycp
+  - src/generalfunctions.ycp
+  - src/helps.ycp
+  - src/subdialogs.ycp
+  - src/summary.ycp
+  - src/uifunctions.ycp
+  - src/wizards.ycp
+  - testsuite/tests/Functions.ycp

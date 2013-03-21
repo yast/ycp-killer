@@ -1,0 +1,4 @@
+stubs/*.ybc
+Gemfile.lock
+config.yml
+.ruby-version

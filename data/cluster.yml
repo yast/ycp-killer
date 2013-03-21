@@ -1,0 +1,12 @@
+# TODO: Process.
+
+files:
+  - src/Cluster.ycp
+  - src/cluster.ycp
+  - src/cluster_auto.ycp
+  - src/cluster_proposal.ycp
+  - src/common.ycp
+  - src/complex.ycp
+  - src/dialogs.ycp
+  - src/helps.ycp
+  - src/wizards.ycp

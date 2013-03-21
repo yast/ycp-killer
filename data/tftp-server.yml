@@ -1,0 +1,9 @@
+# TODO: Process.
+
+files:
+  - src/TftpServer.ycp
+  - src/dialogs.ycp
+  - src/tftp-server.ycp
+  - src/tftp-server_auto.ycp
+  - src/wizards.ycp
+  - testsuite/tests/readwrite.ycp

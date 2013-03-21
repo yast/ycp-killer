@@ -1,0 +1,9 @@
+# TODO: Process.
+
+files:
+  - src/Crowbar.ycp
+  - src/complex.ycp
+  - src/crowbar.ycp
+  - src/helps.ycp
+  - src/inst_crowbar.ycp
+  - src/wizards.ycp

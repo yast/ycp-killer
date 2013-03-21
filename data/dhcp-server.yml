@@ -1,0 +1,31 @@
+# TODO: Process.
+
+files:
+  - src/DhcpServerUI.ycp
+  - src/commandline.ycp
+  - src/dhcp-server.ycp
+  - src/dhcp-server_auto.ycp
+  - src/dialogs.ycp
+  - src/dialogs2.ycp
+  - src/dns-helps.ycp
+  - src/dns-server-dialogs.ycp
+  - src/dns-server-management.ycp
+  - src/dns-server-wizard.ycp
+  - src/helps.ycp
+  - src/misc.ycp
+  - src/options.ycp
+  - src/routines.ycp
+  - src/widgets.ycp
+  - src/wizards.ycp
+  - testsuite/tests/Read.ycp
+  - testsuite/tests/Write.ycp
+  - testsuite/tests/YaPIAddDeclaration.ycp
+  - testsuite/tests/YaPIDeleteDeclartion.ycp
+  - testsuite/tests/YaPIGetDeclarationChildren.ycp
+  - testsuite/tests/YaPIGetDeclarationDirectives.ycp
+  - testsuite/tests/YaPIGetDeclarationOptions.ycp
+  - testsuite/tests/YaPIGetDeclarationParent.ycp
+  - testsuite/tests/YaPISetDeclarationDirectives.ycp
+  - testsuite/tests/YaPISetDeclarationOptions.ycp
+  - testsuite/tests/YaPISetDeclarationParent.ycp
+  - testsuite/tests/YaPIStartStopDhcpService.ycp

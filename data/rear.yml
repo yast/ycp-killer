@@ -1,0 +1,7 @@
+# TODO: Process.
+
+files:
+  - src/Rear.ycp
+  - src/RearSystemCheck.ycp
+  - src/rear.ycp
+  - src/ui.ycp

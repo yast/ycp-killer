@@ -1,0 +1,20 @@
+# TODO: Process.
+
+files:
+  - src/Heartbeat.ycp
+  - src/auth_conf.ycp
+  - src/commandline.ycp
+  - src/common.ycp
+  - src/dialogs.ycp
+  - src/heartbeat.ycp
+  - src/helps.ycp
+  - src/ipfail_conf.ycp
+  - src/log_conf.ycp
+  - src/media_conf.ycp
+  - src/node_conf.ycp
+  - src/resources_conf.ycp
+  - src/startup_conf.ycp
+  - src/stonith_conf.ycp
+  - src/timeouts_conf.ycp
+  - src/wizards.ycp
+  - testsuite/tests/Heartbeat.ycp

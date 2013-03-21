@@ -1,0 +1,12 @@
+# TODO: Process.
+
+files:
+  - src/OneClickInstall.ycp
+  - src/OneClickInstallCLI.ycp
+  - src/OneClickInstallUI.ycp
+  - src/OneClickInstallUrlHandler.ycp
+  - src/OneClickInstallWidgets.ycp
+  - src/OneClickInstallWorker.ycp
+  - src/OneClickInstallWorkerFunctions.ycp
+  - src/OneClickInstallWorkerResponse.ycp
+  - src/UserSettings.ycp

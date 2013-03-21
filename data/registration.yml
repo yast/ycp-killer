@@ -1,0 +1,8 @@
+# TODO: Process.
+
+files:
+  - src/clients/inst_suse_register.ycp
+  - src/clients/suse_register_auto.ycp
+  - src/dialogs/texts.ycp
+  - src/modules/Register.ycp
+  - testsuite/tests/Registration.ycp

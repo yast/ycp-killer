@@ -1,0 +1,12 @@
+# TODO: Process.
+
+files:
+  - src/Samba.ycp
+  - src/complex.ycp
+  - src/dialogs.ycp
+  - src/helps.ycp
+  - src/routines.ycp
+  - src/samba-client.ycp
+  - src/samba-client_auto.ycp
+  - src/wizards.ycp
+  - testsuite/tests/SambaConfig_ExportImport.ycp

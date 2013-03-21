@@ -1,0 +1,25 @@
+# TODO: Process.
+
+files:
+  - src/Ldap.ycp
+  - src/LdapPopup.ycp
+  - src/ldap-client.ycp
+  - src/ldap.ycp
+  - src/ldap_auto.ycp
+  - src/ldap_browser.ycp
+  - src/ldap_config.ycp
+  - src/routines.ycp
+  - src/ui.ycp
+  - src/wizards.ycp
+  - testsuite/tests/ConvertDefaultValues.ycp
+  - testsuite/tests/Export.ycp
+  - testsuite/tests/Export2.ycp
+  - testsuite/tests/Export3.ycp
+  - testsuite/tests/GetAllAttributes.ycp
+  - testsuite/tests/LDAPBind.ycp
+  - testsuite/tests/LDAPInit.ycp
+  - testsuite/tests/Read.ycp
+  - testsuite/tests/Read2.ycp
+  - testsuite/tests/ReadLdapConfEntry.ycp
+  - testsuite/tests/Routines.ycp
+  - testsuite/tests/SingleValued.ycp

@@ -1,0 +1,14 @@
+# TODO: Process.
+
+files:
+  - src/Sshd.ycp
+  - src/SshdCommandLine.ycp
+  - src/complex.ycp
+  - src/dialogs.ycp
+  - src/helps.ycp
+  - src/sshd.ycp
+  - src/sshd_auto.ycp
+  - src/wizards.ycp
+  - testsuite/tests/Sshd-Modified.ycp
+  - testsuite/tests/Sshd-SSHDOption.ycp
+  - testsuite/tests/ag_sshd.ycp

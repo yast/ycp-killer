@@ -1,0 +1,16 @@
+# TODO: Process.
+
+files:
+  - src/IscsiClient.ycp
+  - src/IscsiClientLib.ycp
+  - src/complex.ycp
+  - src/dialogs.ycp
+  - src/helps.ycp
+  - src/inst_iscsi-client.ycp
+  - src/iscsi-client.ycp
+  - src/iscsi-client_auto.ycp
+  - src/iscsi-client_finish.ycp
+  - src/iscsi-client_proposal.ycp
+  - src/widgets.ycp
+  - src/wizards.ycp
+  - testsuite/tests/SaveConfig.ycp

@@ -1,0 +1,9 @@
+# TODO: Process.
+
+files:
+  - src/Multipath.ycp
+  - src/complex.ycp
+  - src/helps.ycp
+  - src/multipath.ycp
+  - src/options.ycp
+  - src/wizards.ycp

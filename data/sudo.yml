@@ -1,0 +1,15 @@
+# TODO: Process.
+
+files:
+  - src/Sudo.ycp
+  - src/complex.ycp
+  - src/dialog-cmnd.ycp
+  - src/dialog-host.ycp
+  - src/dialog-runas.ycp
+  - src/dialog-spec.ycp
+  - src/dialog-user.ycp
+  - src/dialogs.ycp
+  - src/helps.ycp
+  - src/sudo.ycp
+  - src/wizards.ycp
+  - testsuite/tests/Sudo.ycp

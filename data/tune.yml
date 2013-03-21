@@ -1,0 +1,15 @@
+# TODO: Process.
+
+files:
+  - hwinfo/src/InitHWinfo.ycp
+  - hwinfo/src/NewID.ycp
+  - hwinfo/src/SystemSettings.ycp
+  - hwinfo/src/hwinfo.ycp
+  - hwinfo/src/hwinfo_proposal.ycp
+  - hwinfo/src/inst_hwinfo.ycp
+  - hwinfo/src/newid.ycp
+  - hwinfo/src/routines.ycp
+  - hwinfo/src/system_settings.ycp
+  - hwinfo/src/system_settings_dialogs.ycp
+  - hwinfo/src/system_settings_finish.ycp
+  - hwinfo/src/system_settings_ui.ycp

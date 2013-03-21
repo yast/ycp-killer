@@ -1,0 +1,13 @@
+# TODO: Process.
+
+files:
+  - src/Support.ycp
+  - src/complex.ycp
+  - src/dialogs.ycp
+  - src/helps.ycp
+  - src/support.ycp
+  - src/support_auto.ycp
+  - src/support_proposal.ycp
+  - src/supportconfig_conf.ycp
+  - src/wizards.ycp
+  - testsuite/tests/Support.ycp

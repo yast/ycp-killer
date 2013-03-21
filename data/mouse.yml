@@ -1,0 +1,10 @@
+# TODO: Process.
+
+files:
+  - data/mouse_raw.ycp
+  - src/inst_init_mouse.ycp
+  - src/inst_mouse.ycp
+  - src/modules/Mouse.ycp
+  - src/mouse.ycp
+  - src/mouse_finish.ycp
+  - src/proposal/mouse_proposal.ycp

@@ -1,0 +1,11 @@
+# TODO: Process.
+
+files:
+  - src/Instserver.ycp
+  - src/complex.ycp
+  - src/dialogs.ycp
+  - src/helps.ycp
+  - src/instserver.ycp
+  - src/routines.ycp
+  - src/wizards.ycp
+  - testsuite/tests/Instserver.ycp

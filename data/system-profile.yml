@@ -1,0 +1,9 @@
+# TODO: Process.
+
+files:
+  - src/SystemProfile.ycp
+  - src/dialogs.ycp
+  - src/system-profile.ycp
+  - src/system-profile_auto.ycp
+  - src/texts.ycp
+  - testsuite/tests/SystemProfile.ycp

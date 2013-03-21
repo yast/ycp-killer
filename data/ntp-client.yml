@@ -1,0 +1,19 @@
+# TODO: Process.
+
+files:
+  - data/ntp_servers.ycp
+  - src/NtpClient.ycp
+  - src/clocktypes.ycp
+  - src/commandline.ycp
+  - src/dialogs.ycp
+  - src/helps.ycp
+  - src/misc.ycp
+  - src/ntp-client.ycp
+  - src/ntp-client_auto.ycp
+  - src/ntp-client_finish.ycp
+  - src/ntp-client_proposal.ycp
+  - src/widgets.ycp
+  - src/wizards.ycp
+  - testsuite/tests/Read.ycp
+  - testsuite/tests/Write.ycp
+  - testsuite/tests/selected_record.ycp

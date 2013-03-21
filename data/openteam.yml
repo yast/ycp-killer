@@ -1,0 +1,13 @@
+# TODO: Process.
+
+files:
+  - src/Openteam.ycp
+  - src/complex.ycp
+  - src/dialogs.ycp
+  - src/helps.ycp
+  - src/openteam.ycp
+  - src/openteam_auto.ycp
+  - src/openteam_proposal.ycp
+  - src/openteam_write.ycp
+  - src/routines.ycp
+  - src/wizards.ycp

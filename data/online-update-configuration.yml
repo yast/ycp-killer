@@ -1,0 +1,7 @@
+# TODO: Process.
+
+files:
+  - src/clients/online_update_configuration.ycp
+  - src/clients/online_update_configuration_auto.ycp
+  - src/dialogs/OUCDialogs.ycp
+  - src/modules/OnlineUpdateConfiguration.ycp

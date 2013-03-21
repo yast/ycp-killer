@@ -1,0 +1,34 @@
+# TODO: Process.
+
+files:
+  - data/alsa_packages.ycp
+  - sound/src/Joystick.ycp
+  - sound/src/PulseAudio.ycp
+  - sound/src/Sound.ycp
+  - sound/src/card_wizard.ycp
+  - sound/src/complex.ycp
+  - sound/src/joy_dialog.ycp
+  - sound/src/joystick.ycp
+  - sound/src/joysticks.ycp
+  - sound/src/manual.ycp
+  - sound/src/mixer.ycp
+  - sound/src/options.ycp
+  - sound/src/read_routines.ycp
+  - sound/src/routines.ycp
+  - sound/src/sound.ycp
+  - sound/src/sound_auto.ycp
+  - sound/src/sound_proposal.ycp
+  - sound/src/sound_summary.ycp
+  - sound/src/sound_write.ycp
+  - sound/src/texts.ycp
+  - sound/src/ui.ycp
+  - sound/src/volume.ycp
+  - sound/src/volume_routines.ycp
+  - sound/src/wizards.ycp
+  - sound/src/write_routines.ycp
+  - sound/testsuite/tests/export_volume.ycp
+  - sound/testsuite/tests/filter_configured.ycp
+  - sound/testsuite/tests/get_card_label.ycp
+  - sound/testsuite/tests/import_volume.ycp
+  - sound/testsuite/tests/is_snd_alias.ycp
+  - sound/testsuite/tests/isa_uniq.ycp

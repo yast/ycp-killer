@@ -1,0 +1,13 @@
+# TODO: Process.
+
+files:
+  - src/IsnsServer.ycp
+  - src/complex.ycp
+  - src/dialogs.ycp
+  - src/helps.ycp
+  - src/isns.ycp
+  - src/isns_auto.ycp
+  - src/isns_finish.ycp
+  - src/isns_proposal.ycp
+  - src/widgets.ycp
+  - src/wizards.ycp

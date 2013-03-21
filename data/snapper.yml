@@ -1,0 +1,13 @@
+# TODO: Process.
+
+files:
+  - src/Snapper.ycp
+  - src/dialogs.ycp
+  - src/helps.ycp
+  - src/snapper.ycp
+  - src/wizards.ycp
+  - testsuite/tests/GetFileMode.ycp
+  - testsuite/tests/GetFileModification.ycp
+  - testsuite/tests/GetSnapshotPath.ycp
+  - testsuite/tests/ReadConfigs.ycp
+  - testsuite/tests/ReadSnapshots.ycp

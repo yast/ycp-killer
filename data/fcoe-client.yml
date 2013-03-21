@@ -1,0 +1,14 @@
+# TODO: Process.
+
+files:
+  - src/FcoeClient.ycp
+  - src/complex.ycp
+  - src/dialogs.ycp
+  - src/fcoe-client.ycp
+  - src/fcoe-client_auto.ycp
+  - src/fcoe-client_finish.ycp
+  - src/fcoe-client_proposal.ycp
+  - src/helps.ycp
+  - src/inst_fcoe-client.ycp
+  - src/wizards.ycp
+  - testsuite/tests/FcoeClient.ycp

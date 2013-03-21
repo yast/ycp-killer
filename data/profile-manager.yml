@@ -1,0 +1,12 @@
+# TODO: Process.
+
+files:
+  - src/ProfileManager.ycp
+  - src/complex.ycp
+  - src/dialogs.ycp
+  - src/helps.ycp
+  - src/profile-manager.ycp
+  - src/profile_manager.ycp
+  - src/wizards.ycp
+  - testsuite/tests/CheckNameValidity.ycp
+  - testsuite/tests/GetProgressText.ycp

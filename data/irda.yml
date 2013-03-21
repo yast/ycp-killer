@@ -1,0 +1,8 @@
+# TODO: Process.
+
+files:
+  - src/Irda.ycp
+  - src/irda.ycp
+  - src/ui.ycp
+  - testsuite/tests/Read.ycp
+  - testsuite/tests/Write.ycp

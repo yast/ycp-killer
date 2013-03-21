@@ -1,0 +1,13 @@
+# TODO: Process.
+
+files:
+  - src/AuditLaf.ycp
+  - src/audit-laf.ycp
+  - src/audit-laf_auto.ycp
+  - src/audit-laf_proposal.ycp
+  - src/cmdline.ycp
+  - src/complex.ycp
+  - src/dialogs.ycp
+  - src/helps.ycp
+  - src/wizards.ycp
+  - testsuite/tests/TestModule.ycp

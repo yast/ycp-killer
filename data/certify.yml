@@ -1,0 +1,9 @@
+# TODO: Process.
+
+files:
+  - src/Certify.ycp
+  - src/certify.ycp
+  - src/helps.ycp
+  - src/ui.ycp
+  - src/ui_system.ycp
+  - src/ui_tests.ycp

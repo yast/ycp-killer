@@ -1,0 +1,5 @@
+# TODO: Process.
+
+files:
+  - testsuite/tests/arch.ycp
+  - testsuite/tests/dir.ycp
