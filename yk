@@ -220,7 +220,7 @@ class CLI < Thor
   desc "clone <module>...", "Clone module(s)"
   def clone(*module_names)
     modules = modules_from_names(module_names)
-    with_modules modules, "Checking out", true do |mod|
+    with_modules modules, "Cloning", true do |mod|
       mod.clone
     end
   end
