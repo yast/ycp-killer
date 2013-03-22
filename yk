@@ -37,10 +37,11 @@ end
 class YastModule
   attr_reader :name
 
-  def initialize(name, data, config)
-    @name   = name
-    @data   = data
-    @config = config
+  def initialize(name, data, modules, config)
+    @name    = name
+    @data    = data
+    @modules = modules
+    @config  = config
   end
 
   def clone
@@ -96,8 +97,10 @@ class YastModule
 
       file = "#{dir}/#{file}"
 
-      module_paths  = [STUBS_DIR] + exported_dirs + [File.dirname(file)]
-      include_paths = [STUBS_DIR] + exported_dirs + [File.dirname(file)]
+      dep_exported_dirs = deps.map { |d| @modules[d].exported_dirs }.flatten
+
+      module_paths  = [STUBS_DIR] + exported_dirs + dep_exported_dirs + [File.dirname(file)]
+      include_paths = [STUBS_DIR] + exported_dirs + dep_exported_dirs + [File.dirname(file)]
 
       Dir.chdir File.dirname(file) do
         begin
@@ -154,6 +157,10 @@ class YastModule
 
   def dir
     "#{@config["yast_dir"]}/#@name"
+  end
+
+  def deps
+    @data["deps"] || []
   end
 
   def exports
@@ -312,13 +319,18 @@ class CLI < Thor
   end
 
   def load_module_data
-    modules = Dir["#{DATA_DIR}/*.yml"].sort.map do |file|
+    @modules = {}
+
+    Dir["#{DATA_DIR}/*.yml"].sort.each do |file|
       name = File.basename(file, ".yml")
 
-      [name, YastModule.new(name, YAML.load_file(file), @config)]
+      @modules[name] = YastModule.new(
+        name,
+        YAML.load_file(file),
+        @modules,
+        @config
+      )
     end
-
-    @modules = Hash[modules]
   end
 
   def modules_from_names(module_names)
