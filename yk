@@ -99,35 +99,37 @@ class YastModule
       module_paths  = [STUBS_DIR] + exported_dirs + [File.dirname(file)]
       include_paths = [STUBS_DIR] + exported_dirs + [File.dirname(file)]
 
-      begin
-        create_ybc file, module_paths, include_paths
-        create_rb  file, module_paths, include_paths
-      rescue Cheetah::ExecutionFailed => e
-        Messages.finish "ERROR(y2r)"
-        log_error(file, e)
-        counts[:error_y2r] += 1
-        next
-      rescue Exception => e
-        Messages.finish "ERROR(other)"
-        counts[:error_other] += 1
-        next
-      end
+      Dir.chdir File.dirname(file) do
+        begin
+          create_ybc file, module_paths, include_paths
+          create_rb  file, module_paths, include_paths
+        rescue Cheetah::ExecutionFailed => e
+          Messages.finish "ERROR(y2r)"
+          log_error(file, e)
+          counts[:error_y2r] += 1
+          next
+        rescue Exception => e
+          Messages.finish "ERROR(other)"
+          counts[:error_other] += 1
+          next
+        end
 
-      begin
-        check_rb file.sub(/\.(ycp|yh)$/, ".rb")
-      rescue Cheetah::ExecutionFailed => e
-        Messages.finish "ERROR(ruby)"
-        log_error(file, e)
-        counts[:error_ruby] += 1
-        next
-      rescue Exception => e
-        Messages.finish "ERROR(other)"
-        counts[:error_other] += 1
-        next
-      end
+        begin
+          check_rb file.sub(/\.(ycp|yh)$/, ".rb")
+        rescue Cheetah::ExecutionFailed => e
+          Messages.finish "ERROR(ruby)"
+          log_error(file, e)
+          counts[:error_ruby] += 1
+          next
+        rescue Exception => e
+          Messages.finish "ERROR(other)"
+          counts[:error_other] += 1
+          next
+        end
 
-      Messages.finish "OK"
-      counts[:ok] += 1
+        Messages.finish "OK"
+        counts[:ok] += 1
+      end
     end
 
     counts[:excluded] += excluded.size
