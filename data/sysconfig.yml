@@ -1,15 +1,20 @@
-# TODO: Process.
-
+deps:
+  - testsuite
+  - yast2
 files:
+  # Modules (in Makefile.am order)
   - src/Sysconfig.ycp
-  - src/cmdline.ycp
-  - src/complex.ycp
-  - src/dialogs.ycp
+  # Includes (in Makefile.am order)
   - src/helps.ycp
+  - src/wizards.ycp
+  - src/dialogs.ycp
+  - src/complex.ycp
+  - src/cmdline.ycp
   - src/routines.ycp
+  # Clients (in Makefile.am order)
   - src/sysconfig.ycp
   - src/sysconfig_auto.ycp
-  - src/wizards.ycp
+  # Testsuite (in alphabetical order)
   - testsuite/tests/Set_Export.ycp
   - testsuite/tests/get_description.ycp
   - testsuite/tests/get_file_from_id.ycp
