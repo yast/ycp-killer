@@ -412,19 +412,6 @@ index 3ced0f7..e850242 100644
  	}
      });
      y2debug("Groups=%1", Groups);
-diff --git a/library/log/src/LogViewCore.ycp b/library/log/src/LogViewCore.ycp
-index e885421..e3cad98 100644
---- a/library/log/src/LogViewCore.ycp
-+++ b/library/log/src/LogViewCore.ycp
-@@ -29,7 +29,7 @@ you may find current contact information at www.novell.com
-  * $Id: LogViewCore.ycp 45503 2008-03-17 09:46:23Z aschnell $
-  */
- {
--    module "LogViewCore.ycp";
-+    module "LogViewCore";
- 
-     textdomain "base";
- 
 diff --git a/library/packages/src/PackageCallbacks.ycp b/library/packages/src/PackageCallbacks.ycp
 index 4b2b249..1847c0f 100644
 --- a/library/packages/src/PackageCallbacks.ycp
