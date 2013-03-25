@@ -40,11 +40,12 @@ things get gemified, packaged, etc.
   2. **Clone the yast-core repository and compile your own `ycpc`**
 
      Custom-compiled `ycpc` is needed because Y2R relies on some features that
-     are not present in `ycpc` bundled with openSUSE 12.3.
+     are not present in `ycpc` bundled with openSUSE 12.3. These fatures are
+     implemented in the `y2r_fixes` branch.
 
          $ sudo zypper in make yast2-devtools libtool gcc-c++ bison \
            docbook-xsl-stylesheets expect dejagnu flex boost-devel doxygen
-         $ git clone git://github.com/yast/yast-core.git
+         $ git clone git://github.com/yast/yast-core.git -b y2r_fixes
          $ cd yast-core
          $ make -f Makefile.cvs
          $ make
