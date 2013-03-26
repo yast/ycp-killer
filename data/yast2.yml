@@ -96,6 +96,24 @@ files:
   - library/sequencer/src/Sequencer.ycp
   # Library/Sequencer Includes (in Makefile.am order)
   - library/sequencer/src/sequencer.ycp
+  # Library/Sequencer Testsuite (in alphabetical order)
+  - library/sequencer/testsuite/tests/WS_alias.ycp
+  - library/sequencer/testsuite/tests/WS_check.ycp
+  - library/sequencer/testsuite/tests/WS_error.ycp
+  - library/sequencer/testsuite/tests/WS_next.ycp
+  - library/sequencer/testsuite/tests/WS_pop.ycp
+  - library/sequencer/testsuite/tests/WS_push.ycp
+  - library/sequencer/testsuite/tests/WS_run.ycp
+  - library/sequencer/testsuite/tests/WS_special.ycp
+  - library/sequencer/testsuite/tests/WS_testall.ycp
+  - library/sequencer/testsuite/tests/Wizard0.ycp
+  - library/sequencer/testsuite/tests/Wizard1.ycp
+  - library/sequencer/testsuite/tests/Wizard2.ycp
+  - library/sequencer/testsuite/tests/Wizard3.ycp
+  - library/sequencer/testsuite/tests/Wizard4.ycp
+  - library/sequencer/testsuite/tests/Wizard5.ycp
+  - library/sequencer/testsuite/tests/Wizard6.ycp
+  - library/sequencer/testsuite/tests/Wizard7.ycp
   # Library/Sequencer Documentation (in alphabetical order)
   - library/sequencer/doc/examples/example1.ycp
   - library/sequencer/doc/examples/example2.ycp
@@ -113,6 +131,7 @@ files:
   - library/commandline/testsuite/tests/cmdmap3.ycp
   - library/commandline/testsuite/tests/cmdmap4.ycp
   - library/commandline/testsuite/tests/cmdmap5.ycp
+  - library/commandline/testsuite/tests/cmdmap6.ycp
   - library/commandline/testsuite/tests/command1.ycp
   - library/commandline/testsuite/tests/command2.ycp
   - library/commandline/testsuite/tests/command3.ycp
@@ -131,6 +150,7 @@ files:
   - library/commandline/testsuite/tests/startgui1.ycp
   - library/commandline/testsuite/tests/startgui2.ycp
   - library/commandline/testsuite/tests/testsuitedata.yh
+  - library/commandline/testsuite/tests/unique1.ycp
   # Library/Desktop Modules (in Makefile.am order)
   - library/desktop/src/Desktop.ycp
   # Library/Desktop Clients (in Makefile.am order)
@@ -175,6 +195,8 @@ files:
   - library/cwm/src/CWMTsigKeys.ycp
   - library/cwm/src/WizardHW.ycp
   # Library/CWM Testsuite (in alphabetical order)
+  - library/cwm/testsuite/tests/t1.ycp
+  - library/cwm/testsuite/tests/t2.ycp
   - library/cwm/testsuite/tests/testfunc.yh
   # Library/Log Modules (in Makefile.am order)
   - library/log/src/ALog.ycp
@@ -203,6 +225,7 @@ files:
   # Library/System Testsuite (in alphabetical order)
   - library/system/testsuite/tests/filechanges.ycp
   - library/system/testsuite/tests/initrd.ycp
+  - library/system/testsuite/tests/kernel.ycp
   # Library/Packages Modules (in alphabetical order except dependencies)
   - library/packages/src/PackageAI.ycp
   - library/packages/src/PackageCallbacks.ycp
@@ -239,7 +262,9 @@ files:
   - library/network/src/yast2-services-translations.ycp
   # Library/Network Testsuite (in alphabetical order)
   - library/network/testsuite/tests/NetworkInterfaces.ycp
+  - library/network/testsuite/tests/NetworkInterfaces2.ycp
   - library/network/testsuite/tests/NetworkInterfaces3.ycp
+  - library/network/testsuite/tests/NetworkInterfaces4.ycp
   - library/network/testsuite/tests/NetworkInterfaces5-Type.ycp
   - library/network/testsuite/tests/PortAliases.ycp
   - library/network/testsuite/tests/SuSEFirewall.ycp
@@ -266,49 +291,15 @@ files:
   - doc/examples/popups2.ycp
   - doc/examples/popups3.ycp
 excluded:
-  # These use private private symbols from the Sequence module.
-  # TODO: Allow this.
-  - library/sequencer/testsuite/tests/WS_alias.ycp
-  - library/sequencer/testsuite/tests/WS_check.ycp
-  - library/sequencer/testsuite/tests/WS_error.ycp
-  - library/sequencer/testsuite/tests/WS_next.ycp
-  - library/sequencer/testsuite/tests/WS_pop.ycp
-  - library/sequencer/testsuite/tests/WS_push.ycp
-  - library/sequencer/testsuite/tests/WS_run.ycp
-  - library/sequencer/testsuite/tests/WS_special.ycp
-  - library/sequencer/testsuite/tests/WS_testall.ycp
+  # TODO: Uses undefined identifier, obviously from the files that include
+  # this. We need to decide what to do with included files in general.
   - library/sequencer/testsuite/tests/Wizard.yh
-  - library/sequencer/testsuite/tests/Wizard0.ycp
-  - library/sequencer/testsuite/tests/Wizard1.ycp
-  - library/sequencer/testsuite/tests/Wizard2.ycp
-  - library/sequencer/testsuite/tests/Wizard3.ycp
-  - library/sequencer/testsuite/tests/Wizard4.ycp
-  - library/sequencer/testsuite/tests/Wizard5.ycp
-  - library/sequencer/testsuite/tests/Wizard6.ycp
-  - library/sequencer/testsuite/tests/Wizard7.ycp
-  # Uses private symbol from the CommandLine module.
-  # TODO: Allow this.
-  - library/commandline/testsuite/tests/cmdmap6.ycp
-  # Uses private symbol from the Report module.
-  # TODO: Allow this.
-  - library/commandline/testsuite/tests/unique1.ycp
   # Library/CommandLine Documentation (in alphabetical order)
   # TODO: Excluded because they depend on the not-yet-transated network
   # module.
   - library/commandline/doc/lan-simple.ycp
   - library/commandline/doc/lan-simpler.ycp
-  # Uses private symbol from the Report module.
-  # TODO: Allow this.
-  - library/cwm/testsuite/tests/t1.ycp
-  - library/cwm/testsuite/tests/t2.ycp
-  # Uses private symbol from the Kernel module.
-  # TODO: Allow this.
-  - library/system/testsuite/tests/kernel.ycp
   # Library/Packages Includes (in Makefile.am order)
   # TODO: Uses undefined identifier, obviously from the files that include
   # this. We need to decide what to do with included files in general.
   - library/packages/src/common.ycp
-  # Uses private symbol from the Network module.
-  # TODO: Allow this.
-  - library/network/testsuite/tests/NetworkInterfaces2.ycp
-  - library/network/testsuite/tests/NetworkInterfaces4.ycp

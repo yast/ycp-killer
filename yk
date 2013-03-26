@@ -104,6 +104,10 @@ class YastModule
 
       Dir.chdir File.dirname(file) do
         begin
+          # This makes private symbols in modules visible. Needed by some
+          # testsuites.
+          ENV["Y2ALLGLOBAL"] = "1"
+
           create_ybc file, module_paths, include_paths
           create_rb  file, module_paths, include_paths
         rescue Cheetah::ExecutionFailed => e

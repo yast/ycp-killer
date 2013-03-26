@@ -1,5 +1,5 @@
 diff --git a/library/commandline/src/CommandLine.ycp b/library/commandline/src/CommandLine.ycp
-index e69a0f4..ed1f856 100644
+index e69a0f4..8ba5163 100644
 --- a/library/commandline/src/CommandLine.ycp
 +++ b/library/commandline/src/CommandLine.ycp
 @@ -220,6 +220,56 @@ you may find current contact information at www.novell.com
@@ -142,8 +142,16 @@ index 0000000..945c9b4
 @@ -0,0 +1 @@
 +.
 \ No newline at end of file
+diff --git a/library/cwm/testsuite/tests/tests b/library/cwm/testsuite/tests/tests
+new file mode 120000
+index 0000000..945c9b4
+--- /dev/null
++++ b/library/cwm/testsuite/tests/tests
+@@ -0,0 +1 @@
++.
+\ No newline at end of file
 diff --git a/library/desktop/src/Desktop.ycp b/library/desktop/src/Desktop.ycp
-index 3ced0f7..e850242 100644
+index 3ced0f7..f57f665 100644
 --- a/library/desktop/src/Desktop.ycp
 +++ b/library/desktop/src/Desktop.ycp
 @@ -123,20 +123,19 @@ void ReadLanguage() {
@@ -175,6 +183,14 @@ index 3ced0f7..e850242 100644
      /* read modules */
      map filemap = $[];
      path filepath = nil;
+diff --git a/library/sequencer/testsuite/tests/tests b/library/sequencer/testsuite/tests/tests
+new file mode 120000
+index 0000000..945c9b4
+--- /dev/null
++++ b/library/sequencer/testsuite/tests/tests
+@@ -0,0 +1 @@
++.
+\ No newline at end of file
 diff --git a/library/wizard/testsuite/tests/wizard_dialog.ycp b/library/wizard/testsuite/tests/wizard_dialog.ycp
 index f8825de..5d58b65 100644
 --- a/library/wizard/testsuite/tests/wizard_dialog.ycp
