@@ -79,49 +79,10 @@ work_modify:
       target: library/gpg/src/modules
 
 excluded:
-  # These use private private symbols from the Sequence module.
-  # TODO: Allow this.
-  - library/sequencer/testsuite/tests/WS_alias.ycp
-  - library/sequencer/testsuite/tests/WS_check.ycp
-  - library/sequencer/testsuite/tests/WS_error.ycp
-  - library/sequencer/testsuite/tests/WS_next.ycp
-  - library/sequencer/testsuite/tests/WS_pop.ycp
-  - library/sequencer/testsuite/tests/WS_push.ycp
-  - library/sequencer/testsuite/tests/WS_run.ycp
-  - library/sequencer/testsuite/tests/WS_special.ycp
-  - library/sequencer/testsuite/tests/WS_testall.ycp
+  # include stuff for testsuite
   - library/sequencer/testsuite/tests/Wizard.yh
-  - library/sequencer/testsuite/tests/Wizard0.ycp
-  - library/sequencer/testsuite/tests/Wizard1.ycp
-  - library/sequencer/testsuite/tests/Wizard2.ycp
-  - library/sequencer/testsuite/tests/Wizard3.ycp
-  - library/sequencer/testsuite/tests/Wizard4.ycp
-  - library/sequencer/testsuite/tests/Wizard5.ycp
-  - library/sequencer/testsuite/tests/Wizard6.ycp
-  - library/sequencer/testsuite/tests/Wizard7.ycp
-  # Uses private symbol from the CommandLine module.
-  # TODO: Allow this.
-  - library/commandline/testsuite/tests/cmdmap6.ycp
-  # Uses private symbol from the Report module.
-  # TODO: Allow this.
-  - library/commandline/testsuite/tests/unique1.ycp
   # Library/CommandLine Documentation (in alphabetical order)
   # TODO: Excluded because they depend on the not-yet-transated network
   # module.
   - library/commandline/doc/lan-simple.ycp
   - library/commandline/doc/lan-simpler.ycp
-  # Uses private symbol from the Report module.
-  # TODO: Allow this.
-  - library/cwm/testsuite/tests/t1.ycp
-  - library/cwm/testsuite/tests/t2.ycp
-  # Uses private symbol from the Kernel module.
-  # TODO: Allow this.
-  - library/system/testsuite/tests/kernel.ycp
-  # Library/Packages Includes (in Makefile.am order)
-  # TODO: Uses undefined identifier, obviously from the files that include
-  # this. We need to decide what to do with included files in general.
-  - library/packages/src/common.ycp
-  # Uses private symbol from the Network module.
-  # TODO: Allow this.
-  - library/network/testsuite/tests/NetworkInterfaces2.ycp
-  - library/network/testsuite/tests/NetworkInterfaces4.ycp

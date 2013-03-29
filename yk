@@ -137,6 +137,8 @@ class YastModule
   end
 
   def compile
+    # makes private variables from modules visible for testsuite
+    ENV["Y2ALLGLOBAL"] = "1"
     FileUtils.rm_rf(converted_dir)
     counts = {
       :ok          => 0,
@@ -327,10 +329,33 @@ class CLI < Thor
 
   desc "convert <module>...", "Convert module(s) to target dir"
   def convert(*module_names)
+    compile_stubs
+
+    FileUtils.rm_rf(ERROR_FILE)
+
+    counts = {
+      :ok          => 0,
+      :excluded    => 0,
+      :error_y2r   => 0,
+      :error_ruby  => 0,
+      :error_other => 0
+    }
+
+
     modules = modules_from_names(module_names)
     with_modules modules, "Checking files in", true do |mod|
-      mod.convert
+      module_counts = mod.convert
+      counts.keys.each { |k| counts[k] += module_counts[k] }
     end
+
+    puts
+    puts "-----"
+    puts
+    puts "Total OK:           #{counts[:ok]}"
+    puts "Total EXCLUDED:     #{counts[:excluded]}"
+    puts "Total ERROR(y2r):   #{counts[:error_y2r]}"
+    puts "Total ERROR(ruby):  #{counts[:error_ruby]}"
+    puts "Total ERROR(other): #{counts[:error_other]}"
   end
 
   desc "create_workdir <module>...", "Check file lists for module(s)"
