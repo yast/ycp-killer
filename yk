@@ -23,7 +23,11 @@ module Messages
     end
 
     def finish(status)
-      spaces = " " * (MAX_MESSAGE_WIDTH - @last_message_size)
+      spaces = if @last_message_size < MAX_MESSAGE_WIDTH
+        " " * (MAX_MESSAGE_WIDTH - @last_message_size)
+      else
+        ""
+      end
 
       puts spaces + status
     end
@@ -35,13 +39,31 @@ module Messages
 end
 
 class YastModule
-  attr_reader :name
+  attr_reader :name,
+    :dir,
+    :deps,
+    :exports,
+    :files,
+    :excluded
+
 
   def initialize(name, data, modules, config)
-    @name    = name
-    @data    = data
-    @modules = modules
-    @config  = config
+    @name     = name
+    @data     = data
+    @modules  = modules
+    @config   = config
+    @dir      = "#{@config["yast_dir"]}/#@name"
+    @deps     = @data["deps"] || []
+    @exports  = @data["exports"] || ["src"]
+    @files    = @data["files"] || []
+    @excluded = @data["excluded"] || []
+  end
+
+  def convert
+    clean
+    clone
+    patch
+    compile
   end
 
   def clone
@@ -117,6 +139,7 @@ class YastModule
           next
         rescue Exception => e
           Messages.finish "ERROR(other)"
+          log_error(file, e)
           counts[:error_other] += 1
           next
         end
@@ -130,6 +153,7 @@ class YastModule
           next
         rescue Exception => e
           Messages.finish "ERROR(other)"
+          log_error(file, e)
           counts[:error_other] += 1
           next
         end
@@ -149,7 +173,7 @@ class YastModule
       file = "#{dir}/#{file}"
 
       FileUtils.rm_rf(file.sub(/\.ycp$/, ".ybc").sub(/\.yh$/, ".yh.ybc"))
-      FileUtils.rm_rf(file.sub(/\.(ycp|yh)$/, ".rb"))
+      FileUtils.rm_rf(file.sub(/\.y(cp|h)$/, ".rb"))
     end
   end
 
@@ -158,27 +182,6 @@ class YastModule
   end
 
   private
-
-  def dir
-    "#{@config["yast_dir"]}/#@name"
-  end
-
-  def deps
-    @data["deps"] || []
-  end
-
-  def exports
-    @data["exports"] || ["src"]
-  end
-
-  def files
-    @data["files"] || []
-  end
-
-  def excluded
-    @data["excluded"] || []
-  end
-
   def create_ybc(file, module_paths, include_paths)
     cmd = [@config["ycpc"]]
     module_paths.each do |module_path|
@@ -215,7 +218,12 @@ class YastModule
       f.puts file
       f.puts "-" * file.size
       f.puts
-      f.puts e.stderr
+      if e.is_a?(Cheetah::ExecutionFailed)
+        f.puts e.stderr
+      else
+        f.puts e.message
+        e.backtrace.each { |l| f.puts l }
+      end
       f.puts
     end
   end
@@ -246,6 +254,14 @@ class CLI < Thor
     end
   end
 
+  desc "convert <module>...", "Convert module(s)"
+  def convert(*module_names)
+    report_results(module_names) do |mod|
+      mod.convert
+    end
+  end
+
+
   desc "patch <module>...", "Patch module(s)"
   def patch(*module_names)
     modules = modules_from_names(module_names)
@@ -264,32 +280,9 @@ class CLI < Thor
 
   desc "compile <module>...", "Compile module(s)"
   def compile(*module_names)
-    compile_stubs
-
-    FileUtils.rm_rf(ERROR_FILE)
-
-    counts = {
-      :ok          => 0,
-      :excluded    => 0,
-      :error_y2r   => 0,
-      :error_ruby  => 0,
-      :error_other => 0
-    }
-
-    modules = modules_from_names(module_names)
-    with_modules modules, "Compiling", false do |mod|
-      module_counts = mod.compile
-      counts.keys.each { |k| counts[k] += module_counts[k] }
+    report_results(module_names) do |mod|
+      mod.compile
     end
-
-    puts
-    puts "-----"
-    puts
-    puts "Total OK:           #{counts[:ok]}"
-    puts "Total EXCLUDED:     #{counts[:excluded]}"
-    puts "Total ERROR(y2r):   #{counts[:error_y2r]}"
-    puts "Total ERROR(ruby):  #{counts[:error_ruby]}"
-    puts "Total ERROR(other): #{counts[:error_other]}"
   end
 
   desc "clean <module>...", "Clean up compilation results for module(s)"
@@ -305,6 +298,36 @@ class CLI < Thor
   end
 
   private
+
+  def report_results(module_names)
+    compile_stubs
+
+    FileUtils.rm_rf(ERROR_FILE)
+
+    counts = {
+      :ok          => 0,
+      :excluded    => 0,
+      :error_y2r   => 0,
+      :error_ruby  => 0,
+      :error_other => 0
+    }
+
+    modules = modules_from_names(module_names)
+    with_modules modules, "Compiling", false do |mod|
+      module_counts = yield(mod)
+      counts.keys.each { |k| counts[k] += module_counts[k] }
+    end
+
+    puts
+    puts "-----"
+    puts
+    puts "Total OK:           #{counts[:ok]}"
+    puts "Total EXCLUDED:     #{counts[:excluded]}"
+    puts "Total ERROR(y2r):   #{counts[:error_y2r]}"
+    puts "Total ERROR(ruby):  #{counts[:error_ruby]}"
+    puts "Total ERROR(other): #{counts[:error_other]}"
+
+  end
 
   def compile_stubs
     Dir["#{STUBS_DIR}/*.ycp"].each do |file|
