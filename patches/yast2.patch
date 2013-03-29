@@ -1,7 +1,7 @@
-diff --git a/library/commandline/src/CommandLine.ycp b/library/commandline/src/CommandLine.ycp
-index e69a0f4..8ba5163 100644
---- a/library/commandline/src/CommandLine.ycp
-+++ b/library/commandline/src/CommandLine.ycp
+diff --git a/library/commandline/src/modules/CommandLine.ycp b/library/commandline/src/modules/CommandLine.ycp
+index e69a0f4..ed1f856 100644
+--- a/library/commandline/src/modules/CommandLine.ycp
++++ b/library/commandline/src/modules/CommandLine.ycp
 @@ -220,6 +220,56 @@ you may find current contact information at www.novell.com
      }
  
@@ -134,6 +134,18 @@ index e69a0f4..8ba5163 100644
      }
  
  
+@@ -1431,9 +1432,9 @@ global any Run( map commandline ) {
+ 		if( haskey(commandline["actions"]:$[], command) && commandline["initialize"]:nil != nil ) {
+ 		    /* non-GUI handling */
+ 		    CommandLine::PrintVerbose( _("Initializing") );
+-		    boolean ret = RunFunction( commandline["initialize"]:fake_false );
++		    boolean ret2 = RunFunction( commandline["initialize"]:fake_false );
+ 
+-		    if( !ret ) {
++		    if( !ret2 ) {
+ 			y2milestone( "Module initialization failed" );
+ 			return false;
+ 		    }
 diff --git a/library/commandline/testsuite/tests/tests b/library/commandline/testsuite/tests/tests
 new file mode 120000
 index 0000000..945c9b4
@@ -142,18 +154,208 @@ index 0000000..945c9b4
 @@ -0,0 +1 @@
 +.
 \ No newline at end of file
-diff --git a/library/cwm/testsuite/tests/tests b/library/cwm/testsuite/tests/tests
-new file mode 120000
-index 0000000..945c9b4
---- /dev/null
-+++ b/library/cwm/testsuite/tests/tests
-@@ -0,0 +1 @@
-+.
-\ No newline at end of file
-diff --git a/library/desktop/src/Desktop.ycp b/library/desktop/src/Desktop.ycp
-index 3ced0f7..f57f665 100644
---- a/library/desktop/src/Desktop.ycp
-+++ b/library/desktop/src/Desktop.ycp
+diff --git a/library/control/src/modules/WorkflowManager.ycp b/library/control/src/modules/WorkflowManager.ycp
+index bc108bd..02d06d6 100644
+--- a/library/control/src/modules/WorkflowManager.ycp
++++ b/library/control/src/modules/WorkflowManager.ycp
+@@ -581,14 +581,14 @@ rm -rf *.xml *.ycp",
+ 
+ 	if (haskey (proposal, "proposal_tabs")) {
+ 	    proposal["proposal_tabs"] = maplist (map tab, proposal["proposal_tabs"]:[], {
+-		list <list <string> > modules = maplist (string m, tab["proposal_modules"]:[], {
++		list <list <string> > modules2 = maplist (string m, tab["proposal_modules"]:[], {
+ 		    if (m == old)
+ 			return new;
+ 		    else
+ 			return [m];
+ 		});
+ 
+-		tab["proposal_modules"] = flatten (modules);
++		tab["proposal_modules"] = flatten (modules2);
+ 
+ 		return tab;
+ 	    });
+diff --git a/library/cwm/src/modules/CWMTsigKeys.ycp b/library/cwm/src/modules/CWMTsigKeys.ycp
+index 6f09568..32465a5 100644
+--- a/library/cwm/src/modules/CWMTsigKeys.ycp
++++ b/library/cwm/src/modules/CWMTsigKeys.ycp
+@@ -280,9 +280,9 @@ global define symbol Handle (map<string,any> widget, string key, map event) {
+ 	UI::QueryWidget (`id ("_cwm_new_key_file"), `Value);
+     if (ret == "_cwm_delete_key")
+     {
+-	string key = (string)UI::QueryWidget (`id ("_cwm_key_listing_table"),
++	string key2 = (string)UI::QueryWidget (`id ("_cwm_key_listing_table"),
+ 	    `CurrentItem);
+-	string delete_filename = Key2File (key);
++	string delete_filename = Key2File (key2);
+ 	if (widget["list_used_keys"]:nil != nil
+ 	    && is (widget["list_used_keys"]:nil, list<string>()))
+ 	{
+@@ -339,7 +339,7 @@ Stop using it in the configuration first.");
+ 	    return nil;
+ 	}
+ 
+-	string key = (string)UI::QueryWidget (`id ("_cwm_new_key_id"), `Value);
++	string key2 = (string)UI::QueryWidget (`id ("_cwm_new_key_id"), `Value);
+ 	map stat = (map)SCR::Read (.target.stat, new_filename);
+ 
+ 	if (size (stat) != 0)
+@@ -363,7 +363,7 @@ Stop using it in the configuration first.");
+ 		RemoveTSIGKeyFile (new_filename);
+ 	    }
+ 	}
+-	if (key == nil || key == "")
++	if (key2 == nil || key2 == "")
+ 	{
+ 	    UI::SetFocus (`id ("_cwm_new_key_id"));
+ 	    // error report
+@@ -371,7 +371,7 @@ Stop using it in the configuration first.");
+ 	    return nil;
+ 	}
+ 	// specified key exists
+-	if (Key2File (key) != "")
++	if (Key2File (key2) != "")
+ 	{
+ 	    // yes-no popup
+ 	    if (! Popup::YesNo (_("The key with the specified ID exists and is used.
+@@ -381,7 +381,7 @@ Remove it?")))
+ 	    }
+ 	    else
+ 	    {
+-		string remove_file = Key2File (key);
++		string remove_file = Key2File (key2);
+ 		DeleteTSIGKeyFromDisk (remove_file);
+ 		RemoveTSIGKeyFile (remove_file);
+ 	    }
+@@ -389,7 +389,7 @@ Remove it?")))
+ 	// specified key is present on the disk, but not used
+ 	if (0 == SCR::Execute (.target.bash, sformat (
+ 	    "ls /etc/named.d/K%1\\.*",
+-	    tolower (key))))
++	    tolower (key2))))
+ 	{
+ 	    // yes-no popup
+ 	    if (Popup::YesNo (_("A key with the specified ID was found
+@@ -397,12 +397,12 @@ on your disk. Remove it?")))
+ 	    {
+ 		SCR::Execute (.target.bash, sformat (
+ 		    "rm -rf `ls /etc/named.d/K%1\\.*`",
+-		    tolower (key)));
++		    tolower (key2)));
+ 		list<string> files = (list<string>)SCR::Read (
+ 		    .target.dir,
+ 		    "/etc/named.d");
+ 		foreach (string f, files, {
+-		    if ( contains (AnalyzeTSIGKeyFile (f), key))
++		    if ( contains (AnalyzeTSIGKeyFile (f), key2))
+ 			DeleteTSIGKeyFromDisk (f);
+ 		});
+ 	    }
+@@ -415,7 +415,7 @@ on your disk. Remove it?")))
+ 	    "test -d /etc/named.d || mkdir /etc/named.d");
+ 	string gen_command = sformat (
+ 	    "/usr/bin/genDDNSkey --force  -f '%1' -n '%2' -d /etc/named.d",
+-	    String::Quote (new_filename), String::Quote (key));
++	    String::Quote (new_filename), String::Quote (key2));
+ 	y2milestone ("Running %1", gen_command);
+ 	integer gen_ret = (integer)SCR::Execute (.target.bash, gen_command);
+ 	if (gen_ret != 0)
+diff --git a/library/cwm/src/modules/TablePopup.ycp b/library/cwm/src/modules/TablePopup.ycp
+index a891384..f4b7748 100644
+--- a/library/cwm/src/modules/TablePopup.ycp
++++ b/library/cwm/src/modules/TablePopup.ycp
+@@ -167,8 +167,8 @@ define boolean ValidateTableDescr (string key, map<string,any> descr) {
+ 	    {
+ 		y2error ("Unknown entry in option %1: %2", w_key, group);
+ 	    }
+-	    foreach (string key, any value, d, {
+-		ValidateValueType (key, value, w_key, true);
++	    foreach (string key2, any value, d, {
++		ValidateValueType (key2, value, w_key, true);
+ 	    });
+ 	});
+     });
+@@ -522,14 +522,14 @@ define boolean ValidateTableDescr (string key, map<string,any> descr) {
+ 	map<string, any> event_descr = $[];
+ 	while (ret != `_tp_ok && ret != `_tp_cancel)
+ 	{
+-	    map<string, any> event_descr = (map<string, any>)(UI::WaitForEvent ());
++	    map<string, any> event_descr2 = (map<string, any>)(UI::WaitForEvent (nil));
+ 	    if (Mode::test ())
+-		event_descr = $[ "ID" : `_tp_ok];
+-	    ret = event_descr["ID"]:nil;
++		event_descr2 = $[ "ID" : `_tp_ok];
++	    ret = event_descr2["ID"]:nil;
+ 	    if (popup_descr["handle"]:nil != nil)
+ 	    {
+ 		void(any, string, map) toEval = (void(any, string, map)) (popup_descr["handle"]:nil);
+-		toEval (opt_id, opt_key, event_descr);
++		toEval (opt_id, opt_key, event_descr2);
+ 	    }
+ 	    if (ret == `_tp_ok)
+ 	    {
+@@ -540,13 +540,13 @@ define boolean ValidateTableDescr (string key, map<string,any> descr) {
+ 			= (boolean(any, string, map)) (popup_descr["validate_function"]:nil);
+ 		    if (toEval != nil)
+ 		    {
+-			if (! toEval (opt_id, opt_key, event_descr))
++			if (! toEval (opt_id, opt_key, event_descr2))
+ 			{
+ 			    ret = nil;
+ 			}
+ 		    }
+ 		}
+-		else if (! CWM::validateWidget (popup_descr, event_descr,
++		else if (! CWM::validateWidget (popup_descr, event_descr2,
+ 		    opt_key))
+ 		{
+ 		    ret = nil;
+@@ -702,16 +702,16 @@ define boolean ValidateTableDescr (string key, map<string,any> descr) {
+ //		if (is (toEval, symbol))
+ 		if (! is (toEval, symbol(any, string, map)))
+ 		{
+-		    symbol ret = (symbol)toEval;
+-		    return ret;
++		    symbol ret2 = (symbol)toEval;
++		    return ret2;
+ 		}
+ 		else
+ 		{
+ 		    symbol(any, string, map) toEval_c
+ 			= (symbol(any, string, map)) (option_map["table", "handle"]:nil);
+-		    symbol ret = toEval_c (opt_id, opt_key, event_descr);
+-		    if (ret != `_tp_normal)
+-			return ret;
++		    symbol ret2 = toEval_c (opt_id, opt_key, event_descr);
++		    if (ret2 != `_tp_normal)
++			return ret2;
+ 		}
+ 	    }
+             option_map["_cwm_id"] = opt_id;
+@@ -757,8 +757,8 @@ define boolean ValidateTableDescr (string key, map<string,any> descr) {
+ 	else if (event_id == `_tp_table)
+ 	{
+ 	    any opt_id = UI::QueryWidget (`id (`_tp_table), `CurrentItem);
+-	    any key = id2key (descr, opt_id);
+-	    if (key == "____sep")
++	    any key2 = id2key (descr, opt_id);
++	    if (key2 == "____sep")
+ 	    {
+ 		list id_list = getIdList (descr);
+ 		integer previous_index = 0;
+@@ -786,7 +786,7 @@ define boolean ValidateTableDescr (string key, map<string,any> descr) {
+ 		    step = -1;
+ 		integer new_index = current_index + step;
+ 		opt_id = id_list[new_index]:nil;
+-		key = id2key (descr, opt_id);
++		key2 = id2key (descr, opt_id);
+ 		UI::ChangeWidget (`id (`_tp_table), `CurrentItem, opt_id);
+ 	    }
+ 	    previous_selected_item = opt_id;
+diff --git a/library/desktop/src/modules/Desktop.ycp b/library/desktop/src/modules/Desktop.ycp
+index 3ced0f7..e850242 100644
+--- a/library/desktop/src/modules/Desktop.ycp
++++ b/library/desktop/src/modules/Desktop.ycp
 @@ -123,20 +123,19 @@ void ReadLanguage() {
      y2debug("Language=%1", Language);
  }
@@ -183,14 +385,101 @@ index 3ced0f7..f57f665 100644
      /* read modules */
      map filemap = $[];
      path filepath = nil;
-diff --git a/library/sequencer/testsuite/tests/tests b/library/sequencer/testsuite/tests/tests
-new file mode 120000
-index 0000000..945c9b4
---- /dev/null
-+++ b/library/sequencer/testsuite/tests/tests
-@@ -0,0 +1 @@
-+.
-\ No newline at end of file
+@@ -162,8 +161,8 @@ global define void Read(list<string> Values) {
+ 	filemap["modules"] = [];
+         filemap["X-SuSE-DocTeamID"] = SCR::Read(filepath + "X-SuSE-DocTeamID");
+ 
+-	string name = (string) SCR::Read(filepath + "X-SuSE-YaST-Group");
+-	Groups[name] = filemap;
++	string name2 = (string) SCR::Read(filepath + "X-SuSE-YaST-Group");
++	Groups[name2] = filemap;
+     });
+     y2debug("Groups=%1", Groups);
+ 
+@@ -179,11 +178,11 @@ global define void Read(list<string> Values) {
+ 	    string ret = ReadLocalizedKey(filename, filepath, value);
+ 	    if(ret != nil && ret != "") filemap[value] = ret;
+ 	});
+-	string name = regexpsub(file, "^.*/(.*)\.desktop", "\\1");
+-	if(name != "" && name != nil) {
+-	    Modules[name] = filemap;
++	string name2 = regexpsub(file, "^.*/(.*)\.desktop", "\\1");
++	if(name2 != "" && name2 != nil) {
++	    Modules[name2] = filemap;
+ 	    string group = filemap["X-SuSE-YaST-Group"]:"";
+-	    if(group != "") Groups[group, "modules", size(Groups[group,"modules"]:[])] = name;
++	    if(group != "") Groups[group, "modules", size(Groups[group,"modules"]:[])] = name2;
+ 	}
+     });
+     y2debug("Groups=%1", Groups);
+diff --git a/library/packages/src/modules/PackageCallbacks.ycp b/library/packages/src/modules/PackageCallbacks.ycp
+index 4b2b249..1847c0f 100644
+--- a/library/packages/src/modules/PackageCallbacks.ycp
++++ b/library/packages/src/modules/PackageCallbacks.ycp
+@@ -1405,15 +1405,15 @@ global void SourceProbeStart(string url)
+     {
+ 	OpenSourcePopup();
+ 
+-	string msg = sformat(_("Probing Repository %1"), URL::HidePassword(url));
++	string msg2 = sformat(_("Probing Repository %1"), URL::HidePassword(url));
+ 
+ 	if (_source_open == 1)
+ 	{
+-	    SetHeaderSourcePopup(msg);
++	    SetHeaderSourcePopup(msg2);
+ 	}
+ 	else
+ 	{
+-	    SetLabelSourcePopup(msg);
++	    SetLabelSourcePopup(msg2);
+ 	}
+     }
+ }
+diff --git a/library/packages/src/modules/PackageLock.ycp b/library/packages/src/modules/PackageLock.ycp
+index 603396f..d559605 100644
+--- a/library/packages/src/modules/PackageLock.ycp
++++ b/library/packages/src/modules/PackageLock.ycp
+@@ -156,7 +156,7 @@ global map<string,any> Connect(boolean show_continue_button)
+ 
+ 	    if (show_continue_button)
+ 	    {
+-		symbol ret = Popup::AnyQuestion3(
++		symbol ret2 = Popup::AnyQuestion3(
+ 		    // TRANSLATORS: a popup headline
+ 		    _("Accessing the Software Management Failed"),
+ 		    Pkg::LastError() + "\n\n" +
+@@ -172,17 +172,17 @@ or abort?
+ 		    `focus_yes
+ 		);
+ 
+-		try_again = (ret == `yes);
++		try_again = (ret2 == `yes);
+ 
+ 		// NOTE: due to the changed labels this actually means that [Abort] was pressed!!
+-		if (ret == `retry)
++		if (ret2 == `retry)
+ 		{
+ 		    aborted = true;
+ 		}
+ 	    }
+ 	    else
+ 	    {
+-		boolean ret = Popup::AnyQuestion(
++		boolean ret2 = Popup::AnyQuestion(
+ 		    // TRANSLATORS: a popup headline
+ 		    _("Accessing the Software Management Failed"),
+ 		    Pkg::LastError() + "\n\n" +
+@@ -194,8 +194,8 @@ _("Would you like to abort or try again?\n"),
+ 		    `focus_yes
+ 		);
+ 
+-		try_again = ret;
+-		aborted = !ret;
++		try_again = ret2;
++		aborted = !ret2;
+ 	    }
+ 
+ 	    y2milestone("try_again: %1, aborted: %2", try_again, aborted);
 diff --git a/library/wizard/testsuite/tests/wizard_dialog.ycp b/library/wizard/testsuite/tests/wizard_dialog.ycp
 index f8825de..5d58b65 100644
 --- a/library/wizard/testsuite/tests/wizard_dialog.ycp

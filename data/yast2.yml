@@ -2,7 +2,7 @@ deps:
   - testsuite
 exports:
   - library/types/src
-  - library/modules
+  - library
   - library/runlevel/src
   - library/sequencer/src
   - library/xml/src
@@ -17,86 +17,70 @@ exports:
   - library/cron/src
   - library/network/src
   - library/gpg/src
-files:
-  # Library (in Makefile.am order)
-  # Library/Types Modules (in alphabetical order except depenencies)
-  - library/types/src/IP.ycp
-  - library/types/src/Hostname.ycp
-  - library/types/src/Address.ycp
-  - library/types/src/Integer.ycp
-  - library/types/src/Map.ycp
-  - library/types/src/Netmask.ycp
-  - library/types/src/Punycode.ycp
-  - library/types/src/RichText.ycp
-  - library/types/src/String.ycp
-  - library/types/src/URL.ycp
-  - library/types/src/TypeRepository.ycp
-  # Library/Types Testsuite (in alphabetical order)
-  - library/types/testsuite/tests/Address.ycp
-  - library/types/testsuite/tests/FindMountPoint.ycp
-  - library/types/testsuite/tests/Hostname.ycp
-  - library/types/testsuite/tests/IP.ycp
-  - library/types/testsuite/tests/IPvalidation.ycp
-  - library/types/testsuite/tests/Integer.ycp
-  - library/types/testsuite/tests/Map.ycp
-  - library/types/testsuite/tests/Netmask.ycp
-  - library/types/testsuite/tests/String.ycp
-  - library/types/testsuite/tests/URL.ycp
-  - library/types/testsuite/tests/URLRecode.ycp
-  - library/types/testsuite/tests/enumtype.ycp
-  - library/types/testsuite/tests/regextype.ycp
-  - library/types/testsuite/tests/undefinedtype.ycp
-  # Library/Modules Modules (in alphabetical order except depenencies)
-  - library/modules/Arch.ycp
-  - library/modules/AsciiFile.ycp
-  - library/modules/Assert.ycp
-  - library/modules/Call.ycp
-  - library/modules/ConfigHistory.ycp
-  - library/modules/ContextMenu.ycp
-  - library/modules/Icon.ycp
-  - library/modules/Popup.ycp
-  - library/modules/Crash.ycp
-  - library/modules/CustomDialogs.ycp
-  - library/modules/Directory.ycp
-  - library/modules/Distro.ycp
-  - library/modules/FileUtils.ycp
-  - library/modules/DontShowAgain.ycp
-  - library/modules/Encoding.ycp
-  - library/modules/Event.ycp
-  - library/modules/Label.ycp
-  - library/modules/Linuxrc.ycp
-  - library/modules/MailAliases.ycp
-  - library/modules/Message.ycp
-  - library/modules/Misc.ycp
-  - library/modules/Mode.ycp
-  - library/modules/Summary.ycp
-  - library/modules/Report.ycp
-  - library/modules/Stage.ycp
-  - library/modules/SuSERelease.ycp
-  - library/modules/Syslog.ycp
-  - library/modules/UIHelper.ycp
-  - library/modules/ValueBrowser.ycp
-  - library/modules/XVersion.ycp
-  # Library/Modules Testsuite (in alphabetical order)
-  - library/modules/testsuite/tests/FileUtils.ycp
-  # Library/Runlevel Modules (in Makefile.am order)
-  - library/runlevel/src/Service.ycp
-  - library/runlevel/src/Systemd.ycp
-  # Library/Runlevel Testsuite (in alphabetical order)
-  - library/runlevel/testsuite/tests/GetSetServiceStatus.ycp
-  - library/runlevel/testsuite/tests/RunInitScript.ycp
-  - library/runlevel/testsuite/tests/Service.ycp
-  - library/runlevel/testsuite/tests/ServiceAdjust.ycp
-  - library/runlevel/testsuite/tests/ServiceFinetune.ycp
-  - library/runlevel/testsuite/tests/ServiceFullInfo.ycp
-  - library/runlevel/testsuite/tests/ServiceInfo.ycp
-  - library/runlevel/testsuite/tests/ServiceStatus.ycp
-  - library/runlevel/testsuite/tests/Systemd.ycp
-  # Library/Sequencer Modules (in Makefile.am order)
-  - library/sequencer/src/Sequencer.ycp
-  # Library/Sequencer Includes (in Makefile.am order)
-  - library/sequencer/src/sequencer.ycp
-  # Library/Sequencer Testsuite (in alphabetical order)
+
+work_modify:
+  mkdir:
+    - library/types/src/modules
+    - library/runlevel/src/modules
+    - library/sequencer/src/include
+    - library/sequencer/src/modules
+    - library/xml/src/modules
+    - library/commandline/src/modules
+    - library/desktop/src/modules
+    - library/desktop/src/clients
+    - library/wizard/src/modules
+    - library/control/src/modules
+    - library/cwm/src/modules
+    - library/log/src/modules
+    - library/system/src/modules
+    - library/packages/src/modules
+    - library/packages/src/include
+    - library/cron/src/modules
+    - library/network/src/modules
+    - library/gpg/src/modules
+  mv:
+    - source: "library/types/src/*.ycp"
+      target: library/types/src/modules
+    - source: "library/runlevel/src/*.ycp"
+      target: library/runlevel/src/modules
+    - source: "library/sequencer/src/Sequencer.ycp"
+      target: library/sequencer/src/modules
+    - source: "library/sequencer/src/sequencer.ycp"
+      target: library/sequencer/src/include
+    - source: "library/xml/src/*.ycp"
+      target: library/xml/src/modules
+    - source: "library/commandline/src/*.ycp"
+      target: library/commandline/src/modules
+    - source: "library/desktop/src/Desktop.ycp"
+      target: library/desktop/src/modules
+    - source: "library/desktop/src/menu.ycp"
+      target: library/desktop/src/clients
+    - source: "library/wizard/src/*.ycp"
+      target: library/wizard/src/modules
+    - source: "library/control/src/*.ycp"
+      target: library/control/src/modules
+    - source: "library/cwm/src/*.ycp"
+      target: library/cwm/src/modules
+    - source: "library/log/src/*.ycp"
+      target: library/log/src/modules
+    - source: "library/system/src/*.ycp"
+      target: library/system/src/modules
+    - source: "library/packages/src/common.ycp"
+      target: library/packages/src/include
+      # order is important as common is only include
+    - source: "library/packages/src/*.ycp"
+      target: library/packages/src/modules
+    - source: "library/cron/src/*.ycp"
+      target: library/cron/src/modules
+      # TODO there is strange source files in network, investigate!
+    - source: "library/network/src/[[:upper:]]*.ycp"
+      target: library/network/src/modules
+    - source: "library/gpg/src/*.ycp"
+      target: library/gpg/src/modules
+
+excluded:
+  # These use private private symbols from the Sequence module.
+  # TODO: Allow this.
   - library/sequencer/testsuite/tests/WS_alias.ycp
   - library/sequencer/testsuite/tests/WS_check.ycp
   - library/sequencer/testsuite/tests/WS_error.ycp
@@ -106,6 +90,7 @@ files:
   - library/sequencer/testsuite/tests/WS_run.ycp
   - library/sequencer/testsuite/tests/WS_special.ycp
   - library/sequencer/testsuite/tests/WS_testall.ycp
+  - library/sequencer/testsuite/tests/Wizard.yh
   - library/sequencer/testsuite/tests/Wizard0.ycp
   - library/sequencer/testsuite/tests/Wizard1.ycp
   - library/sequencer/testsuite/tests/Wizard2.ycp
@@ -114,192 +99,29 @@ files:
   - library/sequencer/testsuite/tests/Wizard5.ycp
   - library/sequencer/testsuite/tests/Wizard6.ycp
   - library/sequencer/testsuite/tests/Wizard7.ycp
-  # Library/Sequencer Documentation (in alphabetical order)
-  - library/sequencer/doc/examples/example1.ycp
-  - library/sequencer/doc/examples/example2.ycp
-  - library/sequencer/doc/examples/example3.ycp
-  - library/sequencer/doc/examples/example4.ycp
-  - library/sequencer/doc/examples/example5.ycp
-  - library/sequencer/doc/examples/examples.ycp
-  # Library/XML Modules (in Makefile.am order)
-  - library/xml/src/XML.ycp
-  # Library/CommandLine Modules (in Makefile.am order)
-  - library/commandline/src/CommandLine.ycp
-  # Library/CommandLine Testsuite (in alphabetical order)
-  - library/commandline/testsuite/tests/cmdmap1.ycp
-  - library/commandline/testsuite/tests/cmdmap2.ycp
-  - library/commandline/testsuite/tests/cmdmap3.ycp
-  - library/commandline/testsuite/tests/cmdmap4.ycp
-  - library/commandline/testsuite/tests/cmdmap5.ycp
+  # Uses private symbol from the CommandLine module.
+  # TODO: Allow this.
   - library/commandline/testsuite/tests/cmdmap6.ycp
-  - library/commandline/testsuite/tests/command1.ycp
-  - library/commandline/testsuite/tests/command2.ycp
-  - library/commandline/testsuite/tests/command3.ycp
-  - library/commandline/testsuite/tests/command4.ycp
-  - library/commandline/testsuite/tests/command5.ycp
-  - library/commandline/testsuite/tests/command6.ycp
-  - library/commandline/testsuite/tests/command7.ycp
-  - library/commandline/testsuite/tests/help.ycp
-  - library/commandline/testsuite/tests/help1.ycp
-  - library/commandline/testsuite/tests/interactive1.ycp
-  - library/commandline/testsuite/tests/interactive2.ycp
-  - library/commandline/testsuite/tests/interactive3.ycp
-  - library/commandline/testsuite/tests/interactive4.ycp
-  - library/commandline/testsuite/tests/interactive5.ycp
-  - library/commandline/testsuite/tests/longhelp.ycp
-  - library/commandline/testsuite/tests/startgui1.ycp
-  - library/commandline/testsuite/tests/startgui2.ycp
-  - library/commandline/testsuite/tests/testsuitedata.yh
+  # Uses private symbol from the Report module.
+  # TODO: Allow this.
   - library/commandline/testsuite/tests/unique1.ycp
-  # Library/Desktop Modules (in Makefile.am order)
-  - library/desktop/src/Desktop.ycp
-  # Library/Desktop Clients (in Makefile.am order)
-  - library/desktop/src/menu.ycp
-  # Library/Wizard Modules (in Makefile.am order)
-  - library/wizard/src/Confirm.ycp
-  - library/wizard/src/Wizard.ycp
-  - library/wizard/src/Progress.ycp
-  - library/wizard/src/HTML.ycp
-  # Library/Wizard Testsuite (in alphabetical order)
-  - library/wizard/testsuite/tests/wizard_dialog.ycp
-  # Library/Wizard Documentation (in alphabetical order)
-  - library/wizard/doc/examples/progress_client1.ycp
-  - library/wizard/doc/examples/progress_client2.ycp
-  - library/wizard/doc/examples/progress_master.ycp
-  - library/wizard/doc/examples/progress_master_hidden.ycp
-  - library/wizard/doc/examples/progress_master_partlyhidden.ycp
-  - library/wizard/doc/examples/wizard-icon.ycp
-  - library/wizard/doc/examples/wizard1.ycp
-  # Library/Control Modules (in alphabetical order)
-  - library/control/src/AutoinstData.ycp
-  - library/control/src/GetInstArgs.ycp
-  - library/control/src/Hooks.ycp
-  - library/control/src/InstError.ycp
-  - library/control/src/InstExtensionImage.ycp
-  - library/control/src/Installation.ycp
-  - library/control/src/ProductControl.ycp
-  - library/control/src/ProductFeatures.ycp
-  - library/control/src/WorkflowManager.ycp
-  # Library/Control Testsuite (in alphabetical order)
-  - library/control/testsuite/tests/PrepareProposals.ycp
-  - library/control/testsuite/tests/PrepareWorkflows.ycp
-  - library/control/testsuite/tests/WorkflowManager.ycp
-  - library/control/testsuite/tests/restore.ycp
-  # Library/CWM Modules (in Makefile.am order)
-  - library/cwm/src/CWM.ycp
-  - library/cwm/src/TablePopup.ycp
-  - library/cwm/src/DialogTree.ycp
-  - library/cwm/src/CWMTab.ycp
-  - library/cwm/src/CWMTable.ycp
-  - library/cwm/src/CWMServiceStart.ycp
-  - library/cwm/src/CWMTsigKeys.ycp
-  - library/cwm/src/WizardHW.ycp
-  # Library/CWM Testsuite (in alphabetical order)
-  - library/cwm/testsuite/tests/t1.ycp
-  - library/cwm/testsuite/tests/t2.ycp
-  - library/cwm/testsuite/tests/testfunc.yh
-  # Library/Log Modules (in Makefile.am order)
-  - library/log/src/ALog.ycp
-  - library/log/src/LogView.ycp
-  - library/log/src/LogViewCore.ycp
-  # Library/Log Examples (in alphabetical order)
-  - library/log/examples/logview1.ycp
-  - library/log/examples/logview2.ycp
-  - library/log/examples/logview4.ycp
-  - library/log/examples/logviewcore1.ycp
-  - library/log/examples/logviewcore2.ycp
-  - library/log/examples/logviewcore3.ycp
-  # Library/System Includes (in alphabetical order)
-  - library/system/src/classnames.ycp
-  # Library/System Modules (in alphabetical order except dependencies)
-  - library/system/src/FileChanges.ycp
-  - library/system/src/HWConfig.ycp
-  - library/system/src/ModuleLoading.ycp
-  - library/system/src/HwStatus.ycp
-  - library/system/src/Hotplug.ycp
-  - library/system/src/Initrd.ycp
-  - library/system/src/Kernel.ycp
-  - library/system/src/ModulesConf.ycp
-  # Library/System Clients (in alphabetical order)
-  - library/system/src/view_anymsg.ycp
-  # Library/System Testsuite (in alphabetical order)
-  - library/system/testsuite/tests/filechanges.ycp
-  - library/system/testsuite/tests/initrd.ycp
-  - library/system/testsuite/tests/kernel.ycp
-  # Library/Packages Modules (in alphabetical order except dependencies)
-  - library/packages/src/PackageAI.ycp
-  - library/packages/src/PackageCallbacks.ycp
-  - library/packages/src/PackageLock.ycp
-  - library/packages/src/PackagesUI.ycp
-  - library/packages/src/PackageSystem.ycp
-  - library/packages/src/Package.ycp
-  - library/packages/src/PackageCallbacksInit.ycp
-  - library/packages/src/PackageKit.ycp
-  - library/packages/src/PackagesProposal.ycp
-  - library/packages/src/Product.ycp
-  - library/packages/src/SignatureCheckCallbacks.ycp
-  - library/packages/src/SignatureCheckDialogs.ycp
-  - library/packages/src/SlideShow.ycp
-  - library/packages/src/Slides.ycp
-  # Library/Packages Testsuite (in alphabetical order)
-  - library/packages/testsuite/packages-test.ycp
-  # Library/Cron Modules (in alphabetical order)
-  - library/cron/src/Cron.ycp
-  # Library/Network Modules (in alphabetical order except dependencies)
-  - library/network/src/NetworkInterfaces.ycp
-  - library/network/src/SuSEFirewall.ycp
-  - library/network/src/SuSEFirewallProposal.ycp
-  - library/network/src/CWMFirewallInterfaces.ycp
-  - library/network/src/Internet.ycp
-  - library/network/src/NetworkConfig.ycp
-  - library/network/src/NetworkPopup.ycp
-  - library/network/src/NetworkService.ycp
-  - library/network/src/PortAliases.ycp
-  - library/network/src/PortRanges.ycp
-  - library/network/src/SuSEFirewallExpertRules.ycp
-  - library/network/src/SuSEFirewallServices.ycp
-  # Library/Network Additional Files (in alphabetical order)
-  - library/network/src/yast2-services-translations.ycp
-  # Library/Network Testsuite (in alphabetical order)
-  - library/network/testsuite/tests/NetworkInterfaces.ycp
-  - library/network/testsuite/tests/NetworkInterfaces2.ycp
-  - library/network/testsuite/tests/NetworkInterfaces3.ycp
-  - library/network/testsuite/tests/NetworkInterfaces4.ycp
-  - library/network/testsuite/tests/NetworkInterfaces5-Type.ycp
-  - library/network/testsuite/tests/PortAliases.ycp
-  - library/network/testsuite/tests/SuSEFirewall.ycp
-  - library/network/testsuite/tests/SuSEFirewallExpertRules.ycp
-  # Library/GPG Modules (in Makefile.am order)
-  - library/gpg/src/GPG.ycp
-  - library/gpg/src/GPGWidgets.ycp
-  # Library/GPG Documentation (in alphabetical order)
-  - library/gpg/doc/example.ycp
-  # Remote (in Makefile.am order)
-  - remote/password.ycp
-  - remote/remotechooser.ycp
-  - remote/remoteinstall.ycp
-  # Data (in Makefile.am order)
-  - data/country_long.ycp
-  - data/country.ycp
-  # Documentation (in alphabetical order)
-  - doc/examples/ask_create_backup_bad.ycp
-  - doc/examples/ask_create_backup_good.ycp
-  - doc/examples/ask_format_hard_disk_bad.ycp
-  - doc/examples/ask_resize_windows_partition.ycp
-  - doc/examples/ask_show_installation_log_bad.ycp
-  - doc/examples/popups1.ycp
-  - doc/examples/popups2.ycp
-  - doc/examples/popups3.ycp
-excluded:
-  # TODO: Uses undefined identifier, obviously from the files that include
-  # this. We need to decide what to do with included files in general.
-  - library/sequencer/testsuite/tests/Wizard.yh
   # Library/CommandLine Documentation (in alphabetical order)
   # TODO: Excluded because they depend on the not-yet-transated network
   # module.
   - library/commandline/doc/lan-simple.ycp
   - library/commandline/doc/lan-simpler.ycp
+  # Uses private symbol from the Report module.
+  # TODO: Allow this.
+  - library/cwm/testsuite/tests/t1.ycp
+  - library/cwm/testsuite/tests/t2.ycp
+  # Uses private symbol from the Kernel module.
+  # TODO: Allow this.
+  - library/system/testsuite/tests/kernel.ycp
   # Library/Packages Includes (in Makefile.am order)
   # TODO: Uses undefined identifier, obviously from the files that include
   # this. We need to decide what to do with included files in general.
   - library/packages/src/common.ycp
+  # Uses private symbol from the Network module.
+  # TODO: Allow this.
+  - library/network/testsuite/tests/NetworkInterfaces2.ycp
+  - library/network/testsuite/tests/NetworkInterfaces4.ycp

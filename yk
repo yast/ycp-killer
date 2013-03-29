@@ -3,6 +3,7 @@
 require "cheetah"
 require "thor"
 require "yaml"
+require "pathname"
 
 BASE_DIR = File.expand_path(File.dirname(__FILE__))
 
@@ -23,7 +24,11 @@ module Messages
     end
 
     def finish(status)
-      spaces = " " * (MAX_MESSAGE_WIDTH - @last_message_size)
+      spaces = if @last_message_size < MAX_MESSAGE_WIDTH
+          " " * (MAX_MESSAGE_WIDTH - @last_message_size)
+        else
+          ""
+        end
 
       puts spaces + status
     end
@@ -35,55 +40,104 @@ module Messages
 end
 
 class YastModule
-  attr_reader :name
+  attr_reader :name,
+    :original_dir,
+    :converted_dir,
+    :structured_dir,
+    :excluded,
+    :deps,
+    :exports
+
+  STRUCTURED_SOURCES_DIR = "work"
+  ORIGINAL_SOURCES_DIR = "source"
+  CONVERTED_SOURCES_DIR = "target"
+  NEW_DIR_STRUCT = {
+    :modules   => "src/modules",
+    :clients   => "src/clients",
+    :include   => "src/include",
+    :testsuite => "testsuite",
+  }
 
   def initialize(name, data, modules, config)
     @name    = name
     @data    = data
     @modules = modules
     @config  = config
+    @files = {}
+    @data["files"].each do |maps|
+      next unless maps.is_a? Hash
+      prefix = maps["prefix"] || "/"
+      ["modules","include","clients","testsuite"].each do |kind|
+        next unless maps[kind]
+        maps[kind].each do |p|
+          @files[File.join(prefix, p)] = { :kind => kind.to_sym, :path => p }
+        end
+      end
+    end if @data["files"].is_a? Array
+    
+    @original_dir = "#{@config["yast_dir"]}/#{ORIGINAL_SOURCES_DIR}/#@name"
+    @structured_dir = "#{@config["yast_dir"]}/#{STRUCTURED_SOURCES_DIR}/#@name"
+    @converted_dir ="#{@config["yast_dir"]}/#{CONVERTED_SOURCES_DIR}/#@name"
+    @deps = @data["deps"] || []
+    @exports = @data["exports"] || ["src"]
+    @excluded = @data["excluded"] || []
+  end
+
+  def convert
+    clean
+    clone
+    patch
+    compile
   end
 
   def clone
-    FileUtils.rm_rf(dir)
+    FileUtils.rm_rf(original_dir)
 
-    Cheetah.run "git", "clone", "git://github.com/yast/yast-#@name.git", dir
-  end
-
-  def check
-    expected_files = files + excluded
-    actual_files   = Dir.chdir(dir) { Dir["**/*.ycp"] + Dir["**/*.yh"] }
-
-    unexpected_files = actual_files   - expected_files
-    missing_files    = expected_files - actual_files
-
-    if !unexpected_files.empty?
-      raise "Unexpected files: #{unexpected_files.join(", ")}."
-    end
-    if !missing_files.empty?
-      raise "Missing files: #{missing_files.join(", ")}."
-    end
+    Cheetah.run "git", "clone", "git://github.com/yast/yast-#@name.git", original_dir
   end
 
   def patch
+    copy_exists!
     patch_file = "#{PATCHES_DIR}/#{@name}.patch"
     return unless File.exists?(patch_file)
 
-    Dir.chdir dir do
+    Dir.chdir structured_dir do
       Cheetah.run "git", "apply", patch_file
     end
   end
 
   def unpatch
+    copy_exists!
     patch_file = "#{PATCHES_DIR}/#{@name}.patch"
     return unless File.exists?(patch_file)
 
-    Dir.chdir dir do
+    Dir.chdir structured_dir do
       Cheetah.run "git", "apply", "--reverse", patch_file
     end
   end
 
+  def create_ybcs
+    #lazy init it as we need data from other modules
+    dep_module_paths = deps.map { |d| @modules[d].exported_module_paths }.flatten
+    dep_include_paths = deps.map { |d| @modules[d].exported_include_paths }.flatten
+
+    @module_paths  = [STUBS_DIR] + exported_module_paths + dep_module_paths
+    @include_paths = [STUBS_DIR] + exported_include_paths + dep_include_paths
+    #for compile we need compiled dependencies
+    deps.each{ |m| @modules[m].create_ybcs }
+    copy_exists!
+
+    Dir.glob("#{structured_dir}/**/modules/**/*.y{cp,h}", File::FNM_DOTMATCH).each do |file|
+      next if File.exists? file.sub(/\.y(cp|h)$/,".ybc")
+      Messages.info "Create ybc for #{file}"
+      Dir.chdir(File.dirname(file)) do
+        create_ybc file, @module_paths, @include_paths
+      end
+    end
+  end
+
   def compile
+    FileUtils.rm_rf(converted_dir)
     counts = {
       :ok          => 0,
       :excluded    => 0,
@@ -91,51 +145,60 @@ class YastModule
       :error_ruby  => 0,
       :error_other => 0
     }
+    create_ybcs
 
-    files.each do |file|
-      Messages.start "  * #{file}"
+    original_prefix = Pathname.new structured_dir
+    Dir.glob("#{structured_dir}/**/*", File::FNM_DOTMATCH).each do |file|
+      next if File.directory? file
+      next if file =~ /\.ybc$/
 
-      file = "#{dir}/#{file}"
+      relative_path = Pathname.new(file).relative_path_from(original_prefix).to_s
+      target_dir = File.join(converted_dir, File.dirname(relative_path))
+      FileUtils.mkdir_p target_dir
+      if file !~ /\.y(cp|h)$/
+        dest = File.join(target_dir, File.basename(file))
+        Messages.info "Copy #{file} to #{dest}"
+        FileUtils.copy_entry file, dest
+      else
+        #skip include files as it is often not complete ycp and is part of included files
+        next if excluded.include? relative_path
+        next if file =~ /\/include\/[^\/]+\.(ycp|yh)$/
+        Messages.start "  * #{file}"
+        target_file = File.join( target_dir,
+          File.basename(file.sub(/\.y(cp|h)$/, ".rb"))
+        )
+        Dir.chdir File.dirname(file) do
+          begin
+            create_rb file, target_file, @module_paths, @include_paths
+          rescue Cheetah::ExecutionFailed => e
+            Messages.finish "ERROR(y2r)"
+            log_error(file, e)
+            counts[:error_y2r] += 1
+            next
+          rescue Exception => e
+            Messages.finish "ERROR(other)"
+            log_error(file, e)
+            counts[:error_other] += 1
+            next
+          end
 
-      dep_exported_dirs = deps.map { |d| @modules[d].exported_dirs }.flatten
+          begin
+            check_rb target_file
+          rescue Cheetah::ExecutionFailed => e
+            Messages.finish "ERROR(ruby)"
+            log_error(file, e)
+            counts[:error_ruby] += 1
+            next
+          rescue Exception => e
+            Messages.finish "ERROR(other)"
+            log_error(file, e)
+            counts[:error_other] += 1
+            next
+          end
 
-      module_paths  = [STUBS_DIR] + exported_dirs + dep_exported_dirs + [File.dirname(file)]
-      include_paths = [STUBS_DIR] + exported_dirs + dep_exported_dirs + [File.dirname(file)]
-
-      Dir.chdir File.dirname(file) do
-        begin
-          # This makes private symbols in modules visible. Needed by some
-          # testsuites.
-          ENV["Y2ALLGLOBAL"] = "1"
-
-          create_ybc file, module_paths, include_paths
-          create_rb  file, module_paths, include_paths
-        rescue Cheetah::ExecutionFailed => e
-          Messages.finish "ERROR(y2r)"
-          log_error(file, e)
-          counts[:error_y2r] += 1
-          next
-        rescue Exception => e
-          Messages.finish "ERROR(other)"
-          counts[:error_other] += 1
-          next
+          Messages.finish "OK"
+          counts[:ok] += 1
         end
-
-        begin
-          check_rb file.sub(/\.(ycp|yh)$/, ".rb")
-        rescue Cheetah::ExecutionFailed => e
-          Messages.finish "ERROR(ruby)"
-          log_error(file, e)
-          counts[:error_ruby] += 1
-          next
-        rescue Exception => e
-          Messages.finish "ERROR(other)"
-          counts[:error_other] += 1
-          next
-        end
-
-        Messages.finish "OK"
-        counts[:ok] += 1
       end
     end
 
@@ -145,38 +208,56 @@ class YastModule
   end
 
   def clean
-    files.each do |file|
-      file = "#{dir}/#{file}"
-
-      FileUtils.rm_rf(file.sub(/\.ycp$/, ".ybc").sub(/\.yh$/, ".yh.ybc"))
-      FileUtils.rm_rf(file.sub(/\.(ycp|yh)$/, ".rb"))
-    end
+    FileUtils.rm_rf structured_dir
+    FileUtils.rm_rf converted_dir
   end
 
-  def exported_dirs
-    exports.map { |e| "#{dir}/#{e}" }
+  def exported_module_paths
+    exports.map { |f| File.join(structured_dir, f, "modules") }
+  end
+
+  def exported_include_paths
+    exports.map { |f| File.join(structured_dir, f, "include") }
+  end
+
+  def copy_exists!
+    clone unless File.exists? original_dir
+    return if File.exists? structured_dir
+
+    prefix = Pathname.new(original_dir)
+    Dir.glob("#{original_dir}/**/*", File::FNM_DOTMATCH).each do |f|
+      next if File.directory? f
+      relative_path = Pathname.new(f).relative_path_from(prefix).to_s
+      target_dir = if @files[relative_path]
+          File.join(structured_dir, 
+            NEW_DIR_STRUCT[@files[relative_path][:kind]],
+            File.dirname(@files[relative_path][:path])
+          )
+        else
+          File.join(structured_dir, File.dirname(relative_path))
+        end
+      FileUtils.mkdir_p target_dir
+      FileUtils.copy_entry f, File.join(target_dir, File.basename(f))
+    end
+    do_workdir_modify
   end
 
   private
+  def do_workdir_modify
+    config = @data["work_modify"]
+    return unless config
 
-  def dir
-    "#{@config["yast_dir"]}/#@name"
-  end
+    config["mkdir"].each do |dir|
+      puts "mkdir #{dir}"
+      FileUtils.mkdir_p File.join(structured_dir, dir)
+    end if config["mkdir"]
 
-  def deps
-    @data["deps"] || []
-  end
-
-  def exports
-    @data["exports"] || ["src"]
-  end
-
-  def files
-    @data["files"] || []
-  end
-
-  def excluded
-    @data["excluded"] || []
+    config["mv"].each do |mv|
+      Dir.glob("#{structured_dir}/#{mv["source"]}", File::FNM_DOTMATCH) do |f|
+        puts "mv #{f} to #{mv["target"]}"
+        FileUtils.mv f, File.join(structured_dir, mv["target"])
+      end
+    end if config["mv"]
   end
 
   def create_ybc(file, module_paths, include_paths)
@@ -192,7 +273,7 @@ class YastModule
     Cheetah.run cmd
   end
 
-  def create_rb(file, module_paths, include_paths)
+  def create_rb(file, target_file, module_paths, include_paths)
     cmd = [@config["y2r"]]
     cmd << "--ycpc" << @config["ycpc"]
     module_paths.each do |module_path|
@@ -202,6 +283,7 @@ class YastModule
       cmd << "--include-path" << include_path
     end
     cmd << file
+    cmd << target_file
 
     Cheetah.run cmd
   end
@@ -215,7 +297,12 @@ class YastModule
       f.puts file
       f.puts "-" * file.size
       f.puts
-      f.puts e.stderr
+      if e.is_a? Cheetah::ExecutionFailed
+        f.puts e.stderr
+      else
+        f.puts e.message
+        e.backtrace.each {|l| f.puts l }
+      end
       f.puts
     end
   end
@@ -238,11 +325,19 @@ class CLI < Thor
     end
   end
 
-  desc "check <module>...", "Check file lists for module(s)"
-  def check(*module_names)
+  desc "convert <module>...", "Convert module(s) to target dir"
+  def convert(*module_names)
     modules = modules_from_names(module_names)
     with_modules modules, "Checking files in", true do |mod|
-      mod.check
+      mod.convert
+    end
+  end
+
+  desc "create_workdir <module>...", "Check file lists for module(s)"
+  def create_workdir(*module_names)
+    modules = modules_from_names(module_names)
+    with_modules modules, "Copying files in", true do |mod|
+      mod.copy_exists!
     end
   end
 
@@ -374,9 +469,10 @@ end
 begin
   CLI.start(ARGV)
 rescue Cheetah::ExecutionFailed => e
-  puts
+  puts "Command Failed"
   puts e.stderr
 rescue Exception => e
   puts
   puts e.message
+  puts e.backtrace.inspect
 end
