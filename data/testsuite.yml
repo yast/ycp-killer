@@ -1,15 +1,13 @@
 files:
-  # Modules (in Makefile.am order)
-  - src/Testsuite.ycp
-  - src/Pkg.ycp
+  - prefix: src
+    # Modules (in Makefile.am order)
+    modules:
+    - Testsuite.ycp
+    - Pkg.ycp
   # Includes (in Makefile.am order)
-  - src/testsuite.ycp
+    include:
+    - testsuite.ycp
+  - prefix: testsuite
   # Testsuite (in alphabetical order)
-  - testsuite/test.ycp
-# TODO: Unused. Kill these files in upstream.
-excluded:
-  - devel/src/bench.ycp
-  - devel/src/debug.ycp
-  - devel/src/devel.ycp
-  - devel/testsuite/tests/bench.ycp
-  - devel/testsuite/tests/debug.ycp
+    testsuite:
+    - test.ycp

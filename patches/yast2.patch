@@ -1,7 +1,7 @@
-diff --git a/library/commandline/src/CommandLine.ycp b/library/commandline/src/CommandLine.ycp
+diff --git a/library/commandline/src/modules/CommandLine.ycp b/library/commandline/src/CommandLine.ycp
 index e69a0f4..8ba5163 100644
---- a/library/commandline/src/CommandLine.ycp
-+++ b/library/commandline/src/CommandLine.ycp
+--- a/library/commandline/src/modules/CommandLine.ycp
++++ b/library/commandline/src/modules/CommandLine.ycp
 @@ -220,6 +220,56 @@ you may find current contact information at www.novell.com
      }
  
@@ -150,10 +150,10 @@ index 0000000..945c9b4
 @@ -0,0 +1 @@
 +.
 \ No newline at end of file
-diff --git a/library/desktop/src/Desktop.ycp b/library/desktop/src/Desktop.ycp
+diff --git a/library/desktop/src/modules/Desktop.ycp b/library/desktop/src/Desktop.ycp
 index 3ced0f7..f57f665 100644
---- a/library/desktop/src/Desktop.ycp
-+++ b/library/desktop/src/Desktop.ycp
+--- a/library/desktop/src/modules/Desktop.ycp
++++ b/library/desktop/src/modules/Desktop.ycp
 @@ -123,20 +123,19 @@ void ReadLanguage() {
      y2debug("Language=%1", Language);
  }
