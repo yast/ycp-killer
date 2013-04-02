@@ -40,23 +40,31 @@ end
 
 class YastModule
   attr_reader :name,
-    :dir,
+    :original_dir,
+    :work_dir,
+    :final_dir,
     :deps,
     :exports,
     :files,
     :excluded
 
+  WORK_SOURCES_DIR     = "work"
+  ORIGINAL_SOURCES_DIR = "original"
+  FINAL_SOURCES_DIR    = "final"
+
 
   def initialize(name, data, modules, config)
-    @name     = name
-    @data     = data
-    @modules  = modules
-    @config   = config
-    @dir      = "#{@config["yast_dir"]}/#@name"
-    @deps     = @data["deps"] || []
-    @exports  = @data["exports"] || ["src"]
-    @files    = @data["files"] || []
-    @excluded = @data["excluded"] || []
+    @name         = name
+    @data         = data
+    @modules      = modules
+    @config       = config
+    @original_dir = "#{@config["yast_dir"]}/#{ORIGINAL_SOURCES_DIR}/#@name"
+    @work_dir     = "#{@config["yast_dir"]}/#{WORK_SOURCES_DIR}/#@name"
+    @final_dir    = "#{@config["yast_dir"]}/#{FINAL_SOURCES_DIR}/#@name"
+    @deps         = @data["deps"] || []
+    @exports      = @data["exports"] || ["src"]
+    @files        = @data["files"] || []
+    @excluded     = @data["excluded"] || []
   end
 
   def convert
@@ -67,14 +75,16 @@ class YastModule
   end
 
   def clone
-    FileUtils.rm_rf(dir)
+    FileUtils.rm_rf(original_dir)
 
-    Cheetah.run "git", "clone", "git://github.com/yast/yast-#@name.git", dir
+    Cheetah.run "git", "clone", "git://github.com/yast/yast-#@name.git", original_dir
   end
 
   def check
+    ensure_work_dir_exists
+
     expected_files = files + excluded
-    actual_files   = Dir.chdir(dir) { Dir["**/*.ycp"] + Dir["**/*.yh"] }
+    actual_files   = Dir.chdir(work_dir) { Dir["**/*.ycp"] + Dir["**/*.yh"] }
 
     unexpected_files = actual_files   - expected_files
     missing_files    = expected_files - actual_files
@@ -88,19 +98,23 @@ class YastModule
   end
 
   def patch
+    ensure_work_dir_exists
+
     patch_file = "#{PATCHES_DIR}/#{@name}.patch"
     return unless File.exists?(patch_file)
 
-    Dir.chdir dir do
+    Dir.chdir work_dir do
       Cheetah.run "git", "apply", patch_file
     end
   end
 
   def unpatch
+    ensure_work_dir_exists
+
     patch_file = "#{PATCHES_DIR}/#{@name}.patch"
     return unless File.exists?(patch_file)
 
-    Dir.chdir dir do
+    Dir.chdir work_dir do
       Cheetah.run "git", "apply", "--reverse", patch_file
     end
   end
@@ -114,38 +128,44 @@ class YastModule
       :error_other => 0
     }
 
+    FileUtils.mkdir_p File.dirname(final_dir)
+    FileUtils.copy_entry work_dir, final_dir
+
     files.each do |file|
       Messages.start "  * #{file}"
 
-      file = "#{dir}/#{file}"
+      work_file = "#{work_dir}/#{file}"
+      final_file_ycp = "#{final_dir}/#{file}"
+      final_file = final_file_ycp.sub(/\.y(cp|h)$/,".rb")
 
       dep_exported_dirs = deps.map { |d| @modules[d].exported_dirs }.flatten
 
       module_paths  = [STUBS_DIR] + exported_dirs + dep_exported_dirs + [File.dirname(file)]
       include_paths = [STUBS_DIR] + exported_dirs + dep_exported_dirs + [File.dirname(file)]
 
-      Dir.chdir File.dirname(file) do
+      Dir.chdir File.dirname(work_file) do
         begin
           # This makes private symbols in modules visible. Needed by some
           # testsuites.
           ENV["Y2ALLGLOBAL"] = "1"
 
-          create_ybc file, module_paths, include_paths
-          create_rb  file, module_paths, include_paths
+          create_ybc work_file, module_paths, include_paths
+          create_rb  work_file, final_file, module_paths, include_paths
+          FileUtils.rm final_file_ycp #replaced by rb file
         rescue Cheetah::ExecutionFailed => e
           Messages.finish "ERROR(y2r)"
-          log_error(file, e)
+          log_error(work_file, e)
           counts[:error_y2r] += 1
           next
         rescue Exception => e
           Messages.finish "ERROR(other)"
-          log_error(file, e)
+          log_error(work_file, e)
           counts[:error_other] += 1
           next
         end
 
         begin
-          check_rb file.sub(/\.(ycp|yh)$/, ".rb")
+          check_rb final_file
         rescue Cheetah::ExecutionFailed => e
           Messages.finish "ERROR(ruby)"
           log_error(file, e)
@@ -169,19 +189,27 @@ class YastModule
   end
 
   def clean
-    files.each do |file|
-      file = "#{dir}/#{file}"
-
-      FileUtils.rm_rf(file.sub(/\.ycp$/, ".ybc").sub(/\.yh$/, ".yh.ybc"))
-      FileUtils.rm_rf(file.sub(/\.y(cp|h)$/, ".rb"))
-    end
+    FileUtils.rm_rf work_dir
+    FileUtils.rm_rf final_dir
   end
 
   def exported_dirs
-    exports.map { |e| "#{dir}/#{e}" }
+    ensure_work_dir_exists
+
+    exports.map { |e| "#{work_dir}/#{e}" }
   end
 
   private
+
+  def ensure_work_dir_exists
+    raise "Module #{name} is not cloned" unless File.exists? original_dir
+    return if File.exists? work_dir
+
+    # ensure that workdir exists
+    FileUtils.mkdir_p File.dirname(work_dir)
+    FileUtils.copy_entry original_dir, work_dir
+  end
+
   def create_ybc(file, module_paths, include_paths)
     cmd = [@config["ycpc"]]
     module_paths.each do |module_path|
@@ -195,7 +223,7 @@ class YastModule
     Cheetah.run cmd
   end
 
-  def create_rb(file, module_paths, include_paths)
+  def create_rb(file, target_file, module_paths, include_paths)
     cmd = [@config["y2r"]]
     cmd << "--ycpc" << @config["ycpc"]
     module_paths.each do |module_path|
@@ -205,6 +233,7 @@ class YastModule
       cmd << "--include-path" << include_path
     end
     cmd << file
+    cmd << target_file
 
     Cheetah.run cmd
   end
