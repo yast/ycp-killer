@@ -94,13 +94,10 @@ command to all YaST modules.
 ```
 $ ./yk help
 Tasks:
-  yk check <module>...    # Check file lists for module(s)
-  yk clean <module>...    # Clean up compilation results for module(s)
   yk clone <module>...    # Clone module(s)
   yk compile <module>...  # Compile module(s)
   yk help [TASK]          # Describe available tasks or one specific task
   yk patch <module>...    # Patch module(s)
-  yk unpatch <module>...  # Unpatch module(s)`
 ```
 
 ### Commands
@@ -115,17 +112,6 @@ $ ./yk clone testsuite
 [1/1] Cloning testsuite...                                            OK
 ```
 
-#### yk check
-
-Checks that file lists of specified modules in their descriptions in the `data`
-directory match the list of `*.{ycp,yh}` files in their checkouts. This is
-mainly useful to ensure that module descriptions are up to date.
-
-```
-$ ./yk check testsuite
-[1/1] Checking files in testsuite...                                  OK
-```
-
 #### yk patch
 
 Applies patches for specified modules from the `patches` directory to their
@@ -134,17 +120,6 @@ checkouts. If a module doesn't have a patch, this command does not do anything.
 ```
 $ ./yk patch testsuite
 [1/1] Patching testsuite...                                           OK
-```
-
-#### yk unpatch
-
-Reverts applied patches for specified modules in their checkouts. The patches
-are stored in the `patches` directory. If a module doesn't have a patch, this
-command does not do anything.
-
-```
-$ ./yk unpatch testsuite
-[1/1] Unpatching testsuite...                                         OK
 ```
 
 #### yk compile
@@ -192,11 +167,3 @@ Total ERROR(ruby):  0
 Total ERROR(other): 0
 ```
 
-#### yk clean
-
-Cleans up results of compilation of specified modules.
-
-```
-$ ./yk clean testsuite
-[1/1] Cleaning up testsuite...                                        OK
-```
