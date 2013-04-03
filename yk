@@ -86,6 +86,22 @@ class YastModule
     end
   end
 
+  def genpatch
+    patch_file = "#{PATCHES_DIR}/#{@name}.patch"
+
+    FileUtils.rm_rf patch_file
+
+    Dir.chdir work_dir do
+      output = Cheetah.run "git", "diff", :stdout => :capture
+      # git fails to apply empty file, so don't create it
+      return if output.empty?
+
+      File.open(patch_file, "w") do |f|
+        f.write output
+      end
+    end
+  end
+
   def compile
     clean_previous_compilation
     prepare_result_dir
@@ -244,6 +260,13 @@ class CLI < Thor
     end
   end
 
+  desc "genpatch <module>...", "Store changes from work directory of module(s) into a patch"
+  def genpatch(*module_names)
+    modules = modules_from_names(module_names)
+    with_modules modules, "Generating patch", true do |mod|
+      mod.genpatch
+    end
+  end
 
   desc "patch <module>...", "Patch module(s)"
   def patch(*module_names)
