@@ -81,15 +81,6 @@ class YastModule
     end
   end
 
-  def unpatch
-    patch_file = "#{PATCHES_DIR}/#{@name}.patch"
-    return unless File.exists?(patch_file)
-
-    Dir.chdir dir do
-      Cheetah.run "git", "apply", "--reverse", patch_file
-    end
-  end
-
   def compile
     counts = {
       :ok          => 0,
@@ -244,14 +235,6 @@ class CLI < Thor
     modules = modules_from_names(module_names)
     with_modules modules, "Patching", true do |mod|
       mod.patch
-    end
-  end
-
-  desc "unpatch <module>...", "Unpatch module(s)"
-  def unpatch(*module_names)
-    modules = modules_from_names(module_names)
-    with_modules modules, "Unpatching", true do |mod|
-      mod.unpatch
     end
   end
 
