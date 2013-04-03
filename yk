@@ -72,21 +72,6 @@ class YastModule
     Cheetah.run "git", "clone", "git://github.com/yast/yast-#@name.git", dir
   end
 
-  def check
-    expected_files = files + excluded
-    actual_files   = Dir.chdir(dir) { Dir["**/*.ycp"] + Dir["**/*.yh"] }
-
-    unexpected_files = actual_files   - expected_files
-    missing_files    = expected_files - actual_files
-
-    if !unexpected_files.empty?
-      raise "Unexpected files: #{unexpected_files.join(", ")}."
-    end
-    if !missing_files.empty?
-      raise "Missing files: #{missing_files.join(", ")}."
-    end
-  end
-
   def patch
     patch_file = "#{PATCHES_DIR}/#{@name}.patch"
     return unless File.exists?(patch_file)
@@ -243,14 +228,6 @@ class CLI < Thor
     modules = modules_from_names(module_names)
     with_modules modules, "Cloning", true do |mod|
       mod.clone
-    end
-  end
-
-  desc "check <module>...", "Check file lists for module(s)"
-  def check(*module_names)
-    modules = modules_from_names(module_names)
-    with_modules modules, "Checking files in", true do |mod|
-      mod.check
     end
   end
 
