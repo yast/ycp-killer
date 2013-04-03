@@ -60,7 +60,6 @@ class YastModule
   end
 
   def convert
-    clean
     clone
     patch
     compile
@@ -72,36 +71,12 @@ class YastModule
     Cheetah.run "git", "clone", "git://github.com/yast/yast-#@name.git", dir
   end
 
-  def check
-    expected_files = files + excluded
-    actual_files   = Dir.chdir(dir) { Dir["**/*.ycp"] + Dir["**/*.yh"] }
-
-    unexpected_files = actual_files   - expected_files
-    missing_files    = expected_files - actual_files
-
-    if !unexpected_files.empty?
-      raise "Unexpected files: #{unexpected_files.join(", ")}."
-    end
-    if !missing_files.empty?
-      raise "Missing files: #{missing_files.join(", ")}."
-    end
-  end
-
   def patch
     patch_file = "#{PATCHES_DIR}/#{@name}.patch"
     return unless File.exists?(patch_file)
 
     Dir.chdir dir do
       Cheetah.run "git", "apply", patch_file
-    end
-  end
-
-  def unpatch
-    patch_file = "#{PATCHES_DIR}/#{@name}.patch"
-    return unless File.exists?(patch_file)
-
-    Dir.chdir dir do
-      Cheetah.run "git", "apply", "--reverse", patch_file
     end
   end
 
@@ -166,15 +141,6 @@ class YastModule
     counts[:excluded] += excluded.size
 
     counts
-  end
-
-  def clean
-    files.each do |file|
-      file = "#{dir}/#{file}"
-
-      FileUtils.rm_rf(file.sub(/\.ycp$/, ".ybc").sub(/\.yh$/, ".yh.ybc"))
-      FileUtils.rm_rf(file.sub(/\.y(cp|h)$/, ".rb"))
-    end
   end
 
   def exported_dirs
@@ -246,14 +212,6 @@ class CLI < Thor
     end
   end
 
-  desc "check <module>...", "Check file lists for module(s)"
-  def check(*module_names)
-    modules = modules_from_names(module_names)
-    with_modules modules, "Checking files in", true do |mod|
-      mod.check
-    end
-  end
-
   desc "convert <module>...", "Convert module(s)"
   def convert(*module_names)
     report_results(module_names) do |mod|
@@ -270,30 +228,10 @@ class CLI < Thor
     end
   end
 
-  desc "unpatch <module>...", "Unpatch module(s)"
-  def unpatch(*module_names)
-    modules = modules_from_names(module_names)
-    with_modules modules, "Unpatching", true do |mod|
-      mod.unpatch
-    end
-  end
-
   desc "compile <module>...", "Compile module(s)"
   def compile(*module_names)
     report_results(module_names) do |mod|
       mod.compile
-    end
-  end
-
-  desc "clean <module>...", "Clean up compilation results for module(s)"
-  def clean(*module_names)
-    clean_stubs
-
-    FileUtils.rm_rf(ERROR_FILE)
-
-    modules = modules_from_names(module_names)
-    with_modules modules, "Cleaning up", true do |mod|
-      mod.clean
     end
   end
 
@@ -332,12 +270,6 @@ class CLI < Thor
   def compile_stubs
     Dir["#{STUBS_DIR}/*.ycp"].each do |file|
       Cheetah.run @config["ycpc"], "-c", file
-    end
-  end
-
-  def clean_stubs
-    Dir["#{STUBS_DIR}/*.ybc"].each do |file|
-      FileUtils.rm(file)
     end
   end
 
