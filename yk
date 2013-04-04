@@ -222,7 +222,7 @@ class YastModule
   end
 
   def create_ybc(file, module_paths, include_paths)
-    cmd = [@config["ycpc"]]
+    cmd = [@config["ycpc"], "--no-std-includes", "--no-std-modules"]
     module_paths.each do |module_path|
       cmd << "--module-path" << module_path
     end
