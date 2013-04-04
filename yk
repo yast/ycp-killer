@@ -286,9 +286,11 @@ class YastModule
     module_paths.each do |module_path|
       cmd << "--module-path" << module_path
     end
+    cmd << "--module-path" << File.dirname(file)
     include_paths.each do |include_path|
       cmd << "--include-path" << include_path
     end
+    cmd << "--include-path" << File.dirname(file)
     cmd << file
     cmd << output_file
 
