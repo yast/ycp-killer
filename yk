@@ -109,72 +109,26 @@ class YastModule
 
     counts = {
       :ok          => 0,
-      :excluded    => 0,
+      :excluded    => excluded.size,
       :error_y2r   => 0,
       :error_ruby  => 0,
       :error_other => 0
     }
 
     Dir.chdir work_dir do
-      Dir["**/*.y{cp,h}"].each do |file|
-        next if excluded.include?(file)
-        Messages.start "  * #{file}"
-
-        work_file = "#{work_dir}/#{file}"
-        FileUtils.rm "#{result_dir}/#{file}"
-        result_file = "#{result_dir}/#{file}".sub(/\.y(cp|h)$/, ".rb")
-
-        dep_exported_dirs = deps.map { |d| @modules[d].exported_dirs }.flatten
-
-        module_paths  = [STUBS_DIR] + exported_dirs + dep_exported_dirs + [File.dirname(work_file)]
-        include_paths = [STUBS_DIR] + exported_dirs + dep_exported_dirs + [File.dirname(work_file)]
-
-        Dir.chdir File.dirname(work_file) do
-          begin
-            # This makes private symbols in modules visible. Needed by some
-            # testsuites.
-            ENV["Y2ALLGLOBAL"] = "1"
-
-            create_ybc work_file, module_paths, include_paths
-            create_rb  work_file, result_file, module_paths, include_paths
-          rescue Cheetah::ExecutionFailed => e
-            Messages.finish "ERROR(y2r)"
-            log_error(work_file, e)
-            counts[:error_y2r] += 1
-            next
-          rescue Exception => e
-            Messages.finish "ERROR(other)"
-            log_error(work_file, e)
-            counts[:error_other] += 1
-            next
-          end
-
-          begin
-            check_rb result_file
-          rescue Cheetah::ExecutionFailed => e
-            Messages.finish "ERROR(ruby)"
-            log_error(work_file, e)
-            counts[:error_ruby] += 1
-            next
-          rescue Exception => e
-            Messages.finish "ERROR(other)"
-            log_error(work_file, e)
-            counts[:error_other] += 1
-            next
-          end
-
-          Messages.finish "OK"
-          counts[:ok] += 1
-        end
-      end
+      failed = compile_modules counts
+      convert_ycp counts, failed
     end
-    counts[:excluded] += excluded.size
 
     counts
   end
 
-  def exported_dirs
-    exports.map { |e| "#{work_dir}/#{e}" }
+  def exported_module_paths
+    exports.map { |e| "#{work_dir}/#{e}/modules" }
+  end
+
+  def exported_include_paths
+    exports.map { |e| "#{work_dir}/#{e}/include" }
   end
 
   def reset
@@ -209,6 +163,94 @@ class YastModule
 
   private
 
+  def module_paths
+    # We must lazy load it as all dependencies must be already initialized.
+    if @module_paths.nil? 
+      @module_paths = [STUBS_DIR] + exported_include_paths
+      deps.reduce(@module_paths) do |paths,dependency| 
+        paths.concat dependency.exported_include_paths
+      end
+    end
+    @module_paths
+  end
+
+  def include_paths
+    # We must lazy load it as all dependencies must be already initialized.
+    if @include_paths.nil? 
+      @include_paths = [STUBS_DIR] + exported_include_paths
+      deps.reduce(@include_paths) do |paths,dependency| 
+        paths.concat dependency.exported_include_paths
+      end
+    end
+    @include_paths
+  end
+
+  def compile_modules counts
+    failed = []
+    exports.each do |exported_dir|
+      Dir["#{exported_dir}/modules/**/*.ycp"].each do |work_file|
+        begin
+          create_ybc work_file
+        rescue Exception => e
+          Messages.start " * #{work_file}"
+          Messages.finish "ERROR(other)"
+          log_error(work_file, e)
+          counts[:error_other] += 1
+          failed << work_file
+        end
+      end
+    end
+    failed
+  end
+
+  def convert_ycp counts, failed
+    Dir["**/*.y{cp,h}"].each do |file|
+      next if excluded.include?(file)
+      next if failed.include?(file)
+
+      Messages.start "  * #{file}"
+
+      work_file = "#{work_dir}/#{file}"
+      FileUtils.rm "#{result_dir}/#{file}"
+      result_file = "#{result_dir}/#{file}".sub(/\.y(cp|h)$/, ".rb")
+
+      begin
+        # This makes private symbols in modules visible. Needed by some
+        # testsuites.
+        ENV["Y2ALLGLOBAL"] = "1"
+
+        create_rb  work_file, result_file
+      rescue Cheetah::ExecutionFailed => e
+        Messages.finish "ERROR(y2r)"
+        log_error(work_file, e)
+        counts[:error_y2r] += 1
+        next
+      rescue Exception => e
+        Messages.finish "ERROR(other)"
+        log_error(work_file, e)
+        counts[:error_other] += 1
+        next
+      end
+
+      begin
+        check_rb result_file
+      rescue Cheetah::ExecutionFailed => e
+        Messages.finish "ERROR(ruby)"
+        log_error(work_file, e)
+        counts[:error_ruby] += 1
+        next
+      rescue Exception => e
+        Messages.finish "ERROR(other)"
+        log_error(work_file, e)
+        counts[:error_other] += 1
+        next
+      end
+
+      Messages.finish "OK"
+      counts[:ok] += 1
+    end
+  end
+
   def clean_previous_compilation
     FileUtils.rm_rf result_dir
     Dir["#{work_dir}/**/*.ybc"].each do |file|
@@ -221,7 +263,7 @@ class YastModule
     FileUtils.copy_entry(work_dir, result_dir)
   end
 
-  def create_ybc(file, module_paths, include_paths)
+  def create_ybc(file)
     cmd = [@config["ycpc"], "--no-std-includes", "--no-std-modules"]
     module_paths.each do |module_path|
       cmd << "--module-path" << module_path
@@ -234,7 +276,7 @@ class YastModule
     Cheetah.run cmd
   end
 
-  def create_rb(file, output_file, module_paths, include_paths)
+  def create_rb(file, output_file)
     cmd = [@config["y2r"]]
     cmd << "--ycpc" << @config["ycpc"]
     module_paths.each do |module_path|
