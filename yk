@@ -9,6 +9,7 @@ BASE_DIR = File.expand_path(File.dirname(__FILE__))
 DATA_DIR    = "#{BASE_DIR}/data"
 STUBS_DIR   = "#{BASE_DIR}/stubs"
 PATCHES_DIR = "#{BASE_DIR}/patches"
+COMPILE_ORDER_TOOL = "#{BASE_DIR}/module_compile_order"
 
 ERROR_FILE = "#{BASE_DIR}/error.log"
 
@@ -189,18 +190,17 @@ class YastModule
 
   def compile_modules counts
     failed_files = []
+    order = Cheetah.run COMPILE_ORDER_TOOL, *exports, :stdout => :capture
 
-    exports.each do |exported_dir|
-      Dir["#{exported_dir}/modules/**/*.ycp"].each do |file|
-        begin
-          create_ybc file
-        rescue Exception => e
-          Messages.start " * #{file}"
-          Messages.finish "ERROR(other)"
-          log_error(file, e)
-          counts[:error_other] += 1
-          failed_files << file
-        end
+    order.split.each do |file|
+      begin
+        create_ybc file
+      rescue Exception => e
+        Messages.start " * #{file}"
+        Messages.finish "ERROR(other)"
+        log_error(file, e)
+        counts[:error_other] += 1
+        failed_files << file
       end
     end
 

@@ -1,0 +1,74 @@
+#!/usr/bin/env ruby
+
+# based on ycpmakedep script
+
+target_dirs = ARGV
+
+modules = {}
+includes = {}
+
+target_dirs.each do |dir|
+  Dir["#{dir}/modules/**/*.ycp"].each do |file|
+    relative_path = file.sub(/#{Regexp.escape(dir)}\/modules\//,"")
+    module_name = relative_path.sub(/\.ycp$/,"")
+
+    modules[module_name] = { :full_path => file }
+  end
+
+  Dir["#{dir}/include/**/*.ycp"].each do |file|
+    relative_path = file.sub(/#{Regexp.escape(dir)}\/include\//,"")
+    include_name = relative_path.sub(/\.ycp$/,"")
+
+    includes[include_name] = { :full_path => file }
+  end
+end
+
+def get_modules_from_lines lines
+  import_lines = lines.grep(/^\s*import[\s"\(]/)
+  import_lines.map do |line|
+    line.chomp!
+    line.sub!(/^\s*import[^"]*"([^"]+)".*$/,'\\1')
+    line.sub!(/\.ycp$/,"")
+    line
+  end
+end
+
+def imported_modules_in_include(includes, name)
+  # not our import, so it probably not import our module
+  return [] unless includes[name]
+
+  includes[name][:deps] ||= get_modules_from_lines(File.readlines(includes[name][:full_path]))
+end
+
+
+# find all modules deps
+modules.each do |name,opts|
+  lines = File.readlines opts[:full_path]
+  deps = get_modules_from_lines lines
+  include_lines = lines.grep(/^\s*include[\s"\(]/)
+  include_lines.each do |line|
+    line.chomp!
+    line.sub!(/^\s*include[^"]*"([^"]+)".*$/,'\\1')
+    line.sub!(/\.ycp$/,"")
+    deps.concat imported_modules_in_include(includes, line)
+  end
+  deps = deps.select { |m| modules[m] }
+  opts[:deps] = deps
+end
+
+printed = []
+todo = modules.keys
+
+def find_module_to_print(modules, todo, printed)
+  todo.find do |name|
+    modules[name][:deps].all? {|dep| printed.include? (dep)}
+  end
+end
+
+1.upto(todo.size) do
+  mod = find_module_to_print(modules, todo, printed)
+  raise "unresolved dependencies: #{todo.inspect}" unless mod
+  puts modules[mod][:full_path]
+  printed << mod
+  todo.delete mod
+end
