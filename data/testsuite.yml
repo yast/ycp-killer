@@ -1,8 +1,5 @@
-files:
-  # Modules (in Makefile.am order)
-  - src/Testsuite.ycp
-  - src/Pkg.ycp
-  # Includes (in Makefile.am order)
-  - src/testsuite.ycp
-  # Testsuite (in alphabetical order)
-  - testsuite/test.ycp
+moves:
+  - from: "src/[A-Z]*.ycp"
+    to: "src/modules/"
+  - from: "src/testsuite.ycp"
+    to: "src/include/"
