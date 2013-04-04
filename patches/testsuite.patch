@@ -1,0 +1,13 @@
+diff --git a/testsuite/test.ycp b/testsuite/test.ycp
+index 5596f82..f86f329 100644
+--- a/testsuite/test.ycp
++++ b/testsuite/test.ycp
+@@ -16,7 +16,7 @@
+ 
+ {
+ 
+-include "./../src/testsuite.ycp";
++include "testsuite.ycp";
+ 
+ map READ = $[ "read" : $[ "path" : "read_result" ] ];
+ map WRITE = $[ "write" : $[ "path" : true ] ];
