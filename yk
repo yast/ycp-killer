@@ -108,6 +108,7 @@ class YastModule
   def builddeps
     deps.each do |dependency|
       mod = @modules[dependency]
+      next if mod.compiled_modules?
       mod.clone
       Dir.chdir mod.work_dir do
         mod.restructure
@@ -174,6 +175,11 @@ class YastModule
         end
       end
     end
+  end
+
+  def compiled_modules?
+    #simple test that anything is compiled
+    !Dir["#{work_dir}/**/*.ybc"].empty?
   end
 
   def compile_modules
