@@ -174,6 +174,21 @@ class YastModule
     exports.map { |e| "#{work_dir}/#{e}" }
   end
 
+  def reset
+    Dir.chdir work_dir do
+      Cheetah.run "git", "reset", "--hard", "HEAD"
+
+      output = Cheetah.run "git", "status", "--short", :stdout => :capture
+      output.split("\n").each do |line|
+        if line =~ /^\?\?\s+(.*)$/
+          FileUtils.rm_rf $1
+        else
+          raise "Unknown git file status: #{line}"
+        end
+      end
+    end
+  end
+
   private
 
   def clean_previous_compilation
@@ -273,6 +288,14 @@ class CLI < Thor
     modules = modules_from_names(module_names)
     with_modules modules, "Patching", true do |mod|
       mod.patch
+    end
+  end
+
+  desc "reset <module>...", "Revert module(s) work directory to clean state"
+  def reset(*module_names)
+    modules = modules_from_names(module_names)
+    with_modules modules, "Resetting", true do |mod|
+      mod.reset
     end
   end
 
