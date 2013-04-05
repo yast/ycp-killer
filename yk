@@ -69,6 +69,7 @@ class YastModule
     clone
     restructure
     patch
+    builddeps
     compile
   end
 
@@ -103,6 +104,19 @@ class YastModule
     end
   end
 
+  def builddeps
+    deps.each do |dependency|
+      mod = @modules[dependency]
+      next if mod.compiled_modules?
+      mod.clone
+      Dir.chdir mod.work_dir do
+        mod.restructure
+        mod.patch
+        mod.compile_modules
+      end
+    end
+  end
+
   def compile
     clean_previous_compilation
     prepare_result_dir
@@ -116,7 +130,8 @@ class YastModule
     }
 
     Dir.chdir work_dir do
-      failed_files = compile_modules counts
+      failed_files = compile_modules
+      counts[:error_other] += failed_files.size
       convert_ycp counts, failed_files
     end
 
@@ -161,6 +176,29 @@ class YastModule
     end
   end
 
+  def compiled_modules?
+    #simple test that anything is compiled
+    !Dir["#{work_dir}/**/*.ybc"].empty?
+  end
+
+  def compile_modules
+    failed_files = []
+    order = Cheetah.run COMPILE_ORDER_TOOL, *exports, :stdout => :capture
+
+    order.split.each do |file|
+      begin
+        create_ybc file
+      rescue Exception => e
+        Messages.start " * #{file}"
+        Messages.finish "ERROR(other)"
+        log_error(file, e)
+        failed_files << file
+      end
+    end
+
+    failed_files
+  end
+
   private
 
   def module_paths
@@ -185,26 +223,6 @@ class YastModule
       end
     end
     @include_paths
-  end
-
-  def compile_modules counts
-    failed_files = []
-
-    exports.each do |exported_dir|
-      Dir["#{exported_dir}/modules/**/*.ycp"].each do |file|
-        begin
-          create_ybc file
-        rescue Exception => e
-          Messages.start " * #{file}"
-          Messages.finish "ERROR(other)"
-          log_error(file, e)
-          counts[:error_other] += 1
-          failed_files << file
-        end
-      end
-    end
-
-    failed_files
   end
 
   def convert_ycp counts, failed_files
@@ -370,6 +388,14 @@ class CLI < Thor
     modules = modules_from_names(module_names)
     with_modules modules, "Restructuring", true do |mod|
       mod.restructure
+    end
+  end
+
+  desc "builddeps <module>...", "Build dependent modules for given module(s)"
+  def builddeps(*module_names)
+    modules = modules_from_names(module_names)
+    with_modules modules, "Restructuring", true do |mod|
+      mod.builddeps
     end
   end
 
