@@ -167,9 +167,9 @@ class YastModule
     # The lazy loading is needed because the dependencies may not be fully
     # initialized when "initialize" is called on this module.
     unless @module_paths 
-      @module_paths = [STUBS_DIR] + exported_include_paths
+      @module_paths = [STUBS_DIR] + exported_module_paths
       deps.each do |dependency| 
-        @module_paths.concat @modules[dependency].exported_include_paths
+        @module_paths.concat @modules[dependency].exported_module_paths
       end
     end
     @module_paths
@@ -286,9 +286,11 @@ class YastModule
     module_paths.each do |module_path|
       cmd << "--module-path" << module_path
     end
+    cmd << "--module-path" << File.dirname(file)
     include_paths.each do |include_path|
       cmd << "--include-path" << include_path
     end
+    cmd << "--include-path" << File.dirname(file)
     cmd << file
     cmd << output_file
 
