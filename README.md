@@ -94,22 +94,51 @@ command to all YaST modules.
 ```
 $ ./yk help
 Tasks:
-  yk clone <module>...    # Clone module(s)
-  yk compile <module>...  # Compile module(s)
-  yk help [TASK]          # Describe available tasks or one specific task
-  yk patch <module>...    # Patch module(s)
+  yk clone <module>...        # Clone module(s)
+  yk compile <module>...      # Compile module(s)
+  yk convert <module>...      # Convert module(s)
+  yk genpatch <module>...     # Store changes from work directory of module(s) into a patch
+  yk help [TASK]              # Describe available tasks or one specific task
+  yk patch <module>...        # Patch module(s)
+  yk reset <module>...        # Revert module(s) work directory to clean state
+  yk restructure <module>...  # Change module(s) work directory structure to fit the Y2DIR scheme
 ```
 
 ### Commands
+
+The commands operate on two distinct directory trees: the *working* tree and
+the *result* tree.
+
+#### yk convert
+
+Does everything at once: `clone`, `restructure`, `patch`, `compile`.
 
 #### yk clone
 
 Clones repositories of specified modules into subdirectories of a directory
 specified by the `yast_dir` setting in `config.yml`.
 
+**Removes the working tree for the module beforehand.**
+
 ```
 $ ./yk clone testsuite
 [1/1] Cloning testsuite...                                            OK
+```
+
+#### yk restructure
+
+Changes the working directory structure to fit the Y2DIR scheme.
+See [`moves`](#module-metadata) in Module Metadata below.
+
+Results of the operation are saved into git index.
+This means you can use `git status` or `git diff --cached`
+inside the work directory to see what moved where.
+The main purpose however is
+to ensure that `yk genpatch` diffs properly against the new structure.
+
+```
+$ ./yk restructure testsuite
+[1/1] Restructuring testsuite...                                      OK
 ```
 
 #### yk patch
@@ -124,7 +153,9 @@ $ ./yk patch testsuite
 
 #### yk compile
 
-Compiles YCP files of specified modules to Ruby. The compilation is driven by
+Compiles YCP files of specified modules to Ruby, placing the result in the
+*result* tree.
+The compilation is driven by
 module descriptions stored in the `data` directory. It uses `ycpc` and `y2r`
 binaries specified by the `ycpc` and `y2r` setting in `config.xml`.
 
@@ -167,3 +198,65 @@ Total ERROR(ruby):  0
 Total ERROR(other): 0
 ```
 
+#### yk genpatch
+
+FIXME
+
+Store changes from the working directory of module(s) into a patch.
+
+#### yk reset
+
+FIXME
+
+Revert the working directory to a clean state.
+
+### Module Metadata
+
+Modules have metadata files placed in `data/foo.yml`, in the [YAML][yaml]
+format.
+
+[yaml]: http://en.wikipedia.org/wiki/YAML
+
+```
+# A list of modules this one depends on to compile.
+# Default: []
+deps:
+  - yast2
+
+# A list of operations used by the `restructure` command
+# to make the working tree better fit the Y2DIR scheme.
+# Default: []
+moves:
+    # a glob in the original structure
+    # (use quotes because of YAML syntax).
+  - from: src/NfsServer.ycp
+    # a directory path in the new structure.
+    # Missing directories will be created.
+    to: src/modules
+  - from: "src/nfs[-_]server*.ycp"
+    to: src/clients
+  - from: "src/*.ycp"
+    to: src/include/nfs_server
+
+# A list of file paths (in the new structure, see 'moves')
+# to exclude from compilation.
+# A reason for the exclusion should be supplied in a comment.
+# Default: []
+excluded:
+  # include stuff for testsuite
+  - library/sequencer/testsuite/tests/Wizard.yh
+  # agreed to exclude doc from automatic translation
+  - library/sequencer/doc/examples/example1.ycp
+  - library/sequencer/doc/examples/example2.ycp
+  # include files that is not complete
+  - library/packages/src/include/packages/common.ycp
+
+# A list of paths (in the new structure, see 'moves')
+# that users of this module should add to their `Y2DIR`.
+# (Only mess^W complex modules like `yast2` should need this.
+# Default: ["src"]
+exports:
+  - src
+  - library/sequencer/src
+  - library/packages/src
+```
