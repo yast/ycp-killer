@@ -53,7 +53,7 @@ things get gemified, packaged, etc.
 
   3. **Install basic Ruby environment**
 
-         $ sudo zyppper in ruby ruby-devel
+         $ sudo zypper in ruby ruby-devel
          $ sudo gem install bundler
 
   4. **Clone the Y2R repository and install Y2R's dependencies**
