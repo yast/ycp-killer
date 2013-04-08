@@ -1,18 +1,14 @@
-# TODO: Process.
+deps:
+  - yast2
 
-files:
-  - src/Nfs.ycp
-  - src/nfs-client.ycp
-  - src/nfs-client4part.ycp
-  - src/nfs.ycp
-  - src/nfs_auto.ycp
-  - src/routines.ycp
-  - src/ui.ycp
-  - src/wizards.ycp
-  - testsuite/tests/escape.ycp
-  - testsuite/tests/r-check.ycp
-  - testsuite/tests/r-fstab.ycp
-  - testsuite/tests/r-spec.ycp
-  - testsuite/tests/r-strip.ycp
-  - testsuite/tests/readwrite.ycp
-  - testsuite/tests/readwrite2.ycp
+moves:
+  - from: src/Nfs.ycp
+    to: src/modules
+  - from: src/nfs{,-client,-client4part,_auto}.ycp
+    to: src/clients
+  - from: src/*.ycp
+    to: src/include/nfs
+  - from: src/*.desktop
+    to: src/desktop
+  - from: src/*.rnc
+    to: src/autoyast-rnc

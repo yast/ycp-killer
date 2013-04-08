@@ -466,7 +466,7 @@ class CLI < Thor
     end
   end
 
-  desc "restructure <module>...", "Change module(s) work directory structure according to fit the Y2DIR scheme"
+  desc "restructure <module>...", "Change module(s) work directory structure to fit the Y2DIR scheme"
   def restructure(*module_names)
     modules = modules_from_names(module_names)
     with_modules modules, "Restructuring", true do |mod|

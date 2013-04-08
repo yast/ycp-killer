@@ -5,8 +5,8 @@ yast_dir: ""
 
 # Path to the ycpc binary to use (preferably a custom-compiled one from
 # yast-core's Git repository checkout).
-ycpc:     ""
+ycpc:     "<git-checkout-dir>/yast-core/base/tools/ycpc/ycpc"
 
 # Path to the Y2R binary to use (preferably a one from Y2R's Git repository
 # checkout).
-y2r:      ""
+y2r:      "<git-checkout-dir>/y2r/bin/y2r"

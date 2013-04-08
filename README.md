@@ -88,6 +88,33 @@ things get gemified, packaged, etc.
 
      You can now start killing YCP.
 
+Resulting Directory Structure
+-----------------------------
+
+The existing directory tree layout of nearly all YaST modules is rather random
+and stupid. It is convenient to use the translation occasion to also move
+files to a more logical and uniform scheme, to enable exporting the working
+directory via `Y2DIR` and to unify Makefiles.
+
+The following tree shows what gets installed where:
+
+```
+tictactoe-server
+└── src
+    ├── bin           ->  /usr/lib/YaST2/bin
+    ├── clients       ->  /usr/share/YaST2/clients
+    ├── data          ->  /usr/share/YaST2/data
+    ├── include       ->  /usr/share/YaST2/include
+    ├── modules       ->  /usr/share/YaST2/modules
+    ├── scrconf       ->  /usr/share/YaST2/scrconf
+    ├── autoyast-rnc  ->  /usr/share/YaST2/schema/autoyast/rnc
+    ├── control-rnc   ->  /usr/share/YaST2/schema/control/rnc
+    └── desktop       ->  /usr/share/applications/YaST2
+```
+
+Other directories, like `doc` and `testsuite`, are not restructured now
+and keep their existing Makefiles.
+
 Usage
 -----
 
@@ -99,22 +126,63 @@ command to all YaST modules.
 ```
 $ ./yk help
 Tasks:
-  yk clone <module>...    # Clone module(s)
-  yk compile <module>...  # Compile module(s)
-  yk help [TASK]          # Describe available tasks or one specific task
-  yk patch <module>...    # Patch module(s)
+  yk clone <module>...        # Clone module(s)
+  yk compile <module>...      # Compile module(s)
+  yk convert <module>...      # Convert module(s)
+  yk genpatch <module>...     # Store changes from work directory of module(s) into a patch
+  yk help [TASK]              # Describe available tasks or one specific task
+  yk patch <module>...        # Patch module(s)
+  yk reset <module>...        # Revert module(s) work directory to clean state
+  yk restructure <module>...  # Change module(s) work directory structure to fit the Y2DIR scheme
 ```
 
 ### Commands
+
+The commands operate on two distinct directory trees: the *working* tree and
+the *result* tree.
+
+#### yk convert
+
+Does everything at once: `clone`, `restructure`, `patch`, `compile`.
 
 #### yk clone
 
 Clones repositories of specified modules into subdirectories of a directory
 specified by the `yast_dir` setting in `config.yml`.
 
+**Removes the working tree for the module beforehand.**
+
 ```
 $ ./yk clone testsuite
 [1/1] Cloning testsuite...                                            OK
+```
+
+#### yk reset
+
+Reverts the working directory to a clean state.
+It is a local variant of `yk clone`
+in that it **removes all modifications in the working tree**.
+Use `yk genpatch` beforehand to save them.
+
+```
+$ ./yk reset testsuite
+[1/1] Resetting testsuite...                                          OK
+```
+
+#### yk restructure
+
+Changes the working directory structure to fit the Y2DIR scheme.
+See [`moves`](#module-metadata) in Module Metadata below.
+
+Results of the operation are saved into git index.
+This means you can use `git status` or `git diff --cached`
+inside the work directory to see what moved where.
+The main purpose however is
+to ensure that `yk genpatch` diffs properly against the new structure.
+
+```
+$ ./yk restructure testsuite
+[1/1] Restructuring testsuite...                                      OK
 ```
 
 #### yk patch
@@ -129,7 +197,9 @@ $ ./yk patch testsuite
 
 #### yk compile
 
-Compiles YCP files of specified modules to Ruby. The compilation is driven by
+Compiles YCP files of specified modules to Ruby, placing the result in the
+*result* tree.
+The compilation is driven by
 module descriptions stored in the `data` directory. It uses `ycpc` and `y2r`
 binaries specified by the `ycpc` and `y2r` setting in `config.xml`.
 
@@ -172,3 +242,66 @@ Total ERROR(ruby):  0
 Total ERROR(other): 0
 ```
 
+#### yk genpatch
+
+Stores changes from the working directory
+into a patch in the `patches` directory.
+
+**Any existing patch for the module is removed**.
+
+```
+$ ./yk genpatch testsuite
+[1/1] Generating patch testsuite...                                   OK
+```
+
+### Module Metadata
+
+Modules have metadata files placed in `data/foo.yml`, in the [YAML][yaml]
+format.
+
+[yaml]: http://en.wikipedia.org/wiki/YAML
+
+```
+# A list of modules this one depends on to compile.
+# Default: []
+deps:
+  - yast2
+
+# A list of operations used by the `restructure` command
+# to make the working tree better fit the Y2DIR scheme.
+# Default: []
+moves:
+    # A glob in the original structure
+    # (use quotes because of YAML syntax).
+  - from: src/NfsServer.ycp
+    # A directory path in the new structure.
+    # Missing directories will be created.
+    to: src/modules
+  - from: "src/nfs[-_]server*.ycp"
+    to: src/clients
+    # The list is ordered, so we can glob the rest of the files:
+  - from: "src/*.ycp"
+    to: src/include/nfs_server
+
+# A list of file paths (in the new structure, see 'moves')
+# to exclude from compilation.
+# A reason for the exclusion should be supplied in a comment.
+# Default: []
+excluded:
+  # include stuff for testsuite
+  - library/sequencer/testsuite/tests/Wizard.yh
+  # agreed to exclude doc from automatic translation
+  - library/sequencer/doc/examples/example1.ycp
+  - library/sequencer/doc/examples/example2.ycp
+  # include files that is not complete
+  - library/packages/src/include/packages/common.ycp
+
+# A list of paths (in the new structure, see 'moves')
+# that users of this module should add to their `Y2DIR`.
+# (Only mess^W complex modules like `yast2` should need this.
+# Default: ["src"]
+exports:
+  - src
+  - library/sequencer/src
+  - library/packages/src
+```
