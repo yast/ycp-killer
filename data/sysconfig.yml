@@ -1,26 +1,10 @@
 deps:
   - testsuite
   - yast2
-files:
-  # Modules (in Makefile.am order)
-  - src/Sysconfig.ycp
-  # Includes (in Makefile.am order)
-  - src/helps.ycp
-  - src/wizards.ycp
-  - src/dialogs.ycp
-  - src/complex.ycp
-  - src/cmdline.ycp
-  - src/routines.ycp
-  # Clients (in Makefile.am order)
-  - src/sysconfig.ycp
-  - src/sysconfig_auto.ycp
-  # Testsuite (in alphabetical order)
-  - testsuite/tests/Set_Export.ycp
-  - testsuite/tests/get_description.ycp
-  - testsuite/tests/get_file_from_id.ycp
-  - testsuite/tests/get_metadata.ycp
-  - testsuite/tests/get_name_from_id.ycp
-  - testsuite/tests/get_only_comment.ycp
-  - testsuite/tests/parse_metadata.ycp
-  - testsuite/tests/remove_whitespaces.ycp
-  - testsuite/tests/set_value.ycp
+moves:
+  - from: "src/[A-Z]*.ycp"
+    to: src/modules
+  - from: "src/sysconfig*.ycp"
+    to: src/clients
+  - from: "src/*.ycp"
+    to: src/include/sysconfig

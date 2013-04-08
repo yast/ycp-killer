@@ -1,7 +1,7 @@
-diff --git a/library/commandline/src/CommandLine.ycp b/library/commandline/src/CommandLine.ycp
+diff --git a/library/commandline/src/modules/CommandLine.ycp b/library/commandline/src/modules/CommandLine.ycp
 index e69a0f4..8ba5163 100644
---- a/library/commandline/src/CommandLine.ycp
-+++ b/library/commandline/src/CommandLine.ycp
+--- a/library/commandline/src/modules/CommandLine.ycp
++++ b/library/commandline/src/modules/CommandLine.ycp
 @@ -220,6 +220,56 @@ you may find current contact information at www.novell.com
      }
  
@@ -134,26 +134,270 @@ index e69a0f4..8ba5163 100644
      }
  
  
-diff --git a/library/commandline/testsuite/tests/tests b/library/commandline/testsuite/tests/tests
-new file mode 120000
-index 0000000..945c9b4
---- /dev/null
-+++ b/library/commandline/testsuite/tests/tests
-@@ -0,0 +1 @@
-+.
-\ No newline at end of file
-diff --git a/library/cwm/testsuite/tests/tests b/library/cwm/testsuite/tests/tests
-new file mode 120000
-index 0000000..945c9b4
---- /dev/null
-+++ b/library/cwm/testsuite/tests/tests
-@@ -0,0 +1 @@
-+.
-\ No newline at end of file
-diff --git a/library/desktop/src/Desktop.ycp b/library/desktop/src/Desktop.ycp
+diff --git a/library/commandline/testsuite/tests/cmdmap6.ycp b/library/commandline/testsuite/tests/cmdmap6.ycp
+index 184a4ed..190f383 100644
+--- a/library/commandline/testsuite/tests/cmdmap6.ycp
++++ b/library/commandline/testsuite/tests/cmdmap6.ycp
+@@ -33,7 +33,7 @@ you may find current contact information at www.novell.com
+ {
+ 
+     include "testsuite.ycp";
+-    include "./tests/testsuitedata.yh";
++    include "testsuitedata.yh";
+ 
+     import "TypeRepository";
+     import "CommandLine";
+diff --git a/library/commandline/testsuite/tests/command1.ycp b/library/commandline/testsuite/tests/command1.ycp
+index d0252bc..57d96c0 100644
+--- a/library/commandline/testsuite/tests/command1.ycp
++++ b/library/commandline/testsuite/tests/command1.ycp
+@@ -33,7 +33,7 @@ you may find current contact information at www.novell.com
+ {
+ 
+     include "testsuite.ycp";
+-    include "./tests/testsuitedata.yh";
++    include "testsuitedata.yh";
+ 
+     import "TypeRepository";
+     import "CommandLine";
+diff --git a/library/commandline/testsuite/tests/command2.ycp b/library/commandline/testsuite/tests/command2.ycp
+index e0c6823..d1fa598 100644
+--- a/library/commandline/testsuite/tests/command2.ycp
++++ b/library/commandline/testsuite/tests/command2.ycp
+@@ -33,7 +33,7 @@ you may find current contact information at www.novell.com
+ {
+ 
+     include "testsuite.ycp";
+-    include "./tests/testsuitedata.yh";
++    include "testsuitedata.yh";
+ 
+     import "TypeRepository";
+     import "CommandLine";
+diff --git a/library/commandline/testsuite/tests/command3.ycp b/library/commandline/testsuite/tests/command3.ycp
+index 6e16b72..d82678c 100644
+--- a/library/commandline/testsuite/tests/command3.ycp
++++ b/library/commandline/testsuite/tests/command3.ycp
+@@ -33,7 +33,7 @@ you may find current contact information at www.novell.com
+ {
+ 
+     include "testsuite.ycp";
+-    include "./tests/testsuitedata.yh";
++    include "testsuitedata.yh";
+ 
+     import "TypeRepository";
+     import "CommandLine";
+diff --git a/library/commandline/testsuite/tests/command4.ycp b/library/commandline/testsuite/tests/command4.ycp
+index 8f2bec3..e50cdac 100644
+--- a/library/commandline/testsuite/tests/command4.ycp
++++ b/library/commandline/testsuite/tests/command4.ycp
+@@ -33,7 +33,7 @@ you may find current contact information at www.novell.com
+ {
+ 
+     include "testsuite.ycp";
+-    include "./tests/testsuitedata.yh";
++    include "testsuitedata.yh";
+ 
+     import "TypeRepository";
+     import "CommandLine";
+diff --git a/library/commandline/testsuite/tests/command5.ycp b/library/commandline/testsuite/tests/command5.ycp
+index 41eed86..b8f9b29 100644
+--- a/library/commandline/testsuite/tests/command5.ycp
++++ b/library/commandline/testsuite/tests/command5.ycp
+@@ -33,7 +33,7 @@ you may find current contact information at www.novell.com
+ {
+ 
+     include "testsuite.ycp";
+-    include "./tests/testsuitedata.yh";
++    include "testsuitedata.yh";
+ 
+     import "CommandLine";
+ 
+diff --git a/library/commandline/testsuite/tests/command6.ycp b/library/commandline/testsuite/tests/command6.ycp
+index b784cac..a468295 100644
+--- a/library/commandline/testsuite/tests/command6.ycp
++++ b/library/commandline/testsuite/tests/command6.ycp
+@@ -33,7 +33,7 @@ you may find current contact information at www.novell.com
+ {
+ 
+     include "testsuite.ycp";
+-    include "./tests/testsuitedata.yh";
++    include "testsuitedata.yh";
+ 
+     import "CommandLine";
+ 
+diff --git a/library/commandline/testsuite/tests/command7.ycp b/library/commandline/testsuite/tests/command7.ycp
+index 7f66dfc..4478c4c 100644
+--- a/library/commandline/testsuite/tests/command7.ycp
++++ b/library/commandline/testsuite/tests/command7.ycp
+@@ -33,7 +33,7 @@ you may find current contact information at www.novell.com
+ {
+ 
+     include "testsuite.ycp";
+-    include "./tests/testsuitedata.yh";
++    include "testsuitedata.yh";
+ 
+     import "CommandLine";
+ 
+diff --git a/library/commandline/testsuite/tests/help.ycp b/library/commandline/testsuite/tests/help.ycp
+index 29ef271..4ffcf4b 100644
+--- a/library/commandline/testsuite/tests/help.ycp
++++ b/library/commandline/testsuite/tests/help.ycp
+@@ -33,7 +33,7 @@ you may find current contact information at www.novell.com
+ {
+ 
+     include "testsuite.ycp";
+-    include "./tests/testsuitedata.yh";
++    include "testsuitedata.yh";
+ 
+     import "TypeRepository";
+     import "CommandLine";
+diff --git a/library/commandline/testsuite/tests/help1.ycp b/library/commandline/testsuite/tests/help1.ycp
+index d291f80..1de1d17 100644
+--- a/library/commandline/testsuite/tests/help1.ycp
++++ b/library/commandline/testsuite/tests/help1.ycp
+@@ -33,7 +33,7 @@ you may find current contact information at www.novell.com
+ {
+ 
+     include "testsuite.ycp";
+-    include "./tests/testsuitedata.yh";
++    include "testsuitedata.yh";
+ 
+     import "TypeRepository";
+     import "CommandLine";
+diff --git a/library/commandline/testsuite/tests/interactive1.ycp b/library/commandline/testsuite/tests/interactive1.ycp
+index 2d80566..09f03e5 100644
+--- a/library/commandline/testsuite/tests/interactive1.ycp
++++ b/library/commandline/testsuite/tests/interactive1.ycp
+@@ -33,7 +33,7 @@ you may find current contact information at www.novell.com
+ {
+ 
+     include "testsuite.ycp";
+-    include "./tests/testsuitedata.yh";
++    include "testsuitedata.yh";
+ 
+     import "CommandLine";
+ 
+diff --git a/library/commandline/testsuite/tests/interactive2.ycp b/library/commandline/testsuite/tests/interactive2.ycp
+index 858004f..dea3f80 100644
+--- a/library/commandline/testsuite/tests/interactive2.ycp
++++ b/library/commandline/testsuite/tests/interactive2.ycp
+@@ -33,7 +33,7 @@ you may find current contact information at www.novell.com
+ {
+ 
+     include "testsuite.ycp";
+-    include "./tests/testsuitedata.yh";
++    include "testsuitedata.yh";
+ 
+     import "CommandLine";
+ 
+diff --git a/library/commandline/testsuite/tests/interactive3.ycp b/library/commandline/testsuite/tests/interactive3.ycp
+index 6f0c128..fde1506 100644
+--- a/library/commandline/testsuite/tests/interactive3.ycp
++++ b/library/commandline/testsuite/tests/interactive3.ycp
+@@ -33,7 +33,7 @@ you may find current contact information at www.novell.com
+ {
+ 
+     include "testsuite.ycp";
+-    include "./tests/testsuitedata.yh";
++    include "testsuitedata.yh";
+ 
+     import "CommandLine";
+ 
+diff --git a/library/commandline/testsuite/tests/interactive4.ycp b/library/commandline/testsuite/tests/interactive4.ycp
+index 3d6ad1c..1e8e195 100644
+--- a/library/commandline/testsuite/tests/interactive4.ycp
++++ b/library/commandline/testsuite/tests/interactive4.ycp
+@@ -33,7 +33,7 @@ you may find current contact information at www.novell.com
+ {
+ 
+     include "testsuite.ycp";
+-    include "./tests/testsuitedata.yh";
++    include "testsuitedata.yh";
+ 
+     import "CommandLine";
+ 
+diff --git a/library/commandline/testsuite/tests/interactive5.ycp b/library/commandline/testsuite/tests/interactive5.ycp
+index 80d1930..797e061 100644
+--- a/library/commandline/testsuite/tests/interactive5.ycp
++++ b/library/commandline/testsuite/tests/interactive5.ycp
+@@ -33,7 +33,7 @@ you may find current contact information at www.novell.com
+ {
+ 
+     include "testsuite.ycp";
+-    include "./tests/testsuitedata.yh";
++    include "testsuitedata.yh";
+ 
+     import "CommandLine";
+ 
+diff --git a/library/commandline/testsuite/tests/longhelp.ycp b/library/commandline/testsuite/tests/longhelp.ycp
+index 8736e5c..92a7762 100644
+--- a/library/commandline/testsuite/tests/longhelp.ycp
++++ b/library/commandline/testsuite/tests/longhelp.ycp
+@@ -33,7 +33,7 @@ you may find current contact information at www.novell.com
+ {
+ 
+     include "testsuite.ycp";
+-    include "./tests/testsuitedata.yh";
++    include "testsuitedata.yh";
+ 
+     import "TypeRepository";
+     import "CommandLine";
+diff --git a/library/commandline/testsuite/tests/startgui1.ycp b/library/commandline/testsuite/tests/startgui1.ycp
+index 6303df6..80d358c 100644
+--- a/library/commandline/testsuite/tests/startgui1.ycp
++++ b/library/commandline/testsuite/tests/startgui1.ycp
+@@ -33,7 +33,7 @@ you may find current contact information at www.novell.com
+ {
+ 
+     include "testsuite.ycp";
+-    include "./tests/testsuitedata.yh";
++    include "testsuitedata.yh";
+ 
+     import "TypeRepository";
+     import "CommandLine";
+diff --git a/library/commandline/testsuite/tests/startgui2.ycp b/library/commandline/testsuite/tests/startgui2.ycp
+index a6b9e52..b3bf479 100644
+--- a/library/commandline/testsuite/tests/startgui2.ycp
++++ b/library/commandline/testsuite/tests/startgui2.ycp
+@@ -33,7 +33,7 @@ you may find current contact information at www.novell.com
+ {
+ 
+     include "testsuite.ycp";
+-    include "./tests/testsuitedata.yh";
++    include "testsuitedata.yh";
+ 
+     import "TypeRepository";
+     import "CommandLine";
+diff --git a/library/cwm/testsuite/tests/t1.ycp b/library/cwm/testsuite/tests/t1.ycp
+index afa62bb..d41081b 100644
+--- a/library/cwm/testsuite/tests/t1.ycp
++++ b/library/cwm/testsuite/tests/t1.ycp
+@@ -46,7 +46,7 @@ you may find current contact information at www.novell.com
+     Report::display_errors = false;
+     Report::log_errors = true;
+ 
+-    include "./tests/testfunc.yh";
++    include "testfunc.yh";
+ 
+ 
+     map<string, any> functions = $[
+diff --git a/library/cwm/testsuite/tests/t2.ycp b/library/cwm/testsuite/tests/t2.ycp
+index a86971d..b29f075 100644
+--- a/library/cwm/testsuite/tests/t2.ycp
++++ b/library/cwm/testsuite/tests/t2.ycp
+@@ -51,7 +51,7 @@ you may find current contact information at www.novell.com
+     Report::display_errors = false;
+     Report::log_errors = true;
+ 
+-    include "./tests/testfunc.yh";
++    include "testfunc.yh";
+     import "Mode";
+ 
+     Mode::SetTest ("testsuite");
+diff --git a/library/desktop/src/modules/Desktop.ycp b/library/desktop/src/modules/Desktop.ycp
 index 3ced0f7..f57f665 100644
---- a/library/desktop/src/Desktop.ycp
-+++ b/library/desktop/src/Desktop.ycp
+--- a/library/desktop/src/modules/Desktop.ycp
++++ b/library/desktop/src/modules/Desktop.ycp
 @@ -123,20 +123,19 @@ void ReadLanguage() {
      y2debug("Language=%1", Language);
  }
@@ -183,14 +427,116 @@ index 3ced0f7..f57f665 100644
      /* read modules */
      map filemap = $[];
      path filepath = nil;
-diff --git a/library/sequencer/testsuite/tests/tests b/library/sequencer/testsuite/tests/tests
-new file mode 120000
-index 0000000..945c9b4
---- /dev/null
-+++ b/library/sequencer/testsuite/tests/tests
-@@ -0,0 +1 @@
-+.
-\ No newline at end of file
+diff --git a/library/sequencer/testsuite/tests/WS_check.ycp b/library/sequencer/testsuite/tests/WS_check.ycp
+index 9e11a70..fe8dd72 100644
+--- a/library/sequencer/testsuite/tests/WS_check.ycp
++++ b/library/sequencer/testsuite/tests/WS_check.ycp
+@@ -73,7 +73,7 @@ TEST(``(Sequencer::WS_check($[], $[ "ws_start" : `ws_finish ] )), [], nil);
+ 
+ list clicks = nil;
+ integer cur = -1;
+-include "./tests/Wizard.yh";
++include "Wizard.yh";
+ TEST(``(Sequencer::WS_check(aliases(), sequence())), [], nil);
+ 
+ }
+diff --git a/library/sequencer/testsuite/tests/Wizard0.ycp b/library/sequencer/testsuite/tests/Wizard0.ycp
+index 0ceccbb..6a821b2 100644
+--- a/library/sequencer/testsuite/tests/Wizard0.ycp
++++ b/library/sequencer/testsuite/tests/Wizard0.ycp
+@@ -23,7 +23,7 @@ you may find current contact information at www.novell.com
+ 
+ list clicks = nil;
+ integer cur = -1;
+-include "./tests/Wizard.yh";
++include "Wizard.yh";
+ 
+ map Aliases = $[
+     "0" : ``(next()),
+diff --git a/library/sequencer/testsuite/tests/Wizard1.ycp b/library/sequencer/testsuite/tests/Wizard1.ycp
+index 794ec22..e7d6d51 100644
+--- a/library/sequencer/testsuite/tests/Wizard1.ycp
++++ b/library/sequencer/testsuite/tests/Wizard1.ycp
+@@ -23,6 +23,6 @@ you may find current contact information at www.novell.com
+ 
+ integer cur = 0;
+ list clicks = [ `next, `next, `finish ];
+-include "./tests/Wizard.yh";
++include "Wizard.yh";
+ 
+ }
+diff --git a/library/sequencer/testsuite/tests/Wizard2.ycp b/library/sequencer/testsuite/tests/Wizard2.ycp
+index 1ff3486..002207d 100644
+--- a/library/sequencer/testsuite/tests/Wizard2.ycp
++++ b/library/sequencer/testsuite/tests/Wizard2.ycp
+@@ -23,6 +23,6 @@ you may find current contact information at www.novell.com
+ 
+ integer cur = 0;
+ list clicks = [ `next, `details, `next, `finish ];
+-include "./tests/Wizard.yh";
++include "Wizard.yh";
+ 
+ }
+diff --git a/library/sequencer/testsuite/tests/Wizard3.ycp b/library/sequencer/testsuite/tests/Wizard3.ycp
+index 84c4c08..43146c9 100644
+--- a/library/sequencer/testsuite/tests/Wizard3.ycp
++++ b/library/sequencer/testsuite/tests/Wizard3.ycp
+@@ -23,6 +23,6 @@ you may find current contact information at www.novell.com
+ 
+ integer cur = 0;
+ list clicks = [ `next, `details, `details, `next, `finish ];
+-include "./tests/Wizard.yh";
++include "Wizard.yh";
+ 
+ }
+diff --git a/library/sequencer/testsuite/tests/Wizard4.ycp b/library/sequencer/testsuite/tests/Wizard4.ycp
+index 00a0679..54afb0b 100644
+--- a/library/sequencer/testsuite/tests/Wizard4.ycp
++++ b/library/sequencer/testsuite/tests/Wizard4.ycp
+@@ -23,6 +23,6 @@ you may find current contact information at www.novell.com
+ 
+ integer cur = 0;
+ list clicks = [ `next, `expert, `next, `next, `finish ];
+-include "./tests/Wizard.yh";
++include "Wizard.yh";
+ 
+ }
+diff --git a/library/sequencer/testsuite/tests/Wizard5.ycp b/library/sequencer/testsuite/tests/Wizard5.ycp
+index 651d5a7..a297f44 100644
+--- a/library/sequencer/testsuite/tests/Wizard5.ycp
++++ b/library/sequencer/testsuite/tests/Wizard5.ycp
+@@ -23,6 +23,6 @@ you may find current contact information at www.novell.com
+ 
+ integer cur = 0;
+ list clicks = [ `back ];
+-include "./tests/Wizard.yh";
++include "Wizard.yh";
+ 
+ }
+diff --git a/library/sequencer/testsuite/tests/Wizard6.ycp b/library/sequencer/testsuite/tests/Wizard6.ycp
+index a4b4a92..53ca86d 100644
+--- a/library/sequencer/testsuite/tests/Wizard6.ycp
++++ b/library/sequencer/testsuite/tests/Wizard6.ycp
+@@ -23,6 +23,6 @@ you may find current contact information at www.novell.com
+ 
+ integer cur = 0;
+ list clicks = [ `next, `back, `back ];
+-include "./tests/Wizard.yh";
++include "Wizard.yh";
+ 
+ }
+diff --git a/library/sequencer/testsuite/tests/Wizard7.ycp b/library/sequencer/testsuite/tests/Wizard7.ycp
+index a5961f7..780cacf 100644
+--- a/library/sequencer/testsuite/tests/Wizard7.ycp
++++ b/library/sequencer/testsuite/tests/Wizard7.ycp
+@@ -23,6 +23,6 @@ you may find current contact information at www.novell.com
+ 
+ integer cur = 0;
+ list clicks = [ `next, `next, `back, `back, `back ];
+-include "./tests/Wizard.yh";
++include "Wizard.yh";
+ 
+ }
 diff --git a/library/wizard/testsuite/tests/wizard_dialog.ycp b/library/wizard/testsuite/tests/wizard_dialog.ycp
 index f8825de..5d58b65 100644
 --- a/library/wizard/testsuite/tests/wizard_dialog.ycp
