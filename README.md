@@ -125,6 +125,18 @@ $ ./yk clone testsuite
 [1/1] Cloning testsuite...                                            OK
 ```
 
+#### yk reset
+
+Reverts the working directory to a clean state.
+It is a local variant of `yk clone`
+in that it **removes all modifications in the working tree**.
+Use `yk genpatch` beforehand to save them.
+
+```
+$ ./yk reset testsuite
+[1/1] Resetting testsuite...                                          OK
+```
+
 #### yk restructure
 
 Changes the working directory structure to fit the Y2DIR scheme.
@@ -200,15 +212,15 @@ Total ERROR(other): 0
 
 #### yk genpatch
 
-FIXME
+Stores changes from the working directory
+into a patch in the `patches` directory.
 
-Store changes from the working directory of module(s) into a patch.
+**Any existing patch for the module is removed**.
 
-#### yk reset
-
-FIXME
-
-Revert the working directory to a clean state.
+```
+$ ./yk genpatch testsuite
+[1/1] Generating patch testsuite...                                   OK
+```
 
 ### Module Metadata
 
