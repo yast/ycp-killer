@@ -8,3 +8,9 @@ moves:
     to: src/include/nfs_server
   - from: src/{nfs-server,nfs_server,nfs_server_auto}.ycp
     to: src/clients
+  - from: src/*.desktop
+    to: src/desktop
+  - from: src/*.rnc
+    to: src/autoyast-rnc
+  - from: agents/*.scr
+    to: src/scrconf
