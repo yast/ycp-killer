@@ -69,7 +69,10 @@ class YastModule
     clone
     restructure
     patch
-    compile
+    res = compile
+    generate_makefiles
+
+    res
   end
 
   def clone
@@ -161,7 +164,82 @@ class YastModule
     end
   end
 
+  def generate_makefiles
+    exports.each do |export_dir|
+      dir = "#{result_dir}/#{export_dir}"
+
+      Dir["#{dir}/**/Makefile.am"].each do |file|
+        FileUtils.rm file
+      end
+
+      File.open("#{dir}/Makefile.am", "w") do |file|
+        dist_variables = []
+
+        file.puts "# Sources for #{name}"
+        Dir.chdir dir do
+          MAKEFILE_DESCRIPTION.each do |section|
+            values = Dir[section[:glob]]
+            next if values.empty?
+
+            file.write makefile_entry(section[:key_line] || section[:key], values)
+
+            dist_variables << section[:key]
+          end
+
+
+          dist_value = dist_variables.map { |v| "$(#{v})" }.join(" ")
+          file.write "\nEXTRA_DIST = #{dist_value}\n\n"
+          file.write 'include $(top_srcdir)/Makefile.am.common'
+        end
+      end
+    end
+  end
+
   private
+
+  def makefile_entry(key, values)
+    "\n#{key} = \\\n  " + values.join(" \\\n  ") + "\n"
+  end
+
+  MAKEFILE_DESCRIPTION = [
+    {
+      :glob     => 'modules/**/*\.{ycp,ybc,rb,py,pl,sh}',
+      :key      => 'module_DATA'
+    },
+    {
+      :glob     => 'clients/**/*\.{ycp,rb,py,pl,sh}',
+      :key      => 'client_DATA'
+    },
+    {
+      :glob     => 'include/**/*\.{ycp,rb,py}',
+      :key      => 'ynclude_DATA'
+    },
+    {
+      :glob     => "scrconf/*\.scr",
+      :key      => "scrconf_DATA"
+    },
+    {
+      :glob     => "servers_non_y2/*",
+      :key      => "agent_SCRIPTS"
+    },
+    {
+      :glob     => "autoyast-rnc/*.rnc",
+      :key      => "schemafiles_DATA",
+      :key_line => "schemafilesdir = $(schemadir)/autoyast/rnc\nschemafiles_DATA"
+    },
+    {
+      :glob     => "bin/*",
+      :key      => "ybin_SCRIPTS"
+    },
+    {
+      :glob     => "data/*",
+      :key      => "ydata_DATA"
+    },
+    {
+      :glob     => "desktop/*",
+      :key      => "desktop_DATA"
+    }
+  ]
 
   def module_paths
     # The lazy loading is needed because the dependencies may not be fully
@@ -478,6 +556,14 @@ class CLI < Thor
   def compile(*module_names)
     report_results(module_names) do |mod|
       mod.compile
+    end
+  end
+
+  desc "makefile <module>...", "Generates Makefile.am for exported dirs of module(s)"
+  def makefile(*module_names)
+    modules = modules_from_names(module_names)
+    with_modules modules, "Generating Makefiles", true do |mod|
+      mod.generate_makefiles
     end
   end
 
