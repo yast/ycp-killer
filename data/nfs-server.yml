@@ -1,18 +1,16 @@
-# TODO: Process.
+deps:
+  - yast2
 
-files:
-  - src/NfsServer.ycp
-  - src/nfs-server.ycp
-  - src/nfs_server.ycp
-  - src/nfs_server_auto.ycp
-  - src/routines.ycp
-  - src/ui.ycp
-  - testsuite/tests.epag/long-17187.rw.ycp
-  - testsuite/tests.epag/number-21804.rw.ycp
-  - testsuite/tests.epag/single-17187.rw.ycp
-  - testsuite/tests.epag/wild.rw.ycp
-  - testsuite/tests/readwrite-unfsd.ycp
-  - testsuite/tests/readwrite.ycp
-  - testsuite/tests/readwrite2.ycp
-  - testsuite/tests/routines1.ycp
-  - testsuite/tests/routines2.ycp
+moves:
+  - from: src/NfsServer.ycp
+    to: src/modules
+  - from: src/{routines,ui}.ycp
+    to: src/include/nfs_server
+  - from: src/{nfs-server,nfs_server,nfs_server_auto}.ycp
+    to: src/clients
+  - from: src/*.desktop
+    to: src/desktop
+  - from: src/*.rnc
+    to: src/autoyast-rnc
+  - from: agents/*.scr
+    to: src/scrconf

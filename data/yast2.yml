@@ -19,8 +19,8 @@ exports:
   - library/gpg/src
 
 moves:
-  # move it to separate dir, otherwise it break Y@DIR scheme as there will
-  # be more directories then expected
+  # move it to separate dir, otherwise it break Y2DIR scheme as there will
+  # be more directories than expected
   - from: "library/modules"
     to: src
   - from: "library/types/src/*.ycp"
