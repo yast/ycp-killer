@@ -1,9 +1,25 @@
-# TODO: Process.
+deps:
+  - pam
+  - yast2
+  - testsuite
 
-files:
-  - src/Nis.ycp
-  - src/nis-client.ycp
-  - src/nis.ycp
-  - src/nis_auto.ycp
-  - src/ui.ycp
-  - testsuite/tests/readwrite.ycp
+moves:
+  - from: src/Nis.ycp
+    to:   src/modules
+  - from: src/ui.ycp
+    to:   src/include/nis
+  - from: src/*.ycp
+    to:   src/clients
+  - from: src/*.desktop
+    to:   src/desktop
+  - from: src/*.rnc
+    to:   src/autoyast-rnc
+  - from: agents/*.scr
+    to:   src/scrconf
+  - from: agents/ag_yp_conf
+    to:   src/servers_non_y2
+  # will this work out?
+  - from: agents/test-*
+    to:   src/servers_non_y2/test
+  # agent-ypserv is in C, leave it there for now
+
