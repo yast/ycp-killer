@@ -106,7 +106,8 @@ The following tree shows what gets installed where:
 ```
 tictactoe-server
 └── src
-    ├── bin           ->  /usr/lib/YaST2/bin
+    ├── bin           ->  /usr/lib/YaST2/bin        (lib, even if lib64 exists)
+    ├── servers_non_y2 -> /usr/lib/YaST2/servers_non_y2
     ├── clients       ->  /usr/share/YaST2/clients
     ├── data          ->  /usr/share/YaST2/data
     ├── include       ->  /usr/share/YaST2/include
