@@ -95,17 +95,20 @@ The following tree shows what gets installed where:
 
 ```
 tictactoe-server
-├── doc               ->  /usr/share/doc/packages/yast2-ticactoe-server
-├── src
-│   ├── clients       ->  /usr/share/YaST2/clients
-│   ├── include       ->  /usr/share/YaST2/include
-│   ├── modules       ->  /usr/share/YaST2/modules
-│   ├── scrconf       ->  /usr/share/YaST2/scrconf
-│   ├── autoyast-rnc  ->  /usr/share/YaST2/schema/autoyast/rnc
-│   ├── control-rnc   ->  /usr/share/YaST2/schema/control/rnc
-│   └── desktop       ->  /usr/share/applications/YaST2
-└── testsuite
+└── src
+    ├── bin           ->  /usr/lib/YaST2/bin
+    ├── clients       ->  /usr/share/YaST2/clients
+    ├── data          ->  /usr/share/YaST2/data
+    ├── include       ->  /usr/share/YaST2/include
+    ├── modules       ->  /usr/share/YaST2/modules
+    ├── scrconf       ->  /usr/share/YaST2/scrconf
+    ├── autoyast-rnc  ->  /usr/share/YaST2/schema/autoyast/rnc
+    ├── control-rnc   ->  /usr/share/YaST2/schema/control/rnc
+    └── desktop       ->  /usr/share/applications/YaST2
 ```
+
+Other directories, like `doc` and `testsuite`, are not restructured now
+and keep their existing Makefiles.
 
 Usage
 -----
@@ -263,14 +266,15 @@ deps:
 # to make the working tree better fit the Y2DIR scheme.
 # Default: []
 moves:
-    # a glob in the original structure
+    # A glob in the original structure
     # (use quotes because of YAML syntax).
   - from: src/NfsServer.ycp
-    # a directory path in the new structure.
+    # A directory path in the new structure.
     # Missing directories will be created.
     to: src/modules
   - from: "src/nfs[-_]server*.ycp"
     to: src/clients
+    # The list is ordered, so we can glob the rest of the files:
   - from: "src/*.ycp"
     to: src/include/nfs_server
 
