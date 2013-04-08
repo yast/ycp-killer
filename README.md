@@ -64,15 +64,14 @@ things get gemified, packaged, etc.
 
   3. **Install basic Ruby environment**
 
-         $ sudo zypper in ruby ruby-devel
-         $ sudo gem install bundler
+         $ sudo zypper in ruby ruby-devel rubygem-bundler
 
   4. **Clone the Y2R repository and install Y2R's dependencies**
 
          $ sudo zypper in libxml2-devel libxslt-devel   # Needed by Nokogiri
          $ git clone git://github.com/yast/y2r.git
          $ cd y2r
-         $ bundle1.9 install
+         $ bundle install
          $ cd ..
 
   5. **Create a directory for compiled YaST modules**
@@ -83,7 +82,7 @@ things get gemified, packaged, etc.
 
          $ git clone git://github.com/yast/ycp-killer.git
          $ cd ycp-killer
-         $ bundle1.9 install
+         $ bundle install
 
   7. **Configure YCP Killer**
 
