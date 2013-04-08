@@ -69,7 +69,10 @@ class YastModule
     clone
     restructure
     patch
-    compile
+    res = compile
+    generate_makefiles
+
+    res
   end
 
   def clone
@@ -161,7 +164,143 @@ class YastModule
     end
   end
 
+  def generate_makefiles
+    exports.each do |export_path|
+      path = "#{result_dir}/#{export_path}"
+
+      Dir["#{path}/**/Makefile.am"].each do |file|
+        FileUtils.rm file
+      end
+
+      File.open("#{path}/Makefile.am", "w") do |file|
+        file.puts "# Sources for #{name}"
+        Dir.chdir path do
+          res = []
+          res << generate_modules(path, file)
+          res << generate_includes(path, file)
+          res << generate_clients(path, file)
+          res << generate_scrconf(path, file)
+          res << generate_agent_impl(path, file)
+          res << generate_autoyast_rnc(path, file)
+          res << generate_bin(path, file)
+          res << generate_data(path, file)
+          res << generate_desktop(path, file)
+
+          dist_value = res.compact.map { |v| "$(#{v})" }.join(" ")
+          file.write "\nEXTRA_DIST = #{dist_value}\n\n"
+          file.write 'include $(top_srcdir)/Makefile.am.common'
+        end
+      end
+    end
+  end
+
   private
+
+  def makefile_entry(key, values)
+    val = "#{key} = \\\n  "
+    val + values.join(" \\\n  ") + "\n"
+  end
+
+  def generate_modules path, file
+    values = Dir["modules/**/*\.{ycp,ybc,rb,py,pl,sh}"]
+    return if values.empty?
+
+    key_name = "module_DATA"
+    file.write "\n"
+    file.write makefile_entry(key_name, values)
+
+    key_name
+  end
+
+  def generate_clients(path, file)
+    values = Dir["clients/**/*\.{ycp,rb,py,pl,sh}"]
+    return if values.empty?
+
+    key_name = "client_DATA"
+    file.write "\n"
+    file.write makefile_entry(key_name, values)
+
+    key_name
+  end
+
+  def generate_includes(path, file)
+    values = Dir["include/**/*\.{ycp,rb,py}"]
+    return if values.empty?
+
+    key_name = "ynclude_DATA"
+    file.write "\n"
+    file.write makefile_entry(key_name, values)
+
+    key_name
+  end
+
+  def generate_scrconf(path, file)
+    values = Dir["scrconf/*\.scr"]
+    return if values.empty?
+
+    key_name = "scrconf_DATA"
+    file.write "\n"
+    file.write makefile_entry(key_name, values)
+
+    key_name
+  end
+
+  def generate_agent_impl(path, file)
+    values = Dir["servers_non_y2/*"]
+    return if values.empty?
+
+    key_name = "agent_SCRIPTS"
+    file.write "\n"
+    file.write makefile_entry(key_name, values)
+
+    key_name
+  end
+
+  def generate_autoyast_rnc(path, file)
+    values = Dir["autoyast-rnc/*.rnc"]
+    return if values.empty?
+
+    # schema have special format
+    key = "schemafilesdir =  $(schemadir)/autoyast/rnc\nschemafiles_DATA"
+    file.write "\n"
+    file.write makefile_entry(key, values)
+
+    "schemafiles_DATA"
+  end
+
+  def generate_bin(path, file)
+    values = Dir["bin/*"]
+    return if values.empty?
+
+    key_name = "ybin_SCRIPTS"
+    file.write "\n"
+    file.write makefile_entry(key_name, values)
+
+    key_name
+  end
+
+  def generate_data(path, file)
+    values = Dir["data/*"]
+    return if values.empty?
+
+    key_name = "ydata_DATA"
+    file.write "\n"
+    file.write makefile_entry(key_name, values)
+
+    key_name
+  end
+
+  def generate_desktop(path, file)
+    values = Dir["desktop/*"]
+    return if values.empty?
+
+    key_name = "desktop_DATA"
+    file.write "\n"
+    file.write makefile_entry(key_name, values)
+
+    key_name
+  end
+
 
   def module_paths
     # The lazy loading is needed because the dependencies may not be fully
@@ -481,6 +620,14 @@ class CLI < Thor
     end
   end
 
+  desc "generate_makefile <module>...", "Generate Makefile.am for exported dirs of module(s)"
+  def generate_makefile(*module_names)
+    modules = modules_from_names(module_names)
+    with_modules modules, "Generating Makefiles", true do |mod|
+      mod.generate_makefiles
+    end
+  end
+
   private
 
   def report_results(module_names)
@@ -580,4 +727,5 @@ rescue Cheetah::ExecutionFailed => e
 rescue Exception => e
   puts
   puts e.message
+  puts e.backtrace.join("\n")
 end
