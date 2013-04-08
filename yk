@@ -189,18 +189,17 @@ class YastModule
 
   def compile_modules counts
     failed_files = []
+    ordered_modules = BuildOrder.ordered_modules exports
 
-    exports.each do |exported_dir|
-      Dir["#{exported_dir}/modules/**/*.ycp"].each do |file|
-        begin
-          create_ybc file
-        rescue Exception => e
-          Messages.start " * #{file}"
-          Messages.finish "ERROR(other)"
-          log_error(file, e)
-          counts[:error_other] += 1
-          failed_files << file
-        end
+    ordered_modules.each do |file|
+      begin
+        create_ybc file
+      rescue Exception => e
+        Messages.start " * #{file}"
+        Messages.finish "ERROR(other)"
+        log_error(file, e)
+        counts[:error_other] += 1
+        failed_files << file
       end
     end
 
@@ -316,6 +315,108 @@ class YastModule
     end
   end
 
+end
+
+# based on ycpmakedep script https://github.com/yast/yast-devtools/blob/master/devtools/bin/ycpmakedep
+module BuildOrder
+  def self.ordered_modules(source_dirs)
+    modules = find_modules source_dirs
+    includes = find_includes source_dirs
+
+    fill_module_deps(modules, includes)
+    result = ordered_modules_by_deps(modules)
+
+    result.map { |name| modules[name][:full_path] }
+  end
+
+  private
+
+  def self.find_modules(source_dirs)
+    modules = {}
+
+    source_dirs.each do |dir|
+      Dir["#{dir}/modules/**/*.ycp"].each do |file|
+        relative_path = file.sub(/#{Regexp.escape(dir)}\/modules\//, "")
+        module_name = relative_path.sub(/\.ycp$/, "")
+
+        modules[module_name] = { :full_path => file }
+      end
+    end
+
+    modules
+  end
+
+  def self.find_includes(source_dirs)
+    includes = {}
+
+    source_dirs.each do |dir|
+      Dir["#{dir}/include/**/*.y{cp,h}"].each do |file|
+        relative_path = file.sub(/#{Regexp.escape(dir)}\/include\//, "")
+        include_name = relative_path.sub(/\.y(cp|h)$/, "")
+
+        includes[include_name] = { :full_path => file }
+      end
+    end
+
+    includes
+  end
+
+  def self.extract_imported_module_files(lines)
+    import_lines = lines.grep(/^\s*import[\s"\(]/)
+    import_lines.map do |line|
+      line.chomp!
+      line.sub!(/^\s*import[^"]*"([^"]+)".*$/, '\\1')
+      line.sub!(/\.ycp$/, "")
+      line
+    end
+  end
+
+  def self.included_files(lines)
+    include_lines = lines.grep(/^\s*include[\s"\(]/)
+
+    include_lines.map do |line|
+      line.chomp!
+      line.sub!(/^\s*include[^"]*"([^"]+)".*$/, '\\1')
+      line.sub!(/\.y(cp|h)$/, "")
+      line
+    end
+  end
+
+  def self.fill_module_deps(modules, includes)
+    modules.each do |name, mod|
+      lines = File.readlines mod[:full_path]
+      deps = extract_imported_module_files lines
+      included = included_files lines
+      included.each do
+        next unless includes[name]
+        includes[name][:deps] ||= extract_imported_module_files(File.readlines(includes[name][:full_path]))
+        deps.concated includes[name][:deps]
+      end
+      deps = deps.select { |m| modules[m] }.uniq
+      mod[:deps] = deps
+    end
+  end
+
+  def self.find_module_to_process(modules, unprocessed, already_processed)
+    unprocessed.find do |name|
+      modules[name][:deps].all? { |dep| already_processed.include? (dep) }
+    end
+  end
+
+  # It can use TSort from ruby, but its API is not much flexible.
+  def self.ordered_modules_by_deps(modules)
+    unprocessed = modules.keys
+    processed   = []
+
+    1.upto(unprocessed.size) do
+      mod = find_module_to_process(modules, unprocessed, processed)
+      raise "unresolved dependencies: #{unprocessed.inspect}" unless mod
+      processed << mod
+      unprocessed.delete mod
+    end
+
+    processed
+  end
 end
 
 class CLI < Thor
