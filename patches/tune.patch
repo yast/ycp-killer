@@ -1,0 +1,14 @@
+diff --git a/hwinfo/src/system_settings_dialogs.ycp b/hwinfo/src/system_settings_dialogs.ycp
+index 0df0d24..dcb8681 100644
+--- a/hwinfo/src/system_settings_dialogs.ycp
++++ b/hwinfo/src/system_settings_dialogs.ycp
+@@ -24,6 +24,9 @@
+ 
+     textdomain "tune";
+ 
++    include "hwinfo/newid.ycp";
++    include "hwinfo/system_settings_ui.ycp";
++
+     term contents = `VBox ( "tab" );
+ 
+     map tabs_descr = $[
