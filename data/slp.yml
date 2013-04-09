@@ -5,3 +5,5 @@ moves:
     to: src/modules
   - from: "src/slp.ycp"
     to: src/clients
+  - from: "src/slp.desktop"
+    to: src/desktop
