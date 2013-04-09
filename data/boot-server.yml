@@ -1,5 +1,10 @@
-# TODO: Process.
+deps:
+  - yast2
 
-files:
-  - src/WOL.ycp
-  - src/wol.ycp
+moves:
+  - from: "src/WOL.ycp"
+    to:   src/modules
+  - from: "src/wol.ycp"
+    to:   src/clients
+  - from: "src/wol.desktop"
+    to:   src/desktop
