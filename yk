@@ -2,6 +2,7 @@
 
 require "cheetah"
 require "thor"
+require "tsort"
 require "yaml"
 
 BASE_DIR = File.expand_path(File.dirname(__FILE__))
@@ -349,13 +350,14 @@ class YastModule
 
   def compile_modules counts
     failed_files = []
-    ordered_modules = BuildOrder.ordered_modules exports
+    # list of full paths
+    ordered_modules = BuildOrder.new(exports).ordered_modules
 
     ordered_modules.each do |file|
       begin
         create_ybc file
       rescue Exception => e
-        Messages.start " * #{file}"
+        Messages.start "  * #{file}"
         Messages.finish "ERROR(other)"
         log_error(file, e)
         counts[:error_other] += 1
@@ -478,20 +480,84 @@ class YastModule
 end
 
 # based on ycpmakedep script https://github.com/yast/yast-devtools/blob/master/devtools/bin/ycpmakedep
-module BuildOrder
-  def self.ordered_modules(source_dirs)
-    modules = find_modules source_dirs
-    includes = find_includes source_dirs
+class BuildOrder
 
-    fill_module_deps(modules, includes)
-    result = ordered_modules_by_deps(modules)
+  class Source
+    attr :name                    # name
+    attr :full_path               # string
+    attr :imports                 # list of names
+    attr :includes                # list of names
 
-    result.map { |name| modules[name][:full_path] }
+    # Parse the file.
+    # imports and includes still contain references outside this package,
+    # but there are no duplicates
+    def initialize(name, full_path)
+      @name = name
+      @full_path = full_path
+      lines = ::File.readlines @full_path
+      @imports =  direct_imports(lines).uniq
+      @includes = direct_includes(lines).uniq
+    end
+
+    # Can be called once we know about all local modules and includes
+    def filter_outside_references(is_local_module_proc, is_local_include_proc)
+      imports.keep_if(&is_local_module_proc)
+      includes.keep_if(&is_local_include_proc)
+    end
+
+  private
+    # return ["Report", "Popup", "FIXME: Foo::Bar or Foo/Bar"]
+    def direct_imports(lines)
+      import_lines = lines.grep(/^\s*import[\s"\(]/)
+      import_lines.map do |line|
+        line.chomp!
+        line.sub!(/^\s*import[^"]*"([^"]+)".*$/, '\\1')
+        line.sub!(/\.ycp$/, "")
+        line
+      end
+    end
+
+    # return ["lan/dialogs", "lan/routines"]
+    def direct_includes(lines)
+      include_lines = lines.grep(/^\s*include[\s"\(]/)
+
+      include_lines.map do |line|
+        line.chomp!
+        line.sub!(/^\s*include[^"]*"([^"]+)".*$/, '\\1')
+        line.sub!(/\.y(cp|h)$/, "")
+        line
+      end
+    end
+  end
+
+  # Distinguish them because we only compile modules,
+  # and there are even cycles that are ok because they consist of
+  # a module-include pair
+  class Module < Source
+  end
+
+  class Include < Source
+  end
+
+  # @modules  Hash: name => Source
+  # @includes Hash: name => Source
+  def initialize(source_dirs)
+    @modules  = find_modules source_dirs
+    @includes = find_includes source_dirs
+    filter_outside_references
+  end
+
+  def ordered_modules
+    tsorted_modules = tsort_breaking_pair_cycles.select do |source|
+      source.is_a? Module
+    end
+
+    tsorted_modules.map { |source| source.full_path }
   end
 
   private
 
-  def self.find_modules(source_dirs)
+  def find_modules(source_dirs)
     modules = {}
 
     source_dirs.each do |dir|
@@ -499,14 +565,14 @@ module BuildOrder
         relative_path = file.sub(/#{Regexp.escape(dir)}\/modules\//, "")
         module_name = relative_path.sub(/\.ycp$/, "")
 
-        modules[module_name] = { :full_path => file }
+        modules[module_name] = Module.new(module_name, file)
       end
     end
 
     modules
   end
 
-  def self.find_includes(source_dirs)
+  def find_includes(source_dirs)
     includes = {}
 
     source_dirs.each do |dir|
@@ -514,68 +580,63 @@ module BuildOrder
         relative_path = file.sub(/#{Regexp.escape(dir)}\/include\//, "")
         include_name = relative_path.sub(/\.y(cp|h)$/, "")
 
-        includes[include_name] = { :full_path => file }
+        includes[include_name] = Include.new(include_name, file)
       end
     end
 
     includes
   end
 
-  def self.extract_imported_module_files(lines)
-    import_lines = lines.grep(/^\s*import[\s"\(]/)
-    import_lines.map do |line|
-      line.chomp!
-      line.sub!(/^\s*import[^"]*"([^"]+)".*$/, '\\1')
-      line.sub!(/\.ycp$/, "")
-      line
+  include TSort
+
+  def each_source(&block)
+    @modules.each_value(&block)
+    @includes.each_value(&block)
+  end
+  alias :tsort_each_node :each_source
+
+  def tsort_each_child(node, &block)
+    node.imports.each  { |name| block.call(@modules[name])  }
+    node.includes.each { |name| block.call(@includes[name]) }
+  end
+
+  # remove items from modules and includes that refer outside this package
+  def filter_outside_references
+    is_local_module  = lambda {|m| @modules.has_key?(m) }
+    is_local_include = lambda {|i| @includes.has_key?(i) }
+    each_source do |f|
+      f.filter_outside_references(is_local_module, is_local_include)
     end
   end
 
-  def self.included_files(lines)
-    include_lines = lines.grep(/^\s*include[\s"\(]/)
-
-    include_lines.map do |line|
-      line.chomp!
-      line.sub!(/^\s*include[^"]*"([^"]+)".*$/, '\\1')
-      line.sub!(/\.y(cp|h)$/, "")
-      line
-    end
-  end
-
-  def self.fill_module_deps(modules, includes)
-    modules.each do |name, mod|
-      lines = File.readlines mod[:full_path]
-      deps = extract_imported_module_files lines
-      included = included_files lines
-      included.each do
-        next unless includes[name]
-        includes[name][:deps] ||= extract_imported_module_files(File.readlines(includes[name][:full_path]))
-        deps.concated includes[name][:deps]
+  # There may be a dependency cycle which is harmless,
+  # because we only care that the subgraph over *modules* is acyclical.
+  # That is, cycles are only a problem if they contain
+  # more than one include or more than one module.
+  # Therefore, we will break cycles consisting of module-include pairs.
+  def tsort_breaking_pair_cycles
+    each_strongly_connected_component do |component|
+      if component.size > 2
+        raise TSort::Cyclic.new("Cycle involving two modules or includes: #{component.inspect}")
+      elsif component.size == 2
+        # break the cycle
+        # pretend the module did not include that one
+        if component.first.is_a? Module
+          mod = component.first
+          inc = component.last
+          inc.is_a? Include or raise TSort::Cyclic.new("Cycle involving two modules: #{component.inspect}")
+        else
+          inc = component.first
+          mod = component.last
+          mod.is_a? Module or raise TSort::Cyclic.new("Cycle involving two includes: #{component.inspect}")
+        end
+        mod.includes.delete_if { |i| i == inc.name }
+        # Be verbose because I wonder whether it only happens in yast2-network
+        puts "Broke a cyclic dependency between #{mod.name} and #{inc.name}"
       end
-      deps = deps.select { |m| modules[m] }.uniq
-      mod[:deps] = deps
     end
-  end
-
-  def self.find_module_to_process(modules, unprocessed, already_processed)
-    unprocessed.find do |name|
-      modules[name][:deps].all? { |dep| already_processed.include? (dep) }
-    end
-  end
-
-  # It can use TSort from ruby, but its API is not much flexible.
-  def self.ordered_modules_by_deps(modules)
-    unprocessed = modules.keys
-    processed   = []
-
-    1.upto(unprocessed.size) do
-      mod = find_module_to_process(modules, unprocessed, processed)
-      raise "unresolved dependencies: #{unprocessed.inspect}" unless mod
-      processed << mod
-      unprocessed.delete mod
-    end
-
-    processed
+    # all harmless cycles are broken; run for real
+    tsort
   end
 end
 
