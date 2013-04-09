@@ -39,28 +39,13 @@ things get gemified, packaged, etc.
 
   2. **Update `ycpc` (yast-core package)**
 
-   - **Clone the yast-core repository and compile your own `ycpc`**
+     Updated `ycpc` is needed because Y2R relies on some features that
+     are not present in `ycpc` bundled with openSUSE 12.3.
 
-     Custom-compiled `ycpc` is needed because Y2R relies on some features that
-     are not present in `ycpc` bundled with openSUSE 12.3. These fatures are
-     implemented in the `y2r_fixes` branch.
+     Install prebuilt RPM packages from **YaST:Head:ruby** OBS repository.
 
-           $ sudo zypper in make yast2-devtools libtool gcc-c++ bison \
-             docbook-xsl-stylesheets expect dejagnu flex boost-devel doxygen
-           $ git clone git://github.com/yast/yast-core.git -b y2r_fixes
-           $ cd yast-core
-           $ make -f Makefile.cvs
-           $ make
-           $ cd ..
-
-   - **Use packages from YaST:Head:ruby repository**
-
-       Alternatively you can use prebuilt RPM packages from **YaST:Head:ruby**
-       OBS repository.
-
-           $ sudo zypper ar -f http://download.opensuse.org/repositories/YaST:/Head:/ruby/openSUSE_12.3/ yast_ruby
-           $ sudo zypper in -f -r yast_ruby yast2-core
-
+         $ sudo zypper ar -f http://download.opensuse.org/repositories/YaST:/Head:/ruby/openSUSE_12.3/ YaST:Head:ruby
+         $ sudo zypper in -f -r YaST:Head:ruby yast2-core
 
   3. **Install basic Ruby environment**
 
