@@ -617,7 +617,7 @@ class CLI < Thor
 
       @modules[name] = YastModule.new(
         name,
-        YAML.load_file(file),
+        YAML.load_file(file) || {},
         @modules,
         @config
       )
