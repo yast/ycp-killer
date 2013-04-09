@@ -1,7 +1,10 @@
-# TODO: Process.
+deps:
+  - yast2
 
-files:
-  - src/clients/online_update_configuration.ycp
-  - src/clients/online_update_configuration_auto.ycp
-  - src/dialogs/OUCDialogs.ycp
-  - src/modules/OnlineUpdateConfiguration.ycp
+moves:
+  - from: "src/dialogs/OUCDialogs.ycp"
+    to:   src/include
+
+excluded:
+  # TODO: Include file, can't be compiled for now.
+  - src/include/OUCDialogs.ycp
