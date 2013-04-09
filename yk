@@ -70,7 +70,15 @@ class YastModule
     restructure
     patch
     res = compile
+    # in case of error do not continue with submit
+    if !res[:error_y2r].zero? ||
+        !res[:error_ruby].zero? ||
+        !res[:error_other].zero?
+      return res
+    end
+
     generate_makefiles
+    submit
 
     res
   end
@@ -192,6 +200,17 @@ class YastModule
           file.write 'include $(top_srcdir)/Makefile.am.common'
         end
       end
+    end
+  end
+
+  def submit
+    Dir.chdir result_dir do
+      Cheetah.run "make", "-f", "Makefile.cvs" # TODO will not work for cmake based ones
+      Cheetah.run "make"
+      Cheetah.run "make", "package-local", "CHECK_SYNTAX=false"
+      # osc can be interactive for creating new package
+      Cheetah.run "y2tool", "oscsubmit", "--devel-project", "YaST:Head:ruby"
+        "--ignore-unchanged-changelog"
     end
   end
 
@@ -567,6 +586,14 @@ class CLI < Thor
     end
   end
 
+  desc "submit <module>...", "Submit module(s) to build service"
+  def submit(*module_names)
+    modules = modules_from_names(module_names)
+    with_modules modules, "Submitting", true do |mod|
+      mod.submit
+    end
+  end
+
   private
 
   def report_results(module_names)
@@ -662,6 +689,7 @@ begin
   CLI.start(ARGV)
 rescue Cheetah::ExecutionFailed => e
   puts
+  puts "Command #{e.commands[0][0]} failed:"
   puts e.stderr
 rescue Exception => e
   puts
