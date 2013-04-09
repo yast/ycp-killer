@@ -209,7 +209,7 @@ class YastModule
       Cheetah.run "make"
       Cheetah.run "make", "package-local", "CHECK_SYNTAX=false"
       # osc can be interactive for creating new package
-      Cheetah.run "y2tool", "oscsubmit", "--devel-project", "YaST:Head:ruby"
+      Cheetah.run "y2tool", "oscsubmit", "--devel-project", "YaST:Head:ruby",
         "--ignore-unchanged-changelog"
     end
   end
