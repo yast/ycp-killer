@@ -1,14 +1,15 @@
-# TODO: Process.
+deps:
+  - testsuite
+  - yast2
 
-files:
-  - src/Sshd.ycp
-  - src/SshdCommandLine.ycp
-  - src/complex.ycp
-  - src/dialogs.ycp
-  - src/helps.ycp
-  - src/sshd.ycp
-  - src/sshd_auto.ycp
-  - src/wizards.ycp
-  - testsuite/tests/Sshd-Modified.ycp
-  - testsuite/tests/Sshd-SSHDOption.ycp
-  - testsuite/tests/ag_sshd.ycp
+moves:
+  - from: "src/[A-Z]*.ycp"
+    to: src/modules
+  - from: "src/sshd*.ycp"
+    to: src/clients
+  - from: "src/*.ycp"
+    to: src/include/sshd
+  - from: "src/*.rnc"
+    to: src/autoyast-rnc
+  - from: "src/*.desktop"
+    to: src/desktop
