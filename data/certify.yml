@@ -1,9 +1,19 @@
-# TODO: Process.
+deps:
+  - yast2
 
-files:
-  - src/Certify.ycp
-  - src/certify.ycp
-  - src/helps.ycp
-  - src/ui.ycp
-  - src/ui_system.ycp
-  - src/ui_tests.ycp
+moves:
+  - from: "src/Certify.ycp"
+    to:   src/modules
+  - from: "src/certify.ycp"
+    to:   src/clients
+  - from: "src/{helps,ui,ui_system,ui_tests}.ycp"
+    to:   src/include/certify
+  - from: "src/certify.desktop"
+    to:   src/desktop
+
+excluded:
+  # TODO: Include files, can't be compiled for now.
+  - src/include/certify/helps.ycp
+  - src/include/certify/ui.ycp
+  - src/include/certify/ui_system.ycp
+  - src/include/certify/ui_tests.ycp
