@@ -1,31 +1,49 @@
-# TODO: Process.
+deps:
+  - yast2
 
-files:
-  - src/CaMgm.ycp
-  - src/ca-mgm.ycp
-  - src/ca.ycp
-  - src/ca_mgm.ycp
-  - src/ca_mgm_auto.ycp
-  - src/ca_mgm_proposal.ycp
-  - src/ca_select_proposal.ycp
-  - src/certDefault.ycp
-  - src/certificate.ycp
-  - src/commandline.ycp
-  - src/common-cert.ycp
-  - src/common_cert.ycp
-  - src/crl.ycp
-  - src/crlDefault.ycp
-  - src/crlExport.ycp
-  - src/dialog-ca.ycp
-  - src/new_cert.ycp
-  - src/new_cert_advanced.ycp
-  - src/new_cert_callbacks.ycp
-  - src/new_cert_items.ycp
-  - src/new_cert_read_write.ycp
-  - src/popup.ycp
-  - src/request.ycp
-  - src/signRequest.ycp
-  - src/startup.ycp
-  - src/util.ycp
-  - src/wizards.ycp
+moves:
+  - from: "scripts/{generateCRL.pl,exportCRL.pl}"
+    to: src/bin
+  - from: src/CaMgm.ycp
+    to: src/modules
+  - from: src/YaPI
+    to: src/modules
+  - from: "src/ca[_-]*.ycp"
+    to: src/clients
+  - from: "src/common[_-]*.ycp"
+    to: src/clients
+  - from: "src/*.ycp"
+    to: src/include/ca-management
+  - from: "src/*.desktop"
+    to: src/desktop
+  - from: "src/*.rnc"
+    to: src/autoyast-rnc
+
+exclude:
+  # include files we cannot translate now
+  - src/include/ca-management/crlExport.ycp
+  - src/include/ca-management/request.ycp
+  - src/include/ca-management/new_cert_read_write.ycp
+  - src/include/ca-management/certificate.ycp
+  - src/include/ca-management/crl.ycp
+  - src/include/ca-management/crlDefault.ycp
+  - src/include/ca-management/new_cert_items.ycp
+  - src/include/ca-management/new_cert_advanced.ycp
+  - src/include/ca-management/popup.ycp
+  - src/include/ca-management/certDefault.ycp
+  - src/include/ca-management/startup.ycp
+  - src/include/ca-management/new_cert.ycp
+  - src/include/ca-management/commandline.ycp
+  - src/include/ca-management/ca.ycp
+  - src/include/ca-management/dialog-ca.ycp
+  - src/include/ca-management/wizards.ycp
+  - src/include/ca-management/util.ycp
+  - src/include/ca-management/new_cert_callbacks.ycp
+  - src/include/ca-management/signRequest.ycp
+  # TODO missing perl libraries
+  - src/clients/ca_mgm.ycp
+  - src/clients/ca_mgm_auto.ycp
+  - src/clients/ca_mgm_proposal.ycp
+  - src/clients/ca_select_proposal.ycp
+  - src/clients/common_cert.ycp
   - testsuite/caTest.ycp
