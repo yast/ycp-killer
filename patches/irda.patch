@@ -1,0 +1,136 @@
+diff --git a/src/include/irda/ui.ycp b/src/include/irda/ui.ycp
+index a7879be..536fe7e 100644
+--- a/src/include/irda/ui.ycp
++++ b/src/include/irda/ui.ycp
+@@ -41,61 +41,62 @@ import "Wizard";
+ 
+ 
+ /**
+- * Popup for testing IrDA
+- * @param port the serial port use for IrDA
+- * (to see if it was changed and service needs to be restarted)
++ * temporary start the service
++ * return error output
+  */
+-define boolean TestPopup (string port, string baud_rate) {
++define string irda_tmp_start (string port, string baud_rate, boolean modified, boolean & orig_start) {
+ 
+-    boolean modified	= port != Irda::port || baud_rate != Irda::max_baud_rate;
+-    // if service was originaly started
+-    boolean orig_start	= false;
++    map out = $[];
++    orig_start =  (Service::Status ("irda") == 0);
+ 
+-    /**
+-     * temporary start the service
+-     * return error output
+-     */
+-    define string irda_tmp_start () {
++    if (modified)
++    {
++	// 1. save new configuration
++	SCR::Write (.sysconfig.irda.IRDA_PORT, port);
++	SCR::Write (.sysconfig.irda.IRDA_MAX_BAUD_RATE, baud_rate);
++	SCR::Write (.sysconfig.irda, nil);
++    }
+ 
+-	map out = $[];
+-	orig_start =  (Service::Status ("irda") == 0);
++    // 2. start/restart the service
++    // when module cannot be loaded, Runlevel returns 0 -> use target.bash
++    if (!orig_start)
++	out = Service::RunInitScriptOutput ("irda", "start");
++    else if (modified)
++	out = Service::RunInitScriptOutput ("irda", "restart");
+ 
+-	if (modified)
+-	{
+-	    // 1. save new configuration
+-	    SCR::Write (.sysconfig.irda.IRDA_PORT, port);
+-	    SCR::Write (.sysconfig.irda.IRDA_MAX_BAUD_RATE, baud_rate);
+-	    SCR::Write (.sysconfig.irda, nil);
+-	}
++    return out["stderr"]:"";
++}
+ 
+-        // 2. start/restart the service
+-	// when module cannot be loaded, Runlevel returns 0 -> use target.bash
+-	if (!orig_start)
+-	    out = Service::RunInitScriptOutput ("irda", "start");
+-	else if (modified)
+-	    out = Service::RunInitScriptOutput ("irda", "restart");
+ 
+-	return out["stderr"]:"";
++/**
++ * internal function
++ * return IrDA configuration to original state after testing
++ */
++define void irda_tmp_stop (boolean modified, boolean orig_start) {
++
++    if (modified)
++    {
++	SCR::Write (.sysconfig.irda.IRDA_PORT, Irda::port);
++	SCR::Write (.sysconfig.irda.IRDA_MAX_BAUD_RATE, Irda::max_baud_rate);
++	SCR::Write (.sysconfig.irda, nil);
+     }
+ 
+-    /**
+-     * internal function
+-     * return IrDA configuration to original state after testing
+-     */
+-    define void irda_tmp_stop () {
++    if (!orig_start)
++	Service::RunInitScript ("irda", "stop");
++    else if (modified)
++	Service::RunInitScript ("irda", "restart");
++}
+ 
+-	if (modified)
+-	{
+-	    SCR::Write (.sysconfig.irda.IRDA_PORT, Irda::port);
+-	    SCR::Write (.sysconfig.irda.IRDA_MAX_BAUD_RATE, Irda::max_baud_rate);
+-	    SCR::Write (.sysconfig.irda, nil);
+-	}
++/**
++ * Popup for testing IrDA
++ * @param port the serial port use for IrDA
++ * (to see if it was changed and service needs to be restarted)
++ */
++define boolean TestPopup (string port, string baud_rate) {
+ 
+-	if (!orig_start)
+-	    Service::RunInitScript ("irda", "stop");
+-	else if (modified)
+-	    Service::RunInitScript ("irda", "restart");
+-    }
++    boolean modified	= port != Irda::port || baud_rate != Irda::max_baud_rate;
++    // if service was originaly started
++    boolean orig_start	= false;
+ 
+     UI::OpenDialog(`opt(`decorated), `HBox(`HSpacing(1.5),
+     `VBox(
+@@ -108,13 +109,13 @@ define boolean TestPopup (string port, string baud_rate) {
+     `HSpacing(1.5)
+     ));
+ 
+-    string start = irda_tmp_start ();
++    string start = irda_tmp_start (port, baud_rate, modified, orig_start);
+     UI::CloseDialog();
+     if (start != "")
+     {
+ 	y2error ("irda service returns: %1", start);
+ 	Popup::Error (Message::CannotStartService ("irda"));
+-	irda_tmp_stop ();
++	irda_tmp_stop (modified, orig_start);
+ 	return false;
+     }
+ 
+@@ -195,7 +196,7 @@ define boolean TestPopup (string port, string baud_rate) {
+     while (ret == nil);
+ 
+     SCR::Execute(.background.kill);
+-    irda_tmp_stop ();
++    irda_tmp_stop (modified, orig_start);
+     UI::CloseDialog();
+ 
+     return true;
