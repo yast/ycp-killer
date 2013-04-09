@@ -185,15 +185,22 @@ class YastModule
 
         file.puts "# Sources for #{name}"
         Dir.chdir dir do
-          MAKEFILE_DESCRIPTION.each do |section|
-            values = Dir[section[:glob]]
-            next if values.empty?
+          sections = MAKEFILE_DESCRIPTION.map do |section|
+            result = section.dup
+            result[:files] = Dir[section[:glob]]
 
-            file.write makefile_entry(section[:key_line] || section[:key], values)
+            result
+          end
+
+          sections.reject! { |section| section[:files].empty? }
+
+          sections = sections.sum { |section| split_section(section) }
+
+          sections.each do |section|
+            file.write makefile_entry(section[:key_line] || section[:key], section[:values])
 
             dist_variables << section[:key]
           end
-
 
           dist_value = dist_variables.map { |v| "$(#{v})" }.join(" ")
           file.write "\nEXTRA_DIST = #{dist_value}\n\n"
@@ -223,7 +230,8 @@ class YastModule
   MAKEFILE_DESCRIPTION = [
     {
       :glob     => 'modules/**/*\.{ycp,ybc,rb,py,pl,sh}',
-      :key      => 'module_DATA'
+      :key      => 'module_DATA',
+      :dir_var  => '@moduledir@'
     },
     {
       :glob     => 'clients/**/*\.{ycp,rb,py,pl,sh}',
@@ -231,7 +239,8 @@ class YastModule
     },
     {
       :glob     => 'include/**/*\.{ycp,rb,py}',
-      :key      => 'ynclude_DATA'
+      :key      => 'ynclude_DATA',
+      :dir_var  => '@yncludedir@'
     },
     {
       :glob     => "scrconf/*\.scr",
@@ -259,6 +268,56 @@ class YastModule
       :key      => "desktop_DATA"
     }
   ]
+
+  def split_section(section)
+    # Group section by subdirectories it includes.
+    # Note this means that we ignore the first directory in the path.
+    #
+    # Example:
+    #
+    #   [ "modules/Language.rb", "modules/YAPI/LANGUAGE/pl"]
+    #
+    # ends up as 
+    #
+    #   {
+    #     [] => ["modules/Language.rb"]
+    #     ["YAPI"] => ["modules/YAPI/LANGUAGE/pl"]
+    #   }
+    groups = section[:files].group_by { |f| f.split('/')[1..-2] }
+
+    i = 0
+    groups.map do |subdir, values|
+      # The key includes a name and its type separated by underscore,
+      # e.g. ynclude_DATA or ybin_SCRIPT. We construct unique group name and key
+      # from the name (not the type).
+      key_parts = section[:key].split('_')
+      key_type = key_parts.pop
+      key_name = key_parts.join("_")
+
+      key_name = key_name + i.to_s if i > 0
+
+      res = {
+        :values => values,
+        :key    => "#{key_name}_#{key_type}"
+      }
+
+      # For the schemafiles section we already have special key_line, so we use
+      # it. There should be no subdirs there, so it is not a problem.
+      res[:key_line] = section[:key_line] if section[:key_line]
+
+      # If it is not a subdir and the first element, then keep it as it was
+      # (common case).
+      if subdir.size > 0 || i > 0
+        raise "Unexpected subdir #{subdir.join("/")} for key #{key_name}" unless section[:dir_var]
+
+        res[:key_line] = "#{key_name}dir = #{section[:dir_var]}/#{subdir.join("/")}\n#{res[:key]}"
+      end
+
+      i += 1
+
+      res
+    end
+  end
 
   def module_paths
     # The lazy loading is needed because the dependencies may not be fully
