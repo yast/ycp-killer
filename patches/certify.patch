@@ -1,0 +1,88 @@
+diff --git a/src/include/certify/ui_tests.ycp b/src/include/certify/ui_tests.ycp
+index 71b4c62..5c174aa 100644
+--- a/src/include/certify/ui_tests.ycp
++++ b/src/include/certify/ui_tests.ycp
+@@ -26,7 +26,7 @@
+      * @return term
+      * Create a label, a button and a outputfield
+      */
+-    global define term BuildTestContents (string caption, string helptext, string frameheader, term customwidget, string status) ``{
++    global define void BuildTestContents (string caption, string helptext, string frameheader, term customwidget, string status) ``{
+ 
+ 	string statusmsg = _("Current Status: %1");
+ 
+@@ -342,6 +342,32 @@ and reachable host in your network.
+ 	return ret;
+     }
+ 
++    define integer checklogin (string caption, string helptext, string frameheader, term customwidget2)
++    ``{
++	boolean ready=false;
++	integer cmdret= 111;
++	BuildTestContents(caption,helptext,frameheader,customwidget2,_("Waiting for login..."));
++	UI::ChangeWidget(`id(`start),`Label, Label::OKButton());
++	Wizard::DisableNextButton();
++	Wizard::DisableBackButton();
++	repeat
++	{
++	    any ret = UI::UserInput();
++	    if (ret == `abort)
++	    {
++		cmdret=11;
++		ready=true;
++	    }
++	    else if (ret == `start)
++	    {
++		cmdret = (integer) SCR::Execute (.target.bash,"/usr/bin/w -h |/usr/bin/grep ttyS0");
++		SCR::Execute (.target.bash,"/usr/bin/w -h >/root/certlogs/serialtest.log.$$ 2>&1");
++		ready=true;
++	    }
++	} until(ready);
++	return cmdret;
++    }
++
+     /**
+      * SerialDialog
+      * @return any Returned value from UserInput() call
+@@ -368,32 +394,6 @@ and log in here as root or user.
+ 
+ 	string helptext = SerialDialogHelp();
+ 
+-	define integer checklogin()
+-	``{
+-	    boolean ready=false;
+-	    integer cmdret= 111;
+-	    BuildTestContents(caption,helptext,frameheader,customwidget2,_("Waiting for login..."));
+-	    UI::ChangeWidget(`id(`start),`Label, Label::OKButton());
+-	    Wizard::DisableNextButton();
+-	    Wizard::DisableBackButton();
+-	    repeat
+-	    {
+-		any ret = UI::UserInput();
+-		if (ret == `abort)
+-		{
+-		    cmdret=11;
+-		    ready=true;
+-		}
+-		else if (ret == `start)
+-		{
+-		    cmdret = (integer) SCR::Execute (.target.bash,"/usr/bin/w -h |/usr/bin/grep ttyS0");
+-		    SCR::Execute (.target.bash,"/usr/bin/w -h >/root/certlogs/serialtest.log.$$ 2>&1");
+-		    ready=true;
+-		}
+-	    } until(ready);
+-	    return cmdret;
+-	}
+-
+ 
+ 	BuildTestContents(caption,helptext,frameheader,customwidget,test_serial);
+ 
+@@ -430,7 +430,7 @@ and log in here as root or user.
+ 		}
+ 		else
+ 		{
+-		    cmdret=checklogin();
++		    cmdret=checklogin(caption,helptext,frameheader,customwidget2);
+ 		    if(cmdret > 0)
+ 		    {
+ 			    test_serial=status_failed;
