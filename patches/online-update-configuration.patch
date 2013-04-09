@@ -1,0 +1,26 @@
+diff --git a/src/clients/online_update_configuration.ycp b/src/clients/online_update_configuration.ycp
+index 997ee11..62b8590 100644
+--- a/src/clients/online_update_configuration.ycp
++++ b/src/clients/online_update_configuration.ycp
+@@ -44,7 +44,7 @@ you may find current contact information at www.novell.com
+     import "CommandLine";
+     import "Installation";
+ 
+-    include "online-update-configuration/OUCDialogs.ycp";
++    include "../include/OUCDialogs.ycp";
+ 
+     // support basic command-line output (bnc#439050)
+     list wfm_args = WFM::Args();
+diff --git a/src/clients/online_update_configuration_auto.ycp b/src/clients/online_update_configuration_auto.ycp
+index 102589e..740f7f0 100644
+--- a/src/clients/online_update_configuration_auto.ycp
++++ b/src/clients/online_update_configuration_auto.ycp
+@@ -47,7 +47,7 @@ you may find current contact information at www.novell.com
+     import "PackageCallbacks";
+ */
+ 
+-    include "online-update-configuration/OUCDialogs.ycp";
++    include "../include/OUCDialogs.ycp";
+ 
+ 
+ /**
