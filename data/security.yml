@@ -1,21 +1,15 @@
-# TODO: Process.
-
-files:
-  - src/Security.ycp
-  - src/complex.ycp
-  - src/dialogs.ycp
-  - src/helps.ycp
-  - src/levels.ycp
-  - src/routines.ycp
-  - src/security.ycp
-  - src/security_auto.ycp
-  - src/security_summary.ycp
-  - src/users.ycp
-  - src/widgets.ycp
-  - src/wizards.ycp
-  - testsuite/tests/Import.ycp
-  - testsuite/tests/Level1.ycp
-  - testsuite/tests/Level2.ycp
-  - testsuite/tests/Level3.ycp
-  - testsuite/tests/Read.ycp
-  - testsuite/tests/Write.ycp
+deps:
+  - testsuite
+  - yast2
+  - pam
+moves:
+  - from: "src/[A-Z]*.ycp"
+    to: src/modules
+  - from: "src/security*.ycp"
+    to: src/clients
+  - from: "src/*.ycp"
+    to: src/include/security
+  - from: "src/*.desktop"
+    to: src/desktop
+  - from: "src/*.rnc"
+    to: "src/autoyast-rnc"

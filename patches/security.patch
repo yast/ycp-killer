@@ -1,0 +1,13 @@
+diff --git a/src/include/security/users.ycp b/src/include/security/users.ycp
+index b54cdda..7b53634 100644
+--- a/src/include/security/users.ycp
++++ b/src/include/security/users.ycp
+@@ -37,6 +37,8 @@ import "Wizard";
+ 
+ include "security/helps.ycp";
+ include "security/routines.ycp";
++include "security/dialogs.ycp";
++
+ 
+ /**
+  * Adduser dialog
