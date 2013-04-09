@@ -1,6 +1,9 @@
-# TODO: Process.
-
-files:
-  - agent-slp/src/slp.ycp
-  - src/SLP.ycp
-  - src/slp.ycp
+deps:
+  - yast2
+moves:
+  - from: "src/SLP.ycp"
+    to: src/modules
+  - from: "src/slp.ycp"
+    to: src/clients
+  - from: "src/slp.desktop"
+    to: src/desktop
