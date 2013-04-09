@@ -1,8 +1,19 @@
-# TODO: Process.
+deps:
+  - yast2
+  - nfs-server
 
-files:
-  - src/HPCControl.ycp
-  - src/HPCMain.ycp
-  - src/HPCMessages.ycp
-  - src/dialog/HPCDialog.ycp
-  - src/hpc.ycp
+moves:
+  - from: "src/HPC{Control,Messages}.ycp"
+    to:   src/modules
+  - from: "src/{HPCMain,hpc}.ycp"
+    to:   src/clients
+  - from: "src/dialog/HPCDialog.ycp"
+    to:   src/include/hpc
+  - from: "src/config/hpc.desktop"
+    to:   src/desktop
+  - from: "scripts/*.{sh,pl,patch,cfg}"
+    to:   src/bin
+
+excluded:
+  # TODO: Include file, can't be compiled for now.
+  - src/include/hpc/HPCDialog.ycp
