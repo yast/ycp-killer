@@ -65,6 +65,7 @@ things get gemified, packaged, etc.
 
   6. **Clone the YCP Killer repository and install YCP Killer's dependencies**
 
+         $ sudo zypper in perl-JSON   # Needed to load the Json.pm YCP module
          $ git clone git://github.com/yast/ycp-killer.git
          $ cd ycp-killer
          $ bundle install
