@@ -1,0 +1,32 @@
+diff --git a/doc/Makefile.am b/doc/Makefile.am
+index fbc0358..e11ea30 100644
+--- a/doc/Makefile.am
++++ b/doc/Makefile.am
+@@ -2,7 +2,8 @@
+ # Makefile.am for devtools/devtools/skeletons/config/doc
+ #
+ 
+-SUBDIRS = autodocs
++# TODO autodocs now works only with ycp and perl files
++#SUBDIRS = autodocs
+ 
+ htmldir = $(docdir)
+ 
+diff --git a/yast2-sysconfig.spec.in b/yast2-sysconfig.spec.in
+index 88bf07f..6b98a3e 100644
+--- a/yast2-sysconfig.spec.in
++++ b/yast2-sysconfig.spec.in
+@@ -33,10 +33,9 @@ information.
+ %defattr(-,root,root)
+ %dir @yncludedir@/sysconfig
+ @yncludedir@/sysconfig/*
+-@clientdir@/sysconfig.ycp
+-@clientdir@/sysconfig_*.ycp
+-@moduledir@/Sysconfig.ycp
+-@moduledir@/Sysconfig.ybc
++@clientdir@/sysconfig.rb
++@clientdir@/sysconfig_*.rb
++@moduledir@/Sysconfig.rb
+ @desktopdir@/sysconfig.desktop
+ @ybindir@/parse_configs.pl
+ @ydatadir@/sysedit.agent
