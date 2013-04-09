@@ -1,34 +1,24 @@
-# TODO: Process.
-
-files:
-  - data/alsa_packages.ycp
-  - sound/src/Joystick.ycp
-  - sound/src/PulseAudio.ycp
-  - sound/src/Sound.ycp
-  - sound/src/card_wizard.ycp
-  - sound/src/complex.ycp
-  - sound/src/joy_dialog.ycp
-  - sound/src/joystick.ycp
-  - sound/src/joysticks.ycp
-  - sound/src/manual.ycp
-  - sound/src/mixer.ycp
-  - sound/src/options.ycp
-  - sound/src/read_routines.ycp
-  - sound/src/routines.ycp
-  - sound/src/sound.ycp
-  - sound/src/sound_auto.ycp
-  - sound/src/sound_proposal.ycp
-  - sound/src/sound_summary.ycp
-  - sound/src/sound_write.ycp
-  - sound/src/texts.ycp
-  - sound/src/ui.ycp
-  - sound/src/volume.ycp
-  - sound/src/volume_routines.ycp
-  - sound/src/wizards.ycp
-  - sound/src/write_routines.ycp
-  - sound/testsuite/tests/export_volume.ycp
-  - sound/testsuite/tests/filter_configured.ycp
-  - sound/testsuite/tests/get_card_label.ycp
-  - sound/testsuite/tests/import_volume.ycp
-  - sound/testsuite/tests/is_snd_alias.ycp
-  - sound/testsuite/tests/isa_uniq.ycp
+deps:
+  - yast2
+moves:
+  - from: "sound/src/[A-Z]*.ycp"
+    to: src/modules
+  - from: "sound/src/{sound,sound_write,sound_summary,sound_auto,joystick,sound_proposal}.ycp"
+    to: src/clients
+  - from: "sound/src/{routines,write_routines,read_routines,volume_routines,ui,texts,card_wizard,mixer,volume,options,complex,manual,joy_dialog,joysticks,wizards}.ycp"
+    to: src/include/sound
+  - from: "sound/src/*.desktop"
+    to: src/desktop
+  - from: "sound/src/{copyfonts,alsadrivers,joystickdrivers}"
+    to: src/bin
+  - from: sound/config/sound.rnc
+    to: src/autoyast-rnc
+  - from: "sound/agents/*.scr"
+    to: src/scrconf
+  - from: "sound/testsuite"
+    to: src
+  - from: "sound/doc"
+    to: "."
+  - from: "data"
+    to: src
+# TODO file data/sndcards.ycp is dynamically generated at build time
