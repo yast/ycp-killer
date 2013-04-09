@@ -1,6 +1,3 @@
-# TODO: Process.
-
-files:
-  - module/FTP.ycp
-  - module/HTTP.ycp
-  - module/TFTP.ycp
+moves:
+  - from: "module/*.ycp"
+    to: src/modules
