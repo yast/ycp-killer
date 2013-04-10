@@ -1,3 +1,6 @@
+deps:
+  - yast2
+
 moves:
   - from: "agents-scr/*.scr"
     to: src/scrconf
