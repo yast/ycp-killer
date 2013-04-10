@@ -632,7 +632,11 @@ class BuildOrder
   # Therefore, we will break cycles consisting of module-include pairs.
   def tsort_breaking_pair_cycles
     each_strongly_connected_component do |component|
-      if component.size > 2
+      next if component.size == 1
+      if component.all? {|source| source.is_a? Include}
+        # YCP parser breaks include cycles
+        component.last.includes.delete component.first.name
+      elsif component.size > 2
         raise TSort::Cyclic.new("Cycle involving at least 2 modules or 2 includes: #{component.inspect}")
       elsif component.size == 2
         # break the cycle
