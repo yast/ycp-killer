@@ -617,7 +617,7 @@ class BuildOrder
   def tsort_breaking_pair_cycles
     each_strongly_connected_component do |component|
       if component.size > 2
-        raise TSort::Cyclic.new("Cycle involving two modules or includes: #{component.inspect}")
+        raise TSort::Cyclic.new("Cycle involving at least 2 modules or 2 includes: #{component.inspect}")
       elsif component.size == 2
         # break the cycle
         # pretend the module did not include that one
@@ -630,7 +630,7 @@ class BuildOrder
           mod = component.last
           mod.is_a? Module or raise TSort::Cyclic.new("Cycle involving two includes: #{component.inspect}")
         end
-        mod.includes.delete_if { |i| i == inc.name }
+        mod.includes.delete inc.name
         # Be verbose because I wonder whether it only happens in yast2-network
         puts "Broke a cyclic dependency between #{mod.name} and #{inc.name}"
       end
