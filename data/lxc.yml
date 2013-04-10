@@ -1,8 +1,17 @@
-# TODO: Process.
+deps:
+  - yast2
+  - security
 
-files:
-  - src/Lxc.ycp
-  - src/dialogs.ycp
-  - src/helps.ycp
-  - src/lxc.ycp
-  - src/wizards.ycp
+moves:
+  - from: "src/Lxc.ycp"
+    to:   src/modules
+  - from: "src/lxc.ycp"
+    to:   src/clients
+  - from: "src/{dialogs,helps,wizards}.ycp"
+    to:   src/include/lxc
+  - from: "src/lxc.desktop"
+    to:   src/desktop
+
+excluded:
+  # TODO: Include file, can't be compiled for now.
+  - src/include/lxc/dialogs.ycp
