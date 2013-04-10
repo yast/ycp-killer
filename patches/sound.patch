@@ -1,0 +1,18 @@
+diff --git a/doc/autodocs/Makefile.am b/doc/autodocs/Makefile.am
+index 2a6f678..19b5419 100644
+--- a/doc/autodocs/Makefile.am
++++ b/doc/autodocs/Makefile.am
+@@ -1,3 +1,3 @@
+ # Makefile.am for YCP module .../doc/autodocs
+ 
+-include $(top_srcdir)/autodocs-ycp.ami
++# include $(top_srcdir)/autodocs-ycp.ami
+diff --git a/sound/Makefile.am b/sound/Makefile.am
+index 0764d69..9ef8dbb 100644
+--- a/sound/Makefile.am
++++ b/sound/Makefile.am
+@@ -1,3 +1,3 @@
+ #
+ # Makefile.am for sound/sound
+-SUBDIRS = doc src testsuite agents config
++SUBDIRS =
