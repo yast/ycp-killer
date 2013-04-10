@@ -1,102 +1,27 @@
-# TODO: Process.
-
-files:
-  - bindings/ycp/callback.ycp
-  - bindings/ycp/example.ycp
-  - disk/src/disk.ycp
-  - disk/src/disk_worker.ycp
-  - disk/src/storage.ycp
-  - multipath-simple/src/multipath-simple.ycp
-  - storage/data/demo_target_map.ycp
-  - storage/data/test_target_map.ycp
-  - storage/src/include/auto_part_create.ycp
-  - storage/src/include/auto_part_functions.ycp
-  - storage/src/include/auto_part_prepare.ycp
-  - storage/src/include/auto_part_ui.ycp
-  - storage/src/include/custom_part_check_generated.ycp
-  - storage/src/include/custom_part_dialogs.ycp
-  - storage/src/include/custom_part_helptexts.ycp
-  - storage/src/include/custom_part_lib.ycp
-  - storage/src/include/ep-all.ycp
-  - storage/src/include/ep-btrfs-dialogs.ycp
-  - storage/src/include/ep-btrfs-lib.ycp
-  - storage/src/include/ep-btrfs.ycp
-  - storage/src/include/ep-dialogs.ycp
-  - storage/src/include/ep-dm-dialogs.ycp
-  - storage/src/include/ep-dm-lib.ycp
-  - storage/src/include/ep-dm.ycp
-  - storage/src/include/ep-graph.ycp
-  - storage/src/include/ep-hd-dialogs.ycp
-  - storage/src/include/ep-hd-lib.ycp
-  - storage/src/include/ep-hd.ycp
-  - storage/src/include/ep-import.ycp
-  - storage/src/include/ep-lib.ycp
-  - storage/src/include/ep-log.ycp
-  - storage/src/include/ep-loop-dialogs.ycp
-  - storage/src/include/ep-loop-lib.ycp
-  - storage/src/include/ep-loop.ycp
-  - storage/src/include/ep-lvm-dialogs.ycp
-  - storage/src/include/ep-lvm-lib.ycp
-  - storage/src/include/ep-lvm.ycp
-  - storage/src/include/ep-main.ycp
-  - storage/src/include/ep-nfs.ycp
-  - storage/src/include/ep-raid-dialogs.ycp
-  - storage/src/include/ep-raid-lib.ycp
-  - storage/src/include/ep-raid.ycp
-  - storage/src/include/ep-settings.ycp
-  - storage/src/include/ep-summary.ycp
-  - storage/src/include/ep-tmpfs-dialogs.ycp
-  - storage/src/include/ep-tmpfs-lib.ycp
-  - storage/src/include/ep-tmpfs.ycp
-  - storage/src/include/ep-unused.ycp
-  - storage/src/include/lvm_lib.ycp
-  - storage/src/include/lvm_lv_lib.ycp
-  - storage/src/include/lvm_pv_lib.ycp
-  - storage/src/include/lvm_ui_dialogs.ycp
-  - storage/src/include/partition_defines.ycp
-  - storage/src/include/raid_lib.ycp
-  - storage/src/inst_custom_part.ycp
-  - storage/src/inst_disk.ycp
-  - storage/src/inst_disk_proposal.ycp
-  - storage/src/inst_prepdisk.ycp
-  - storage/src/inst_resize_dialog.ycp
-  - storage/src/inst_resize_ui.ycp
-  - storage/src/inst_target_part.ycp
-  - storage/src/inst_target_selection.ycp
-  - storage/src/modules/DevicesSelectionBox.ycp
-  - storage/src/modules/DualMultiSelectionBox.ycp
-  - storage/src/modules/FileSystems.ycp
-  - storage/src/modules/Greasemonkey.ycp
-  - storage/src/modules/MiniWorkflow.ycp
-  - storage/src/modules/Partitions.ycp
-  - storage/src/modules/Region.ycp
-  - storage/src/modules/Storage.ycp
-  - storage/src/modules/StorageClients.ycp
-  - storage/src/modules/StorageControllers.ycp
-  - storage/src/modules/StorageDevices.ycp
-  - storage/src/modules/StorageFields.ycp
-  - storage/src/modules/StorageIcons.ycp
-  - storage/src/modules/StorageInit.ycp
-  - storage/src/modules/StorageProposal.ycp
-  - storage/src/modules/StorageSettings.ycp
-  - storage/src/modules/StorageUpdate.ycp
-  - storage/src/modules/TabPanel.ycp
-  - storage/src/modules/TreePanel.ycp
-  - storage/src/proposal/partitions_proposal.ycp
-  - storage/src/storage_finish.ycp
-  - storage/src/testsuite/tests/empty-efi1.ycp
-  - storage/src/testsuite/tests/empty-efi2.ycp
-  - storage/src/testsuite/tests/empty1.ycp
-  - storage/src/testsuite/tests/empty2.ycp
-  - storage/src/testsuite/tests/empty3.ycp
-  - storage/src/testsuite/tests/empty4.ycp
-  - storage/src/testsuite/tests/empty5.ycp
-  - storage/src/testsuite/tests/empty6.ycp
-  - storage/src/testsuite/tests/half-empty1.ycp
-  - storage/src/testsuite/tests/helper1a.yh
-  - storage/src/testsuite/tests/helper1b.yh
-  - storage/src/testsuite/tests/reuse-home1.ycp
-  - storage/src/testsuite/tests/setup-system.yh
-  - storage/src/testsuite/tests/windows-only-efi1.ycp
-  - storage/src/testsuite/tests/windows-only1.ycp
-  - storage/src/testsuite/tests/windows1.ycp
+moves:
+  - from: "agents-scr/*.scr"
+    to: src/scrconf
+  - from: "scripts/check.boot"
+    to: src/bin
+  - from: data/sysconfig.storage-yast2-storage
+    to: src/fillup
+  - from: disk/src/*.ycp
+    to: src/clients
+  - from: disk/src/*.desktop
+    to: src/desktop
+  - from: multipath-simple/src/*.ycp
+    to: src/clients
+  - from: storage/data
+    to: src
+  - from: storage/doc
+    to: .
+  - from: storage/src/*.ycp
+    to: src/clients
+  - from: storage/src/include/*.ycp
+    to: src/include/partitioning
+  - from: storage/src/modules
+    to: src
+  - from: storage/src/proposal/*.ycp
+    to: src/clients
+  - from: storage/src/testsuite
+    to: .
