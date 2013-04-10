@@ -497,6 +497,11 @@ class BuildOrder
       lines = ::File.readlines @full_path
       @imports =  direct_imports(lines).uniq
       @includes = direct_includes(lines).uniq
+    rescue ArgumentError => e
+      if e.to_s =~ /invalid byte sequence/
+        raise e, e.message + "; offending file: #{@full_path}"
+      end
+      raise e
     end
 
     # Can be called once we know about all local modules and includes
