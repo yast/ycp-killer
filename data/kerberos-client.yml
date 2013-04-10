@@ -1,14 +1,23 @@
-# TODO: Process.
+deps:
+  - yast2
+  - pam
+  - testsuite
 
-files:
-  - src/Kerberos.ycp
-  - src/dialogs.ycp
-  - src/kerberos-client.ycp
-  - src/kerberos-client_auto.ycp
-  - src/kerberos.ycp
-  - src/wizards.ycp
-  - testsuite/tests/ImportExport.ycp
-  - testsuite/tests/Read.ycp
-  - testsuite/tests/ReadKrb5ConfValue.ycp
-  - testsuite/tests/Write.ycp
-  - testsuite/tests/WriteKrb5ConfValue.ycp
+moves:
+  - from: "src/Kerberos.ycp"
+    to:   src/modules
+  - from: "src/kerberos*.ycp"
+    to:   src/clients
+  - from: "src/{dialogs,wizards}.ycp"
+    to:   src/include/kerberos-client
+  - from: "src/kerberos.desktop"
+    to:   src/desktop
+  - from: "src/kerberos.rnc"
+    to:   src/autoyast-rnc
+  - from: "agents/*.scr"
+    to:   src/scrconf
+
+excluded:
+  # TODO: Include files, can't be compiled for now.
+  - src/include/kerberos-client/dialogs.ycp
+  - src/include/kerberos-client/wizards.ycp
