@@ -1,0 +1,25 @@
+diff --git a/doc/autodocs/Makefile.am b/doc/autodocs/Makefile.am
+index 2a6f678..19b5419 100644
+--- a/doc/autodocs/Makefile.am
++++ b/doc/autodocs/Makefile.am
+@@ -1,3 +1,3 @@
+ # Makefile.am for YCP module .../doc/autodocs
+ 
+-include $(top_srcdir)/autodocs-ycp.ami
++# include $(top_srcdir)/autodocs-ycp.ami
+diff --git a/src/include/instserver/dialogs.ycp b/src/include/instserver/dialogs.ycp
+index 71a509c..4471693 100644
+--- a/src/include/instserver/dialogs.ycp
++++ b/src/include/instserver/dialogs.ycp
+@@ -18,9 +18,11 @@
+     import "Instserver";
+     import "CWMFirewallInterfaces";
+     import "String";
++    import "Report";
+ 
+     include "instserver/helps.ycp";
+     include "instserver/routines.ycp";
++    include "instserver/complex.ycp";
+ 
+ 
+ 
