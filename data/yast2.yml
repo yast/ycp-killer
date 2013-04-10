@@ -47,8 +47,12 @@ moves:
     to: library/cwm/src/modules
   - from: "library/log/src/*.ycp"
     to: library/log/src/modules
-  - from: "library/system/src/*.ycp"
+  - from: "library/system/src/[A-Z]*.ycp"
     to: library/system/src/modules
+  - from: "library/system/src/classnames.ycp"
+    to: library/system/src/include/hwinfo
+  - from: "library/system/src/view_anymsg.ycp"
+    to: library/system/src/clients
   - from: "library/packages/src/common.ycp"
     to: library/packages/src/include/packages
     # order is important as common is only include
