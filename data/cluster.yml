@@ -1,12 +1,21 @@
-# TODO: Process.
+deps:
+  - yast2
 
-files:
-  - src/Cluster.ycp
-  - src/cluster.ycp
-  - src/cluster_auto.ycp
-  - src/cluster_proposal.ycp
-  - src/common.ycp
-  - src/complex.ycp
-  - src/dialogs.ycp
-  - src/helps.ycp
-  - src/wizards.ycp
+moves:
+  - from: "src/[A-Z]*.ycp"
+    to: src/modules
+  - from: "src/cluster*.ycp"
+    to: src/clients
+  - from: "src/*.ycp"
+    to: src/include/cluster
+  - from: "src/*.desktop"
+    to: src/desktop
+  - from: "agents/ag*"
+    to: "src/servers_non_y2"
+  - from: "agents/*.scr"
+    to: "src/scrconf"
+
+excluded:
+  # include files with missing variables
+  - src/include/cluster/dialogs.ycp
+  - src/include/cluster/common.ycp
