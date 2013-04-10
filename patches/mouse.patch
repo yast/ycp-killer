@@ -1,0 +1,24 @@
+diff --git a/doc/autodocs/Makefile.am b/doc/autodocs/Makefile.am
+index 10187ee..7ec4a56 100644
+--- a/doc/autodocs/Makefile.am
++++ b/doc/autodocs/Makefile.am
+@@ -1,4 +1,4 @@
+ # Makefile.am for YCP module .../doc/autodocs
+ 
+-AUTODOCS_YCP=$(srcdir)/../../src/*.ycp $(srcdir)/../../src/*/*.ycp
+-include $(top_srcdir)/autodocs-ycp.ami
++# AUTODOCS_YCP=$(srcdir)/../../src/*.ycp $(srcdir)/../../src/*/*.ycp
++# include $(top_srcdir)/autodocs-ycp.ami
+diff --git a/src/modules/Mouse.ycp b/src/modules/Mouse.ycp
+index c2c5a5e..f5cd0eb 100644
+--- a/src/modules/Mouse.ycp
++++ b/src/modules/Mouse.ycp
+@@ -3,7 +3,7 @@ FILE          : Mouse.ycp
+ ***************
+ PROJECT       : YaST2 - Yet another Setup Tool
+               :
+-AUTHOR        : Marcus Sch‰fer <ms@suse.de>
++AUTHOR        : Marcus Sch√§fer <ms@suse.de>
+               :
+ BELONGS TO    : YaST2 - GPM mouse setup NOT X11 Mouse !
+               :
