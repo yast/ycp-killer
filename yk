@@ -361,18 +361,15 @@ class YastModule
     @include_paths
   end
 
-  def handle_exception(e, error_kind, file)
-    if e.is_a? Interrupt
-      raise
-    end
-    if ! e.is_a? Cheetah::ExecutionFailed
-      error_kind = :error_other
-    end
-    error_kind_s = error_kind.to_s.sub(/^error_/,"")
+  def handle_exception(e, phase, file)
+    raise if e.is_a? Interrupt
 
-    Messages.finish "ERROR(#{error_kind_s})"
+    if ! e.is_a? Cheetah::ExecutionFailed
+      phase = :other
+    end
+    Messages.finish "ERROR(#{phase})"
+    @counts["error_#{phase}".to_sym] += 1
     log_error(file, e)
-    @counts[error_kind] += 1
   end
 
   def compile_modules
@@ -385,7 +382,7 @@ class YastModule
         create_ybc file
       rescue Exception => e
         Messages.start "  * #{file}"
-        handle_exception(e, :error_ybc, file)
+        handle_exception(e, :ybc, file)
         failed_files << file
       end
     end
@@ -411,14 +408,14 @@ class YastModule
 
         create_rb  work_file, result_file
       rescue Exception => e
-        handle_exception(e, :error_y2r, work_file)
+        handle_exception(e, :y2r, work_file)
         next
       end
 
       begin
         check_rb result_file
       rescue Exception => e
-        handle_exception(e, :error_ruby, work_file)
+        handle_exception(e, :ruby, work_file)
         next
       end
 
@@ -736,7 +733,7 @@ class CLI < Thor
 
   private
 
-  def report_results(module_names)
+  def report_results(module_names) # :yields: mod
     compile_stubs
 
     FileUtils.rm_rf(ERROR_FILE)
@@ -799,7 +796,7 @@ class CLI < Thor
     @modules.values_at(*module_names)
   end
 
-  def with_modules(modules, activity, print_status)
+  def with_modules(modules, activity, print_status) # :yields: mod
     max_counter_size = 3 + ((Math.log10(modules.size).to_i + 1) * 2)
 
     modules.each_index do |i|
