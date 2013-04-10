@@ -1,9 +1,22 @@
-# TODO: Process.
+deps:
+  - yast2
+  - testsuite
 
-files:
-  - src/advanced_items.ycp
-  - src/complex.ycp
-  - src/helps.ycp
-  - src/kerberos-server.ycp
-  - src/wizards.ycp
-  - testsuite/tests/KerberosServer.ycp
+moves:
+  - from: "src/KerberosServer.pm"
+    to:   src/modules
+  - from: "src/kerberos-server.ycp"
+    to:   src/clients
+  - from: "src/{advanced_items,complex,helps,wizards}.ycp"
+    to:   src/include/kerberos-server
+  - from: "src/kerberos-server.desktop"
+    to:   src/desktop
+  - from: "agents/*"
+    to:   src/scrconf
+
+excluded:
+  # TODO: Include files, can't be compiled for now.
+  - src/include/kerberos-server/advanced_items.ycp
+  - src/include/kerberos-server/complex.ycp
+  - src/include/kerberos-server/helps.ycp
+  - src/include/kerberos-server/wizards.ycp
