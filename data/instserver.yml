@@ -1,11 +1,15 @@
-# TODO: Process.
+deps:
+  - yast2
+  - slp
 
-files:
-  - src/Instserver.ycp
-  - src/complex.ycp
-  - src/dialogs.ycp
-  - src/helps.ycp
-  - src/instserver.ycp
-  - src/routines.ycp
-  - src/wizards.ycp
-  - testsuite/tests/Instserver.ycp
+moves:
+  - from: "src/[A-Z]*.ycp"
+    to: src/modules
+  - from: "src/instserver.ycp"
+    to: src/clients
+  - from: "src/*.ycp"
+    to: src/include/instserver
+  - from: "src/*.desktop"
+    to: src/desktop
+  - from: "src/httpd"
+    to: "."
