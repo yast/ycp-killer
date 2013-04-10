@@ -72,7 +72,8 @@ class YastModule
     patch
     res = compile
     # in case of error do not continue with submit
-    if !res[:error_y2r].zero? ||
+    if !res[:error_ybc].zero? ||
+        !res[:error_y2r].zero? ||
         !res[:error_ruby].zero? ||
         !res[:error_other].zero?
       return res
@@ -130,20 +131,21 @@ class YastModule
     clean_previous_compilation
     prepare_result_dir
 
-    counts = {
+    @counts = {
       :ok          => 0,
       :excluded    => excluded.size,
+      :error_ybc   => 0,
       :error_y2r   => 0,
       :error_ruby  => 0,
       :error_other => 0
     }
 
     Dir.chdir work_dir do
-      failed_files = compile_modules counts
-      convert_ycp counts, failed_files
+      failed_files = compile_modules
+      convert_ycp failed_files
     end
 
-    counts
+    @counts
   end
 
   def exported_module_paths
@@ -359,7 +361,21 @@ class YastModule
     @include_paths
   end
 
-  def compile_modules counts
+  def handle_exception(e, error_kind, file)
+    if e.is_a? Interrupt
+      raise
+    end
+    if ! e.is_a? Cheetah::ExecutionFailed
+      error_kind = :error_other
+    end
+    error_kind_s = error_kind.to_s.sub(/^error_/,"")
+
+    Messages.finish "ERROR(#{error_kind_s})"
+    log_error(file, e)
+    @counts[error_kind] += 1
+  end
+
+  def compile_modules
     failed_files = []
     # list of full paths
     ordered_modules = BuildOrder.new(exports).ordered_modules
@@ -369,9 +385,7 @@ class YastModule
         create_ybc file
       rescue Exception => e
         Messages.start "  * #{file}"
-        Messages.finish "ERROR(other)"
-        log_error(file, e)
-        counts[:error_other] += 1
+        handle_exception(e, :error_ybc, file)
         failed_files << file
       end
     end
@@ -379,7 +393,7 @@ class YastModule
     failed_files
   end
 
-  def convert_ycp counts, failed_files
+  def convert_ycp failed_files
     Dir["**/*.y{cp,h}"].each do |file|
       next if excluded.include?(file)
       next if failed_files.include?(file)
@@ -396,34 +410,20 @@ class YastModule
         ENV["Y2ALLGLOBAL"] = "1"
 
         create_rb  work_file, result_file
-      rescue Cheetah::ExecutionFailed => e
-        Messages.finish "ERROR(y2r)"
-        log_error(work_file, e)
-        counts[:error_y2r] += 1
-        next
       rescue Exception => e
-        Messages.finish "ERROR(other)"
-        log_error(work_file, e)
-        counts[:error_other] += 1
+        handle_exception(e, :error_y2r, work_file)
         next
       end
 
       begin
         check_rb result_file
-      rescue Cheetah::ExecutionFailed => e
-        Messages.finish "ERROR(ruby)"
-        log_error(work_file, e)
-        counts[:error_ruby] += 1
-        next
       rescue Exception => e
-        Messages.finish "ERROR(other)"
-        log_error(work_file, e)
-        counts[:error_other] += 1
+        handle_exception(e, :error_ruby, work_file)
         next
       end
 
       Messages.finish "OK"
-      counts[:ok] += 1
+      @counts[:ok] += 1
     end
   end
 
@@ -744,6 +744,7 @@ class CLI < Thor
     counts = {
       :ok          => 0,
       :excluded    => 0,
+      :error_ybc   => 0,
       :error_y2r   => 0,
       :error_ruby  => 0,
       :error_other => 0
@@ -760,6 +761,7 @@ class CLI < Thor
     puts
     puts "Total OK:           #{counts[:ok]}"
     puts "Total EXCLUDED:     #{counts[:excluded]}"
+    puts "Total ERROR(ybc):   #{counts[:error_ybc]}"
     puts "Total ERROR(y2r):   #{counts[:error_y2r]}"
     puts "Total ERROR(ruby):  #{counts[:error_ruby]}"
     puts "Total ERROR(other): #{counts[:error_other]}"
