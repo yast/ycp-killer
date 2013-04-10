@@ -23,7 +23,7 @@ moves:
   # be more directories than expected
   - from: "library/modules"
     to: src
-  - from: "library/types/src/*.ycp"
+  - from: "library/types/src/*.{ycp,pm}"
     to: library/types/src/modules
   - from: "library/runlevel/src/*.ycp"
     to: library/runlevel/src/modules
@@ -57,7 +57,7 @@ moves:
   - from: "library/cron/src/*.ycp"
     to: library/cron/src/modules
     # TODO there is strange source files in network, investigate!
-  - from: "library/network/src/[A-Z]*.ycp"
+  - from: "library/network/src/[A-Z]*.{ycp,pm}"
     to: library/network/src/modules
   - from: "library/gpg/src/*.ycp"
     to: library/gpg/src/modules
