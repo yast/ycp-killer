@@ -1,0 +1,12 @@
+diff --git a/src/include/kerberos-server/complex.ycp b/src/include/kerberos-server/complex.ycp
+index 64a5036..74b6629 100644
+--- a/src/include/kerberos-server/complex.ycp
++++ b/src/include/kerberos-server/complex.ycp
+@@ -32,6 +32,7 @@ textdomain "kerberos-server";
+ 
+ import "Label";
+ import "Popup";
++import "Report";
+ import "Wizard";
+ import "Confirm";
+ import "KerberosServer";
