@@ -367,6 +367,8 @@ class YastModule
     ordered_modules.each do |file|
       begin
         create_ybc file
+      rescue Interrupt
+        raise
       rescue Exception => e
         Messages.start "  * #{file}"
         Messages.finish "ERROR(other)"
@@ -401,6 +403,8 @@ class YastModule
         log_error(work_file, e)
         counts[:error_y2r] += 1
         next
+      rescue Interrupt
+        raise
       rescue Exception => e
         Messages.finish "ERROR(other)"
         log_error(work_file, e)
@@ -415,6 +419,8 @@ class YastModule
         log_error(work_file, e)
         counts[:error_ruby] += 1
         next
+      rescue Interrupt
+        raise
       rescue Exception => e
         Messages.finish "ERROR(other)"
         log_error(work_file, e)
@@ -831,6 +837,8 @@ rescue Cheetah::ExecutionFailed => e
   puts
   puts "Command #{e.commands[0][0]} failed:"
   puts e.stderr
+rescue Interrupt
+  raise
 rescue Exception => e
   puts
   puts e.message
