@@ -266,6 +266,10 @@ class YastModule
     {
       :glob     => "desktop/*",
       :key      => "desktop_DATA"
+    },
+    {
+      :glob     => "fillup/*",
+      :key      => "fillup_DATA"
     }
   ]
 
