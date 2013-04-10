@@ -1,12 +1,12 @@
-# TODO: Process.
+deps:
+   - packager
 
-files:
-  - src/add-on-workflow.ycp
-  - src/add-on.ycp
-  - src/add-on_auto.ycp
-  - src/add-on_proposal.ycp
-  - src/inst_add-on.ycp
-  - src/inst_add-on_software.ycp
-  - src/inst_language_add-on.ycp
-  - src/misc.ycp
-  - src/vendor.ycp
+moves:
+  - from: "src/{add-on-workflow,misc}.ycp"
+    to: src/include/add-on
+  - from: "src/*.ycp"
+    to: src/clients
+  - from: "src/*.desktop"
+    to: src/desktop
+  - from: "src/*.rnc"
+    to: src/autoyast-rnc
