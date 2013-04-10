@@ -66,7 +66,7 @@ class YastModule
   end
 
   def convert
-    clone
+    File.exists?(work_dir) ? update : clone
     restructure
     patch
     res = compile
@@ -87,6 +87,17 @@ class YastModule
     FileUtils.rm_rf(work_dir)
 
     Cheetah.run "git", "clone", "git://github.com/yast/yast-#@name.git", work_dir
+  end
+
+  def update
+    reset
+    pull
+  end
+
+  def pull
+    Dir.chdir work_dir do
+      Cheetah.run "git", "pull"
+    end
   end
 
   def patch
