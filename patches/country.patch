@@ -1,7 +1,101 @@
+diff --git a/console/Makefile.am b/console/Makefile.am
+index f494239..ac2f5d6 100644
+--- a/console/Makefile.am
++++ b/console/Makefile.am
+@@ -1,3 +1,3 @@
+ #
+ # Makefile.am for country/console
+-SUBDIRS = agents data src
++SUBDIRS = src
+diff --git a/keyboard/Makefile.am b/keyboard/Makefile.am
+index 4e2769f..f0f8114 100644
+--- a/keyboard/Makefile.am
++++ b/keyboard/Makefile.am
+@@ -1,4 +1,4 @@
+ #
+ # Makefile.am for country/keyboard
+-SUBDIRS = agents data doc src testsuite
++SUBDIRS = doc src testsuite
+ 
+diff --git a/keyboard/doc/autodocs/Makefile.am b/keyboard/doc/autodocs/Makefile.am
+index e7ddf79..78b57df 100644
+--- a/keyboard/doc/autodocs/Makefile.am
++++ b/keyboard/doc/autodocs/Makefile.am
+@@ -1,4 +1,4 @@
+ # Makefile.am for YCP module .../doc/autodocs
+ 
+-AUTODOCS_YCP=$(srcdir)/../../src/*.ycp
+-include $(top_srcdir)/autodocs-ycp.ami
++# AUTODOCS_YCP=$(srcdir)/../../src/*.ycp
++# include $(top_srcdir)/autodocs-ycp.ami
+diff --git a/keyboard/src/include/keyboard/dialogs.ycp b/keyboard/src/include/keyboard/dialogs.ycp
+index b28f038..dac9a4a 100644
+--- a/keyboard/src/include/keyboard/dialogs.ycp
++++ b/keyboard/src/include/keyboard/dialogs.ycp
+@@ -23,7 +23,7 @@
+  *	keyboard/dialogs.ycp
+  *
+  * Authors:
+- *	Klaus   Kämpf <kkaempf@suse.de>
++ *	Klaus   KÃ¤mpf <kkaempf@suse.de>
+  *	Michael Hager <mike@suse.de>
+  *	Stefan  Hundhammer <sh@suse.de>
+  *
+diff --git a/language/Makefile.am b/language/Makefile.am
+index d90959c..9903361 100644
+--- a/language/Makefile.am
++++ b/language/Makefile.am
+@@ -1,4 +1,4 @@
+ #
+ # Makefile.am for country/language
+-SUBDIRS = agents data doc src testsuite
++SUBDIRS = doc src testsuite
+ 
+diff --git a/language/doc/autodocs/Makefile.am b/language/doc/autodocs/Makefile.am
+index e7ddf79..78b57df 100644
+--- a/language/doc/autodocs/Makefile.am
++++ b/language/doc/autodocs/Makefile.am
+@@ -1,4 +1,4 @@
+ # Makefile.am for YCP module .../doc/autodocs
+ 
+-AUTODOCS_YCP=$(srcdir)/../../src/*.ycp
+-include $(top_srcdir)/autodocs-ycp.ami
++# AUTODOCS_YCP=$(srcdir)/../../src/*.ycp
++# include $(top_srcdir)/autodocs-ycp.ami
+diff --git a/timezone/Makefile.am b/timezone/Makefile.am
+index 53f3572..ce84dc6 100644
+--- a/timezone/Makefile.am
++++ b/timezone/Makefile.am
+@@ -1,4 +1,4 @@
+ #
+ # Makefile.am for country/timezone
+-SUBDIRS = agents data doc src testsuite
++SUBDIRS = doc src testsuite
+ 
+diff --git a/timezone/doc/autodocs/Makefile.am b/timezone/doc/autodocs/Makefile.am
+index e7ddf79..78b57df 100644
+--- a/timezone/doc/autodocs/Makefile.am
++++ b/timezone/doc/autodocs/Makefile.am
+@@ -1,4 +1,4 @@
+ # Makefile.am for YCP module .../doc/autodocs
+ 
+-AUTODOCS_YCP=$(srcdir)/../../src/*.ycp
+-include $(top_srcdir)/autodocs-ycp.ami
++# AUTODOCS_YCP=$(srcdir)/../../src/*.ycp
++# include $(top_srcdir)/autodocs-ycp.ami
 diff --git a/timezone/src/include/timezone/dialogs.ycp b/timezone/src/include/timezone/dialogs.ycp
-index 7cf268b..c694f73 100644
+index 7cf268b..329d1e9 100644
 --- a/timezone/src/include/timezone/dialogs.ycp
 +++ b/timezone/src/include/timezone/dialogs.ycp
+@@ -23,7 +23,7 @@
+  *	timezone/dialogs.ycp
+  *
+  * Authors:
+- *	Klaus   Kämpf <kkaempf@suse.de>
++ *	Klaus   KÃ¤mpf <kkaempf@suse.de>
+  *	Michael Hager <mike@suse.de>
+  *	Stefan  Hundhammer <sh@suse.de>
+  *	Jiri Suchomel <jsuchome@suse.cz>
 @@ -124,20 +124,6 @@
        return ret;
    }
