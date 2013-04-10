@@ -1,3 +1,12 @@
+diff --git a/doc/autodocs/Makefile.am b/doc/autodocs/Makefile.am
+index 2a6f678..19b5419 100644
+--- a/doc/autodocs/Makefile.am
++++ b/doc/autodocs/Makefile.am
+@@ -1,3 +1,3 @@
+ # Makefile.am for YCP module .../doc/autodocs
+ 
+-include $(top_srcdir)/autodocs-ycp.ami
++# include $(top_srcdir)/autodocs-ycp.ami
 diff --git a/src/include/security/users.ycp b/src/include/security/users.ycp
 index b54cdda..7b53634 100644
 --- a/src/include/security/users.ycp
