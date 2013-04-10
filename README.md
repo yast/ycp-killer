@@ -198,8 +198,10 @@ binaries specified by the `ycpc` and `y2r` setting in `config.xml`.
 The compilation of each file may finish in one the following states:
 
   * **OK** – the compilation was successful
-  * **ERROR(y2r)** – the compilation failed when running `ycpc` or `y2r` on the
-    module code
+  * **ERROR(ybc)** – the compilation failed when running `ycpc`
+    on the module code
+  * **ERROR(y2r)** – the compilation failed when running `y2r`
+    on the module code
   * **ERROR(ruby)** – the compilation failed because it produced a result which
     was invalid Ruby (as determined by `ruby -c`)
   * **ERROR(other)** – the compilation failed for some other reason
@@ -229,6 +231,7 @@ $ ./yk compile testsuite
 
 Total OK:           3
 Total EXCLUDED:     0
+Total ERROR(ybc):   0
 Total ERROR(y2r):   6
 Total ERROR(ruby):  0
 Total ERROR(other): 0
