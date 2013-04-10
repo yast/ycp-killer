@@ -1,0 +1,90 @@
+diff --git a/src/include/partitioning/auto_part_create.ycp b/src/include/partitioning/auto_part_create.ycp
+index 46da1dc..7cf1fd3 100644
+--- a/src/include/partitioning/auto_part_create.ycp
++++ b/src/include/partitioning/auto_part_create.ycp
+@@ -23,7 +23,7 @@
+  * Module:		auto_part_create.ycp
+  *
+  * Authors:		Andreas Schwab (schwab@suse.de)
+- *			Klaus K‰mpf (kkaempf@suse.de)
++ *			Klaus K√§mpf (kkaempf@suse.de)
+  *
+  * Purpose:		This module creates the neccessary partitions
+  *			in the targetMap
+diff --git a/src/include/partitioning/auto_part_functions.ycp b/src/include/partitioning/auto_part_functions.ycp
+index 28bd406..2227df2 100644
+--- a/src/include/partitioning/auto_part_functions.ycp
++++ b/src/include/partitioning/auto_part_functions.ycp
+@@ -23,7 +23,7 @@
+  * Module: 		auto_part_functions.ycp
+  *
+  * Authors: 		Andreas Schwab (schwab@suse.de)
+- *			Klaus K‰mpf (kkaempf@suse.de)
++ *			Klaus K√§mpf (kkaempf@suse.de)
+  *
+  * Purpose: 		This module define functions of general use
+  *			to the automatic partitioner
+@@ -175,8 +175,8 @@ define boolean is_fat_partition( map partition ) ``{
+     //
+ define boolean is_ntfs_partition( map partition ) ``{
+ 	return ( partition["fsid"]:-1 == 0x07 || 	// HPFS/NTFS
+-		 partition["fsid"]:-1 == 0x86 || 	// NTFS-Datentr‰ger
+-		 partition["fsid"]:-1 == 0x87 );	// NTFS-Datentr‰ger
++		 partition["fsid"]:-1 == 0x86 || 	// NTFS-Datentr√§ger
++		 partition["fsid"]:-1 == 0x87 );	// NTFS-Datentr√§ger
+     }
+ 
+     
+diff --git a/src/include/partitioning/auto_part_prepare.ycp b/src/include/partitioning/auto_part_prepare.ycp
+index 32109d5..e04f150 100644
+--- a/src/include/partitioning/auto_part_prepare.ycp
++++ b/src/include/partitioning/auto_part_prepare.ycp
+@@ -23,7 +23,7 @@
+  * Module: 		auto_part_prepare.ycp
+  *
+  * Authors: 		Andreas Schwab (schwab@suse.de)
+- *			Klaus K‰mpf (kkaempf@suse.de)
++ *			Klaus K√§mpf (kkaempf@suse.de)
+  *
+  * Purpose: 		This module preparse the raw targetMap to
+  *			cover the whole disk, including unpartitioned
+diff --git a/src/include/partitioning/auto_part_ui.ycp b/src/include/partitioning/auto_part_ui.ycp
+index f62e625..2179e6e 100644
+--- a/src/include/partitioning/auto_part_ui.ycp
++++ b/src/include/partitioning/auto_part_ui.ycp
+@@ -23,7 +23,7 @@
+  * Module: 		auto_part_ui.ycp
+  *
+  * Authors: 		Andreas Schwab (schwab@suse.de)
+- *			Klaus K‰mpf (kkaempf@suse.de)
++ *			Klaus K√§mpf (kkaempf@suse.de)
+  *
+  * Purpose: 		This module contains the user interface
+  *			definitions for the automatic partitioner
+diff --git a/src/modules/Storage.ycp b/src/modules/Storage.ycp
+index a9d6bae..43b11a9 100644
+--- a/src/modules/Storage.ycp
++++ b/src/modules/Storage.ycp
+@@ -29,16 +29,16 @@
+  * to * access and modify the partitioning settings.
+  *
+  * Todo: Translate
+- * Diese Modul enth‰lt alle Informationen die f¸r die Partitionierung der
++ * Diese Modul enth√§lt alle Informationen die f√ºr die Partitionierung der
+  * Festplatten erforderlich sind. Diese Informationen bestehen aus der
+  * Beschreibung, der vor der Partitionierung vorhandenen Platteneinstellungen,
+- * und der Art und Weise wie diese ver‰ndert werden soll.
+- * Alle nˆtigen Zugriffsfunktionen auf diese Datenstruktur sind ebenfalls in
++ * und der Art und Weise wie diese ver√§ndert werden soll.
++ * Alle n√∂tigen Zugriffsfunktionen auf diese Datenstruktur sind ebenfalls in
+  * diesem Modul enthalten. Der Zugriff auf die Speicherung der
+- * Partitionseinstellungen l‰uft also nur ¸ber dieses Modul.
+- * Der Zugriff und die R¸ckgabe von Teilen der Partitionsdatenstruktur
++ * Partitionseinstellungen l√§uft also nur √ºber dieses Modul.
++ * Der Zugriff und die R√ºckgabe von Teilen der Partitionsdatenstruktur
+  * wurde versucht "intelligent" zu gestallten und ist im einzelen bei den
+- * entspechenden Funktionen n‰her erkl‰rt.
++ * entspechenden Funktionen n√§her erkl√§rt.
+  *
+  * $Id$
+  */
