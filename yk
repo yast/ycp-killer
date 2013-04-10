@@ -162,7 +162,7 @@ class YastModule
       moves.each do |move|
         FileUtils.mkdir_p move["to"]
 
-        Dir.glob("#{work_dir}/#{move["from"]}", File::FNM_DOTMATCH) do |file|
+        Dir.glob("#{work_dir}/#{move["from"]}") do |file|
           # We want the moves stored in git index. This way the "genpatch"
           # command creates patch against state after restructuring, not
           # before it.
