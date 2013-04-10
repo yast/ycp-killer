@@ -1,77 +1,20 @@
-# TODO: Process.
+deps:
+  - testsuite
+  - yast2
+  - slp
+  - transfer
+  - country
 
-files:
-  - src/clients/add_inst_source_slptype.ycp
-  - src/clients/checkmedia.ycp
-  - src/clients/do_not_show_again_editor.ycp
-  - src/clients/inst_check_memsize.ycp
-  - src/clients/inst_checkmedia.ycp
-  - src/clients/inst_custom_packages.ycp
-  - src/clients/inst_desktop.ycp
-  - src/clients/inst_kickoff.ycp
-  - src/clients/inst_media.ycp
-  - src/clients/inst_mediacopy.ycp
-  - src/clients/inst_packages.ycp
-  - src/clients/inst_productsources.ycp
-  - src/clients/inst_rpmcopy.ycp
-  - src/clients/inst_sw_select.ycp
-  - src/clients/key_manager.ycp
-  - src/clients/media_proposal.ycp
-  - src/clients/pkg_finish.ycp
-  - src/clients/repositories.ycp
-  - src/clients/select_slp_source.ycp
-  - src/clients/software_proposal.ycp
-  - src/clients/software_simple_proposal.ycp
-  - src/clients/sw_single.ycp
-  - src/clients/webpin_package_search.ycp
-  - src/clients/wrapper_slideshow_callbacks.ycp
-  - src/clients/wrapper_storage.ycp
-  - src/include/checkmedia/ui.ycp
-  - src/include/inst_source_dialogs.ycp
-  - src/include/key_manager_dialogs.ycp
-  - src/include/load_release_notes.ycp
-  - src/include/repositories_include.ycp
-  - src/include/storage_include.ycp
-  - src/modules/AddOnProduct.ycp
-  - src/modules/CheckMedia.ycp
-  - src/modules/DefaultDesktop.ycp
-  - src/modules/InstShowInfo.ycp
-  - src/modules/InstURL.ycp
-  - src/modules/KeyManager.ycp
-  - src/modules/OneClickInstallStandard.ycp
-  - src/modules/PackageInstallation.ycp
-  - src/modules/PackageSlideShow.ycp
-  - src/modules/Packages.ycp
-  - src/modules/ProductLicense.ycp
-  - src/modules/SlideShowCallbacks.ycp
-  - src/modules/SourceDialogs.ycp
-  - src/modules/SourceManager.ycp
-  - src/modules/SourceManagerSLP.ycp
-  - src/modules/SpaceCalculation.ycp
-  - src/modules/WebpinPackageSearch.ycp
-  - testsuite/data/installInf2Url.ycp
-  - testsuite/manual-tests/testCallbacks.ycp
-  - testsuite/manual-tests/test_convert.ycp
-  - testsuite/manual-tests/test_download.ycp
-  - testsuite/manual-tests/test_rebuild.ycp
-  - testsuite/manual-tests/test_url.ycp
+moves:
+  - from: "src/include/*.ycp"
+    to: src/include/packager
+
+excluded:
+  # some obsoleted tests (do not work anymore due to changed API)
+  # should be removed from the package
   - testsuite/old-tests/ChangeCD.ycp
   - testsuite/old-tests/EvaluateFreeSpace.ycp
   - testsuite/old-tests/GetBootDevice.ycp
   - testsuite/old-tests/MergeProposals.ycp
   - testsuite/old-tests/MergeWorkflows.ycp
   - testsuite/old-tests/evaluateFreeSpace.ycp
-  - testsuite/spkg/tests/sw_input.ycp
-  - testsuite/spkg/tests/sw_popup.ycp
-  - testsuite/spkg/tests/sw_source.ycp
-  - testsuite/tests/AddOnProduct_test.ycp
-  - testsuite/tests/DefaultDesktop.ycp
-  - testsuite/tests/PackageSlideShow.ycp
-  - testsuite/tests/Packages.ycp
-  - testsuite/tests/SpaceCalculation.ycp
-  - testsuite/tests/insturl-cd.ycp
-  - testsuite/tests/insturl-ftp.ycp
-  - testsuite/tests/insturl-http.ycp
-  - testsuite/tests/insturl-iso.ycp
-  - testsuite/tests/insturl-ops.ycp
-  - testsuite/tests/insturl-smb.ycp
