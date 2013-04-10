@@ -106,16 +106,16 @@ The following tree shows what gets installed where:
 ```
 tictactoe-server
 └── src
-    ├── bin           ->  /usr/lib/YaST2/bin        (lib, even if lib64 exists)
-    ├── servers_non_y2 -> /usr/lib/YaST2/servers_non_y2
-    ├── clients       ->  /usr/share/YaST2/clients
-    ├── data          ->  /usr/share/YaST2/data
-    ├── include       ->  /usr/share/YaST2/include
-    ├── modules       ->  /usr/share/YaST2/modules
-    ├── scrconf       ->  /usr/share/YaST2/scrconf
-    ├── autoyast-rnc  ->  /usr/share/YaST2/schema/autoyast/rnc
-    ├── control-rnc   ->  /usr/share/YaST2/schema/control/rnc
-    └── desktop       ->  /usr/share/applications/YaST2
+    ├── bin            ->  /usr/lib/YaST2/bin       (lib, even if lib64 exists)
+    ├── servers_non_y2 ->  /usr/lib/YaST2/servers_non_y2
+    ├── clients        ->  /usr/share/YaST2/clients
+    ├── data           ->  /usr/share/YaST2/data
+    ├── include        ->  /usr/share/YaST2/include
+    ├── modules        ->  /usr/share/YaST2/modules
+    ├── scrconf        ->  /usr/share/YaST2/scrconf
+    ├── autoyast-rnc   ->  /usr/share/YaST2/schema/autoyast/rnc
+    ├── control-rnc    ->  /usr/share/YaST2/schema/control/rnc
+    └── desktop        ->  /usr/share/applications/YaST2
 ```
 
 Other directories, like `doc` and `testsuite`, are not restructured now
