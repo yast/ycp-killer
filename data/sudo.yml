@@ -1,15 +1,17 @@
-# TODO: Process.
+deps:
+  - yast2
+  - users
 
-files:
-  - src/Sudo.ycp
-  - src/complex.ycp
-  - src/dialog-cmnd.ycp
-  - src/dialog-host.ycp
-  - src/dialog-runas.ycp
-  - src/dialog-spec.ycp
-  - src/dialog-user.ycp
-  - src/dialogs.ycp
-  - src/helps.ycp
-  - src/sudo.ycp
-  - src/wizards.ycp
-  - testsuite/tests/Sudo.ycp
+moves:
+  - from: "src/[A-Z]*.ycp"
+    to: src/modules
+  - from: "src/sudo.ycp"
+    to: src/clients
+  - from: "src/*.ycp"
+    to: src/include/sudo
+  - from: "src/*.desktop"
+    to: src/desktop
+  - from: "agents/ag*"
+    to: "src/servers_non_y2"
+  - from: "agents/*.scr"
+    to: "src/scrconf"
