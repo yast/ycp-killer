@@ -138,7 +138,7 @@ The module name can be omitted if it is the current working directory in the
 
 #### yk convert
 
-Does everything at once: `clone`, `restructure`, `patch`, `compile`.
+Does everything at once: `clone`, `restructure`, `patch`, `compile`, `makefile`, `package`.
 
 #### yk clone
 
@@ -251,6 +251,15 @@ into a patch in the `patches` directory.
 $ ./yk genpatch testsuite
 [1/1] Generating patch testsuite...                                   OK
 ```
+
+#### yk makefile
+
+Generates Makefile.am for exported directories of module(s)
+
+#### yk package
+
+Creates packages for module(s) in the build service directory, which is a
+third tree alongside the *working* and *result* ones.
 
 ### Module Metadata
 
