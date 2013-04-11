@@ -1,9 +1,14 @@
-# TODO: Process.
+deps:
+  - yast2
 
-files:
-  - src/OpenvasSecurityScanner.ycp
-  - src/complex.ycp
-  - src/dialogs.ycp
-  - src/helps.ycp
-  - src/openvas-security-scanner.ycp
-  - src/wizards.ycp
+moves:
+  - from: "src/OpenvasSecurityScanner.ycp"
+    to:   src/modules
+  - from: "src/openvas-security-scanner.ycp"
+    to:   src/clients
+  - from: "src/{complex,dialogs,helps,wizards}.ycp"
+    to:   src/include/openvas-security-scanner
+  - from: "src/openvas-security-scanner.desktop"
+    to:   src/desktop
+  - from: "agents/*"
+    to:   src/scrconf
