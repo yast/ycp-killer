@@ -52,7 +52,7 @@ index b6bc8cc..1412807 100644
  htmldir = @docdir@
  
 diff --git a/src/include/users/dialogs.ycp b/src/include/users/dialogs.ycp
-index 26e0b94..d311a4f 100644
+index 26e0b94..c1c51bb 100644
 --- a/src/include/users/dialogs.ycp
 +++ b/src/include/users/dialogs.ycp
 @@ -151,183 +151,6 @@ Try again."));
@@ -905,12 +905,12 @@ index 26e0b94..d311a4f 100644
  		continue;
              }
  
-@@ -1586,7 +1279,49 @@ Log the user out first."));
+@@ -1586,7 +1279,50 @@ Log the user out first."));
  		    continue;
  		}
  		user	= Users::GetCurrentUser ();
 -		reinit_userdata ();
-+                // inplace reinit_userdata
++                // begin of inlined reinit_userdata
 +                user_type	= user["type"]:user_type;
 +                username	= user["uid"]:username;
 +                if (is (user["cn"]:nil, list))
@@ -952,16 +952,17 @@ index 26e0b94..d311a4f 100644
 +                no_skel		= user["no_skeleton"]:no_skel;
 +                groups		= user["grouplist"]:$[];
 +                do_not_edit	= (user_type == "nis");
++                // end of inlined reinit_userdata
 +
  		UI::ChangeWidget (`id(`table), `Item (plugin_client,0),
  		    UI::Glyph (`CheckMark));
  	    }
-@@ -1600,7 +1335,49 @@ Log the user out first."));
+@@ -1600,7 +1336,50 @@ Log the user out first."));
  		    continue;
  		}
  		user	= Users::GetCurrentUser ();
 -		reinit_userdata ();
-+                // inplace reinit_userdata
++                // begin of inlined reinit_userdata
 +                user_type	= user["type"]:user_type;
 +                username	= user["uid"]:username;
 +                if (is (user["cn"]:nil, list))
@@ -1003,16 +1004,17 @@ index 26e0b94..d311a4f 100644
 +                no_skel		= user["no_skeleton"]:no_skel;
 +                groups		= user["grouplist"]:$[];
 +                do_not_edit	= (user_type == "nis");
++                // end of inlined reinit_userdata
 +
  		UI::ChangeWidget (`id(`table), `Item (plugin_client,0), " ");
  	    }
  	    if (ret == `run)
-@@ -1618,7 +1395,49 @@ Log the user out first."));
+@@ -1618,7 +1397,50 @@ Log the user out first."));
  		    }
  		    plugin_added	= true;
  		    user	= Users::GetCurrentUser ();
 -		    reinit_userdata ();
-+                    // inplace reinit_userdata
++                    // begin of inlined reinit_userdata
 +                    user_type	= user["type"]:user_type;
 +                    username	= user["uid"]:username;
 +                    if (is (user["cn"]:nil, list))
@@ -1054,16 +1056,17 @@ index 26e0b94..d311a4f 100644
 +                    no_skel		= user["no_skeleton"]:no_skel;
 +                    groups		= user["grouplist"]:$[];
 +                    do_not_edit	= (user_type == "nis");
++                    // end of inlined reinit_userdata
 +
  		}
  		any plugin_ret = WFM::CallFunction (
  		    plugin_client, ["Dialog", $[ "what"	: "user" ], user ]);
-@@ -1626,7 +1445,49 @@ Log the user out first."));
+@@ -1626,7 +1448,50 @@ Log the user out first."));
  		{
  		    // update the map of changed user
  		    user	= Users::GetCurrentUser ();
 -		    reinit_userdata ();
-+                    // inplace reinit_userdata
++                    // begin of inlined reinit_userdata
 +                    user_type	= user["type"]:user_type;
 +                    username	= user["uid"]:username;
 +                    if (is (user["cn"]:nil, list))
@@ -1105,16 +1108,17 @@ index 26e0b94..d311a4f 100644
 +                    no_skel		= user["no_skeleton"]:no_skel;
 +                    groups		= user["grouplist"]:$[];
 +                    do_not_edit	= (user_type == "nis");
++                    // end of inlined reinit_userdata
 +
  		    UI::ChangeWidget (`id(`table), `Item (plugin_client,0), UI::Glyph (`CheckMark));
  		}
  		// for `cancel we must remove the plugin if it was added because of `run
-@@ -1640,7 +1501,48 @@ Log the user out first."));
+@@ -1640,7 +1505,49 @@ Log the user out first."));
  			continue;
  		    }
  		    user	= Users::GetCurrentUser ();
 -		    reinit_userdata ();
-+                    // inplace reinit_userdata
++                    // begin of inlined reinit_userdata
 +                    user_type	= user["type"]:user_type;
 +                    username	= user["uid"]:username;
 +                    if (is (user["cn"]:nil, list))
@@ -1156,10 +1160,11 @@ index 26e0b94..d311a4f 100644
 +                    no_skel		= user["no_skeleton"]:no_skel;
 +                    groups		= user["grouplist"]:$[];
 +                    do_not_edit	= (user_type == "nis");
++                    // end of inlined reinit_userdata
  		}
  	    }
  	}
-@@ -1650,7 +1552,8 @@ Log the user out first."));
+@@ -1650,7 +1557,8 @@ Log the user out first."));
  	{
  	    Wizard::SetHelpText (
  		EditUserDialogHelp (installation (), user_type, what));
@@ -1169,7 +1174,7 @@ index 26e0b94..d311a4f 100644
  
  	    // update the contets of User Data Dialog
  	    if (do_not_edit)
-@@ -1691,7 +1594,187 @@ Log the user out first."));
+@@ -1691,7 +1599,187 @@ Log the user out first."));
  	}
  	if (ret == `details)
  	{
@@ -1358,7 +1363,7 @@ index 26e0b94..d311a4f 100644
  	    Wizard::SetHelpText (EditUserDetailsDialogHelp (user_type, what));
  
  	    if (do_not_edit)
-@@ -1728,7 +1811,78 @@ Log the user out first."));
+@@ -1728,7 +1816,78 @@ Log the user out first."));
  	}
  	if (ret == `passwordsettings)
  	{
@@ -1438,7 +1443,7 @@ index 26e0b94..d311a4f 100644
  	    if (GetString (user["shadowLastChange"]:nil, "0") == "0")
  	    {
  		// forcing password change cannot be undone
-@@ -1739,7 +1893,7 @@ Log the user out first."));
+@@ -1739,7 +1898,7 @@ Log the user out first."));
  	}
  	if (ret == `plugins)
  	{
@@ -1447,7 +1452,7 @@ index 26e0b94..d311a4f 100644
  	    Wizard::SetHelpText (PluginDialogHelp ());
  	    UI::ChangeWidget (`id(`table),`CurrentItem, plugin_client);
  	    current	= ret;
-@@ -1875,79 +2029,11 @@ Log the user out first."));
+@@ -1875,79 +2034,11 @@ Log the user out first."));
      return ret;
  }
  
@@ -1529,7 +1534,7 @@ index 26e0b94..d311a4f 100644
  
  	integer i = 0;
  	list more_users_items	= [];
-@@ -1995,7 +2081,8 @@ define symbol EditGroupDialog (string what) {
+@@ -1995,7 +2086,8 @@ define symbol EditGroupDialog (string what) {
      /**
       * generate contents for Plugins Dialog
       */
@@ -1539,7 +1544,7 @@ index 26e0b94..d311a4f 100644
  
  	plugin_client	= clients[0]:"";
  	plugin		= client2plugin[plugin_client]:plugin_client;
-@@ -2027,6 +2114,58 @@ define symbol EditGroupDialog (string what) {
+@@ -2027,6 +2119,58 @@ define symbol EditGroupDialog (string what) {
  	), `HSpacing (0.5));
      }
  
@@ -1598,7 +1603,7 @@ index 26e0b94..d311a4f 100644
      list<term> tabs		= [];
      term dialog_contents	= `Empty ();
  
-@@ -2056,7 +2195,7 @@ define symbol EditGroupDialog (string what) {
+@@ -2056,7 +2200,7 @@ define symbol EditGroupDialog (string what) {
  
  	dialog_contents = `VBox (
  	    `DumbTab (`id(`tabs), tabs,
@@ -1607,7 +1612,7 @@ index 26e0b94..d311a4f 100644
  	);
  	if (!UI::HasSpecialWidget (`DumbTab))
  	{
-@@ -2067,13 +2206,13 @@ define symbol EditGroupDialog (string what) {
+@@ -2067,13 +2211,13 @@ define symbol EditGroupDialog (string what) {
  		tabbar = add (tabbar,`PushButton (it[0]:`id(label), label));
  	    });
  	    dialog_contents = `VBox (`Left(tabbar),
@@ -1623,7 +1628,7 @@ index 26e0b94..d311a4f 100644
      }
  
      Wizard::SetContentsButtons (
-@@ -2087,14 +2226,6 @@ define symbol EditGroupDialog (string what) {
+@@ -2087,14 +2231,6 @@ define symbol EditGroupDialog (string what) {
      symbol current	= nil;
      list tabids		= [`edit, `plugins ];
  
@@ -1638,7 +1643,7 @@ index 26e0b94..d311a4f 100644
      repeat
      {
  	// map returned from Check*UI functions
-@@ -2138,7 +2269,7 @@ define symbol EditGroupDialog (string what) {
+@@ -2138,7 +2274,7 @@ define symbol EditGroupDialog (string what) {
  	    if (error != "")
  	    {
  		Report::Error (error);
@@ -1647,7 +1652,7 @@ index 26e0b94..d311a4f 100644
  		continue;
  	    }
  	    // --------------------------------- password checks
-@@ -2149,7 +2280,7 @@ define symbol EditGroupDialog (string what) {
+@@ -2149,7 +2285,7 @@ define symbol EditGroupDialog (string what) {
                  Report::Error(_("The passwords do not match.
  Try again.")) ;
  
@@ -1656,47 +1661,48 @@ index 26e0b94..d311a4f 100644
                  continue;
              }
              if ( pw1 != "" && pw1 != default_pw )
-@@ -2158,7 +2289,7 @@ Try again.")) ;
+@@ -2158,7 +2294,7 @@ Try again.")) ;
  		if (error != "")
  		{
  		    Report::Error (error);
 -		    focus_tab (current, `pw1);
-+		    ret = focus_tab (current, `pw, use_tabs && has_tabs);
++		    ret = focus_tab (current, `pw1, use_tabs && has_tabs);
  		    continue;
  		}
  
-@@ -2174,7 +2305,7 @@ Try again.")) ;
+@@ -2174,7 +2310,7 @@ Try again.")) ;
  		    "\n\n" + _("Really use this password?");
  		    if (!Popup::YesNo (message))
  		    {
 -			focus_tab (current, `pw1);
-+			ret = focus_tab (current, `pw, use_tabs && has_tabs);
++			ret = focus_tab (current, `pw1, use_tabs && has_tabs);
  			continue;
  		    }
  		}
-@@ -2191,7 +2322,7 @@ Try again.")) ;
+@@ -2191,7 +2327,7 @@ Try again.")) ;
  		if (error != "")
  		{
  		    Report::Error (error);
 -		    focus_tab (current, `gid);
-+		    ret = focus_tab (current, `gi, use_tabs && has_tabs);
++		    ret = focus_tab (current, `gid, use_tabs && has_tabs);
  		    continue;
  		}
  		boolean failed	= false;
-@@ -2218,7 +2349,7 @@ Try again.")) ;
+@@ -2218,7 +2354,7 @@ Try again.")) ;
  		} while (error_map != $[] && !failed);
  		if (failed)
                  {
 -		    focus_tab (current, `gid);
-+		    ret = focus_tab (current, `gi, use_tabs && has_tabs);
++		    ret = focus_tab (current, `gid, use_tabs && has_tabs);
  		    continue;
  		}
  	    }
-@@ -2242,7 +2373,17 @@ Try again.")) ;
+@@ -2242,7 +2378,19 @@ Try again.")) ;
  	    {
  		group["userlist"]	= new_userlist;
  	    }
 -	    reinit_groupdata ();
++            // begin of inlined reinit_groupdata
 +            groupname	= group["cn"]:groupname;
 +            password	= group["userPassword"]:password;
 +            gid		= GetInt (group["gidNumber"]:nil, gid);
@@ -1707,15 +1713,17 @@ index 26e0b94..d311a4f 100644
 +            {
 +                userlist	= group[member_attribute]:$[];
 +            }
++            // end of inlined reinit_groupdata
 +
  	}
  
  	// inside plugins dialog
-@@ -2296,7 +2437,17 @@ Try again.")) ;
+@@ -2296,7 +2444,19 @@ Try again.")) ;
  		    continue;
  		}
  		group	= Users::GetCurrentGroup ();
 -		reinit_groupdata ();
++                // begin of inlined reinit_groupdata
 +                groupname	= group["cn"]:groupname;
 +                password	= group["userPassword"]:password;
 +                gid		= GetInt (group["gidNumber"]:nil, gid);
@@ -1726,15 +1734,17 @@ index 26e0b94..d311a4f 100644
 +                {
 +                    userlist	= group[member_attribute]:$[];
 +                }
++                // end of inlined reinit_groupdata
 +
  		UI::ChangeWidget (`id(`table), `Item (plugin_client,0),
  		    UI::Glyph (`CheckMark));
  	    }
-@@ -2310,7 +2461,17 @@ Try again.")) ;
+@@ -2310,7 +2470,19 @@ Try again.")) ;
  		    continue;
  		}
  		group	= Users::GetCurrentGroup ();
 -		reinit_groupdata ();
++                // begin of inlined reinit_groupdata
 +                groupname	= group["cn"]:groupname;
 +                password	= group["userPassword"]:password;
 +                gid		= GetInt (group["gidNumber"]:nil, gid);
@@ -1745,15 +1755,17 @@ index 26e0b94..d311a4f 100644
 +                {
 +                    userlist	= group[member_attribute]:$[];
 +                }
++                // end of inlined reinit_groupdata
 +
  		UI::ChangeWidget (`id(`table), `Item (plugin_client,0), " ");
  	    }
  	    if (ret == `run)
-@@ -2328,7 +2489,17 @@ Try again.")) ;
+@@ -2328,7 +2500,19 @@ Try again.")) ;
  		    }
  		    plugin_added	= true;
  		    group	= Users::GetCurrentGroup ();
 -		    reinit_groupdata ();
++                    // begin of inlined reinit_groupdata
 +                    groupname	= group["cn"]:groupname;
 +                    password	= group["userPassword"]:password;
 +                    gid		= GetInt (group["gidNumber"]:nil, gid);
@@ -1764,15 +1776,17 @@ index 26e0b94..d311a4f 100644
 +                    {
 +                        userlist	= group[member_attribute]:$[];
 +                    }
++                    // end of inlined reinit_groupdata
 +
  		}
  		any plugin_ret = WFM::CallFunction (
  		    plugin_client, ["Dialog", $[ "what"	: "group" ], group ]);
-@@ -2336,7 +2507,17 @@ Try again.")) ;
+@@ -2336,7 +2520,19 @@ Try again.")) ;
  		{
  		    // update the map of changed group
  		    group	= Users::GetCurrentGroup ();
 -		    reinit_groupdata ();
++                    // begin of inlined reinit_groupdata
 +                    groupname	= group["cn"]:groupname;
 +                    password	= group["userPassword"]:password;
 +                    gid		= GetInt (group["gidNumber"]:nil, gid);
@@ -1783,15 +1797,17 @@ index 26e0b94..d311a4f 100644
 +                    {
 +                        userlist	= group[member_attribute]:$[];
 +                    }
++                    // end of inlined reinit_groupdata
 +
  		    UI::ChangeWidget (`id(`table), `Item (plugin_client,0), UI::Glyph (`CheckMark));
  		}
  		else if (plugin_added)
-@@ -2349,7 +2530,17 @@ Try again.")) ;
+@@ -2349,7 +2545,19 @@ Try again.")) ;
  			continue;
  		    }
  		    group	= Users::GetCurrentGroup ();
 -		    reinit_groupdata ();
++                    // begin of inlined reinit_groupdata
 +                    groupname	= group["cn"]:groupname;
 +                    password	= group["userPassword"]:password;
 +                    gid		= GetInt (group["gidNumber"]:nil, gid);
@@ -1802,11 +1818,12 @@ index 26e0b94..d311a4f 100644
 +                    {
 +                        userlist	= group[member_attribute]:$[];
 +                    }
++                    // end of inlined reinit_groupdata
 +
  		}
  	    }
  	}
-@@ -2360,7 +2551,7 @@ Try again.")) ;
+@@ -2360,7 +2568,7 @@ Try again.")) ;
  	    if (use_tabs)
  	    {
  		Wizard::SetHelpText (EditGroupDialogHelp (more));
@@ -1815,7 +1832,7 @@ index 26e0b94..d311a4f 100644
  	    }
  
  	    if (what == "add_group") UI::SetFocus(`id(`groupname));
-@@ -2394,7 +2585,8 @@ Try again.")) ;
+@@ -2394,7 +2602,8 @@ Try again.")) ;
  
  	if (ret == `plugins)
  	{

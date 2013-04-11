@@ -295,12 +295,12 @@ EOS
 
   MAKEFILE_DESCRIPTION = [
     {
-      :glob     => 'modules/**/*\.{ycp,ybc,rb,py,pl,sh}',
+      :glob     => 'modules/**/*\.{ycp,ybc,rb,py,pl,pm,sh}',
       :key      => 'module_DATA',
       :dir_var  => '@moduledir@'
     },
     {
-      :glob     => 'clients/**/*\.{ycp,rb,py,pl,sh}',
+      :glob     => 'clients/**/*\.{ycp,rb,py,pl,sh,pm}',
       :key      => 'client_DATA'
     },
     {
