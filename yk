@@ -43,10 +43,13 @@ class YastModule
 
   WORK_DIR   = "work"
   RESULT_DIR = "result"
+  OBS_DIR = "build_service"
+  OBS_PROJECT = "YaST:Head:ruby"
 
   attr_reader :name,
     :work_dir,
     :result_dir,
+    :obs_dir,
     :deps,
     :exports,
     :excluded,
@@ -60,6 +63,8 @@ class YastModule
     @config     = config
     @work_dir   = "#{@config["yast_dir"]}/#{WORK_DIR}/#@name"
     @result_dir = "#{@config["yast_dir"]}/#{RESULT_DIR}/#@name"
+    # There is not @name as it not match ( usually it is yast2-#{name}
+    @obs_dir     = "#{@config["yast_dir"]}/#{OBS_DIR}"
     @deps       = @data["deps"] || []
     @exports    = @data["exports"] || ["src"]
     @excluded   = @data["excluded"] || []
@@ -80,7 +85,7 @@ class YastModule
     end
 
     generate_makefiles
-    submit
+    package
 
     res
   end
@@ -224,18 +229,54 @@ class YastModule
     end
   end
 
-  def submit
+  def package
     Dir.chdir result_dir do
       Cheetah.run "make", "-f", "Makefile.cvs" # TODO will not work for cmake based ones
       Cheetah.run "make"
       Cheetah.run "make", "package-local", "CHECK_SYNTAX=false"
-      # osc can be interactive for creating new package
-      Cheetah.run "y2tool", "oscsubmit", "--devel-project", "YaST:Head:ruby",
-        "--ignore-unchanged-changelog"
+    end
+
+    FileUtils.mkdir_p obs_dir
+
+    package_name = File.read("#{result_dir}/RPMNAME").chomp
+
+    Dir.chdir obs_dir do
+      package_obs_dir = "#{obs_dir}/#{BS_PROJECT}/#{package_name}"
+
+      create_obs_package_dir!(package_name) unless File.exists?(package_obs_dir)
+
+      Dir["#{result_dir}/package/*"].each do |file|
+        # for last three arguments keep defaults except last that we switch to
+        # overwrite file in destrination
+        FileUtils.copy_entry file, "#{package_obs_dir}/#{File.basename(file)}", false, false, true
+      end
     end
   end
 
   private
+
+  def create_obs_package_dir!(package_name)
+    first = true
+    begin
+      Cheetah.run "osc", "co", BS_PROJECT, package_name
+    rescue Cheetah::ExecutionFailed
+      # probably it is not created yet, so lets create it
+      if first
+        first = false
+        create_package_in_obs package_name
+        retry
+      end
+
+      raise
+    end
+  end
+
+  def create_package_in_obs(package_name)
+    ENV["EDITOR"] = "ed"
+    # just add description via ed as meta pkg invoke editor
+    ed_command = "H\n,s/<title>/<title>YaST module converted to ruby/g\nw\nq\n"
+    Cheetah.run "osc", "meta", "pkg", BS_PROJECT, package_name, "-e", :stdin => StringIO.new(ed_command)
+  end
 
   def makefile_entry(key, values)
     "\n#{key} = \\\n  " + values.join(" \\\n  ") + "\n"
@@ -723,11 +764,11 @@ class CLI < Thor
     end
   end
 
-  desc "submit <module>...", "Submit module(s) to build service"
-  def submit(*module_names)
+  desc "package <module>...", "Create packages in build service directory for module(s)"
+  def package(*module_names)
     modules = modules_from_names(module_names)
-    with_modules modules, "Submitting", true do |mod|
-      mod.submit
+    with_modules modules, "Packaging", true do |mod|
+      mod.package
     end
   end
 

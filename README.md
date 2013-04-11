@@ -135,7 +135,7 @@ the *result* tree.
 
 #### yk convert
 
-Does everything at once: `clone`, `restructure`, `patch`, `compile`.
+Does everything at once: `clone`, `restructure`, `patch`, `compile`, `makefile`, `package`.
 
 #### yk clone
 
@@ -248,6 +248,14 @@ into a patch in the `patches` directory.
 $ ./yk genpatch testsuite
 [1/1] Generating patch testsuite...                                   OK
 ```
+
+#### yk makefile
+
+TODO
+
+#### yk package
+
+TODO
 
 ### Module Metadata
 
