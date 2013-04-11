@@ -1,0 +1,12 @@
+diff --git a/src/include/firewall/complex.ycp b/src/include/firewall/complex.ycp
+index ccbb1a4..039e8a9 100644
+--- a/src/include/firewall/complex.ycp
++++ b/src/include/firewall/complex.ycp
+@@ -38,6 +38,7 @@ you may find current contact information at www.novell.com
+     import "Confirm";
+     import "Report";
+     import "Message";
++    import "Label";
+ 
+     include "firewall/helps.ycp";
+ 
