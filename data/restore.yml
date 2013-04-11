@@ -1,8 +1,15 @@
-#files:
-#  - src/Restore.ycp
-#  - src/helps.ycp
-#  - src/restore.ycp
-#  - src/restore_auto.ycp
-#  - src/restore_bootloader.ycp
-#  - src/summary_dialog.ycp
-#  - src/ui.ycp
+deps:
+  - yast2
+  - bootloader
+
+moves:
+  - from: "src/Restore.ycp"
+    to:   src/modules
+  - from: "src/restore*.ycp"
+    to:   src/clients
+  - from: "src/{helps,summary_dialog,ui}.ycp"
+    to:   src/include/restore
+  - from: "src/restore_parse_pkginfo.pl"
+    to:   src/bin
+  - from: "src/restore.desktop"
+    to:   src/desktop
