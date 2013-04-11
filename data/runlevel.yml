@@ -1,27 +1,28 @@
-# TODO: Process.
+deps:
+  - testsuite
+  - yast2
 
-files:
-  - src/RunlevelEd.ycp
-  - src/depviz.ycp
-  - src/runlevel.ycp
-  - src/runlevel_auto.ycp
-  - src/runlevel_finish.ycp
-  - src/runlevel_proposal.ycp
-  - src/services_proposal.ycp
-  - src/toposort.ycp
-  - src/ui.ycp
-  - src/wizard.ycp
-  - testsuite/tests/Filters.ycp
-  - testsuite/tests/RunlevelEd.ycp
-  - testsuite/tests/ServiceDependencies.ycp
-  - testsuite/tests/dirtyServices.ycp
-  - testsuite/tests/formatLine.ycp
-  - testsuite/tests/getDefaultPicker.ycp
-  - testsuite/tests/getRunlevelDescr.ycp
-  - testsuite/tests/getScripts.ycp
-  - testsuite/tests/isDisabled.ycp
-  - testsuite/tests/overviewText.ycp
-  - testsuite/tests/saveServices.ycp
-  - testsuite/tests/servicesToTable.ycp
-  - testsuite/tests/setServiceToDefault.ycp
-  - testsuite/tests/toposort.ycp
+moves:
+  # some tools not installed/packaged to RPM
+  - from: "src/depviz*"
+    to: "tools"
+  - from: "src/scripts.sh"
+    to: "tools"
+
+  - from: "src/[A-Z]*.ycp"
+    to: src/modules
+  - from: "src/{wizard,toposort,ui}.ycp"
+    to: src/include/runlevel
+  - from: "src/*.ycp"
+    to: src/clients
+  - from: "src/*.scr"
+    to: src/scrconf
+  - from: "src/*.desktop"
+    to: src/desktop
+  - from: "config/*"
+    to: "src/autoyast-rnc"
+
+excluded:
+  # does not compile, but not installed/packaged anyway
+  - tools/depviz.ycp
+
