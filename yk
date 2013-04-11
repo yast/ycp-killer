@@ -711,8 +711,16 @@ class BuildOrder
 end
 
 class CLI < Thor
+
+  class_option :debug, :type => :boolean, :desc => "verbosely log what commands are run"
+
   def initialize(*args)
     super *args
+
+    if options[:debug]
+      log = Logger.new(STDOUT)
+      Cheetah.default_options = { :logger => log }
+    end
 
     load_config
     load_module_data
