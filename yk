@@ -790,7 +790,16 @@ class CLI < Thor
     end
   end
 
+  def module_from_cwd
+    cwd = Dir.pwd
+    # .../work/foo
+    package = cwd[/\/#{Regexp.escape(YastModule::WORK_DIR)}\/([^\/]+)\Z/, 1]
+    raise "No modules specified and current directory is not a working directory" unless package
+    package
+  end
+
   def modules_from_names(module_names)
+    module_names = [ module_from_cwd ] if module_names.empty?
     module_names = @modules.keys if module_names == ["all"]
 
     @modules.values_at(*module_names)

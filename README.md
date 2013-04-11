@@ -133,6 +133,9 @@ Tasks:
 The commands operate on two distinct directory trees: the *working* tree and
 the *result* tree.
 
+The module name can be omitted if it is the current working directory in the
+*working* tree.
+
 #### yk convert
 
 Does everything at once: `clone`, `restructure`, `patch`, `compile`.
