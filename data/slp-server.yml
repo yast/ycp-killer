@@ -1,13 +1,16 @@
-# TODO: Process.
+deps:
+  - testsuite
+  - yast2
 
-files:
-  - src/SlpServer.ycp
-  - src/complex.ycp
-  - src/dialogs.ycp
-  - src/helps.ycp
-  - src/slp-server.ycp
-  - src/slp-server_auto.ycp
-  - src/slp-server_proposal.ycp
-  - src/wizards.ycp
-  - testsuite/tests/ReadGlobalConfig.ycp
-  - testsuite/tests/SlpServer.ycp
+moves:
+  - from: "src/[A-Z]*.ycp"
+    to: src/modules
+  - from: "src/slp-server*.ycp"
+    to: src/clients
+  - from: "src/*.ycp"
+    to: "src/include/slp-server"
+  - from: "src/*.desktop"
+    to: src/desktop
+  - from: "agents/*.scr"
+    to: src/scrconf
+
