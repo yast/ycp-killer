@@ -435,9 +435,10 @@ EOS
 
     ordered_modules.each do |file|
       begin
+        Messages.start "  . #{file}"
         create_ybc file
+        Messages.finish "OK"
       rescue Exception => e
-        Messages.start "  * #{file}"
         handle_exception(e, :ybc, file)
         failed_files << file
       end
