@@ -7,3 +7,7 @@ deps:
   - runlevel
   - mouse
 
+moves:
+  - from: "src/include/*.ycp"
+    to: src/include/dirinstall
+
