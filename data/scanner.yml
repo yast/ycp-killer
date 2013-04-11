@@ -1,8 +1,12 @@
-# TODO: Process.
+deps:
+  - yast2
 
-files:
-  - src/Scanner.ycp
-  - src/dialogs.ycp
-  - src/helps.ycp
-  - src/scanner.ycp
-  - src/wizards.ycp
+moves:
+  - from: "src/Scanner.ycp"
+    to:   src/modules
+  - from: "src/scanner.ycp"
+    to:   src/clients
+  - from: "src/{dialogs,helps,wizards}.ycp"
+    to:   src/include/scanner
+  - from: "src/scanner.desktop"
+    to:   src/desktop
