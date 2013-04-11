@@ -240,7 +240,7 @@ class YastModule
 
     FileUtils.mkdir_p obs_dir
     Dir.chdir obs_dir do
-      package_obs_dir = "#{obs_dir}/#{BS_PROJECT}/#{package_name}"
+      package_obs_dir = "#{obs_dir}/#{OBS_PROJECT}/#{package_name}"
 
       create_obs_package_dir!(package_name) unless File.exists?(package_obs_dir)
 
@@ -258,7 +258,7 @@ class YastModule
   def create_obs_package_dir!(package_name)
     first = true
     begin
-      Cheetah.run "osc", "co", BS_PROJECT, package_name
+      Cheetah.run "osc", "co", OBS_PROJECT, package_name
     rescue Cheetah::ExecutionFailed
       # probably it is not created yet, so lets create it
       if first
@@ -275,18 +275,18 @@ class YastModule
     ENV["EDITOR"] = "ed"
     # just add description via ed as meta pkg invoke editor
     ed_command = <<EOS
-# enable error reporting
-H
-# title is required
-# comma: all lines; s: substitute
-,s/<title>/<title>YaST module converted to ruby/g
-# write
-w
-# quit
-q
+      # enable error reporting
+      H
+      # title is required
+      # comma: all lines; s: substitute
+      ,s/<title>/<title>YaST module converted to ruby/
+      # write
+      w
+      # quit
+      q
 EOS
 
-    Cheetah.run "osc", "meta", "pkg", BS_PROJECT, package_name, "-e", :stdin => StringIO.new(ed_command)
+    Cheetah.run "osc", "meta", "pkg", OBS_PROJECT, package_name, "-e", :stdin => StringIO.new(ed_command)
   end
 
   def makefile_entry(key, values)
