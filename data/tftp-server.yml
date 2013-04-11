@@ -1,9 +1,14 @@
-# TODO: Process.
+deps:
+  - yast2
 
-files:
-  - src/TftpServer.ycp
-  - src/dialogs.ycp
-  - src/tftp-server.ycp
-  - src/tftp-server_auto.ycp
-  - src/wizards.ycp
-  - testsuite/tests/readwrite.ycp
+moves:
+  - from: "src/TftpServer.ycp"
+    to:   src/modules
+  - from: "src/tftp-server*.ycp"
+    to:   src/clients
+  - from: "src/{wizards,dialogs}.ycp"
+    to:   src/include/tftp-server
+  - from: "src/tftp-server.desktop"
+    to:   src/desktop
+  - from: "agents/*"
+    to:   src/scrconfig
