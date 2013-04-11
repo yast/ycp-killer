@@ -1,0 +1,15 @@
+The "Wizard_hw" module import does not work and the module is actually not used,
+so this patch removes it.
+
+diff --git a/src/include/openvas-security-scanner/complex.ycp b/src/include/openvas-security-scanner/complex.ycp
+index 27bbcac..f6daf89 100644
+--- a/src/include/openvas-security-scanner/complex.ycp
++++ b/src/include/openvas-security-scanner/complex.ycp
+@@ -34,7 +34,6 @@ textdomain "openvas-security-scanner";
+ import "Label";
+ import "Popup";
+ import "Wizard";
+-import "Wizard_hw";
+ import "Confirm";
+ import "OpenvasSecurityScanner";
+ 
