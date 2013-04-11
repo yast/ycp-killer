@@ -71,6 +71,10 @@ class YastModule
     @moves      = @data["moves"] || []
   end
 
+  def transitive_deps
+    (deps.map { |d| @modules[d].transitive_deps }.reduce([], :+) + deps).uniq
+  end
+
   def convert
     File.exists?(work_dir) ? update : clone
     restructure
@@ -394,7 +398,7 @@ EOS
     # initialized when "initialize" is called on this module.
     unless @module_paths 
       @module_paths = [STUBS_DIR] + exported_module_paths
-      deps.each do |dependency| 
+      transitive_deps.each do |dependency|
         @module_paths.concat @modules[dependency].exported_module_paths
       end
     end
@@ -406,7 +410,7 @@ EOS
     # initialized when "initialize" is called on this module.
     unless @include_paths
       @include_paths = [STUBS_DIR] + exported_include_paths
-      deps.each do |dependency| 
+      transitive_deps.each do |dependency|
         @include_paths.concat @modules[dependency].exported_include_paths
       end
     end
