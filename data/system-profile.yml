@@ -1,9 +1,14 @@
-# TODO: Process.
+deps:
+  - yast2
 
-files:
-  - src/SystemProfile.ycp
-  - src/dialogs.ycp
-  - src/system-profile.ycp
-  - src/system-profile_auto.ycp
-  - src/texts.ycp
-  - testsuite/tests/SystemProfile.ycp
+moves:
+  - from: "src/SystemProfile.ycp"
+    to:   src/modules
+  - from: "src/system-profile*.ycp"
+    to:   src/clients
+  - from: "src/{dialogs,texts}.ycp"
+    to:   src/include/system-profile
+  - from: "src/system-profile.desktop"
+    to:   src/desktop
+  - from: "src/system-profile.rnc"
+    to:   src/autoyast-rnc
