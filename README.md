@@ -251,11 +251,12 @@ $ ./yk genpatch testsuite
 
 #### yk makefile
 
-TODO
+Generates Makefile.am for exported directories of module(s)
 
 #### yk package
 
-TODO
+Creates packages for module(s) in the build service directory, which is a
+third tree alongside the *working* and *result* ones.
 
 ### Module Metadata
 

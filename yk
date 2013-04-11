@@ -63,8 +63,8 @@ class YastModule
     @config     = config
     @work_dir   = "#{@config["yast_dir"]}/#{WORK_DIR}/#@name"
     @result_dir = "#{@config["yast_dir"]}/#{RESULT_DIR}/#@name"
-    # There is not @name as it not match ( usually it is yast2-#{name}
-    @obs_dir     = "#{@config["yast_dir"]}/#{OBS_DIR}"
+    # Not suffixed with @name as it does not match (usuall yast2-#{name} )
+    @obs_dir    = "#{@config["yast_dir"]}/#{OBS_DIR}"
     @deps       = @data["deps"] || []
     @exports    = @data["exports"] || ["src"]
     @excluded   = @data["excluded"] || []
@@ -236,10 +236,9 @@ class YastModule
       Cheetah.run "make", "package-local", "CHECK_SYNTAX=false"
     end
 
-    FileUtils.mkdir_p obs_dir
-
     package_name = File.read("#{result_dir}/RPMNAME").chomp
 
+    FileUtils.mkdir_p obs_dir
     Dir.chdir obs_dir do
       package_obs_dir = "#{obs_dir}/#{BS_PROJECT}/#{package_name}"
 
@@ -255,6 +254,7 @@ class YastModule
 
   private
 
+  # cwd must be obs_dir
   def create_obs_package_dir!(package_name)
     first = true
     begin
@@ -274,7 +274,18 @@ class YastModule
   def create_package_in_obs(package_name)
     ENV["EDITOR"] = "ed"
     # just add description via ed as meta pkg invoke editor
-    ed_command = "H\n,s/<title>/<title>YaST module converted to ruby/g\nw\nq\n"
+    ed_command = <<EOS
+# enable error reporting
+H
+# title is required
+# comma: all lines; s: substitute
+,s/<title>/<title>YaST module converted to ruby/g
+# write
+w
+# quit
+q
+EOS
+
     Cheetah.run "osc", "meta", "pkg", BS_PROJECT, package_name, "-e", :stdin => StringIO.new(ed_command)
   end
 
