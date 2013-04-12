@@ -101,7 +101,8 @@ tictactoe-server
     ├── scrconf        ->  /usr/share/YaST2/scrconf
     ├── autoyast-rnc   ->  /usr/share/YaST2/schema/autoyast/rnc
     ├── control-rnc    ->  /usr/share/YaST2/schema/control/rnc
-    └── desktop        ->  /usr/share/applications/YaST2
+    ├── desktop        ->  /usr/share/applications/YaST2
+    └── fillup         ->  /var/adm/fillup-templates
 ```
 
 Other directories, like `doc` and `testsuite`, are not restructured now
