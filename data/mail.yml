@@ -1,29 +1,35 @@
-# TODO: Process.
+deps:
+  - yast2
 
-files:
-  - src/Mail.ycp
-  - src/MailServer.ycp
-  - src/helps.ycp
-  - src/mail-advanced.ycp
-  - src/mail-server.ycp
-  - src/mail-server_auto.ycp
-  - src/mail-server_complex.ycp
-  - src/mail-server_dialogs.ycp
-  - src/mail-server_helps.ycp
-  - src/mail-server_ldap-setup.ycp
-  - src/mail-server_proposal.ycp
-  - src/mail-server_wizards.ycp
-  - src/mail-standard.ycp
-  - src/mail.ycp
-  - src/mail_auto.ycp
-  - src/ui.ycp
-  - src/widgets.ycp
-  - src/wj.ycp
-  - testsuite/tests.epag/fm1.rw.ycp
-  - testsuite/tests.epag/fm2.rw.ycp
-  - testsuite/tests.epag/fm3.rw.ycp
-  - testsuite/tests/mergeTables.ycp
-  - testsuite/tests/readwrite.ycp
-  - testsuite/tests/rootalias.ycp
-  - users-plugin/users_plugin_mail.ycp
-  - users-plugin/users_plugin_mail_groups.ycp
+exports:
+  - users-plugin
+
+moves:
+  - from: users-plugin/{users_plugin_mail,users_plugin_mail_groups}.ycp
+    to:   users-plugin/clients
+  - from: users-plugin/UsersPluginMail.pm
+    to:   users-plugin/modules
+  - from: src/mail.rnc
+    to:   src/autoyast-rnc
+  - from: agents/*.scr
+    to:   src/scrconf
+  - from: agents/{ag_fetchmailrc,ag_fetchmailrc,ag_mailtable,setup_dkim_verifying.pl,ag_mailconfig,ag_mailconfig,MasterCFParser.pm,ag_mail_ldaptable,ag_cyrus_conf,CyrusConfParser.pm}
+    to:   src/servers_non_y2
+  - from: agents/sysconfig.mail
+    to:   fillup
+  - from: src/{mail,mail_auto,mail-standard,mail-advanced,mail-server_auto,mail-server_proposal,mail-server_ldap-setup}.ycp
+    to:   src/clients
+  - from: src/{helps,wj,widgets,ui,mail-server_helps,mail-server_wizards,mail-server_dialogs,mail-server_complex}.ycp
+    to:   src/include
+  - from: src/mail.desktop
+    to:   src/desktop
+  - from: src/{Mail.ycp,MailServer.ycp,MailServerLDAP.pm}
+    to:   src/modules
+  #FIXME not in Makefile
+  - from: src/mail-server.ycp
+    to:   src/clients
+  #TODO missing Makefile for the schema dir
+  - from: src/suse-mailserver.schema
+    to:   schema
+  - from: src/YaPI/MailServer.pm
+    to:   src/modules/YaPI
