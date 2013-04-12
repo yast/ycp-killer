@@ -62,11 +62,15 @@ class YastModule
   # Hash: String -> YastModule
   @@modules = {}
 
+  def self.config=(value)
+    @@config = value
+  end
+
   def self.[](name)
     @@modules[name] ||= YastModule.new(
         name,
         YAML.load_file("#{DATA_DIR}/#{name}.yml") || {},
-        @config
+        @@config
     )
   end
 
@@ -851,6 +855,7 @@ class CLI < Thor
 
   def load_config
     @config = YAML.load_file("#{BASE_DIR}/config.yml")
+    YastModule.config = @config
   end
 
   def all_module_names
