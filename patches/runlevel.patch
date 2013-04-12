@@ -1,5 +1,5 @@
 diff --git a/src/include/runlevel/ui.ycp b/src/include/runlevel/ui.ycp
-index 0c65120..c214b64 100644
+index 0c65120..9377ff3 100644
 --- a/src/include/runlevel/ui.ycp
 +++ b/src/include/runlevel/ui.ycp
 @@ -1574,6 +1574,15 @@ name or the name specified is already in use."));
@@ -52,3 +52,22 @@ index 0c65120..c214b64 100644
  		    ret = `table;
  		}
  		else if (`clear_all == ret)
+diff --git a/yast2-runlevel.spec.in b/yast2-runlevel.spec.in
+index db65ebd..9b0fa86 100644
+--- a/yast2-runlevel.spec.in
++++ b/yast2-runlevel.spec.in
+@@ -37,11 +37,10 @@ boot.
+ %dir @scrconfdir@
+ @scrconfdir@/*.scr
+ %dir @clientdir@
+-@clientdir@/*.ycp
++@clientdir@/*.rb
+ %dir @yncludedir@/runlevel
+-@yncludedir@/runlevel/*.ycp
++@yncludedir@/runlevel/*.rb
+ %dir @moduledir@
+-@moduledir@/*.ycp
+-@moduledir@/*.ybc
++@moduledir@/*.rb
+ @schemadir@/autoyast/rnc/*.rnc
+ %doc @docdir@
