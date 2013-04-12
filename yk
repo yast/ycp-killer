@@ -43,10 +43,6 @@ end
 # either a YaST RPM package, like network, dns-server
 # or a YCP namespace, like Message, Popup
 
-# Hash: String -> YastModule
-# initialized with a default-block later
-$modules = nil
-
 class YastModule
 
   WORK_DIR   = "work"
@@ -63,6 +59,17 @@ class YastModule
     :excluded,
     :moves
 
+  # Hash: String -> YastModule
+  @@modules = {}
+
+  def self.[](name)
+    @@modules[name] ||= YastModule.new(
+        name,
+        YAML.load_file("#{DATA_DIR}/#{name}.yml") || {},
+        @config
+    )
+  end
+
   def initialize(name, data, config)
     @name       = name
     @config     = config
@@ -77,7 +84,7 @@ class YastModule
     puts "WARNING, unknown keys in #{name}.yml: #{data.keys}" unless data.empty?
 
     missing_deps = deps.reject do |d|
-      File.exists?($modules[d].work_dir)
+      File.exists?(YastModule[d].work_dir)
     end
     if ! missing_deps.empty?
       raise "Missing dependencies, convert them first: #{missing_deps}"
@@ -86,7 +93,7 @@ class YastModule
 
   def transitive_deps
     deps_of_deps = deps.map do |d|
-      $modules[d].transitive_deps
+      YastModule[d].transitive_deps
     end
     deps_of_deps.reduce(deps, :+).uniq
   end
@@ -415,7 +422,7 @@ EOS
     unless @module_paths 
       @module_paths = [STUBS_DIR] + exported_module_paths
       transitive_deps.each do |dependency|
-        @module_paths.concat $modules[dependency].exported_module_paths
+        @module_paths.concat YastModule[dependency].exported_module_paths
       end
     end
     @module_paths
@@ -427,7 +434,7 @@ EOS
     unless @include_paths
       @include_paths = [STUBS_DIR] + exported_include_paths
       transitive_deps.each do |dependency|
-        @include_paths.concat $modules[dependency].exported_include_paths
+        @include_paths.concat YastModule[dependency].exported_include_paths
       end
     end
     @include_paths
@@ -730,7 +737,6 @@ class CLI < Thor
     super *args
 
     load_config
-    lazy_load_module_data
   end
 
   desc "clone <module>...", "Clone module(s)"
@@ -851,16 +857,6 @@ class CLI < Thor
     Dir["#{DATA_DIR}/*.yml"].sort.map { |file| File.basename(file, ".yml") }
   end
 
-  def lazy_load_module_data
-    $modules = Hash.new do |hash, name|
-      hash[name] = YastModule.new(
-        name,
-        YAML.load_file("#{DATA_DIR}/#{name}.yml") || {},
-        @config
-      )
-    end
-  end
-
   def module_from_cwd
     cwd = Dir.pwd
     # .../work/foo
@@ -873,7 +869,7 @@ class CLI < Thor
     module_names = [ module_from_cwd ] if module_names.empty?
     module_names = all_module_names if module_names == ["all"]
 
-    $modules.values_at(*module_names)
+    module_names.map { |m| YastModule[m] }
   end
 
   def with_modules(modules, activity, print_status) # :yields: mod
