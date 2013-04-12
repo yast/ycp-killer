@@ -22,8 +22,8 @@ moves:
     to: src/clients
   - from: storage/src/include/*.ycp
     to: src/include/partitioning
-  - from: storage/src/modules
-    to: src
+  - from: storage/src/modules/*.ycp
+    to: src/modules
   - from: storage/src/proposal/*.ycp
     to: src/clients
   - from: storage/src/testsuite
