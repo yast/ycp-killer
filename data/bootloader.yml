@@ -1,68 +1,28 @@
-# TODO: Process.
+deps:
+  - testsuite
+  - yast2
+  - packager
+  - storage
 
-files:
-  - src/clients/bootloader.ycp
-  - src/clients/bootloader_auto.ycp
-  - src/clients/bootloader_finish.ycp
-  - src/clients/bootloader_preupdate.ycp
-  - src/clients/bootloader_proposal.ycp
-  - src/clients/inst_bootloader.ycp
-  - src/clients/inst_lilo_convert.ycp
-  - src/clients/print-product.ycp
-  - src/elilo/dialogs.ycp
-  - src/elilo/helps.ycp
-  - src/elilo/options.ycp
-  - src/elilo/widgets.ycp
-  - src/grub/dialogs.ycp
-  - src/grub/helps.ycp
-  - src/grub/misc.ycp
-  - src/grub/options.ycp
-  - src/grub2/dialogs.ycp
-  - src/grub2/helps.ycp
-  - src/grub2/misc.ycp
-  - src/grub2/options.ycp
-  - src/modules/BootArch.ycp
-  - src/modules/BootCommon.ycp
-  - src/modules/BootELILO.ycp
-  - src/modules/BootGRUB.ycp
-  - src/modules/BootGRUB2.ycp
-  - src/modules/BootGRUB2EFI.ycp
-  - src/modules/BootLILO.ycp
-  - src/modules/BootPOWERLILO.ycp
-  - src/modules/BootStorage.ycp
-  - src/modules/BootSupportCheck.ycp
-  - src/modules/BootZIPL.ycp
-  - src/modules/Bootloader.ycp
-  - src/modules/GfxMenu.ycp
-  - src/ppc/dialogs.ycp
-  - src/ppc/helps.ycp
-  - src/ppc/options.ycp
-  - src/routines/autoinstall.ycp
-  - src/routines/common_helps.ycp
-  - src/routines/common_options.ycp
-  - src/routines/dialogs.ycp
-  - src/routines/global_widgets.ycp
-  - src/routines/helps.ycp
-  - src/routines/i386.ycp
-  - src/routines/lib_iface.ycp
-  - src/routines/lilolike.ycp
-  - src/routines/misc.ycp
-  - src/routines/popups.ycp
-  - src/routines/section_helps.ycp
-  - src/routines/section_widgets.ycp
-  - src/routines/switcher.ycp
-  - src/routines/wizards.ycp
-  - src/zipl/helps.ycp
-  - testsuite/tests/autoinst_convert.ycp
-  - testsuite/tests/confconv.ycp
-  - testsuite/tests/grub.ycp
-  - testsuite/tests/grub2unix.ycp
-  - testsuite/tests/kernelParams.ycp
-  - testsuite/tests/misc.ycp
-  - testsuite/tests/mod2ui.ycp
-  - testsuite/tests/previous.ycp
-  - testsuite/tests/s390.ycp
-  - testsuite/tests/strip.ycp
-  - testsuite/tests/ui2mod.ycp
-  - testsuite/tests/unix2grub.ycp
-  - testsuite/tests/update.ycp
+moves:
+  - from: "src/include/*.ycp"
+    to: src/include/bootloader
+  - from: "src/elilo/*.ycp"
+    to: src/include/bootloader/elilo
+  - from: "src/grub/*.ycp"
+    to: src/include/bootloader/grub
+  - from: "src/grub2/*.ycp"
+    to: src/include/bootloader/grub2
+  - from: "src/ppc/*.ycp"
+    to: src/include/bootloader/ppc
+  - from: "src/routines/*.ycp"
+    to: src/include/bootloader/routines
+  - from: "src/zipl/*.ycp"
+    to: src/include/bootloader/zipl
+  - from: "agents/*.scr"
+    to: src/scrconf
+  - from: "agents/sysconfig.*"
+    to: src/fillup
+  - from: "agents/ag_bootloader"
+    to: src/servers_non_y2
+
