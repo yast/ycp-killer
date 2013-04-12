@@ -1,7 +1,7 @@
-diff --git a/hwinfo/src/system_settings_dialogs.ycp b/hwinfo/src/system_settings_dialogs.ycp
+diff --git a/src/include/hwinfo/system_settings_dialogs.ycp b/src/include/hwinfo/system_settings_dialogs.ycp
 index 0df0d24..dcb8681 100644
---- a/hwinfo/src/system_settings_dialogs.ycp
-+++ b/hwinfo/src/system_settings_dialogs.ycp
+--- a/src/include/hwinfo/system_settings_dialogs.ycp
++++ b/src/include/hwinfo/system_settings_dialogs.ycp
 @@ -24,6 +24,9 @@
  
      textdomain "tune";
