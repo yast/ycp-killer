@@ -20,3 +20,19 @@ index 5b3470c..d5925e8 100644
      Proxy::Read ();
  
      Wizard::CreateDialog();
+diff --git a/yast2-proxy.spec.in b/yast2-proxy.spec.in
+index 09b83c7..53d134d 100644
+--- a/yast2-proxy.spec.in
++++ b/yast2-proxy.spec.in
+@@ -33,9 +33,8 @@ This package contains the YaST2 component for proxy configuration.
+ 
+ %files
+ %defattr(-,root,root)
+-@clientdir@/*.ycp
+-@moduledir@/*.ycp
+-@moduledir@/*.ybc
++@clientdir@/*.rb
++@moduledir@/*.rb
+ @yncludedir@/proxy
+ @desktopdir@/*.desktop
+ @scrconfdir@/*.scr
