@@ -61,14 +61,155 @@ index f62e625..2179e6e 100644
   *
   * Purpose: 		This module contains the user interface
   *			definitions for the automatic partitioner
+diff --git a/src/modules/DevicesSelectionBox.ycp b/src/modules/DevicesSelectionBox.ycp
+index f445aee..9208d62 100644
+--- a/src/modules/DevicesSelectionBox.ycp
++++ b/src/modules/DevicesSelectionBox.ycp
+@@ -88,6 +88,11 @@
+ 	return `Left(`Label(sformat(_("Resulting size: %1"), Storage::KByteToHumanString(size_k))));
+     }
+ 
++    list<string> predicate_device_names = [];
++    symbol Predicate(map disk, map partition)
++    {
++        return StorageFields::PredicateDevice(disk, partition, predicate_device_names);
++    }
+ 
+     /**
+      * The maps for the devices must contain the entries "device" and "size_k".
+@@ -102,12 +107,7 @@
+ 
+ 	selected_size_function = new_selected_size_function != nil ? new_selected_size_function : Sum;
+ 
+-	list<string> device_names = maplist(map device, devices, { return device["device"]:""; });
+-
+-	symbol Predicate(map disk, map partition)
+-	{
+-	    return StorageFields::PredicateDevice(disk, partition, device_names);
+-	}
++	predicate_device_names = maplist(map device, devices, { return device["device"]:""; });
+ 
+ 	map<string, map> target_map = Storage::GetTargetMap();
+ 
 diff --git a/src/modules/DualMultiSelectionBox.ycp b/src/modules/DualMultiSelectionBox.ycp
-index 17c9c81..6671931 100644
+index 17c9c81..8544eb3 100644
 --- a/src/modules/DualMultiSelectionBox.ycp
 +++ b/src/modules/DualMultiSelectionBox.ycp
-@@ -457,7 +457,15 @@ list<string> reverse( list<string> v )
+@@ -224,57 +224,57 @@ void FindDeviceMatches( map<string,string>& dc, list<list> plst )
+         });
+     }
+ 
+-list ClassifyPopup( list selected )
++string SymToLetter( symbol sym )
++    {
++    string lbl = tostring(sym);
++    return( substring(lbl,size(lbl)-1));
++    }
++string SymToLabel( symbol sym, boolean hint )
+     {
+     // button text
+-    string txt_sort = ("Sorted");
+-    // button text
+-    string txt_inter = ("Interleaved");
+-    // button text
+-    string txt_pat = ("Pattern File");
+-    string SymToLetter( symbol sym )
+-        {
+-        string lbl = tostring(sym);
+-        return( substring(lbl,size(lbl)-1));
+-        }
+-    string SymToLabel( symbol sym, boolean hint )
+-        {
+-        // button text
+-        return( _("Class") + (hint?" &":"") + SymToLetter(sym) );
+-        }
+-    string ClassifyHelpText()
+-        {
+-        // dialog help text
+-        string txt = _("<p>This dialog is for defining classes for the raid devices
++    return( _("Class") + (hint?" &":"") + SymToLetter(sym) );
++    }
++
++// button text
++string txt_sort = ("Sorted");
++// button text
++string txt_inter = ("Interleaved");
++// button text
++string txt_pat = ("Pattern File");
++
++string ClassifyHelpText()
++    {
++    // dialog help text
++    string txt = _("<p>This dialog is for defining classes for the raid devices
+ contained in the raid. Available classes are A, B, C, D and E but for many cases
+ fewer classes are needed (e.g. only A and B). </p>");
+-        // dialog help text
+-        txt = txt + sformat(_("<p>You can put a device into a class by right-clicking on the
++    // dialog help text
++    txt = txt + sformat(_("<p>You can put a device into a class by right-clicking on the
+ device and choosing the appropriate class from context menu. By pressing the 
+ Ctrl  or Shift key you can select multiple devices and put them into a class in
+ one step. One can also use the buttons labeled \"%1\" to \"%2\" to put currently 
+ selected devices into this class.</p>"), 
+-        SymToLabel( `class_A, false ), SymToLabel( `class_E, false ));
+-        // dialog help text
+-        txt = txt + sformat(_("<p>After choosing classes for devices you can order the 
++    SymToLabel( `class_A, false ), SymToLabel( `class_E, false ));
++    // dialog help text
++    txt = txt + sformat(_("<p>After choosing classes for devices you can order the 
+ devices by pressing one of the buttons labeled \"%1\" or \"%2\"."),
+-        txt_sort, txt_inter );
+-        txt = txt + " ";
+-        // dialog help text
+-        txt = txt + _("<b>Sorted</b> puts all devices of class A before all devices
++    txt_sort, txt_inter );
++    txt = txt + " ";
++    // dialog help text
++    txt = txt + _("<b>Sorted</b> puts all devices of class A before all devices
+ of class B and so on.");
+-        txt = txt + " ";
+-        // dialog help text
+-        txt = txt + _("<b>Interleaved</b> uses first device of class A, then first device of 
++    txt = txt + " ";
++    // dialog help text
++    txt = txt + _("<b>Interleaved</b> uses first device of class A, then first device of 
+ class B, then all the following classes with assigned devices. Then the 
+ second device of class A, the second device of class B, and so on will follow.");
+-        txt = txt + " ";
+-        // dialog help text
+-        txt = txt + _("All devices without a class are sorted to the end of devices list.
++    txt = txt + " ";
++    // dialog help text
++    txt = txt + _("All devices without a class are sorted to the end of devices list.
+ When you leave the pop-up the current order of the devices is used as the 
+ order in the RAID to be created.</p>");
+-        // dialog help text
+-        txt = txt + sformat(_("By pressing button \"<b>%1</b>\" you can select a file that contains
++    // dialog help text
++    txt = txt + sformat(_("By pressing button \"<b>%1</b>\" you can select a file that contains
+ lines with a regular expression and a class name (e.g. \"sda.*  A\"). All devices that match 
+ the regular expression will be put into the class on this line. The regular expression is 
+ matched against the kernel name (e.g. /dev/sda1), 
+@@ -282,8 +282,11 @@ the udev path name (e.g. /dev/disk/by-path/pci-0000\:00\:1f.2-scsi-0:0:0:0-part1
+ the udev id (e.g. /dev/disk/by-id/ata-ST3500418AS_9VMN8X8L-part1). 
+ The first match finally determines the class if a devices name matches more then one
+ regular expression.</p>"), txt_pat );
+-        return( txt );
+-        }
++    return( txt );
++    }
++
++list ClassifyPopup( list selected )
++    {
+ 
+     if( isempty(classified) )
+         {
+@@ -456,15 +459,31 @@ list<string> reverse( list<string> v )
+         list<string> sel = [];
  	switch (widget)
  	{
- 	    case `unselected:
+-	    case `unselected:
++	    case `unselected: {
 +    // no fall thrue
 +		list<any> tmp1 = (list<any>) UI::QueryWidget(`id(`unselected), `SelectedItems);
 +		selected = flatten([ selected, tmp1 ]);
@@ -81,10 +222,11 @@ index 17c9c81..6671931 100644
  		list<any> tmp1 = (list<any>) UI::QueryWidget(`id(`unselected), `SelectedItems);
  		selected = flatten([ selected, tmp1 ]);
  		sel = (list<string>) UI::QueryWidget(`id(`selected), `SelectedItems);
-@@ -465,6 +473,14 @@ list<string> reverse( list<string> v )
+                 y2milestone( "selected:%1", selected );
  	    } break;
  
- 	    case `selected:
+-	    case `selected:
++	    case `selected: {
 +    // no fall thrue
 +list<any> tmp1 = (list<any>) UI::QueryWidget(`id(`selected), `SelectedItems);
 +		selected = filter(any tmp2, selected, { return !contains(tmp1, tmp2); });
@@ -96,10 +238,12 @@ index 17c9c81..6671931 100644
  	    case `remove: {
  		list<any> tmp1 = (list<any>) UI::QueryWidget(`id(`selected), `SelectedItems);
  		selected = filter(any tmp2, selected, { return !contains(tmp1, tmp2); });
-@@ -501,6 +517,31 @@ list<string> reverse( list<string> v )
+@@ -500,7 +519,32 @@ list<string> reverse( list<string> v )
+ 
  	    } break;
  
- 	    case `up:
+-	    case `up:
++	    case `up: {
 +    // no fall thrue
 +                boolean up = (widget==`up);
 +		sel = (list<string>) UI::QueryWidget(`id(`selected), `SelectedItems);
@@ -128,10 +272,12 @@ index 17c9c81..6671931 100644
  	    case `down: {
                  boolean up = (widget==`up);
  		sel = (list<string>) UI::QueryWidget(`id(`selected), `SelectedItems);
-@@ -527,6 +568,16 @@ list<string> reverse( list<string> v )
+@@ -526,7 +570,17 @@ list<string> reverse( list<string> v )
+                 y2milestone( "change:%1 selected:%2", sel, selected  );
  	    } break;
  
- 	    case `top:
+-	    case `top:
++	    case `top: {
 +    // no fall thrue
 +                boolean up = (widget==`top);
 +		sel = (list<string>) UI::QueryWidget(`id(`selected), `SelectedItems);
@@ -370,10 +516,10 @@ index f78c3e5..0cd8d9d 100644
   * $Id$
   */
 diff --git a/src/modules/StorageFields.ycp b/src/modules/StorageFields.ycp
-index 5aca433..9607b07 100644
+index 5aca433..6125c6a 100644
 --- a/src/modules/StorageFields.ycp
 +++ b/src/modules/StorageFields.ycp
-@@ -86,20 +86,20 @@ global string UsedByString(map<string, any> used_by)
+@@ -86,20 +86,21 @@ global string UsedByString(map<string, any> used_by)
  	switch (type)
  	{
  	    case `UB_LVM:
@@ -389,6 +535,7 @@ index 5aca433..9607b07 100644
 -		return "DM Multipath " + device;
 +		return "DM Multipath " + device; break;
  	    case `UB_MD:
++		return "MD RAID " + device; break;
  	    case `UB_MDPART:
 -		return "MD RAID " + device;
 +		return "MD RAID " + device; break;
@@ -401,7 +548,442 @@ index 5aca433..9607b07 100644
  	}
      }
  
-@@ -1318,25 +1318,25 @@ Identifier of the file system.");
+@@ -515,6 +516,7 @@ Identifier of the file system.");
+ 		else
+ 		    // row label, %1 is replace by device name
+ 		    return sformat(_("Device: %1"), String::EscapeTags(value));
++                break;
+ 	    }
+ 
+ 	    case `size:
+@@ -525,6 +527,7 @@ Identifier of the file system.");
+ 		else
+ 		    // row label, %1 is replace by size
+ 		    return sformat(_("Size: %1"), value);
++                break;
+ 	    }
+ 
+ 	    case `type:
+@@ -580,6 +583,7 @@ Identifier of the file system.");
+ 		else
+ 		    // row label
+ 		    return sformat(_("Type: %1"), String::EscapeTags(value));
++                break;
+ 	    }
+ 
+ 	    case `format:
+@@ -597,6 +601,7 @@ Identifier of the file system.");
+ 		else
+ 		    // row label
+ 		    return sformat(_("Format: %1"), value);
++                break;
+ 	    }
+ 
+ 	    case `encrypted:
+@@ -619,6 +624,7 @@ Identifier of the file system.");
+ 		    // row label, %1 is replace by "Yes" or "No"
+ 		    return sformat(_("Encrypted: %1"), BooleanToHumanString(value));
+ 		}
++                break;
+ 	    }
+ 
+ 	    case `fs_type:
+@@ -629,6 +635,7 @@ Identifier of the file system.");
+ 		else
+ 		    // row label, %1 is replace by file system name e.g. "Ext3"
+ 		    return sformat(_("File System: %1"), value);
++                break;
+ 	    }
+ 
+ 	    case `mount_point:
+@@ -646,6 +653,7 @@ Identifier of the file system.");
+ 		else
+ 		    // row label, %1 is replace by mount point e.g. "/mnt"
+ 		    return sformat(_("Mount Point: %1"), String::EscapeTags(value));
++                break;
+ 	    }
+ 
+ 	    case `mount_by:
+@@ -670,6 +678,7 @@ Identifier of the file system.");
+ 		else
+ 		    // row label, %1 is replace by mount by method
+ 		    return sformat(_("Mount by: %1"), value);
++                break;
+ 	    }
+ 
+ 	    case `used_by:
+@@ -684,6 +693,7 @@ Identifier of the file system.");
+ 			return sformat(_("Used by %1: %2"), i+1, String::EscapeTags(UsedByString(data["used_by", i]:$[])));
+ 		    }), HTML::Newline());
+ 		}
++                break;
+ 	    }
+ 
+ 	    case `uuid:
+@@ -694,6 +704,7 @@ Identifier of the file system.");
+ 		else
+ 		    // row label, %1 is replace by file system uuid
+ 		    return sformat(_("UUID: %1"), value);
++                break;
+ 	    }
+ 
+ 	    case `label:
+@@ -704,6 +715,7 @@ Identifier of the file system.");
+ 		else
+ 		    // row label, %1 is replace by file system label
+ 		    return sformat(_("Label: %1"), String::EscapeTags(value));
++                break;
+ 	    }
+ 
+ 	    case `udev_path:
+@@ -714,6 +726,7 @@ Identifier of the file system.");
+ 		else
+ 		    // row label, %1 is replace by udev device path
+ 		    return sformat(_("Device Path: %1"), value);
++                break;
+ 	    }
+ 
+ 	    case `udev_id:
+@@ -727,6 +740,7 @@ Identifier of the file system.");
+ 			return sformat(_("Device ID %1: %2"), i+1, data["udev_id", i]:"");
+ 		    }), HTML::Newline());
+ 		}
++                break;
+ 	    }
+ 
+ 	    case `bios_id:
+@@ -737,6 +751,7 @@ Identifier of the file system.");
+ 		else
+ 		    // row label, %1 is replace by bios id
+ 		    return sformat(_("BIOS ID: %1"), value);
++                break;
+ 	    }
+ 
+ 	    case `disk_label:
+@@ -747,6 +762,7 @@ Identifier of the file system.");
+ 		else
+ 		    // row label, %1 is replace by disk label e.g. "MSDOS" or "GPT"
+ 		    return sformat(_("Disk Label: %1"), value);
++                break;
+ 	    }
+ 
+ 	    case `vendor:
+@@ -757,6 +773,7 @@ Identifier of the file system.");
+ 		else
+ 		    // row label, %1 is replace by vendor name
+ 		    return sformat(_("Vendor: %1"), String::EscapeTags(value));
++                break;
+ 	    }
+ 
+ 	    case `model:
+@@ -767,6 +784,7 @@ Identifier of the file system.");
+ 		else
+ 		    // row label, %1 is replace by model string
+ 		    return sformat(_("Model: %1"), String::EscapeTags(value));
++                break;
+ 	    }
+ 
+ 	    case `bus:
+@@ -781,6 +799,7 @@ Identifier of the file system.");
+ 		else
+ 		    // row label, %1 is replace by bus name e.g. "SCSI"
+ 		    return sformat(_("Bus: %1"), value);
++                break;
+ 	    }
+ 
+ 	    case `lvm_metadata:
+@@ -793,6 +812,7 @@ Identifier of the file system.");
+ 		else
+ 		    // row label, %1 is replace by metadata version string
+ 		    return sformat(_("Metadata: %1"), value);
++                break;
+ 	    }
+ 
+ 	    case `pe_size:
+@@ -805,6 +825,7 @@ Identifier of the file system.");
+ 		else
+ 		    // row label, %1 is replace by size
+ 		    return sformat(_("PE Size: %1"), value);
++                break;
+ 	    }
+ 
+ 	    case `stripes:
+@@ -824,6 +845,7 @@ Identifier of the file system.");
+ 		else
+ 		    // row label, %1 is replace by integer
+ 		    return sformat(_("Stripes: %1"), value);
++                break;
+ 	    }
+ 
+ 	    case `raid_version:
+@@ -834,6 +856,7 @@ Identifier of the file system.");
+ 		else
+ 		    // row label, %1 is replace by raid version e.g. "1.00"
+ 		    return sformat(_("RAID Version: %1"), value);
++                break;
+ 	    }
+ 
+ 	    case `raid_type:
+@@ -844,6 +867,7 @@ Identifier of the file system.");
+ 		else
+ 		    // row label, %1 is replace by raid type e.g. "RAID1"
+ 		    return sformat(_("RAID Type: %1"), value);
++                break;
+ 	    }
+ 
+ 	    case `chunk_size:
+@@ -859,6 +883,7 @@ Identifier of the file system.");
+ 		else
+ 		    // row label, %1 is replace by size
+ 		    return sformat(_("Chunk Size: %1"), value);
++                break;
+ 	    }
+ 
+ 	    case `parity_algorithm:
+@@ -873,6 +898,7 @@ Identifier of the file system.");
+ 		else
+ 		    // row label, %1 is replace by algorithm name
+ 		    return sformat(_("Parity Algorithm: %1"), value);
++                break;
+ 	    }
+ 
+ 	    case `num_cyl:
+@@ -885,6 +911,7 @@ Identifier of the file system.");
+ 		else
+ 		    // row label, %1 is replace by integer
+ 		    return sformat(_("Number of Cylinders: %1"), value);
++                break;
+ 	    }
+ 
+ 	    case `cyl_size:
+@@ -897,6 +924,7 @@ Identifier of the file system.");
+ 		else
+ 		    // row label, %1 is replace by size
+ 		    return sformat(_("Cylinder Size: %1"), value);
++                break;
+ 	    }
+ 
+ 	    case `start_cyl:
+@@ -913,6 +941,7 @@ Identifier of the file system.");
+ 		else
+ 		    // row label, %1 is replace by integer
+ 		    return sformat(_("Start Cylinder: %1"), value);
++                break;
+ 	    }
+ 
+ 	    case `end_cyl:
+@@ -929,6 +958,7 @@ Identifier of the file system.");
+ 		else
+ 		    // row label, %1 is replace by integer
+ 		    return sformat(_("End Cylinder: %1"), value);
++                break;
+ 	    }
+ 
+ 	    case `sector_size:
+@@ -941,6 +971,7 @@ Identifier of the file system.");
+ 		else
+ 		    // row label, %1 is replace by size
+ 		    return sformat(_("Sector Size: %1"), value);
++                break;
+ 	    }
+ 
+ 	    case `fs_id:
+@@ -952,6 +983,7 @@ Identifier of the file system.");
+ 		else
+ 		    // row label, %1 is replace by file system id
+ 		    return sformat(_("FS ID: %1"), value);
++                break;
+ 	    }
+ 
+ 	    case `file_path:
+@@ -962,6 +994,7 @@ Identifier of the file system.");
+ 		else
+ 		    // row label, %1 is replace by file path e.g. "/data/secret"
+ 		    return sformat(_("File Path: %1"), String::EscapeTags(value));
++                break;
+ 	    }
+ 
+ 	    case `fc_wwpn:
+@@ -974,6 +1007,7 @@ Identifier of the file system.");
+ 		else
+ 		    // row label, %1 is replace by wwpn
+ 		    return sformat(_("WWPN: %1"), value);
++                break;
+ 	    }
+ 
+ 	    case `fc_fcp_lun:
+@@ -986,6 +1020,7 @@ Identifier of the file system.");
+ 		else
+ 		    // row label, %1 is replace by lun
+ 		    return sformat(_("LUN: %1"), value);
++                break;
+ 	    }
+ 
+ 	    case `fc_port_id:
+@@ -998,12 +1033,14 @@ Identifier of the file system.");
+ 		else
+ 		    // row label, %1 is replace by port id
+ 		    return sformat(_("Port ID: %1"), value);
++                break;
+ 	    }
+ 
+ 	    default:
+ 	    {
+ 		y2error("unknown field %1", field);
+ 		return "error";
++                break;
+ 	    }
+ 	}
+     }
+@@ -1198,6 +1235,39 @@ Identifier of the file system.");
+ 	}
+     }
+ 
++    list<term> contents = [];
++    symbol(map, map) cb_predicate = nil;
++    list<symbol> cb_fields = [];
++    map<string, map> cb_target_map = $[];
++
++    void TableCallback(map<string, map> target_map, map disk)
++    {
++        symbol disk_predicate = cb_predicate(disk, nil);
++
++        if (!AlwaysHideDisk(target_map, disk) &&
++            contains([`show, `showandfollow], disk_predicate))
++        {
++            term row = StorageFields::TableRow(cb_fields, disk, nil);
++            contents = add(contents, row);
++        }
++
++        if (contains([`follow, `showandfollow], disk_predicate))
++        {
++            list<map> partitions = disk["partitions"]:[];
++
++            foreach(map partition, partitions, {
++
++                symbol part_predicate = cb_predicate(disk, partition);
++
++                if (!AlwaysHidePartition(cb_target_map, disk, partition) &&
++                    contains([`show, `showandfollow], part_predicate))
++                {
++                    term row = StorageFields::TableRow(cb_fields, disk, partition);
++                    contents = add(contents, row);
++                }
++            });
++        }
++    }
+ 
+ 
+     /**
+@@ -1212,38 +1282,12 @@ Identifier of the file system.");
+     global list<term> TableContents(list<symbol> fields, map<string, map> target_map,
+ 				    symbol(map, map) predicate)
+     {
+-	list<term> contents = [];
+-
+-	void callback(map<string, map> target_map, map disk)
+-	{
+-	    symbol disk_predicate = predicate(disk, nil);
+-
+-	    if (!AlwaysHideDisk(target_map, disk) &&
+-		contains([`show, `showandfollow], disk_predicate))
+-	    {
+-		term row = StorageFields::TableRow(fields, disk, nil);
+-		contents = add(contents, row);
+-	    }
+-
+-	    if (contains([`follow, `showandfollow], disk_predicate))
+-	    {
+-		list<map> partitions = disk["partitions"]:[];
+-
+-		foreach(map partition, partitions, {
+-
+-		    symbol part_predicate = predicate(disk, partition);
+-
+-		    if (!AlwaysHidePartition(target_map, disk, partition) &&
+-			contains([`show, `showandfollow], part_predicate))
+-		    {
+-			term row = StorageFields::TableRow(fields, disk, partition);
+-			contents = add(contents, row);
+-		    }
+-		});
+-	    }
+-	}
++	contents = [];
+ 
+-	IterateTargetMap(target_map, callback);
++        cb_predicate = predicate;
++        cb_fields = fields;
++        cb_target_map = target_map;
++	IterateTargetMap(target_map, TableCallback);
+ 
+ 	return contents;
+     }
+@@ -1272,75 +1316,54 @@ Identifier of the file system.");
+ 	return helptext;
+     }
+ 
+-
+-    /**
+-     * The device must be the device entry in the target-map, e.g. "/dev/sda1",
+-     * not something like "LABEL=test".
+-     */
+-    global string OverviewContents(list<symbol> fields, map<string, map> target_map, string device)
++    list< list<symbol> > splitfields(list<symbol> fields)
+     {
+-	map disk = target_map[device]:nil;
+-	map part = nil;
+-
+-	if (disk == nil)
+-	{
+-	    foreach(string s, map d, target_map, {
+-		part = find(map p, d["partitions"]:[], { return p["device"]:"" == device; });
+-		if (part != nil) {
+-		    disk = d;
+-		    break;
+-		}
+-	    });
+-	}
+-
+-	list< list<symbol> > splitfields(list<symbol> fields)
+-	{
+-	    list< list<symbol> > ret = [];
+-
+-	    list<symbol> tmp = [];
+-	    foreach(symbol field, fields, {
+-		if (substring(tostring(field), 0, 8) == "`heading") {
+-		    if (size(tmp) > 1)
+-			ret = add(ret, tmp);
+-		    tmp = [ field ];
+-		} else {
+-		    tmp = add(tmp, field);
+-		}
+-	    });
+-	    if (size(tmp) > 1)
+-		ret = add(ret, tmp);
+-
+-	    return ret;
+-	}
++        list< list<symbol> > ret = [];
++
++        list<symbol> tmp = [];
++        foreach(symbol field, fields, {
++            if (substring(tostring(field), 0, 8) == "`heading") {
++                if (size(tmp) > 1)
++                    ret = add(ret, tmp);
++                tmp = [ field ];
++            } else {
++                tmp = add(tmp, field);
++            }
++        });
++        if (size(tmp) > 1)
++            ret = add(ret, tmp);
++
++        return ret;
++    }
+ 
+ 	string Heading(symbol field)
+ 	{
  	    switch (field) {
  		case `heading_device:
  		    // heading
@@ -434,6 +1016,41 @@ index 5aca433..9607b07 100644
  	    }
  	}
  
+-	list<string> List(list<symbol> fields)
++	list<string> List(list<symbol> fields, map disk, map part)
+ 	{
+ 	    return maplist(symbol field, fields, {
+ 		// cast to string - overviews expect textual summary
+@@ -1348,8 +1371,28 @@ Identifier of the file system.");
+ 	    });
+ 	};
+ 
++    /**
++     * The device must be the device entry in the target-map, e.g. "/dev/sda1",
++     * not something like "LABEL=test".
++     */
++    global string OverviewContents(list<symbol> fields, map<string, map> target_map, string device)
++    {
++	map disk = target_map[device]:nil;
++	map part = nil;
++
++	if (disk == nil)
++	{
++	    foreach(string s, map d, target_map, {
++		part = find(map p, d["partitions"]:[], { return p["device"]:"" == device; });
++		if (part != nil) {
++		    disk = d;
++		    break;
++		}
++	    });
++	}
++
+ 	string content = mergestring(maplist(list<symbol> subfields, splitfields(fields), {
+-	    return HTML::Heading(Heading(subfields[0]:`none)) + HTML::List(List(sublist(subfields, 1)));
++	    return HTML::Heading(Heading(subfields[0]:`none)) + HTML::List(List(sublist(subfields, 1), disk, part));
+ 	}), "");
+ 
+ 	return content;
 diff --git a/src/modules/StorageIcons.ycp b/src/modules/StorageIcons.ycp
 index f52706f..968ac05 100644
 --- a/src/modules/StorageIcons.ycp
@@ -484,3 +1101,47 @@ index f52706f..968ac05 100644
  	}
      }
  
+diff --git a/src/modules/StorageProposal.ycp b/src/modules/StorageProposal.ycp
+index 79511cc..4ffb8e8 100644
+--- a/src/modules/StorageProposal.ycp
++++ b/src/modules/StorageProposal.ycp
+@@ -876,24 +876,24 @@ map do_vm_disk_conf( map disk, map boot, string vmkey, string key )
+     return( ret );
+     }
+ 
++void helper(string s, list<string> disks)
++{
++    integer count = 0;
++    disks = filter(string dist, disks, {
++        if (search(dist, s) != 0)
++            return true;
++        count = count + 1;
++        return count <= 16;
++    });
++}
++
+ 
+ list<string> restrict_disk_names(list<string> disks)
+ {
+-    void helper(string s)
+-    {
+-	integer count = 0;
+-	disks = filter(string dist, disks, {
+-	    if (search(dist, s) != 0)
+-		return true;
+-	    count = count + 1;
+-	    return count <= 16;
+-	});
+-    }
+-
+-    helper("/dev/sd");
+-    helper("/dev/hd");
+-    helper("/dev/cciss/");
+-    helper("/dev/dasd");
++    helper("/dev/sd", disks);
++    helper("/dev/hd", disks);
++    helper("/dev/cciss/", disks);
++    helper("/dev/dasd", disks);
+ 
+     y2milestone("restrict_disk_names: ret %1", disks);
+     return disks;
