@@ -44,7 +44,8 @@ end
 # or a YCP namespace, like Message, Popup
 
 # Hash: String -> YastModule
-$modules = {}
+# initialized with a default-block later
+$modules = nil
 
 class YastModule
 
@@ -79,7 +80,10 @@ class YastModule
   end
 
   def transitive_deps
-    (deps.map { |d| $modules[d].transitive_deps }.reduce([], :+) + deps).uniq
+    deps_of_deps = deps.map do |d|
+      $modules[d].transitive_deps
+    end
+    deps_of_deps.reduce(deps, :+).uniq
   end
 
   def convert
@@ -721,7 +725,7 @@ class CLI < Thor
     super *args
 
     load_config
-    load_module_data
+    lazy_load_module_data
   end
 
   desc "clone <module>...", "Clone module(s)"
@@ -838,13 +842,15 @@ class CLI < Thor
     @config = YAML.load_file("#{BASE_DIR}/config.yml")
   end
 
-  def load_module_data
-    Dir["#{DATA_DIR}/*.yml"].sort.each do |file|
-      name = File.basename(file, ".yml")
+  def all_module_names
+    Dir["#{DATA_DIR}/*.yml"].sort.map { |file| File.basename(file, ".yml") }
+  end
 
-      $modules[name] = YastModule.new(
+  def lazy_load_module_data
+    $modules = Hash.new do |hash, name|
+      hash[name] = YastModule.new(
         name,
-        YAML.load_file(file) || {},
+        YAML.load_file("#{DATA_DIR}/#{name}.yml") || {},
         @config
       )
     end
@@ -860,7 +866,7 @@ class CLI < Thor
 
   def modules_from_names(module_names)
     module_names = [ module_from_cwd ] if module_names.empty?
-    module_names = $modules.keys if module_names == ["all"]
+    module_names = all_module_names if module_names == ["all"]
 
     $modules.values_at(*module_names)
   end
