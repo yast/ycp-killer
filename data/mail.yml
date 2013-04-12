@@ -1,6 +1,8 @@
 deps:
   - yast2
   - users
+  - ldap-server
+  - network
 
 exports:
   - users-plugin
