@@ -1,13 +1,16 @@
-# TODO: Process.
+deps:
+  - yast2
 
-files:
-  - src/AuditLaf.ycp
-  - src/audit-laf.ycp
-  - src/audit-laf_auto.ycp
-  - src/audit-laf_proposal.ycp
-  - src/cmdline.ycp
-  - src/complex.ycp
-  - src/dialogs.ycp
-  - src/helps.ycp
-  - src/wizards.ycp
-  - testsuite/tests/TestModule.ycp
+moves:
+  - from: "src/AuditLaf.ycp"
+    to:   src/modules
+  - from: "src/audit-laf*.ycp"
+    to:   src/clients
+  - from: "src/{cmdline,complex,dialogs,helps,wizards}.ycp"
+    to:   src/include/audit-laf
+  - from: "src/audit-laf.desktop"
+    to:   src/desktop
+  - from: "src/audit-laf.rnc"
+    to:   src/autoyast-rnc
+  - from: "agents/auditd.scr"
+    to:   src/scrconf
