@@ -1,3 +1,5 @@
+deps: [] # explicitly none
+
 moves:
   - from: "src/[A-Z]*.ycp"
     to: "src/modules/"
