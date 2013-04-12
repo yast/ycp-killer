@@ -7,12 +7,12 @@ deps:
   - network
 
 moves:
-  - from: "agents"
-    to: src
+  - from: "agents/*.scr"
+    to: src/scrconf
+  - from: "agents/sysconfig.security-checksig"
+    to: src/fillup
   - from: "src/config/*.desktop"
     to: src/desktop
-  - from: "src/config/*.rnc"
-    to: src/autoyast-rnc
   - from: "src/config/*.rnc"
     to: src/autoyast-rnc
   - from: "src/inst_finish/*.ycp"
