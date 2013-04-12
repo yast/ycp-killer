@@ -75,6 +75,13 @@ class YastModule
     @exports    = data.delete("exports") || ["src"]
     @excluded   = data.delete("excluded") || []
     puts "WARNING, unknown keys in #{name}.yml: #{data.keys}" unless data.empty?
+
+    missing_deps = deps.reject do |d|
+      File.exists?($modules[d].work_dir)
+    end
+    if ! missing_deps.empty?
+      raise "Missing dependencies, convert them first: #{missing_deps}"
+    end
   end
 
   def transitive_deps
