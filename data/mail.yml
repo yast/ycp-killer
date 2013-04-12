@@ -13,7 +13,7 @@ moves:
     to:   src/autoyast-rnc
   - from: agents/*.scr
     to:   src/scrconf
-  - from: agents/{ag_fetchmailrc,ag_fetchmailrc,ag_mailtable,setup_dkim_verifying.pl,ag_mailconfig,ag_mailconfig,MasterCFParser.pm,ag_mail_ldaptable,ag_cyrus_conf,CyrusConfParser.pm}
+  - from: agents/{ag_fetchmailrc,ag_smtp_auth,ag_mailtable,setup_dkim_verifying.pl,ag_postfix_mastercf,ag_mailconfig,MasterCFParser.pm,ag_mail_ldaptable,ag_cyrus_conf,CyrusConfParser.pm}
     to:   src/servers_non_y2
   - from: agents/sysconfig.mail
     to:   fillup
@@ -25,11 +25,11 @@ moves:
     to:   src/desktop
   - from: src/{Mail.ycp,MailServer.ycp,MailServerLDAP.pm}
     to:   src/modules
+  - from: src/YaPI/MailServer.pm
+    to:   src/modules/YaPI
   #FIXME not in Makefile
   - from: src/mail-server.ycp
     to:   src/clients
   #TODO missing Makefile for the schema dir
   - from: src/suse-mailserver.schema
     to:   schema
-  - from: src/YaPI/MailServer.pm
-    to:   src/modules/YaPI
