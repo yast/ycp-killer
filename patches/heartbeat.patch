@@ -1,0 +1,48 @@
+diff --git a/src/include/heartbeat/auth_conf.ycp b/src/include/heartbeat/auth_conf.ycp
+index 921999a..611a0c6 100644
+--- a/src/include/heartbeat/auth_conf.ycp
++++ b/src/include/heartbeat/auth_conf.ycp
+@@ -54,6 +54,7 @@ textdomain "heartbeat";
+ import "Label";
+ import "Wizard";
+ import "Heartbeat";
++import "Report";
+ 
+ include "heartbeat/helps.ycp";
+ include "heartbeat/common.ycp";
+diff --git a/src/include/heartbeat/ipfail_conf.ycp b/src/include/heartbeat/ipfail_conf.ycp
+index 4d29b98..c049388 100644
+--- a/src/include/heartbeat/ipfail_conf.ycp
++++ b/src/include/heartbeat/ipfail_conf.ycp
+@@ -55,6 +55,7 @@ import "Wizard";
+ import "Heartbeat";
+ import "Report";
+ import "SCR";
++import "IP";
+ 
+ include "heartbeat/helps.ycp";
+ include "heartbeat/common.ycp";
+diff --git a/src/include/heartbeat/startup_conf.ycp b/src/include/heartbeat/startup_conf.ycp
+index ae99787..7e9ee32 100644
+--- a/src/include/heartbeat/startup_conf.ycp
++++ b/src/include/heartbeat/startup_conf.ycp
+@@ -55,6 +55,7 @@ import "Label";
+ import "Wizard";
+ import "Service";
+ import "Heartbeat";
++import "Report";
+ 
+ include "heartbeat/helps.ycp";
+ include "heartbeat/common.ycp";
+diff --git a/src/include/heartbeat/stonith_conf.ycp b/src/include/heartbeat/stonith_conf.ycp
+index ba90cfe..01014ae 100644
+--- a/src/include/heartbeat/stonith_conf.ycp
++++ b/src/include/heartbeat/stonith_conf.ycp
+@@ -54,6 +54,7 @@ textdomain "heartbeat";
+ import "Label";
+ import "Wizard";
+ import "Heartbeat";
++import "Report";
+ 
+ include "heartbeat/helps.ycp";
+ include "heartbeat/common.ycp";
