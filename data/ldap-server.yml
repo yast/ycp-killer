@@ -1,5 +1,6 @@
 deps:
   - ldap-client
+  - users
 
 moves:
   - from: src/{LdapDatabase.ycp,LdapServer.pm}

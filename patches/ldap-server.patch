@@ -1,0 +1,14 @@
+This simple change makes the include compile on its own, yay!
+
+diff --git a/src/include/ldap-server/widgets.ycp b/src/include/ldap-server/widgets.ycp
+index fa64d62..5a5347e 100644
+--- a/src/include/ldap-server/widgets.ycp
++++ b/src/include/ldap-server/widgets.ycp
+@@ -4,6 +4,7 @@
+     import "CWMFirewallInterfaces";
+     import "Label";
+     import "Ldap";
++    import "LdapServer";
+     import "Popup";
+     import "Wizard";
+ 
