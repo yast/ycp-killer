@@ -70,10 +70,12 @@ class YastModule
     @result_dir = "#{@config["yast_dir"]}/#{RESULT_DIR}/#@name"
     # Not suffixed with @name as it does not match (usuall yast2-#{name} )
     @obs_dir    = "#{@config["yast_dir"]}/#{OBS_DIR}"
-    @deps       = @data["deps"] || []
-    @exports    = @data["exports"] || ["src"]
-    @excluded   = @data["excluded"] || []
-    @moves      = @data["moves"] || []
+    @deps       = data.delete("deps") || []
+    @exports    = data.delete("exports") || ["src"]
+    @excluded   = data.delete("excluded") || []
+    @moves      = data.delete("moves") || []
+    data.delete("files") # don't warn about these
+    puts "WARNING, unknown keys in #{name}.yml: #{data.keys}" unless data.empty?
   end
 
   def transitive_deps
