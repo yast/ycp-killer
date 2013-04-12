@@ -272,7 +272,7 @@ format.
 # A list of modules this one depends on to compile. Only direct dependencies
 # need to be stated here (the indirect ones are computed automatically when
 # needed).
-# Default: mandatory. Use 'deps: []' to explicitly mark a leaf package
+# Default: []
 deps:
   - yast2
 
