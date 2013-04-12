@@ -10,6 +10,15 @@ moves:
     to: src/include/packager
 
 excluded:
+  # TODO FIXME: hidden storage module dependency
+  - src/clients/wrapper_storage.ycp
+
+  # TODO FIXME: hidden add-on module dependency
+  - src/clients/inst_check_memsize.ycp
+
+  # TODO FIXME: hidden installation module dependency
+  - src/clients/inst_productsources.ycp
+
   # some obsoleted tests (do not work anymore due to changed API)
   # should be removed from the package
   - testsuite/old-tests/ChangeCD.ycp
