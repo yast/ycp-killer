@@ -1,7 +1,6 @@
 ---
 deps:
   - yast2
-  - testsuite
 
 moves:
   - from: agents/*.scr
