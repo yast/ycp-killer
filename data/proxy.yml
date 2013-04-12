@@ -1,9 +1,4 @@
-# TODO: Process.
+deps:
+  - testsuite
+  - yast2
 
-files:
-  - src/clients/proxy.ycp
-  - src/clients/proxy_auto.ycp
-  - src/clients/proxy_proposal.ycp
-  - src/include/proxy/dialogs.ycp
-  - src/modules/Proxy.ycp
-  - testsuite/tests/Proxy.ycp

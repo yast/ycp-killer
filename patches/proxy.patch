@@ -1,0 +1,22 @@
+diff --git a/src/clients/proxy.ycp b/src/clients/proxy.ycp
+index 5b3470c..d5925e8 100644
+--- a/src/clients/proxy.ycp
++++ b/src/clients/proxy.ycp
+@@ -23,6 +23,8 @@ import "Label";
+ import "Proxy";
+ import "Wizard";
+ 
++include "proxy/dialogs.ycp";
++
+ /**
+  * Return a modification status
+  * @return true if data was modified
+@@ -32,8 +34,6 @@ define boolean Modified() {
+ }
+ 
+ any ProxyGUI() {
+-    include "proxy/dialogs.ycp";
+-
+     Proxy::Read ();
+ 
+     Wizard::CreateDialog();
