@@ -1,3 +1,52 @@
+diff --git a/config/Makefile.am b/config/Makefile.am
+index 77a568c..bbcd6d6 100644
+--- a/config/Makefile.am
++++ b/config/Makefile.am
+@@ -1,7 +1,3 @@
+ # Makefile.am for source/firewall/src/config
+ # $Id: $
+-
+-rncdir =  $(schemadir)/autoyast/rnc
+-rnc_DATA = firewall.rnc
+-
+-EXTRA_DIST = $(rnc_DATA)
++# moved
+diff --git a/doc/Makefile.am b/doc/Makefile.am
+index 406af07..4df4944 100644
+--- a/doc/Makefile.am
++++ b/doc/Makefile.am
+@@ -4,7 +4,8 @@
+ # $Id$
+ #
+ 
+-SUBDIRS = autodocs
++# Caanot generate autodocs for ruby now
++#SUBDIRS = autodocs
+ 
+ htmldir = @docdir@
+ html_DATA =
+diff --git a/src/clients/firewall.ycp b/src/clients/firewall.ycp
+index b6ec9d2..0ad6b3e 100644
+--- a/src/clients/firewall.ycp
++++ b/src/clients/firewall.ycp
+@@ -35,6 +35,9 @@ you may find current contact information at www.novell.com
+     y2milestone("----------------------------------------");
+     y2milestone("Firewall module started");
+ 
++    // moved to toplevel because it is no harm to load it and y2r doesn't handle well include inside deep code
++    include "firewall/wizards.ycp";
++
+     textdomain "firewall";
+ 
+     import "SuSEFirewall";
+@@ -53,7 +56,6 @@ you may find current contact information at www.novell.com
+ 	SuSEFirewallCMDLine::Run();
+     // GUI or TextUI
+     } else {
+-	include "firewall/wizards.ycp";
+ 	// installation has other sequence
+ 	if (Mode::installation()) {
+ 	    ret = FirewallInstallationSequence();
 diff --git a/src/include/firewall/complex.ycp b/src/include/firewall/complex.ycp
 index ccbb1a4..039e8a9 100644
 --- a/src/include/firewall/complex.ycp
