@@ -15,6 +15,3 @@ moves:
   - from: "agents/{ag_drbd,drbd.rb.yy,Makefile.*}"
     to:   src/servers_non_y2
 
-excluded:
-  # TODO: Include file, can't be compiled for now.
-  - src/include/drbd/common.ycp
