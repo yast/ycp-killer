@@ -65,17 +65,15 @@ class YastModule
 
   def initialize(name, data, config)
     @name       = name
-    @data       = data
     @config     = config
     @work_dir   = "#{@config["yast_dir"]}/#{WORK_DIR}/#@name"
     @result_dir = "#{@config["yast_dir"]}/#{RESULT_DIR}/#@name"
     # Not suffixed with @name as it does not match (usuall yast2-#{name} )
     @obs_dir    = "#{@config["yast_dir"]}/#{OBS_DIR}"
-    @deps       = data.delete("deps") || []
+    @deps       = data.delete("deps")  or raise "#{name}.yml: No 'deps' section found"
+    @moves      = data.delete("moves") or raise "#{name}.yml: No 'moves' section found"
     @exports    = data.delete("exports") || ["src"]
     @excluded   = data.delete("excluded") || []
-    @moves      = data.delete("moves") || []
-    data.delete("files") # don't warn about these
     puts "WARNING, unknown keys in #{name}.yml: #{data.keys}" unless data.empty?
   end
 

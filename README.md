@@ -272,13 +272,13 @@ format.
 # A list of modules this one depends on to compile. Only direct dependencies
 # need to be stated here (the indirect ones are computed automatically when
 # needed).
-# Default: []
+# Default: mandatory. Use 'deps: []' to explicitly mark a leaf package
 deps:
   - yast2
 
 # A list of operations used by the `restructure` command
 # to make the working tree better fit the Y2DIR scheme.
-# Default: []
+# Default: mandatory
 moves:
     # A glob in the original structure
     # (use quotes because of YAML syntax).
