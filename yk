@@ -82,7 +82,7 @@ class YastModule
     # Not suffixed with @name as it does not match (usuall yast2-#{name} )
     @obs_dir    = "#{@config["yast_dir"]}/#{OBS_DIR}"
     @deps       = data.delete("deps") || []
-    @moves      = data.delete("moves") or raise "#{name}.yml: No 'moves' section found"
+    @moves      = data.delete("moves")
     @exports    = data.delete("exports") || ["src"]
     @excluded   = data.delete("excluded") || []
     puts "WARNING, unknown keys in #{name}.yml: #{data.keys}" unless data.empty?
@@ -208,6 +208,7 @@ class YastModule
   end
 
   def restructure
+    raise "#{name}.yml: No 'moves' section found" unless moves
     Dir.chdir work_dir do
       moves.each do |move|
         FileUtils.mkdir_p move["to"]
