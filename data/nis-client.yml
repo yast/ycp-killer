@@ -18,8 +18,8 @@ moves:
     to:   src/scrconf
   - from: agents/ag_yp_conf
     to:   src/servers_non_y2
-  # will this work out?
-  - from: agents/test-*
-    to:   src/servers_non_y2/test
   # agent-ypserv is in C, leave it there for now
 
+# to consider during packaging:
+#  - from: agents/test-*
+#    to:   ?
