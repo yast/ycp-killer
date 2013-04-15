@@ -39,6 +39,10 @@ module Messages
   end
 end
 
+# FIXME "module" is overloaded in YaST and here:
+# either a YaST RPM package, like network, dns-server
+# or a YCP namespace, like Message, Popup
+
 class YastModule
 
   WORK_DIR   = "work"
@@ -55,24 +59,47 @@ class YastModule
     :excluded,
     :moves
 
+  # Hash: String -> YastModule
+  @@modules = {}
 
-  def initialize(name, data, modules, config)
+  def self.config=(value)
+    @@config = value
+  end
+
+  def self.[](name)
+    @@modules[name] ||= YastModule.new(
+        name,
+        YAML.load_file("#{DATA_DIR}/#{name}.yml") || {},
+        @@config
+    )
+  end
+
+  def initialize(name, data, config)
     @name       = name
-    @data       = data
-    @modules    = modules
     @config     = config
     @work_dir   = "#{@config["yast_dir"]}/#{WORK_DIR}/#@name"
     @result_dir = "#{@config["yast_dir"]}/#{RESULT_DIR}/#@name"
     # Not suffixed with @name as it does not match (usuall yast2-#{name} )
     @obs_dir    = "#{@config["yast_dir"]}/#{OBS_DIR}"
-    @deps       = @data["deps"] || []
-    @exports    = @data["exports"] || ["src"]
-    @excluded   = @data["excluded"] || []
-    @moves      = @data["moves"] || []
+    @deps       = data.delete("deps") || []
+    @moves      = data.delete("moves")
+    @exports    = data.delete("exports") || ["src"]
+    @excluded   = data.delete("excluded") || []
+    puts "WARNING, unknown keys in #{name}.yml: #{data.keys}" unless data.empty?
+
+    missing_deps = deps.reject do |d|
+      File.exists?(YastModule[d].work_dir)
+    end
+    if ! missing_deps.empty?
+      raise "Missing dependencies, convert them first: #{missing_deps}"
+    end
   end
 
   def transitive_deps
-    (deps.map { |d| @modules[d].transitive_deps }.reduce([], :+) + deps).uniq
+    deps_of_deps = deps.map do |d|
+      YastModule[d].transitive_deps
+    end
+    deps_of_deps.reduce(deps, :+).uniq
   end
 
   def convert
@@ -181,6 +208,7 @@ class YastModule
   end
 
   def restructure
+    raise "#{name}.yml: No 'moves' section found" unless moves
     Dir.chdir work_dir do
       moves.each do |move|
         FileUtils.mkdir_p move["to"]
@@ -399,7 +427,7 @@ EOS
     unless @module_paths 
       @module_paths = [STUBS_DIR] + exported_module_paths
       transitive_deps.each do |dependency|
-        @module_paths.concat @modules[dependency].exported_module_paths
+        @module_paths.concat YastModule[dependency].exported_module_paths
       end
     end
     @module_paths
@@ -411,7 +439,7 @@ EOS
     unless @include_paths
       @include_paths = [STUBS_DIR] + exported_include_paths
       transitive_deps.each do |dependency|
-        @include_paths.concat @modules[dependency].exported_include_paths
+        @include_paths.concat YastModule[dependency].exported_include_paths
       end
     end
     @include_paths
@@ -718,7 +746,6 @@ class CLI < Thor
     super *args
 
     load_config
-    load_module_data
   end
 
   desc "clone <module>...", "Clone module(s)"
@@ -833,21 +860,11 @@ class CLI < Thor
 
   def load_config
     @config = YAML.load_file("#{BASE_DIR}/config.yml")
+    YastModule.config = @config
   end
 
-  def load_module_data
-    @modules = {}
-
-    Dir["#{DATA_DIR}/*.yml"].sort.each do |file|
-      name = File.basename(file, ".yml")
-
-      @modules[name] = YastModule.new(
-        name,
-        YAML.load_file(file) || {},
-        @modules,
-        @config
-      )
-    end
+  def all_module_names
+    Dir["#{DATA_DIR}/*.yml"].sort.map { |file| File.basename(file, ".yml") }
   end
 
   def module_from_cwd
@@ -860,9 +877,9 @@ class CLI < Thor
 
   def modules_from_names(module_names)
     module_names = [ module_from_cwd ] if module_names.empty?
-    module_names = @modules.keys if module_names == ["all"]
+    module_names = all_module_names if module_names == ["all"]
 
-    @modules.values_at(*module_names)
+    module_names.map { |m| YastModule[m] }
   end
 
   def with_modules(modules, activity, print_status) # :yields: mod

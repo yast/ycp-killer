@@ -279,7 +279,7 @@ deps:
 
 # A list of operations used by the `restructure` command
 # to make the working tree better fit the Y2DIR scheme.
-# Default: []
+# Default: mandatory
 moves:
     # A glob in the original structure
     # (use quotes because of YAML syntax).
