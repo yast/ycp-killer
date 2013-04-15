@@ -16,16 +16,3 @@ index 0764d69..9ef8dbb 100644
  # Makefile.am for sound/sound
 -SUBDIRS = doc src testsuite agents config
 +SUBDIRS =
-diff --git a/src/include/sound/ui.ycp b/src/include/sound/ui.ycp
-index 2a2b8ac..7a09398 100644
---- a/src/include/sound/ui.ycp
-+++ b/src/include/sound/ui.ycp
-@@ -12,7 +12,7 @@
-  *   user interface functions for sound module
-  *
-  * Authors:
-- *   Dan Veselý <dan@suse.cz>
-+ *   Dan VeselÃ½ <dan@suse.cz>
-  *   Dan Meszaros <dmeszar@suse.cz>
-  *
-  */
