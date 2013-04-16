@@ -1,8 +1,10 @@
 deps:
   - yast2
   - users
+  - ldap-client
   - ldap-server
   - network
+  - pam
 
 exports:
   - users-plugin
