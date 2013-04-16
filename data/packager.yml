@@ -19,11 +19,3 @@ excluded:
   # TODO FIXME: hidden installation module dependency
   - src/clients/inst_productsources.ycp
 
-  # some obsoleted tests (do not work anymore due to changed API)
-  # should be removed from the package
-  - testsuite/old-tests/ChangeCD.ycp
-  - testsuite/old-tests/EvaluateFreeSpace.ycp
-  - testsuite/old-tests/GetBootDevice.ycp
-  - testsuite/old-tests/MergeProposals.ycp
-  - testsuite/old-tests/MergeWorkflows.ycp
-  - testsuite/old-tests/evaluateFreeSpace.ycp
