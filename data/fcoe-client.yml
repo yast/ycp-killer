@@ -1,4 +1,5 @@
 deps:
+  - installation
   - yast2
 
 moves:
