@@ -1,12 +1,10 @@
-# TODO: Process.
-
-files:
-  - src/RelocationServer.ycp
-  - src/VM_XEN.ycp
-  - src/complex.ycp
-  - src/dialogs.ycp
-  - src/helps.ycp
-  - src/relocation-server.ycp
-  - src/vm_finish.ycp
-  - src/wizards.ycp
-  - src/xen.ycp
+#files:
+#  - src/RelocationServer.ycp
+#  - src/VM_XEN.ycp
+#  - src/complex.ycp
+#  - src/dialogs.ycp
+#  - src/helps.ycp
+#  - src/relocation-server.ycp
+#  - src/vm_finish.ycp
+#  - src/wizards.ycp
+#  - src/xen.ycp
