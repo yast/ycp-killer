@@ -738,3 +738,20 @@ index 76100cd..e4322d9 100644
  	    UI::SetFocus (`id(value_size-1));
  	}
  	if (result == `ok)
+diff --git a/yast2-ldap-client.spec.in b/yast2-ldap-client.spec.in
+index 32deeaf..0b9564c 100644
+--- a/yast2-ldap-client.spec.in
++++ b/yast2-ldap-client.spec.in
+@@ -50,9 +50,9 @@ OpenLDAP server will be used for user authentication.
+ @desktopdir@/ldap_browser.desktop
+ %dir @yncludedir@/ldap
+ @yncludedir@/ldap/*
+-@moduledir@/Ldap.y*
+-@moduledir@/LdapPopup.y*
+-@clientdir@/ldap*.ycp
++@moduledir@/Ldap.rb
++@moduledir@/LdapPopup.rb
++@clientdir@/ldap*.rb
+ @scrconfdir@/*.scr
+ @schemadir@/autoyast/rnc/ldap_client.rnc
+ %doc @docdir@
