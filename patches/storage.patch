@@ -1,3 +1,53 @@
+diff --git a/src/clients/disk_worker.ycp b/src/clients/disk_worker.ycp
+index c6d8c35..4fe7e9c 100644
+--- a/src/clients/disk_worker.ycp
++++ b/src/clients/disk_worker.ycp
+@@ -62,20 +62,9 @@
+ 
+     boolean Dummy() { return true; }
+ 
+-
+-    boolean StorageCmdline(map<string, string> options)
+-    {
+-	boolean disks = true;
+-	boolean partitions = true;
+-
+-	if (!isempty(options))
+-	{
+-	    disks = haskey(options, "disks");
+-	    partitions = haskey(options, "partitions");
+-	}
+-
+-	list<symbol> fields = [ `device, `size, `fs_type, `mount_point, `label, `model ];
+-
++// we need global functions as Predicate used it to pass options
++    boolean partitions = true;
++    boolean disks = true;
+ 	symbol Predicate(map disk, map partition)
+ 	{
+ 	    list<symbol> returns = [ `tmpfs, `nfs, `nfs4, `unknown ];
+@@ -101,6 +90,21 @@
+ 	    }
+ 	}
+ 
++
++
++    boolean StorageCmdline(map<string, string> options)
++    {
++	disks = true;
++	partitions = true;
++
++	if (!isempty(options))
++	{
++	    disks = haskey(options, "disks");
++	    partitions = haskey(options, "partitions");
++	}
++
++	list<symbol> fields = [ `device, `size, `fs_type, `mount_point, `label, `model ];
++
+ 	map<string, map> target_map = Storage::GetTargetMap();
+ 
+ 	term header = StorageFields::TableHeader(fields);
 diff --git a/src/include/partitioning/auto_part_create.ycp b/src/include/partitioning/auto_part_create.ycp
 index a2a68e6..7e81d58 100644
 --- a/src/include/partitioning/auto_part_create.ycp
@@ -36,7 +86,7 @@ index 28bd406..2227df2 100644
  
      
 diff --git a/src/include/partitioning/auto_part_prepare.ycp b/src/include/partitioning/auto_part_prepare.ycp
-index 57c21ab..ccdbfd3 100644
+index 57c21ab..baa6eb5 100644
 --- a/src/include/partitioning/auto_part_prepare.ycp
 +++ b/src/include/partitioning/auto_part_prepare.ycp
 @@ -23,7 +23,7 @@
@@ -48,6 +98,14 @@ index 57c21ab..ccdbfd3 100644
   *
   * Purpose: 		This module preparse the raw targetMap to
   *			cover the whole disk, including unpartitioned
+@@ -36,6 +36,7 @@
+ textdomain "storage";
+ 
+ import "Partitions";
++import "StorageProposal";
+ 
+ define list<map> prepare_partitions( map target, list<map> partitions )
+     ``{
 diff --git a/src/include/partitioning/auto_part_ui.ycp b/src/include/partitioning/auto_part_ui.ycp
 index f62e625..2179e6e 100644
 --- a/src/include/partitioning/auto_part_ui.ycp
@@ -61,6 +119,1998 @@ index f62e625..2179e6e 100644
   *
   * Purpose: 		This module contains the user interface
   *			definitions for the automatic partitioner
+diff --git a/src/include/partitioning/custom_part_lib.ycp b/src/include/partitioning/custom_part_lib.ycp
+index 2e01fa7..4c30b07 100644
+--- a/src/include/partitioning/custom_part_lib.ycp
++++ b/src/include/partitioning/custom_part_lib.ycp
+@@ -42,10 +42,15 @@
+   textdomain "storage";
+   import "Mode";
+   import "Arch";
++  import "Label";
++  import "Package";
+   import "Partitions";
++  import "Popup";
+   import "Product";
+   import "FileSystems";
+   import "Greasemonkey";
++  import "Stage";
++  import "Storage";
+ 
+   include "partitioning/partition_defines.ycp";
+ 
+diff --git a/src/include/partitioning/ep-all.ycp b/src/include/partitioning/ep-all.ycp
+index 2787c17..1143c6b 100644
+--- a/src/include/partitioning/ep-all.ycp
++++ b/src/include/partitioning/ep-all.ycp
+@@ -30,13 +30,22 @@
+ {
+     textdomain "storage";
+ 
++    import "Arch";
++    import "Event";
++    import "Mode";
++    import "Greasemonkey";
+     import "PackageCallbacks";
+     import "PackageSystem";
+-
+-
+-    void CreateAllPanel(any user_data)
+-    {
+-
++    import "ProductFeatures";
++    import "Stage";
++    import "Storage";
++    import "StorageIcons";
++    import "StorageFields";
++    import "StorageSettings";
++    import "Hostname";
++    import "Wizard";
++    import "Popup";
++    import "TreePanel";
+ 	boolean IsAvailable ( string client )
+ 	{
+ 	    //in the installed system, we don't care if the client isn't there
+@@ -48,6 +57,11 @@
+ 		return WFM::ClientExists(client);
+ 	}
+ 
++    void CreateAllPanel(any user_data)
++    {
++
++
++
+ 	string short_hostname = Hostname::CurrentHostname();
+ 
+ 	list<symbol> fields = StorageSettings::FilterTable([ `device, `udev_path, `udev_id, `size, `format,
+@@ -144,10 +158,6 @@ navigate to the view with detailed information about the device.</p>");
+ 	Wizard::RestoreHelp(helptext + StorageFields::TableHelptext(fields));
+     }
+ 
+-
+-    void HandleAllPanel(any user_data, map event)
+-    {
+-
+ 	boolean CheckAndInstallPackages( list <string> pkgs )
+ 	{
+ 	    if (Stage::initial())
+@@ -192,6 +202,9 @@ navigate to the view with detailed information about the device.</p>");
+ 	    }
+ 	}
+ 
++
++    void HandleAllPanel(any user_data, map event)
++    {
+ 	switch (Event::IsWidgetActivated(event))
+ 	{
+ 	    case `rescan:
+diff --git a/src/include/partitioning/ep-btrfs-dialogs.ycp b/src/include/partitioning/ep-btrfs-dialogs.ycp
+index 8e99597..c74eb61 100644
+--- a/src/include/partitioning/ep-btrfs-dialogs.ycp
++++ b/src/include/partitioning/ep-btrfs-dialogs.ycp
+@@ -180,7 +180,6 @@
+ 	    switch (widget)
+ 		{
+ 		case `next:
+-		    {
+ 		    pvs_new = maplist(map pv, DevicesSelectionBox::GetSelectedDevices(), {
+ 			return pv["device"]:"";
+ 			});
+@@ -189,7 +188,6 @@
+ 			widget = `again;
+ 
+ 		    // TODO: overall size check
+-		    }
+ 		break;
+ 		}
+ 	    }
+diff --git a/src/include/partitioning/ep-btrfs-lib.ycp b/src/include/partitioning/ep-btrfs-lib.ycp
+index 025a667..0069220 100644
+--- a/src/include/partitioning/ep-btrfs-lib.ycp
++++ b/src/include/partitioning/ep-btrfs-lib.ycp
+@@ -28,9 +28,14 @@
+  * This file must only be included in other Expert Partitioner files ("ep-*.ycp").
+  */
+ {
++    import "Partitions";
++    import "Popup";
++    import "Storage";
++    import "TreePanel";
+     textdomain "storage";
+ 
+ 
++
+ void EpEditBtrfsDevice(string device)
+     {
+     if (device == nil)
+@@ -116,23 +121,13 @@ boolean RemoveVols(string device, list<string> devs)
+     return ret;
+     }
+ 
+-void EpResizeBtrfsDevice(string device)
+-    {
+-    if (device == nil)
+-	{
+-	// error popup
+-	Popup::Error(_("No Btrfs device selected."));
+-	return;
+-	}
+-
+-    map<string, map> target_map = Storage::GetTargetMap();
+-    map<string, any> data = Storage::GetPartition(target_map, device);
+-    y2milestone( "EpResizeBtrfsDevice device:%1 data:%2", device, data );
++map<string, any> data_ep_resize = nil;
++string device_ep_resize = "";
+ 
+-    symbol Commit()
++    symbol CommitEpResize()
+ 	{
+-	list<string> devices_old = MergeDevices(data);
+-	list<string> devices_new = data["devices_new"]:[];
++	list<string> devices_old = MergeDevices(data_ep_resize);
++	list<string> devices_new = data_ep_resize["devices_new"]:[];
+ 
+ 	list<string> devices_added = AddedToList(devices_old, devices_new);
+ 	list<string> devices_removed = RemovedFromList(devices_old, devices_new);
+@@ -144,14 +139,14 @@ void EpResizeBtrfsDevice(string device)
+ 
+ 	if( size(devices_added) > 0 || size(devices_removed) > 0)
+ 	    {
+-	    AddVols(device, devices_added);
++	    AddVols(device_ep_resize, devices_added);
+ 
+-	    if (!RemoveVols(device, devices_removed))
++	    if (!RemoveVols(device_ep_resize, devices_removed))
+ 		{
+ 		// error popup
+ 		Popup::Error(_("Failed to remove some physical devices."));
+ 
+-		// TODO: update data
++		// TODO: update data_ep_resize
+ 
+ 		return `back;
+ 		}
+@@ -160,7 +155,22 @@ void EpResizeBtrfsDevice(string device)
+ 	return `finish;
+ 	}
+ 
+-    if( DlgResizeBtrfsVolume(data, Commit))
++
++void EpResizeBtrfsDevice(string device)
++    {
++    if (device == nil)
++	{
++	// error popup
++	Popup::Error(_("No Btrfs device selected."));
++	return;
++	}
++    device_ep_resize = device;
++
++    map<string, map> target_map = Storage::GetTargetMap();
++    data_ep_resize = Storage::GetPartition(target_map, device);
++    y2milestone( "EpResizeBtrfsDevice device:%1 data_ep_resize:%2", device, data_ep_resize );
++
++    if( DlgResizeBtrfsVolume(data_ep_resize, CommitEpResize))
+ 	{
+ 	UpdateMainStatus();
+ 	UpdateNavigationTree(nil);
+diff --git a/src/include/partitioning/ep-dialogs.ycp b/src/include/partitioning/ep-dialogs.ycp
+index 23f250d..09e1521 100644
+--- a/src/include/partitioning/ep-dialogs.ycp
++++ b/src/include/partitioning/ep-dialogs.ycp
+@@ -30,6 +30,16 @@
+ {
+     textdomain "storage";
+ 
++    import "FileSystems";
++    import "HTML";
++    import "Integer";
++    import "Mode";
++    import "Partitions";
++    import "Popup";
++    import "Region";
++    import "Stage";
++    import "Storage";
++    import "StorageSettings";
+ 
+     include "partitioning/ep-lib.ycp";
+     include "partitioning/custom_part_lib.ycp";
+@@ -54,27 +64,7 @@ be mounted and enter the mount point (/, /boot, /home, /var, etc.).</p>");
+ 	return helptext;
+     }
+ 
+-
+-    symbol MiniWorkflowStepFormatMount(map<string, any> &orig_data)
+-    {
+-	map<string, any> data = orig_data;
+-	map d = Storage::GetDiskPartition(data["device"]:"");
+-	string lbl = Storage::GetTargetMap()[d["disk"]:"","label"]:"";
+-	y2milestone("MiniWorkflowStepFormatMount label:%1 data:%2", lbl, data);
+-
+-        //retrieve all filesystems
+-	map<symbol, map<symbol, any> > all_filesystems = FileSystems::GetAllFileSystems(true, true,lbl);
+-	if( data["type"]:`primary==`btrfs )
+-	    {
+-	    // multi volume btrfs filesystem can only be formatted as btrfs 
+-	    all_filesystems = (map<symbol, map<symbol, any> >)filter( symbol s, map p, all_filesystems, ``(s==`btrfs) );
+-	    }
+-	if( data["type"]:`primary==`tmpfs )
+-	    {
+-	    all_filesystems[`tmpfs] = FileSystems::GetTmpfsFilesystem();
+-	    }
+-
+-	list <string> ProposeMountpoints( symbol used_fs, string current_mp )
++list <string> ProposeMountpoints( symbol used_fs, string current_mp, map<symbol, map<symbol, any> > &all_filesystems )
+ 	{
+ 	    map <symbol, any> fs_data = all_filesystems[used_fs]: $[];
+ 
+@@ -91,10 +81,9 @@ be mounted and enter the mount point (/, /boot, /home, /var, etc.).</p>");
+ 		return ( list <string> ) union( [current_mp], not_used );
+ 	   }
+ 	}
+-
+ 	// disable Options p.b. if no fs options can be set
+ 	// disable Encrypt box if fs doesn't support encryption
+-	void EnableDisableFsOpts( symbol used_fs )
++	void EnableDisableFsOpts( symbol used_fs, map<symbol, map<symbol, any> > &all_filesystems, map<string, any> &data )
+ 	{
+ 	    map <symbol, any> fs_data = all_filesystems[used_fs]: $[];
+ 	    ChangeWidgetIfExists(`fs_options, `Enabled, fs_data[`options]:[] != []);
+@@ -104,18 +93,7 @@ be mounted and enter the mount point (/, /boot, /home, /var, etc.).</p>");
+ 				 !data["pool"]:false );
+ 	}
+ 
+-	boolean do_format = data["format"]:false;
+-	symbol used_fs = data["used_fs"]:`unknown;
+-	symbol default_crypt_fs = data["type"]:`unknown == `loop ? `luks : `none;
+-	boolean crypt_fs = data["enc_type"]:default_crypt_fs != `none;
+-	boolean orig_crypt_fs = crypt_fs;
+-	string mount = data["mount"]:"";
+-	boolean do_mount = mount != "";
+-	if( data["type"]:`unknown == `loop || data["type"]:`unknown == `tmpfs)
+-	    do_mount = true;
+-
+-
+-	boolean AskPassword()
++	boolean AskPassword( map<string, any> &data, boolean crypt_fs, boolean orig_crypt_fs, boolean do_mount, boolean do_format )
+ 	{
+ 	    y2milestone( "AskPassword data:%1", data );
+ 	    boolean ret = crypt_fs;
+@@ -129,6 +107,40 @@ be mounted and enter the mount point (/, /boot, /home, /var, etc.).</p>");
+ 	    return( ret );
+ 	}
+ 
++    symbol MiniWorkflowStepFormatMount(map<string, any> &orig_data)
++    {
++	map<string, any> data = orig_data;
++	map d = Storage::GetDiskPartition(data["device"]:"");
++	string lbl = Storage::GetTargetMap()[d["disk"]:"","label"]:"";
++	y2milestone("MiniWorkflowStepFormatMount label:%1 data:%2", lbl, data);
++
++        //retrieve all filesystems
++	map<symbol, map<symbol, any> > all_filesystems = FileSystems::GetAllFileSystems(true, true,lbl);
++	if( data["type"]:`primary==`btrfs )
++	    {
++	    // multi volume btrfs filesystem can only be formatted as btrfs 
++	    all_filesystems = (map<symbol, map<symbol, any> >)filter( symbol s, map p, all_filesystems, ``(s==`btrfs) );
++	    }
++	if( data["type"]:`primary==`tmpfs )
++	    {
++	    all_filesystems[`tmpfs] = FileSystems::GetTmpfsFilesystem();
++	    }
++
++	
++
++
++
++	boolean do_format = data["format"]:false;
++	symbol used_fs = data["used_fs"]:`unknown;
++	symbol default_crypt_fs = data["type"]:`unknown == `loop ? `luks : `none;
++	boolean crypt_fs = data["enc_type"]:default_crypt_fs != `none;
++	boolean orig_crypt_fs = crypt_fs;
++	string mount = data["mount"]:"";
++	boolean do_mount = mount != "";
++	if( data["type"]:`unknown == `loop || data["type"]:`unknown == `tmpfs)
++	    do_mount = true;
++
++
+ 	/* MiniWorkflowStepPartitionSize data:
+ 		$["create":true,
+ 		  "cyl_size":8225280,
+@@ -206,7 +218,7 @@ be mounted and enter the mount point (/, /boot, /home, /var, etc.).</p>");
+ 	    `ReplacePoint( `id(`subvol_rp), 
+ 			   SubvolPart(data["used_fs"]:`unknown==`btrfs) );
+ 
+-	list mountpoints = ProposeMountpoints( used_fs, mount );
++	list mountpoints = ProposeMountpoints( used_fs, mount, all_filesystems );
+ 
+ 	term contents = `HVSquash(
+ 	                    `HBox( fmt,
+@@ -236,7 +248,7 @@ be mounted and enter the mount point (/, /boot, /home, /var, etc.).</p>");
+ 
+ 	MiniWorkflow::SetContents(Greasemonkey::Transform(contents), MiniWorkflowStepFormatMountHelptext());
+ 
+-	MiniWorkflow::SetLastStep(!AskPassword());
++	MiniWorkflow::SetLastStep(!AskPassword(data, crypt_fs, orig_crypt_fs, do_mount, do_format));
+ 
+ 	ChangeWidgetIfExists( `format, `Value, do_format ? `do_format : `do_not_format);
+ 	ChangeWidgetIfExists( `do_format, `Enabled, !data["pool"]:false);
+@@ -245,7 +257,7 @@ be mounted and enter the mount point (/, /boot, /home, /var, etc.).</p>");
+ 	ChangeWidgetIfExists( `do_not_format_attachment, `Enabled, !do_format );
+ 
+ 	if( do_format)
+-	   EnableDisableFsOpts(used_fs);
++	   EnableDisableFsOpts(used_fs, all_filesystems, data);
+ 
+ 	//not there on s390s
+ 	ChangeWidgetIfExists( `crypt_fs, `Value, crypt_fs );
+@@ -273,7 +285,6 @@ be mounted and enter the mount point (/, /boot, /home, /var, etc.).</p>");
+ 	    {
+ 		//user has chosen different filesystem
+ 		case `fs:
+-		{
+ 		    used_fs = (symbol) UI::QueryWidget(`id(`fs), `Value);
+ 
+ 		    //retrieve info about fs user has selected
+@@ -294,15 +305,14 @@ be mounted and enter the mount point (/, /boot, /home, /var, etc.).</p>");
+ 			//suggest some nice mountpoints if user wants to mount this partition
+ 			if (do_mount)
+ 			{
+-			    UI::ChangeWidget(`id(`mount_point), `Items, ProposeMountpoints( used_fs, mount ));
++			    UI::ChangeWidget(`id(`mount_point), `Items, ProposeMountpoints( used_fs, mount, all_filesystems ));
+ 			}
+-		    }
+-		    break;
+ 		}
++		    break;
+ 
+ 		case `crypt_fs:
+ 		    crypt_fs = (boolean) UI::QueryWidget(`id(`crypt_fs), `Value);
+-		    MiniWorkflow::SetLastStep(!AskPassword());
++		    MiniWorkflow::SetLastStep(!AskPassword(data, crypt_fs, orig_crypt_fs, do_mount, do_format));
+ 		    break;
+ 
+ 		    /* already done in HandlePartWidgetChanges
+@@ -332,16 +342,16 @@ be mounted and enter the mount point (/, /boot, /home, /var, etc.).</p>");
+ 
+ 		    UI::ChangeWidget(`id(`do_format_attachment), `Enabled, true);
+ 		    ChangeWidgetIfExists(`do_not_format_attachment, `Enabled, false);
+-		    EnableDisableFsOpts( data["used_fs"]:`none);
++		    EnableDisableFsOpts( data["used_fs"]:`none, all_filesystems, data);
+ 		    UI::SetFocus(`id(`fs));
+-		    MiniWorkflow::SetLastStep(!AskPassword());
++		    MiniWorkflow::SetLastStep(!AskPassword(data, crypt_fs, orig_crypt_fs, do_mount, do_format));
+ 		    break;
+ 
+ 		case `do_not_format:
+ 		    do_format = (boolean) UI::QueryWidget(`id(`do_format), `Value);
+ 		    UI::ChangeWidget(`id(`do_format_attachment), `Enabled, false);
+ 		    ChangeWidgetIfExists(`do_not_format_attachment, `Enabled, true);
+-		    MiniWorkflow::SetLastStep(!AskPassword());
++		    MiniWorkflow::SetLastStep(!AskPassword(data, crypt_fs, orig_crypt_fs, do_mount, do_format));
+ 		    break;
+ 
+ 		case `fsid_point:
+@@ -354,13 +364,13 @@ be mounted and enter the mount point (/, /boot, /home, /var, etc.).</p>");
+ 		    UI::SetFocus(`id(`mount_point));
+ 		    //propose mountpoints
+ 		    //UI::ChangeWidget(`id(`mount_point), `Items, ProposeMountpoints( used_fs, mount ));
+-		    MiniWorkflow::SetLastStep(!AskPassword());
++		    MiniWorkflow::SetLastStep(!AskPassword(data, crypt_fs, orig_crypt_fs, do_mount, do_format));
+ 		    break;
+ 
+ 		case `do_not_mount:
+ 		    do_mount = false;
+ 		    UI::ChangeWidget(`id(`do_mount_attachment), `Enabled, false);
+-		    MiniWorkflow::SetLastStep(!AskPassword());
++		    MiniWorkflow::SetLastStep(!AskPassword(data, crypt_fs, orig_crypt_fs, do_mount, do_format));
+ 		    break;
+ 
+ 		case `next:
+@@ -477,7 +487,7 @@ Also check the format option.
+ 		if (data["fsid"]:0 != orig_data["fsid"]:0)
+ 		    data["change_fsid"] = true;
+ 
+-	    if (!AskPassword())
++	    if (!AskPassword(data, crypt_fs, orig_crypt_fs, do_mount, do_format))
+ 		widget = `finish;
+ 
+ 	    orig_data = data;
+@@ -724,8 +734,21 @@ because the filesystem seems to be inconsistent.
+ 	switch (data["type"]:`unknown)
+ 	{
+ 	    case `primary:
++        {
++                // no falldown in ruby
++		// Heading for dialog
++		heading = sformat(_("Resize Partition %1"), device);
++
++		cyl_size = disk["cyl_size"]:1;
++		integer free_cyl_before = 0;
++		Storage::FreeCylindersAroundPartition(device, free_cyl_before, free_cyl_after);
++
++		min_size_k = Integer::Max([ min_size_k, cyl_size / 1024 ]);
++		max_size_k = size_k + (cyl_size * free_cyl_after) / 1024;
++        }
++	    break;
+ 	    case `logical:
+-	    {
++      {
+ 		// Heading for dialog
+ 		heading = sformat(_("Resize Partition %1"), device);
+ 
+@@ -735,17 +758,17 @@ because the filesystem seems to be inconsistent.
+ 
+ 		min_size_k = Integer::Max([ min_size_k, cyl_size / 1024 ]);
+ 		max_size_k = size_k + (cyl_size * free_cyl_after) / 1024;
+-	    }
++      }
+ 	    break;
+ 
+ 	    case `lvm:
+-	    {
++      {
+ 		// Heading for dialog
+ 		heading = sformat(_("Resize Logical Volume %1"), device);
+ 
+ 		min_size_k = Integer::Max([ min_size_k, disk["pesize"]:0 / 1024 ]);
+ 		max_size_k = size_k + (disk["pe_free"]:0 * disk["pesize"]:0) / 1024;
+-	    }
++      }
+ 	    break;
+ 	}
+ 
+@@ -837,23 +860,17 @@ because the filesystem seems to be inconsistent.
+ 	        }
+ 
+ 	        case `ok:
+-	        {
+ 		    switch ((symbol) UI::QueryWidget(`id(`size), `Value))
+ 		    {
+ 			case `max_size:
+-			{
+ 			    size_k = max_size_k;
+ 			    break;
+-			}
+ 
+ 			case `min_size:
+-			{
+ 			    size_k = min_size_k;
+ 			    break;
+-			}
+ 
+ 			case `custom_size:
+-			{
+ 			    string tmp = (string) UI::QueryWidget(`id(`custom_size_input), `Value);
+ 			    if (!Storage::HumanStringToKByteWithRangeCheck(tmp, size_k, min_size_k, max_size_k))
+ 			    {
+@@ -863,9 +880,8 @@ because the filesystem seems to be inconsistent.
+ 						     Storage::KByteToHumanString(max_size_k)));
+ 				widget = `again;
+ 				continue;
+-			    }
+-			    break;
+ 			}
++			    break;
+ 		    }
+ 
+ 		    if (size_k != old_size_k)
+@@ -907,10 +923,19 @@ resize task a lot."), (size_k-old_size_k)/(1024*1024) );
+ 			switch (data["type"]:`unknown)
+ 			{
+ 			    case `primary:
++            {
++				integer num_cyl = tointeger(1024.0 * size_k / cyl_size + 0.5);
++				num_cyl = Integer::Clamp(num_cyl, 1, data["region", 1]:0 + free_cyl_after);
++				data["region", 1] = num_cyl;
++            }
++				break;
++
+ 			    case `logical:
++        {
+ 				integer num_cyl = tointeger(1024.0 * size_k / cyl_size + 0.5);
+ 				num_cyl = Integer::Clamp(num_cyl, 1, data["region", 1]:0 + free_cyl_after);
+ 				data["region", 1] = num_cyl;
++        }
+ 				break;
+ 
+ 			    case `lvm:
+@@ -919,7 +944,6 @@ resize task a lot."), (size_k-old_size_k)/(1024*1024) );
+ 			}
+ 		    }
+ 		    break;
+-	        }
+ 
+ 		case `cancel:
+ 		    break;
+diff --git a/src/include/partitioning/ep-dm-dialogs.ycp b/src/include/partitioning/ep-dm-dialogs.ycp
+index 5b930a9..98e5130 100644
+--- a/src/include/partitioning/ep-dm-dialogs.ycp
++++ b/src/include/partitioning/ep-dm-dialogs.ycp
+@@ -29,6 +29,7 @@
+  */
+ {
+     textdomain "storage";
++    import "MiniWorkflow";
+ 
+ 
+     boolean DlgEditDmVolume(map<string, any> &data)
+diff --git a/src/include/partitioning/ep-dm.ycp b/src/include/partitioning/ep-dm.ycp
+index f21cf53..b970b03 100644
+--- a/src/include/partitioning/ep-dm.ycp
++++ b/src/include/partitioning/ep-dm.ycp
+@@ -46,14 +46,14 @@
+ 	}
+     }
+ 
+-
+-    void CreateDmMainPanel(any user_data)
+-    {
+-	symbol Predicate(map disk, map partition)
++	symbol PredicateDM(map disk, map partition)
+ 	{
+ 	    return StorageFields::PredicateDiskType(disk, partition, [`CT_DM]);
+ 	}
+ 
++
++    void CreateDmMainPanel(any user_data)
++    {
+ 	list<symbol> fields = StorageSettings::FilterTable([ `device, `size, `format, `encrypted, `type,
+ 							     `fs_type, `label, `mount_point, `mount_by,
+ 							     `used_by ]);
+@@ -61,7 +61,7 @@
+ 	map<string, map> target_map = Storage::GetTargetMap();
+ 
+ 	term table_header = StorageFields::TableHeader(fields);
+-	list<term> table_contents = StorageFields::TableContents(fields, target_map, Predicate);
++	list<term> table_contents = StorageFields::TableContents(fields, target_map, PredicateDM);
+ 
+ 	UI::ReplaceWidget(`tree_panel,
+ 			  Greasemonkey::Transform(
+@@ -143,23 +143,24 @@ selected Device Mapper device.</p>");
+ 	}
+     }
+ 
+-
+-    void CreateDmDevicesTab(any user_data)
+-    {
+-	string part_device = (string) user_data;
+-
+-	symbol Predicate(map disk, map partition)
++	string dm_part_device = "";
++	symbol PredicateDMDevice(map disk, map partition)
+ 	{
+ 	    return StorageFields::PredicateUsedByDevice(disk, partition, [ part_device ]);
+ 	}
+ 
++
++    void CreateDmDevicesTab(any user_data)
++    {
++	dm_part_device = (string) user_data;
++
+ 	list<symbol> fields = StorageSettings::FilterTable([ `device, `udev_path, `udev_id, `size,
+ 							     `format, `encrypted, `type, `used_by ]);
+ 
+ 	map<string, map> target_map = Storage::GetTargetMap();
+ 
+ 	term table_header = StorageFields::TableHeader(fields);
+-	list<term> table_contents = StorageFields::TableContents(fields, target_map, Predicate);
++	list<term> table_contents = StorageFields::TableContents(fields, target_map, PredicateDMDevice);
+ 
+ 	UI::ReplaceWidget(`tab_panel,
+ 			  `VBox(
+diff --git a/src/include/partitioning/ep-graph.ycp b/src/include/partitioning/ep-graph.ycp
+index a699521..8befd7d 100644
+--- a/src/include/partitioning/ep-graph.ycp
++++ b/src/include/partitioning/ep-graph.ycp
+@@ -98,7 +98,6 @@
+ 	switch (Event::IsWidgetContextMenuActivated(event))
+ 	{
+ 	    case `graph:
+-	    {
+ 		string node = (string) UI::QueryWidget(`id(`graph), `Item);
+ 
+ 		if (isempty(node))
+@@ -107,7 +106,6 @@
+ 		    EpContextMenuDevice(substring(node, 7));
+ 
+ 		// TODO: update graph
+-	    }
+ 	    break;
+ 	}
+ 
+@@ -190,16 +188,13 @@
+ 	switch (Event::IsWidgetActivated(event))
+ 	{
+ 	    case `graph:
+-	    {
+ 		string node = (string) UI::QueryWidget(`id(`graph), `Item);
+ 
+ 		if (String::StartsWith(node, "mountpoint:"))
+ 		    GotoDevice(substring(node, 11));
+-	    }
+ 	    break;
+ 
+ 	    case `save:
+-	    {
+ 		string filename = UI::AskForSaveFileName("/tmp", "*.gv", "Save as...");
+ 		if (filename != nil)
+ 		{
+@@ -209,7 +204,6 @@
+ 			Popup::Error(_("Saving graph file failed."));
+ 		    }
+ 		}
+-	    }
+ 	    break;
+ 	}
+     }
+diff --git a/src/include/partitioning/ep-hd-dialogs.ycp b/src/include/partitioning/ep-hd-dialogs.ycp
+index db85155..7d911fc 100644
+--- a/src/include/partitioning/ep-hd-dialogs.ycp
++++ b/src/include/partitioning/ep-hd-dialogs.ycp
+@@ -223,7 +223,6 @@
+ 		    switch (what)
+ 		    {
+ 			case `manual_size:
+-			{
+ 			    string tmp = (string) UI::QueryWidget(`id(`size_input), `Value);
+ 			    if (!Storage::HumanStringToKByteWithRangeCheck(tmp, size_k, min_size_k, max_size_k))
+ 			    {
+@@ -236,10 +235,8 @@
+ 				continue;
+ 			    }
+ 			    break;
+-			}
+ 
+ 			case `manual_region:
+-			{
+ 			    integer s = (integer) UI::QueryWidget(`id(`start_cyl), `Value);
+ 			    integer e = (integer) UI::QueryWidget(`id(`end_cyl), `Value);
+ 			    region = [ s, e - s + 1 ];
+@@ -258,7 +255,6 @@
+ 			    }
+ 
+ 			    break;
+-			}
+ 		    }
+ 
+ 		    break;
+@@ -271,24 +267,18 @@
+ 	    switch ((symbol) UI::QueryWidget(`id(`size), `Value))
+ 	    {
+ 		case `max_size:
+-		{
+ 		    data["region"] = slot;
+ 		    break;
+-		}
+ 
+ 		case `manual_size:
+-		{
+ 		    integer num_cyl = tointeger(1024.0 * size_k / cyl_size + 0.5);
+ 		    num_cyl = Integer::Clamp(num_cyl, min_num_cyl, max_num_cyl);
+ 		    data["region"] = [ slot[0]:0, num_cyl ];
+ 		    break;
+-		}
+ 
+ 		case `manual_region:
+-		{
+ 		    data["region"] = region;
+ 		    break;
+-		}
+ 	    }
+ 
+ 	    data["size_k"] = Region::Length(data["region"]:[0, 0]) * cyl_size / 1024;
+diff --git a/src/include/partitioning/ep-hd-lib.ycp b/src/include/partitioning/ep-hd-lib.ycp
+index 97c866c..08c2059 100644
+--- a/src/include/partitioning/ep-hd-lib.ycp
++++ b/src/include/partitioning/ep-hd-lib.ycp
+@@ -447,26 +447,7 @@ resized. To resize %1, make sure it is not used."), device));
+ 	}
+     }
+ 
+-
+-    void EpCloneDisk(string device)
+-    {
+-	map<string, map> target_map = Storage::GetTargetMap();
+-
+-	integer mysize = target_map[ device, "size_k"]:0;
+-	integer mycyl_size = target_map[ device, "cyl_size"]:0;
+-	list <map> myparts = target_map[ device, "partitions"]:[];
+-	string mypart_table_type = target_map[device, "label"]:Storage::DefaultDiskLabel(device);
+-
+-	// helptext
+-	string helptext = _("<p>Select one or more (if available) hard disks
+-that will have the same partition layout as
+-this disk.</p>
+-<p>Disks marked with the sign '*' contain one or
+-more partitions. After cloning, these
+-partitions will be deleted.</p>
+-");
+-
+-	list <string> AvailableTargetDisks()
++	list <string> AvailableTargetDisks(map<string, map> &target_map, string device, integer mycyl_size, integer mysize)
+ 	{
+ 	    map <string, map> filtered_target_map =
+ 		filter( string dev, map props, target_map, {
+@@ -510,6 +491,25 @@ partitions will be deleted.</p>
+ 	    return (ret == `ok);
+ 	}
+ 
++
++    void EpCloneDisk(string device)
++    {
++	map<string, map> target_map = Storage::GetTargetMap();
++
++	integer mysize = target_map[ device, "size_k"]:0;
++	integer mycyl_size = target_map[ device, "cyl_size"]:0;
++	list <map> myparts = target_map[ device, "partitions"]:[];
++	string mypart_table_type = target_map[device, "label"]:Storage::DefaultDiskLabel(device);
++
++	// helptext
++	string helptext = _("<p>Select one or more (if available) hard disks
++that will have the same partition layout as
++this disk.</p>
++<p>Disks marked with the sign '*' contain one or
++more partitions. After cloning, these
++partitions will be deleted.</p>
++");
++
+ 	if (isempty(myparts)) {
+ 	    Popup::Error(_("There are no partitions on this disk, but a clonable
+ disk must have at least one partition.
+@@ -518,7 +518,7 @@ Create partitions before cloning the disk.
+ 	    return;
+ 	}
+ 
+-	list <string> mydisks = AvailableTargetDisks();
++	list <string> mydisks = AvailableTargetDisks(target_map, device, mycyl_size, mysize);
+ 
+ 	if (isempty(mydisks)) {
+ 	    Popup::Error(_("This disk cannot be cloned. There are no suitable
+diff --git a/src/include/partitioning/ep-hd.ycp b/src/include/partitioning/ep-hd.ycp
+index 8ff41d0..b4921c5 100644
+--- a/src/include/partitioning/ep-hd.ycp
++++ b/src/include/partitioning/ep-hd.ycp
+@@ -155,15 +155,16 @@ devices cannot be resized."));
+ 	}
+     }
+ 
+-
+-    void CreateHdMainPanel(any user_data)
+-    {
+-	symbol Predicate(map disk, map partition)
++	symbol PredicateHDMain(map disk, map partition)
+ 	{
+ 	    return StorageFields::PredicateDiskType(disk, partition, [`CT_DMRAID, `CT_DMMULTIPATH,
+ 								      `CT_MDPART, `CT_DISK]);
+ 	}
+ 
++    void CreateHdMainPanel(any user_data)
++    {
++
++
+ 	list<symbol> fields = StorageSettings::FilterTable([ `device, `udev_path, `udev_id, `size, `format,
+ 							     `encrypted, `type, `fs_type, `label, `mount_point,
+ 							     `mount_by, `start_cyl, `end_cyl, `used_by ]);
+@@ -171,7 +172,7 @@ devices cannot be resized."));
+ 	map<string, map> target_map = Storage::GetTargetMap();
+ 
+ 	term table_header = StorageFields::TableHeader(fields);
+-	list<term> table_contents = StorageFields::TableContents(fields, target_map, Predicate);
++	list<term> table_contents = StorageFields::TableContents(fields, target_map, PredicateHDMain);
+ 
+ 	UI::ReplaceWidget(`tree_panel,
+ 			  Greasemonkey::Transform(
+@@ -306,34 +307,32 @@ selected hard disk.</p>");
+ 	switch (Event::IsWidgetActivated(event))
+ 	{
+ 	    case `smart:
+-	    {
+ 		if (!DiskMaySupportSmart(disk_device))
+ 		    Popup::Error(_("SMART is not available for this disk."));
+ 		else
+ 		    DisplayCommandOutput(sformat("/usr/sbin/smartctl --health '%1'", disk_device));
+ 		break;
+-	    }
+ 
+ 	    case `hdparm:
+-	    {
+ 		if (!DiskMaySupportHdparm(disk_device))
+ 		    Popup::Error(_("hdparm is not available for this disk."));
+ 		else
+ 		    DisplayCommandOutput(sformat("/sbin/hdparm -aAgr '%1'", disk_device));
+ 		break;
+-	    }
+ 	}
+     }
+ 
+ 
++    string hd_device = "";
++	symbol PredicateHDDevice(map disk, map partition)
++	{
++	    return StorageFields::PredicateDiskDevice(disk, partition, [ hd_device ]);
++	}
++
+     void CreateHdDiskPartitionsTab(any user_data)
+     {
+-	string device = (string) user_data;
++	string hd_device = (string) user_data;
+ 
+-	symbol Predicate(map disk, map partition)
+-	{
+-	    return StorageFields::PredicateDiskDevice(disk, partition, [ device ]);
+-	}
+ 
+ 	list<symbol> fields = StorageSettings::FilterTable([ `device, `udev_path, `udev_id, `size, `format,
+ 							     `encrypted, `type, `fs_type, `label, `mount_point,
+@@ -342,7 +341,7 @@ selected hard disk.</p>");
+ 	map<string, map> target_map = Storage::GetTargetMap();
+ 
+ 	term table_header = StorageFields::TableHeader(fields);
+-	list<term> table_contents = StorageFields::TableContents(fields, target_map, Predicate);
++	list<term> table_contents = StorageFields::TableContents(fields, target_map, PredicateHDDevice);
+ 
+ 	list<term> expert_cmds = [];
+ 
+@@ -356,7 +355,7 @@ selected hard disk.</p>");
+ 				// menu entry text
+ 				_("Clone this Disk")));
+ 
+-	if (String::StartsWith(device, "/dev/dasd"))
++	if (String::StartsWith(hd_device, "/dev/dasd"))
+ 	{
+ 	    expert_cmds = add(expert_cmds,
+ 			      `item(`id(`dasdfmt),
+@@ -367,7 +366,7 @@ selected hard disk.</p>");
+ 
+ 	UI::ReplaceWidget(`tab_panel,
+ 			  `VBox(
+-			      DiskBarGraph(device),
++			      DiskBarGraph(hd_device),
+ 			      `Table(`id(`table), `opt(`keepSorting, `notify, `notifyContextMenu),
+ 				     table_header, table_contents),
+ 			      `HBox(
+@@ -424,22 +423,23 @@ partitions are shown here.</p>
+     }
+ 
+ 
+-    void CreateHdDiskDevicesTab(any user_data)
+-    {
+-	string part_device = (string) user_data;
+-
+-	symbol Predicate(map disk, map partition)
++	string part_device = "";
++	symbol PredicateHDUsedByDevice(map disk, map partition)
+ 	{
+ 	    return StorageFields::PredicateUsedByDevice(disk, partition, [ part_device ]);
+ 	}
+ 
++    void CreateHdDiskDevicesTab(any user_data)
++    {
++	string part_device = (string) user_data;
++
+ 	list<symbol> fields = StorageSettings::FilterTable([ `device, `udev_path, `udev_id, `size,
+ 							     `format, `encrypted, `type, `used_by ]);
+ 
+ 	map<string, map> target_map = Storage::GetTargetMap();
+ 
+ 	term table_header = StorageFields::TableHeader(fields);
+-	list<term> table_contents = StorageFields::TableContents(fields, target_map, Predicate);
++	list<term> table_contents = StorageFields::TableContents(fields, target_map, PredicateHDUsedByDevice);
+ 
+ 	UI::ReplaceWidget(`tab_panel,
+ 			  `VBox(
+diff --git a/src/include/partitioning/ep-lib.ycp b/src/include/partitioning/ep-lib.ycp
+index ce52274..e4e52c6 100644
+--- a/src/include/partitioning/ep-lib.ycp
++++ b/src/include/partitioning/ep-lib.ycp
+@@ -102,7 +102,7 @@
+ 	switch (used_by)
+ 	{
+ 	    case `UB_LVM:
+-	    {
++        {
+         	list<string> volumes = Storage::GetAffectedDevices( device );
+ 		return ( ConfirmRecursiveDelete( device, volumes,
+ 		    _("Confirm Deleting Partition Used by LVM"),
+@@ -112,10 +112,10 @@ and its logical volumes will be deleted:
+ "), used_by_device),
+ 		    sformat( _("Delete partition \"%1\" and volume group \"%2\" now?"), device, used_by_device)
+ 		    ));
++        }
+ 		break;
+-	    }
+ 	    case `UB_MD:
+-	    {
++    {
+         	list<string> volumes = Storage::GetAffectedDevices( device );
+ 		return ( ConfirmRecursiveDelete( device, volumes,
+ 		    _("Confirm Deleting Partition Used by RAID"),
+@@ -125,8 +125,9 @@ RAID device will be deleted:
+ "), used_by_device),
+ 		    sformat( _("Delete partition \"%1\" and RAID \"%2\" now?"), device, used_by_device)
+ 		    ));
++    }
++                break;
+ 
+-	    }
+ 	    default:
+ 		break;
+ 	}
+@@ -288,6 +289,13 @@ RAID device will be deleted:
+ 	return false;
+     }
+ 
++	void AddSegment(float bit, string label, integer size_k, list &bits, list &labels)
++	{
++	    // Guarantee some minimal share (1%) of total graph width to the segment.
++	    // Prevents small partitions e.g. swaps from disappearing completely.
++	    bits = add(bits, Integer::Clamp(1000 * bit, 10, 1000));
++	    labels = add(labels, label + "\n" + Storage::KByteToHumanString(size_k));
++	}
+ 
+     term DiskBarGraph(string device)
+     {
+@@ -306,21 +314,216 @@ RAID device will be deleted:
+ 	list <integer> bits = [];
+ 	list <string> labels = [];
+ 
+-	void AddSegment(float bit, string label, integer size_k)
+-	{
+-	    // Guarantee some minimal share (1%) of total graph width to the segment.
+-	    // Prevents small partitions e.g. swaps from disappearing completely.
+-	    bits = add(bits, Integer::Clamp(1000 * bit, 10, 1000));
+-	    labels = add(labels, label + "\n" + Storage::KByteToHumanString(size_k));
+-	}
+ 
+ 	switch (disk["type"]:`CT_UNKNOWN)
+ 	{
+ 	    case `CT_DISK:
++        {
++                // no falldown in ruby
++		string emptyspace = _("Unpartitioned");
++
++		// Filter out extended partitions
++		list <map> partitions = (list <map>) filter ( map one_part, disk["partitions"]:[], {
++		    return ( (one_part["type"]:`none == `primary) || (one_part["type"]:`none == `logical) );
++		});
++		// and sort the remaining ones by start cyl
++		partitions = (list <map> ) sort (map m, map n, partitions, {
++		    return Region::Start( m["region"]:[] ) < Region::Start( n["region"]:[] );
++		});
++
++		// Clean disk (or 1 big extended partition)
++		if (isempty(partitions))
++		{
++		    bits = [100];
++		    labels = [ emptyspace + "\n" + Storage::KByteToHumanString(disk["size_k"]:0)];
++		}
++		else
++		{
++		    integer i = 0;
++		    integer part_count = size(partitions);
++		    integer ccyl = 0;
++		    integer endcyl = disk["cyl_count"]:1;
++
++		    while (ccyl < endcyl)
++		    {
++			map part = partitions[ i ]:$[];
++			list <integer> region = partitions[ i, "region" ]:[];
++			ccyl = Region::Start( region );
++			integer next_cyl = 0;
++
++			// this is the last partition in a row, look at the last cylinder of the disk
++			if ( (i+1) == part_count)
++			{
++			    next_cyl = endcyl;
++			}
++			// somewhere in the middle, look where the next partition starts
++			else
++			{
++			    next_cyl = Region::Start( partitions[ i+1, "region" ]:[] );
++			}
++
++			float tmp1 = (float) Region::Length(region) / (float) disk["cyl_count"]:1;
++			if (tmp1 >= 0.0)
++			    AddSegment(tmp1, part["name"]:"", part["size_k"]:0, bits, labels);
++
++			// Now there is some xtra space between the end of this partition and the start of the next one
++			// or the end of the disk if
++			// 1. end +1th cyl is not the next one
++			// 2. end cyl is not the same as the next one (yeah, partitions may share a cylinder)
++			if ( ( Region::End( region ) != next_cyl ) &&
++			     ( (Region::End( region) + 1) != next_cyl ) )
++			{
++			    float tmp2 = (float) (next_cyl - Region::End(region)) / (float) disk["cyl_count"]:1;
++			    if (tmp2 >= 0.0)
++				AddSegment(tmp2, emptyspace, ((next_cyl - Region::End(region)) * disk["cyl_size"]:1) / 1024, bits, labels);
++			}
++
++			ccyl = next_cyl;
++			i = i+1;
++		    }
++		}
++        }
++	    break;
++
+ 	    case `CT_DMRAID:
++      {
++                // no falldown in ruby
++		string emptyspace = _("Unpartitioned");
++
++		// Filter out extended partitions
++		list <map> partitions = (list <map>) filter ( map one_part, disk["partitions"]:[], {
++		    return ( (one_part["type"]:`none == `primary) || (one_part["type"]:`none == `logical) );
++		});
++		// and sort the remaining ones by start cyl
++		partitions = (list <map> ) sort (map m, map n, partitions, {
++		    return Region::Start( m["region"]:[] ) < Region::Start( n["region"]:[] );
++		});
++
++		// Clean disk (or 1 big extended partition)
++		if (isempty(partitions))
++		{
++		    bits = [100];
++		    labels = [ emptyspace + "\n" + Storage::KByteToHumanString(disk["size_k"]:0)];
++		}
++		else
++		{
++		    integer i = 0;
++		    integer part_count = size(partitions);
++		    integer ccyl = 0;
++		    integer endcyl = disk["cyl_count"]:1;
++
++		    while (ccyl < endcyl)
++		    {
++			map part = partitions[ i ]:$[];
++			list <integer> region = partitions[ i, "region" ]:[];
++			ccyl = Region::Start( region );
++			integer next_cyl = 0;
++
++			// this is the last partition in a row, look at the last cylinder of the disk
++			if ( (i+1) == part_count)
++			{
++			    next_cyl = endcyl;
++			}
++			// somewhere in the middle, look where the next partition starts
++			else
++			{
++			    next_cyl = Region::Start( partitions[ i+1, "region" ]:[] );
++			}
++
++			float tmp1 = (float) Region::Length(region) / (float) disk["cyl_count"]:1;
++			if (tmp1 >= 0.0)
++			    AddSegment(tmp1, part["name"]:"", part["size_k"]:0, bits, labels);
++
++			// Now there is some xtra space between the end of this partition and the start of the next one
++			// or the end of the disk if
++			// 1. end +1th cyl is not the next one
++			// 2. end cyl is not the same as the next one (yeah, partitions may share a cylinder)
++			if ( ( Region::End( region ) != next_cyl ) &&
++			     ( (Region::End( region) + 1) != next_cyl ) )
++			{
++			    float tmp2 = (float) (next_cyl - Region::End(region)) / (float) disk["cyl_count"]:1;
++			    if (tmp2 >= 0.0)
++				AddSegment(tmp2, emptyspace, ((next_cyl - Region::End(region)) * disk["cyl_size"]:1) / 1024, bits, labels);
++			}
++
++			ccyl = next_cyl;
++			i = i+1;
++		    }
++		}
++      }
++	    break;
++
+ 	    case `CT_DMMULTIPATH:
++      {
++                            // no falldown in ruby
++		string emptyspace = _("Unpartitioned");
++
++		// Filter out extended partitions
++		list <map> partitions = (list <map>) filter ( map one_part, disk["partitions"]:[], {
++		    return ( (one_part["type"]:`none == `primary) || (one_part["type"]:`none == `logical) );
++		});
++		// and sort the remaining ones by start cyl
++		partitions = (list <map> ) sort (map m, map n, partitions, {
++		    return Region::Start( m["region"]:[] ) < Region::Start( n["region"]:[] );
++		});
++
++		// Clean disk (or 1 big extended partition)
++		if (isempty(partitions))
++		{
++		    bits = [100];
++		    labels = [ emptyspace + "\n" + Storage::KByteToHumanString(disk["size_k"]:0)];
++		}
++		else
++		{
++		    integer i = 0;
++		    integer part_count = size(partitions);
++		    integer ccyl = 0;
++		    integer endcyl = disk["cyl_count"]:1;
++
++		    while (ccyl < endcyl)
++		    {
++			map part = partitions[ i ]:$[];
++			list <integer> region = partitions[ i, "region" ]:[];
++			ccyl = Region::Start( region );
++			integer next_cyl = 0;
++
++			// this is the last partition in a row, look at the last cylinder of the disk
++			if ( (i+1) == part_count)
++			{
++			    next_cyl = endcyl;
++			}
++			// somewhere in the middle, look where the next partition starts
++			else
++			{
++			    next_cyl = Region::Start( partitions[ i+1, "region" ]:[] );
++			}
++
++			float tmp1 = (float) Region::Length(region) / (float) disk["cyl_count"]:1;
++			if (tmp1 >= 0.0)
++			    AddSegment(tmp1, part["name"]:"", part["size_k"]:0, bits, labels);
++
++			// Now there is some xtra space between the end of this partition and the start of the next one
++			// or the end of the disk if
++			// 1. end +1th cyl is not the next one
++			// 2. end cyl is not the same as the next one (yeah, partitions may share a cylinder)
++			if ( ( Region::End( region ) != next_cyl ) &&
++			     ( (Region::End( region) + 1) != next_cyl ) )
++			{
++			    float tmp2 = (float) (next_cyl - Region::End(region)) / (float) disk["cyl_count"]:1;
++			    if (tmp2 >= 0.0)
++				AddSegment(tmp2, emptyspace, ((next_cyl - Region::End(region)) * disk["cyl_size"]:1) / 1024, bits, labels);
++			}
++
++			ccyl = next_cyl;
++			i = i+1;
++		    }
++		}
++      }
++	    break;
++
+ 	    case `CT_MDPART:
+-	    {
++      {
++                // no falldown in ruby
+ 		string emptyspace = _("Unpartitioned");
+ 
+ 		// Filter out extended partitions
+@@ -365,7 +568,7 @@ RAID device will be deleted:
+ 
+ 			float tmp1 = (float) Region::Length(region) / (float) disk["cyl_count"]:1;
+ 			if (tmp1 >= 0.0)
+-			    AddSegment(tmp1, part["name"]:"", part["size_k"]:0);
++			    AddSegment(tmp1, part["name"]:"", part["size_k"]:0, bits, labels);
+ 
+ 			// Now there is some xtra space between the end of this partition and the start of the next one
+ 			// or the end of the disk if
+@@ -376,14 +579,14 @@ RAID device will be deleted:
+ 			{
+ 			    float tmp2 = (float) (next_cyl - Region::End(region)) / (float) disk["cyl_count"]:1;
+ 			    if (tmp2 >= 0.0)
+-				AddSegment(tmp2, emptyspace, ((next_cyl - Region::End(region)) * disk["cyl_size"]:1) / 1024);
++				AddSegment(tmp2, emptyspace, ((next_cyl - Region::End(region)) * disk["cyl_size"]:1) / 1024, bits, labels);
+ 			}
+ 
+ 			ccyl = next_cyl;
+ 			i = i+1;
+ 		    }
+ 		}
+-	    }
++      }
+ 	    break;
+ 
+ 	    case `CT_LVM:
+@@ -398,11 +601,11 @@ RAID device will be deleted:
+ 		foreach(map partition, partitions, {
+ 		    integer size_k = partition["size_k"]:0;
+ 		    disk_free_k = disk_free_k - size_k;
+-		    AddSegment((float) size_k / (float) disk_size_k, partition["name"]:"", size_k);
++		    AddSegment((float) size_k / (float) disk_size_k, partition["name"]:"", size_k, bits, labels);
+ 		});
+ 
+ 		if (disk_free_k > 0)
+-		    AddSegment((float) disk_free_k / (float) disk_size_k, emptyspace, disk_free_k);
++		    AddSegment((float) disk_free_k / (float) disk_size_k, emptyspace, disk_free_k, bits, labels);
+ 	    }
+ 	    break;
+ 	}
+diff --git a/src/include/partitioning/ep-loop.ycp b/src/include/partitioning/ep-loop.ycp
+index ad60a1a..04df007 100644
+--- a/src/include/partitioning/ep-loop.ycp
++++ b/src/include/partitioning/ep-loop.ycp
+@@ -81,20 +81,20 @@
+ 	}
+     }
+ 
+-
+-    void CreateLoopMainPanel(any user_data)
+-    {
+-	symbol Predicate(map disk, map partition)
++	symbol PredicateLoop(map disk, map partition)
+ 	{
+ 	    return StorageFields::PredicateDiskType(disk, partition, [`CT_LOOP]);
+ 	}
+ 
++
++    void CreateLoopMainPanel(any user_data)
++    {
+ 	list<symbol> fields = StorageSettings::FilterTable([ `device, `size, `fs_type, `label, `mount_point ]);
+ 
+ 	map<string, map> target_map = Storage::GetTargetMap();
+ 
+ 	term table_header = StorageFields::TableHeader(fields);
+-	list<term> table_contents = StorageFields::TableContents(fields, target_map, Predicate);
++	list<term> table_contents = StorageFields::TableContents(fields, target_map, PredicateLoop);
+ 
+ 	UI::ReplaceWidget(`tree_panel,
+ 			  Greasemonkey::Transform(
+diff --git a/src/include/partitioning/ep-lvm-dialogs.ycp b/src/include/partitioning/ep-lvm-dialogs.ycp
+index 79f774f..0e8ffb6 100644
+--- a/src/include/partitioning/ep-lvm-dialogs.ycp
++++ b/src/include/partitioning/ep-lvm-dialogs.ycp
+@@ -279,7 +279,6 @@ in volume group \"%2\"."),
+ 	    switch (widget)
+ 	    {
+ 		case `next:
+-		{
+ 		    vgname = (string) UI::QueryWidget(`id(`vgname), `Value);
+ 
+ 		    any tmp = UI::QueryWidget(`id(`pesize), `Value);
+@@ -295,7 +294,6 @@ in volume group \"%2\"."),
+ 		    if (!CheckVgName(vgname) || !CheckVgNameConflict(vgname, vgs) ||
+ 			!CheckPeSize(pesize) || !CheckNumberOfDevicesForVg(size(pvs)))
+ 			widget = `again;
+-		}
+ 		break;
+ 	    }
+ 	}
+@@ -357,7 +355,6 @@ in volume group \"%2\"."),
+ 	    switch (widget)
+ 	    {
+ 		case `next:
+-		{
+ 		    pvs_new = maplist(map pv, DevicesSelectionBox::GetSelectedDevices(), {
+ 			return pv["device"]:"";
+ 		    });
+@@ -366,7 +363,6 @@ in volume group \"%2\"."),
+ 			widget = `again;
+ 
+ 		    // TODO: overall size check
+-		}
+ 		break;
+ 	    }
+ 	}
+@@ -693,7 +689,13 @@ This means the volume allocates needed space on demand from a <b>Thin Pool</b>.<
+ 	    switch (widget)
+ 	    {
+ 		case `pool:
++                    //no falldown in ruby
++		    UI::ChangeWidget(`id(`used_pool), `Enabled, (widget==`thin));
++		    break;
+ 		case `thin:
++                    //no falldown in ruby
++		    UI::ChangeWidget(`id(`used_pool), `Enabled, (widget==`thin));
++		    break;
+ 		case `normal:
+ 		    UI::ChangeWidget(`id(`used_pool), `Enabled, (widget==`thin));
+ 		    break;
+diff --git a/src/include/partitioning/ep-lvm-lib.ycp b/src/include/partitioning/ep-lvm-lib.ycp
+index e8a42d5..91e2b6e 100644
+--- a/src/include/partitioning/ep-lvm-lib.ycp
++++ b/src/include/partitioning/ep-lvm-lib.ycp
+@@ -28,6 +28,11 @@
+  * This file must only be included in other Expert Partitioner files ("ep-*.ycp").
+  */
+ {
++
++   import "Partitions";
++   import "Popup";
++   import "Storage";
++   import "TreePanel";
+     textdomain "storage";
+ 
+ 
+@@ -95,40 +100,26 @@ RAID device is required. Change your partition table accordingly."));
+ 	}
+     }
+ 
+-
+-    void EpResizeVolumeGroup(string device)
+-    {
+-	if (device == nil)
+-	{
+-	    // error popup
+-	    Popup::Error(_("No volume group selected."));
+-	    return;
+-	}
+-
+-	map<string, map> target_map = Storage::GetTargetMap();
+-	map<string, any> data = (map<string, any>) target_map[device]:$[];
+-
+-	string vgname = data["name"]:"error";
+-
+-
+-	symbol Commit()
++	map<string, any> data_resize = nil;
++  string ep_resize_vgname = "";
++	symbol CommitResize()
+ 	{
+-	    list<string> devices_old = MergeDevices(data);
+-	    list<string> devices_new = data["devices_new"]:[];
++	    list<string> devices_old = MergeDevices(data_resize);
++	    list<string> devices_new = data_resize["devices_new"]:[];
+ 
+ 	    list<string> devices_added = AddedToList(devices_old, devices_new);
+ 	    list<string> devices_removed = RemovedFromList(devices_old, devices_new);
+ 
+ 	    if (size(devices_added) > 0 || size(devices_removed) > 0)
+ 	    {
+-		AddPvs(vgname, devices_added);
++		AddPvs(ep_resize_vgname, devices_added);
+ 
+-		if (!RemovePvs(vgname, devices_removed))
++		if (!RemovePvs(ep_resize_vgname, devices_removed))
+ 		{
+ 		    // error popup
+ 		    Popup::Error(_("Failed to remove some physical devices."));
+ 
+-		    // TODO: update data
++		    // TODO: update data_resize
+ 
+ 		    return `back;
+ 		}
+@@ -138,7 +129,23 @@ RAID device is required. Change your partition table accordingly."));
+ 	}
+ 
+ 
+-	if (DlgResizeVolumeGroup(data, Commit))
++
++    void EpResizeVolumeGroup(string device)
++    {
++	if (device == nil)
++	{
++	    // error popup
++	    Popup::Error(_("No volume group selected."));
++	    return;
++	}
++
++	map<string, map> target_map = Storage::GetTargetMap();
++	data_resize = (map<string, any>) target_map[device]:$[];
++
++	ep_resize_vgname = data_resize["name"]:"error";
++
++
++	if (DlgResizeVolumeGroup(data_resize, CommitResize))
+ 	{
+ 	    UpdateMainStatus();
+ 	    UpdateNavigationTree(nil);
+@@ -198,6 +205,15 @@ RAID device is required. Change your partition table accordingly."));
+ 	return ret;
+     }
+ 
++	map<string, any> data_create = nil;
++  string device_create = "";
++	symbol CommitCreate()
++        {
++	    if (!addLogicalVolume(data_create, substring(device_create, 5)))
++		return `back;
++
++	    return `finish;
++	}
+ 
+     void EpCreateLogicalVolume(string device)
+     {
+@@ -207,10 +223,10 @@ RAID device is required. Change your partition table accordingly."));
+ 	    Popup::Error(_("No logical volume selected."));
+ 	    return;
+ 	}
+-
++  device_create = device;
+ 	map<string, map> target_map = Storage::GetTargetMap();
+ 
+-	map<string, any> data = $[ "new" : true,
++	data_create = $[ "new" : true,
+ 	                           "type" : `lvm,
+ 	                           "create" : true ];
+ 
+@@ -224,8 +240,8 @@ RAID device is required. Change your partition table accordingly."));
+ 	    return;
+ 	}
+ 
+-	data["vg_name"] = vg_name;
+-	data["pesize"] = target_map[device, "pesize"]:0;
++	data_create["vg_name"] = vg_name;
++	data_create["pesize"] = target_map[device, "pesize"]:0;
+ 	integer maxs = target_map[device, "pe_free"]:0 * target_map[device, "pesize"]:0 / 1024;
+ 	foreach( map p, target_map[device,"partitions"]:[],
+ 	    {
+@@ -233,26 +249,20 @@ RAID device is required. Change your partition table accordingly."));
+ 		maxs = maxs - ComputePoolMetadataSize( p["size_k"]:0, 
+ 		                                       target_map[device,"pesize"]:1024 );
+ 	    });
+-	data["max_size_k"] = maxs;
+-	data["max_stripes"] = size(MergeDevices((map<string, any>) target_map[device]:$[]));
++	data_create["max_size_k"] = maxs;
++	data_create["max_stripes"] = size(MergeDevices((map<string, any>) target_map[device]:$[]));
+ 
+-	data["using_devices"] = [ device ];
++	data_create["using_devices"] = [ device ];
+ 
+-	symbol Commit()
+-        {
+-	    if (!addLogicalVolume(data, substring(device, 5)))
+-		return `back;
+ 
+-	    return `finish;
+-	}
+ 
+ 
+-	if (DlgCreateLogicalVolume(data, Commit))
++	if (DlgCreateLogicalVolume(data_create, CommitCreate))
+ 	{
+ 	    UpdateMainStatus();
+ 	    UpdateNavigationTree(nil);
+ 	    TreePanel::Create();
+-	    UpdateTableFocus("/dev/" + data["vg_name"]:"error" + "/" + data["name"]:"error");
++	    UpdateTableFocus("/dev/" + data_create["vg_name"]:"error" + "/" + data_create["name"]:"error");
+ 	}
+     }
+ 
+diff --git a/src/include/partitioning/ep-lvm.ycp b/src/include/partitioning/ep-lvm.ycp
+index f445e73..052eceb 100644
+--- a/src/include/partitioning/ep-lvm.ycp
++++ b/src/include/partitioning/ep-lvm.ycp
+@@ -33,6 +33,10 @@
+     include "partitioning/ep-lvm-dialogs.ycp";
+     include "partitioning/ep-lvm-lib.ycp";
+ 
++    import "ContextMenu";
++    import "Storage";
++    import "StorageIcons";
++
+ 
+     void EpContextMenuLvmVg(string device)
+     {
+@@ -155,14 +159,13 @@
+ 	}
+     }
+ 
+-
+-    void CreateLvmMainPanel(any user_data)
+-    {
+-	symbol Predicate(map disk, map partition)
++	symbol PredicateLVM(map disk, map partition)
+ 	{
+ 	    return StorageFields::PredicateDiskType(disk, partition, [`CT_LVM]);
+ 	}
+ 
++    void CreateLvmMainPanel(any user_data)
++    {
+ 	list<symbol> fields = StorageSettings::FilterTable([ `device, `size, `format, `encrypted, `type,
+ 							     `fs_type, `label, `mount_point, `mount_by,
+ 							     `used_by, `lvm_metadata, `pe_size, `stripes ]);
+@@ -170,7 +173,7 @@
+ 	map<string, map> target_map = Storage::GetTargetMap();
+ 
+ 	term table_header = StorageFields::TableHeader(fields);
+-	list<term> table_contents = StorageFields::TableContents(fields, target_map, Predicate);
++	list<term> table_contents = StorageFields::TableContents(fields, target_map, PredicateLVM);
+ 	list <term> mb_items = [ `item(`id(`group), _("Volume Group")) ];
+ 
+ 	if ( !isempty(table_contents) )
+@@ -250,15 +253,17 @@ selected volume group.</p>");
+     }
+ 
+ 
+-    void CreateLvmVgLvsTab(any user_data)
+-    {
+-	string device = (string) user_data;
+-
+-	symbol Predicate(map disk, map partition)
++	string lvm_device = "";
++	symbol PredicateLVMDevice(map disk, map partition)
+ 	{
+-	    return StorageFields::PredicateDiskDevice(disk, partition, [ device ]);
++	    return StorageFields::PredicateDiskDevice(disk, partition, [ lvm_device ]);
+ 	}
+ 
++
++    void CreateLvmVgLvsTab(any user_data)
++    {
++	lvm_device = (string) user_data;
++
+ 	list<symbol> fields = StorageSettings::FilterTable([ `device, `size, `format, `encrypted, `type,
+ 							     `fs_type, `label, `mount_point, `mount_by,
+ 							     `used_by, `stripes ]);
+@@ -266,11 +271,11 @@ selected volume group.</p>");
+ 	map<string, map> target_map = Storage::GetTargetMap();
+ 
+ 	term table_header = StorageFields::TableHeader(fields);
+-	list<term> table_contents = StorageFields::TableContents(fields, target_map, Predicate);
++	list<term> table_contents = StorageFields::TableContents(fields, target_map, PredicateLVMDevice);
+ 
+ 	UI::ReplaceWidget(`tab_panel,
+ 			  `VBox(
+-			      DiskBarGraph(device),
++			      DiskBarGraph(lvm_device),
+ 			      `Table(`id(`table), `opt(`keepSorting, `notify, `notifyContextMenu),
+ 				     table_header, table_contents),
+ 			      `HBox(
+@@ -308,22 +313,24 @@ selected volume group.</p>");
+     }
+ 
+ 
+-    void CreateLvmVgPvsTab(any user_data)
+-    {
+-	string disk_device = (string) user_data;
+-
+-	symbol Predicate(map disk, map partition)
++	string lvm_disk_device = "";
++	symbol PredicateLVMUsedByDevice(map disk, map partition)
+ 	{
+-	    return StorageFields::PredicateUsedByDevice(disk, partition, [ disk_device ]);
++	    return StorageFields::PredicateUsedByDevice(disk, partition, [ lvm_disk_device ]);
+ 	}
+ 
++
++    void CreateLvmVgPvsTab(any user_data)
++    {
++	lvm_disk_device = (string) user_data;
++
+ 	list<symbol> fields = StorageSettings::FilterTable([ `device, `udev_path, `udev_id, `size,
+ 							     `format, `encrypted, `type, `used_by ]);
+ 
+ 	map<string, map> target_map = Storage::GetTargetMap();
+ 
+ 	term table_header = StorageFields::TableHeader(fields);
+-	list<term> table_contents = StorageFields::TableContents(fields, target_map, Predicate);
++	list<term> table_contents = StorageFields::TableContents(fields, target_map, PredicateLVMUsedByDevice);
+ 
+ 	UI::ReplaceWidget(`tab_panel,
+ 			  `VBox(
+diff --git a/src/include/partitioning/ep-main.ycp b/src/include/partitioning/ep-main.ycp
+index 0f685c6..0f1e583 100644
+--- a/src/include/partitioning/ep-main.ycp
++++ b/src/include/partitioning/ep-main.ycp
+@@ -113,36 +113,10 @@
+ 	    Wizard::SetNextButton(`next, next_label);
+ 	}
+     }
+-
+-
+-    void MakeNavigationTree(map open_items, list<term>& tree, map<any, map>& data)
+-    {
+-	// TODO: somehow use AlwaysHideDisk
+-
+-	data = $[ `all : $[ `create : CreateAllPanel, `handle : HandleAllPanel ],
+-		  `hd : $[ `create : CreateHdMainPanel, `handle : HandleHdMainPanel ],
+-		  `lvm : $[ `create : CreateLvmMainPanel, `handle : HandleLvmMainPanel ],
+-		  `md : $[ `create : CreateRaidMainPanel, `handle : HandleRaidMainPanel ],
+-		  `loop : $[ `create : CreateLoopMainPanel, `handle : HandleLoopMainPanel ],
+-		  `dm : $[ `create : CreateDmMainPanel, `handle : HandleDmMainPanel ],
+-		  `nfs : $[ `create : CreateNfsMainPanel, `handle : HandleNfsMainPanel ],
+-		  `btrfs : $[ `create : CreateBtrfsMainPanel, `handle : HandleBtrfsMainPanel ],
+-		  `tmpfs : $[ `create : CreateTmpfsMainPanel, `handle : HandleTmpfsMainPanel ],
+-		  `unused : $[ `create : CreateUnusedPanel, `handle : HandleUnusedPanel ],
+-		  `devicegraph : $[ `create : CreateDeviceGraphPanel, `refresh : RefreshDeviceGraphPanel, `handle : HandleDeviceGraphPanel ],
+-		  `mountgraph : $[ `create : CreateMountGraphPanel, `refresh : RefreshDeviceGraphPanel, `handle : HandleMountGraphPanel ],
+-		  `summary : $[ `create : CreateSummaryPanel ],
+-		  `settings : $[ `create : CreateSettingsPanel, `handle : HandleSettingsPanel, `destroy : DestroySettingsPanel ],
+-		  `log : $[ `create : CreateLogPanel, `handle : HandleLogPanel, `destroy : DestroyLogPanel ] ];
+-
+-	map<symbol, list> subtree = $[];
+-
+-	map<string, map> target_map = Storage::GetTargetMap();
+-
+-
++        map open_items_nav_tree = nil;
+ 	boolean open(any id)
+ 	{
+-	    return open_items[id]:"" == "ID";
++	    return open_items_nav_tree[id]:"" == "ID";
+ 	}
+ 
+ 
+@@ -183,8 +157,20 @@
+ 	    switch(type)
+ 	    {
+ 		case `CT_DISK:
++        // no falldown in ruby
++		    huhu(disk, `hd, $[ `create : CreateHdPartitionPanel, `handle : HandleHdPartitionPanel ],
++			 $[ `create : CreateHdDiskPanel, `handle : HandleHdDiskPanel ]);
++		    break;
+ 		case `CT_DMRAID:
++        // no falldown in ruby
++		    huhu(disk, `hd, $[ `create : CreateHdPartitionPanel, `handle : HandleHdPartitionPanel ],
++			 $[ `create : CreateHdDiskPanel, `handle : HandleHdDiskPanel ]);
++		    break;
+ 		case `CT_DMMULTIPATH:
++        // no falldown in ruby
++		    huhu(disk, `hd, $[ `create : CreateHdPartitionPanel, `handle : HandleHdPartitionPanel ],
++			 $[ `create : CreateHdDiskPanel, `handle : HandleHdDiskPanel ]);
++		    break;
+ 		case `CT_MDPART:
+ 		    huhu(disk, `hd, $[ `create : CreateHdPartitionPanel, `handle : HandleHdPartitionPanel ],
+ 			 $[ `create : CreateHdDiskPanel, `handle : HandleHdDiskPanel ]);
+@@ -215,6 +201,33 @@
+ 	}
+ 
+ 
++
++    void MakeNavigationTree(map open_items, list<term>& tree, map<any, map>& data)
++    {
++        open_items_nav_tree = open_items;
++	// TODO: somehow use AlwaysHideDisk
++
++	data = $[ `all : $[ `create : CreateAllPanel, `handle : HandleAllPanel ],
++		  `hd : $[ `create : CreateHdMainPanel, `handle : HandleHdMainPanel ],
++		  `lvm : $[ `create : CreateLvmMainPanel, `handle : HandleLvmMainPanel ],
++		  `md : $[ `create : CreateRaidMainPanel, `handle : HandleRaidMainPanel ],
++		  `loop : $[ `create : CreateLoopMainPanel, `handle : HandleLoopMainPanel ],
++		  `dm : $[ `create : CreateDmMainPanel, `handle : HandleDmMainPanel ],
++		  `nfs : $[ `create : CreateNfsMainPanel, `handle : HandleNfsMainPanel ],
++		  `btrfs : $[ `create : CreateBtrfsMainPanel, `handle : HandleBtrfsMainPanel ],
++		  `tmpfs : $[ `create : CreateTmpfsMainPanel, `handle : HandleTmpfsMainPanel ],
++		  `unused : $[ `create : CreateUnusedPanel, `handle : HandleUnusedPanel ],
++		  `devicegraph : $[ `create : CreateDeviceGraphPanel, `refresh : RefreshDeviceGraphPanel, `handle : HandleDeviceGraphPanel ],
++		  `mountgraph : $[ `create : CreateMountGraphPanel, `refresh : RefreshDeviceGraphPanel, `handle : HandleMountGraphPanel ],
++		  `summary : $[ `create : CreateSummaryPanel ],
++		  `settings : $[ `create : CreateSettingsPanel, `handle : HandleSettingsPanel, `destroy : DestroySettingsPanel ],
++		  `log : $[ `create : CreateLogPanel, `handle : HandleLogPanel, `destroy : DestroyLogPanel ] ];
++
++	map<symbol, list> subtree = $[];
++
++	map<string, map> target_map = Storage::GetTargetMap();
++
++
+ 	StorageFields::IterateTargetMap(target_map, callback);
+ 
+ 	string short_hostname = Hostname::CurrentHostname();
+@@ -288,8 +301,29 @@
+ 	switch (disk["type"]:`unknown)
+ 	{
+ 	    case `CT_DISK:  
++        // no falldown in ruby
++		if (part == nil)
++		    EpContextMenuHdDisk(device);
++		else
++		    EpContextMenuHdPartition(device);
++		break;
++
+ 	    case `CT_MDPART:
++        // no falldown in ruby
++		if (part == nil)
++		    EpContextMenuHdDisk(device);
++		else
++		    EpContextMenuHdPartition(device);
++		break;
++
+ 	    case `CT_DMRAID:
++        // no falldown in ruby
++		if (part == nil)
++		    EpContextMenuHdDisk(device);
++		else
++		    EpContextMenuHdPartition(device);
++		break;
++
+ 	    case `CT_DMMULTIPATH:
+ 		if (part == nil)
+ 		    EpContextMenuHdDisk(device);
+@@ -463,16 +497,23 @@ Really exit?"), deletechars(label, "&"));
+ 
+ 	    switch (widget)
+ 	    {
+-		case `back:
+-		case `abort: {
++		case `back: 
++        // no falldown in ruby
+ 		    if (!Storage::EqualBackupStates("expert-partitioner", "", true))
+ 		    {
+ 			if (!ReallyQuit(widget == `back ? back_label : abort_label))
+ 			    widget = `again;
+ 		    }
+-		} break;
++		 break;
++		case `abort:
++		    if (!Storage::EqualBackupStates("expert-partitioner", "", true))
++		    {
++			if (!ReallyQuit(widget == `back ? back_label : abort_label))
++			    widget = `again;
++		    }
++		 break;
+ 
+-		case `next: {
++		case `next:
+ 		    if (!Storage::EqualBackupStates("expert-partitioner", "", true) || StorageSettings::GetModified())
+ 		    {
+ 		        if (!check_created_partition_table(Storage::GetTargetMap(),
+@@ -494,16 +535,16 @@ Really exit?"), deletechars(label, "&"));
+ 			y2milestone("No changes to partitioning - nothing to do");
+ 			widget = `abort;
+ 		    }
+-		} break;
++		break;
+ 	    }
+ 
+ 	    switch (Event::IsWidgetActivated(event))
+ 	    {
+-		case `table: {
++		case `table:
+ 		    any citem = UI::QueryWidget(`id(`table), `CurrentItem);
+ 		    TreePanel::SwitchToNew(citem);
+ 		    UI::SetFocus( UI::WidgetExists(`id(`table)) ? `id(`table) : `id(`text));
+-		} break;
++		break;
+ 	    }
+ 	}
+ 	until (widget == `back || widget == `abort || widget == `next);
+@@ -513,6 +554,11 @@ Really exit?"), deletechars(label, "&"));
+ 	switch (widget)
+ 	{
+ 	    case `back:
++        // no falldown in ruby
++		if (Storage::GetPartMode() == "NORMAL")
++		    Storage::SetPartMode("CUSTOM");
++
++		break;
+ 	    case `abort:
+ 
+ 		if (Storage::GetPartMode() == "NORMAL")
+diff --git a/src/include/partitioning/ep-nfs.ycp b/src/include/partitioning/ep-nfs.ycp
+index d0c0d9b..7d9c704 100644
+--- a/src/include/partitioning/ep-nfs.ycp
++++ b/src/include/partitioning/ep-nfs.ycp
+@@ -38,15 +38,16 @@
+     map <string, map> target_map = $[];
+     boolean already_initialized = false;
+ 
+-    void CreateNfsMainPanel(any user_data)
+-    {
+-	list <map> nfs_list = [];
+-	symbol Predicate(map disk, map partition)
++    symbol PredicateNFS(map disk, map partition)
+ 	{
+ 	    return StorageFields::PredicateDiskType(disk, partition, [`CT_NFS]);
+ 	}
+ 
+-	term CreateContent()
++
++    void CreateNfsMainPanel(any user_data)
++    {
++	list <map> nfs_list = [];
++		term CreateContent()
+ 	{
+ 	    boolean pkg_installed = false;
+ 	    //fallback dialog content
+@@ -207,20 +208,14 @@
+ 	    switch (Event::IsWidgetActivated(event))
+ 	    {
+ 	        case `newbut:
+-	        {
+ 		    AddShare( line );
+ 		    break;
+-	        }
+ 	        case `editbut:
+-	        {
+ 		    EditShare( line );
+ 		    break;
+-	        }
+ 	        case `delbut:
+-	        {
+ 		    DeleteShare( line );
+ 		    break;
+-	        }
+ 	        default:
+ 		    break;
+ 	     }
+diff --git a/src/include/partitioning/ep-raid-dialogs.ycp b/src/include/partitioning/ep-raid-dialogs.ycp
+index bcc655c..0f2046c 100644
+--- a/src/include/partitioning/ep-raid-dialogs.ycp
++++ b/src/include/partitioning/ep-raid-dialogs.ycp
+@@ -28,6 +28,14 @@
+  * This file must only be included in other Expert Partitioner files ("ep-*.ycp").
+  */
+ {
++    import "DevicesSelectionBox";
++    import "Greasemonkey";
++    import "Integer";
++    import "MiniWorkflow";
++    import "Popup";
++    import "Storage";
++    import "StorageIcons";
++    import "StorageSettings";
+     textdomain "storage";
+ 
+ 
+@@ -177,25 +185,38 @@ to get the redundancy and performance you want.</p>
+ 	    switch (widget)
+ 	    {
+ 		case `raid0:
++                    //no falldown in ruby
++		    raid_type = substring(tostring((symbol) UI::QueryWidget(`id(`raid_type), `Value)), 1);
++		    DevicesSelectionBox::UpdateSelectedSize();
++		break;
+ 		case `raid1:
++                    //no falldown in ruby
++		    raid_type = substring(tostring((symbol) UI::QueryWidget(`id(`raid_type), `Value)), 1);
++		    DevicesSelectionBox::UpdateSelectedSize();
++		break;
+ 		case `raid5:
++                    //no falldown in ruby
++		    raid_type = substring(tostring((symbol) UI::QueryWidget(`id(`raid_type), `Value)), 1);
++		    DevicesSelectionBox::UpdateSelectedSize();
++		break;
+ 		case `raid6:
++                    //no falldown in ruby
++		    raid_type = substring(tostring((symbol) UI::QueryWidget(`id(`raid_type), `Value)), 1);
++		    DevicesSelectionBox::UpdateSelectedSize();
++		break;
+ 		case `raid10:
+-		{
++                    //no falldown in ruby
+ 		    raid_type = substring(tostring((symbol) UI::QueryWidget(`id(`raid_type), `Value)), 1);
+ 		    DevicesSelectionBox::UpdateSelectedSize();
+-		}
+ 		break;
+ 
+ 		case `next:
+-		{
+ 		    devices = maplist(map device, DevicesSelectionBox::GetSelectedDevices(), {
+ 			return device["device"]:"";
+ 		    });
+ 
+ 		    if (!CheckNumberOfDevicesForRaid(raid_type, size(devices)))
+ 			widget = `again;
+-		}
+ 		break;
+ 	    }
+ 	}
+@@ -367,14 +388,12 @@ algorithm please look at the man page for mdadm (man mdadm).
+ 	    switch (widget)
+ 	    {
+ 		case `next:
+-		{
+ 		    devices_new = maplist(map device, DevicesSelectionBox::GetSelectedDevices(), {
+ 			return device["device"]:"";
+ 		    });
+ 
+ 		    if (!CheckNumberOfDevicesForRaid(raid_type, size(devices_new)))
+ 			widget = `again;
+-		}
+ 		break;
+ 	    }
+ 	}
+diff --git a/src/include/partitioning/ep-raid.ycp b/src/include/partitioning/ep-raid.ycp
+index 5e3a539..4b662bc 100644
+--- a/src/include/partitioning/ep-raid.ycp
++++ b/src/include/partitioning/ep-raid.ycp
+@@ -91,13 +91,13 @@
+ 
+     }
+ 
+-    void CreateRaidMainPanel(any user_data)
+-    {
+-	symbol Predicate(map disk, map partition)
++	symbol PredicateMD(map disk, map partition)
+ 	{
+ 	    return StorageFields::PredicateDiskType(disk, partition, [`CT_MD]);
+ 	}
+ 
++    void CreateRaidMainPanel(any user_data)
++    {
+ 	list<symbol> fields = StorageSettings::FilterTable([ `device, `size, `format, `encrypted, `type,
+ 							     `fs_type, `label, `mount_point, `mount_by,
+ 							     `used_by, `raid_type, `chunk_size ]);
+@@ -105,7 +105,7 @@
+ 	map<string, map> target_map = Storage::GetTargetMap();
+ 
+ 	term table_header = StorageFields::TableHeader(fields);
+-	list<term> table_contents = StorageFields::TableContents(fields, target_map, Predicate);
++	list<term> table_contents = StorageFields::TableContents(fields, target_map, PredicateMD);
+ 
+ 	UI::ReplaceWidget(`tree_panel,
+ 			  Greasemonkey::Transform(
+@@ -186,22 +186,23 @@ selected RAID.</p>");
+     }
+ 
+ 
+-    void CreateRaidDevicesTab(any user_data)
+-    {
+-	string part_device = (string) user_data;
+-
+-	symbol Predicate(map disk, map partition)
++	  string raid_part_device = "";
++	symbol PredicateRaidDevice(map disk, map partition)
+ 	{
+-	    return StorageFields::PredicateUsedByDevice(disk, partition, [ part_device ]);
++	    return StorageFields::PredicateUsedByDevice(disk, partition, [ raid_part_device ]);
+ 	}
+ 
++    void CreateRaidDevicesTab(any user_data)
++    {
++	raid_part_device = (string) user_data;
++
+ 	list<symbol> fields = StorageSettings::FilterTable([ `device, `udev_path, `udev_id, `size,
+ 							     `format, `encrypted, `type, `used_by ]);
+ 
+ 	map<string, map> target_map = Storage::GetTargetMap();
+ 
+ 	term table_header = StorageFields::TableHeader(fields);
+-	list<term> table_contents = StorageFields::TableContents(fields, target_map, Predicate);
++	list<term> table_contents = StorageFields::TableContents(fields, target_map, PredicateRaidDevice);
+ 
+ 	UI::ReplaceWidget(`tab_panel,
+ 			  `VBox(
+diff --git a/src/include/partitioning/ep-unused.ycp b/src/include/partitioning/ep-unused.ycp
+index 0ab4427..d7bb75e 100644
+--- a/src/include/partitioning/ep-unused.ycp
++++ b/src/include/partitioning/ep-unused.ycp
+@@ -30,6 +30,23 @@
+ {
+     textdomain "storage";
+ 
++    import "Event";
++    import "HTML";
++    import "Icon";
++    import "Integer";
++    import "Label";
++    import "MiniWorkflow";
++    import "Package";
++    import "Popup";
++    import "Stage";
++    import "Storage";
++    import "StorageFields";
++    import "StorageIcons";
++    import "StorageSettings";
++    import "String";
++    import "TreePanel";
++    import "Wizard";
++
+     include "partitioning/ep-dialogs.ycp";
+ 
+ 
+@@ -119,6 +136,7 @@ all current changes. Really rescan unused devices?")))
+ 		    UpdateNavigationTree(nil);
+ 		    TreePanel::Create();
+ 		}
++    break;
+ 	}
+     }
+ }
+diff --git a/src/include/partitioning/partition_defines.ycp b/src/include/partitioning/partition_defines.ycp
+index 7c7759d..251218b 100644
+--- a/src/include/partitioning/partition_defines.ycp
++++ b/src/include/partitioning/partition_defines.ycp
+@@ -40,6 +40,7 @@
+ {
+   import "Mode";
+   import "FileSystems";
++  import "Storage";
+ 
+   textdomain "storage";
+ 
 diff --git a/src/modules/DevicesSelectionBox.ycp b/src/modules/DevicesSelectionBox.ycp
 index f445aee..9208d62 100644
 --- a/src/modules/DevicesSelectionBox.ycp

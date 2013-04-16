@@ -1,0 +1,5 @@
+// used to break dependency cycle client/module
+{
+  module "UsersSimple";
+  global string AfterAuth(){ return "stub"; }
+}
