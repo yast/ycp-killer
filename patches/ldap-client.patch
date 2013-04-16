@@ -1,5 +1,5 @@
 diff --git a/src/include/ldap/ui.ycp b/src/include/ldap/ui.ycp
-index e46187e..2e9220b 100644
+index e46187e..bf1d98d 100644
 --- a/src/include/ldap/ui.ycp
 +++ b/src/include/ldap/ui.ycp
 @@ -749,6 +749,107 @@ Enable certificate checks now?")))
@@ -279,6 +279,221 @@ index e46187e..2e9220b 100644
      foreach (string attr, any value, template, ``{
  	any val = value;
  	// do not show internal attributes
+@@ -1428,46 +1430,10 @@ Enter a value."), attr));
+     return template;
+ }
+ 
+-/**
+- * Dialog for configuration of one "configuration module"
+- */
+-define symbol ModuleConfigurationDialog () ``{
+-
+-    // helptext 1/4
+-    string help_text = _("<p>Manage the configuration stored in the LDAP directory.</p>") +
+-
+-    // helptext 2/4
+-    _("<p>Each configuration set is called a \"configuration module.\" If there
+-is no configuration module in the provided location (base configuration),
+-create one with <b>New</b>. Delete the current module
+-using <b>Delete</b>.</p>
+-") +
+-
+-    // helptext 3/4
+-    _("<p>Edit the values of attributes in the table with <b>Edit</b>.
+-Some values have special meanings, for example, changing the <b>cn</b> value renames the
+-current module.</p>
+-") +
+-
+-    // helptext 4/4
+-    _("<p>To configure the default template of the current module,
+-click <b>Configure Template</b>.
+-</p>
+-");
+-
+-    string current_dn		= Ldap::current_module_dn;
+-    map  modules_attrs_items	= $[]; // map of list (table items), index is cn
+-    map<string,map<string,any> > modules	=
+-	(map<string,map<string,any> >) Ldap::GetConfigModules ();
+-    map<string,map<string,any> > templates	=
+-	(map<string,map<string,any> >) Ldap::GetTemplates ();
+-    list<string> names		= [];
+-    list<string> templates_dns	= maplist (string dn, map t, templates, ``(dn));
+-
+     /**
+      * Helper for creating table items in ModuleConfiguration Dialog
+      */
+-    define list create_attrs_items (string cn) ``{
++    list create_attrs_items (string cn, map<string,map<string,any> > modules) {
+ 
+ 	list attrs_items = [];
+ 	string dn	= get_dn (cn);
+@@ -1491,22 +1457,11 @@ click <b>Configure Template</b>.
+ 	return attrs_items;
+     }
+ 
+-    foreach (string dn, map mod, modules, ``{
+-	string cn = get_string (mod, "cn");
+-	if (cn == "")
+-	    return;
+-	names = add (names, cn);
+-	// attributes for table
+-	modules_attrs_items [cn] = create_attrs_items (cn);
+-	if (current_dn == "")
+-	    current_dn = dn;
+-    });
+-    string current_cn = modules [current_dn, "cn",0]:get_cn (current_dn);
+ 
+     /**
+      * Helper for updating widgets in ModuleConfiguration Dialog
+      */
+-    define void replace_module_names () ``{
++    void replace_module_names (list<string> names, string current_cn) {
+ 
+ 	list modules_items = []; // list of module names
+ 	foreach (string cn, names, ``{
+@@ -1528,7 +1483,7 @@ click <b>Configure Template</b>.
+     /**
+      * Helper for updating widgets in ModuleConfiguration Dialog
+      */
+-    define void replace_templates_items () ``{
++    void replace_templates_items (map<string,map<string,any> > modules, string current_dn) {
+ 
+ 	list items = maplist (string dn,
+ 	    modules[current_dn,"suseDefaultTemplate"]:[],
+@@ -1541,6 +1496,54 @@ click <b>Configure Template</b>.
+ 	UI::ChangeWidget (`id(`templ_pb), `Enabled, items != []);
+     }
+ 
++/**
++ * Dialog for configuration of one "configuration module"
++ */
++define symbol ModuleConfigurationDialog () ``{
++
++    // helptext 1/4
++    string help_text = _("<p>Manage the configuration stored in the LDAP directory.</p>") +
++
++    // helptext 2/4
++    _("<p>Each configuration set is called a \"configuration module.\" If there
++is no configuration module in the provided location (base configuration),
++create one with <b>New</b>. Delete the current module
++using <b>Delete</b>.</p>
++") +
++
++    // helptext 3/4
++    _("<p>Edit the values of attributes in the table with <b>Edit</b>.
++Some values have special meanings, for example, changing the <b>cn</b> value renames the
++current module.</p>
++") +
++
++    // helptext 4/4
++    _("<p>To configure the default template of the current module,
++click <b>Configure Template</b>.
++</p>
++");
++
++    string current_dn		= Ldap::current_module_dn;
++    map  modules_attrs_items	= $[]; // map of list (table items), index is cn
++    map<string,map<string,any> > modules	=
++	(map<string,map<string,any> >) Ldap::GetConfigModules ();
++    map<string,map<string,any> > templates	=
++	(map<string,map<string,any> >) Ldap::GetTemplates ();
++    list<string> names		= [];
++    list<string> templates_dns	= maplist (string dn, map t, templates, ``(dn));
++
++    foreach (string dn, map mod, modules, ``{
++	string cn = get_string (mod, "cn");
++	if (cn == "")
++	    return;
++	names = add (names, cn);
++	// attributes for table
++	modules_attrs_items [cn] = create_attrs_items (cn, modules);
++	if (current_dn == "")
++	    current_dn = dn;
++    });
++    string current_cn = modules [current_dn, "cn",0]:get_cn (current_dn);
++
+     term contents = `HBox(`HSpacing (1.5), `VBox(
+         `VSpacing(0.5),
+ 	`HBox (
+@@ -1579,8 +1582,8 @@ click <b>Configure Template</b>.
+     {
+ 	UI::SetFocus (`id(`table));
+     }
+-    replace_templates_items ();
+-    replace_module_names ();
++    replace_templates_items (modules, current_dn);
++    replace_module_names (names, current_cn);
+ 
+     // result could be symbol or string
+     any result = nil;
+@@ -1616,7 +1619,7 @@ Enter a value."), attr));
+ 		current_dn	= tolower (current_dn);
+ 	    UI::ChangeWidget (`id(`table), `Items,
+ 		modules_attrs_items[current_cn]:[]);
+-	    replace_templates_items ();
++	    replace_templates_items (modules, current_dn);
+ 	}
+ 	// delete the module
+ 	if (result == `delete)
+@@ -1634,8 +1637,8 @@ Enter a value."), attr));
+ 	    current_dn = get_dn (current_cn);
+ 	    if (!haskey (modules, current_dn))
+ 		current_dn	= tolower (current_dn);
+-	    replace_module_names ();
+-	    replace_templates_items ();
++	    replace_module_names (names, current_cn);
++	    replace_templates_items (modules, current_dn);
+ 	    UI::ChangeWidget (`id(`table), `Items,
+ 		modules_attrs_items[current_cn]:[]);
+ 	}
+@@ -1670,9 +1673,9 @@ type, therefore you cannot add a new one.
+ 		current_dn	= tolower (current_dn);
+ 	    modules [current_dn] = Ldap::CreateModule (cn, new ["class"]:"");
+ 	    names = add (names, cn);
+-	    modules_attrs_items [cn] = create_attrs_items (cn);
+-	    replace_module_names ();
+-	    replace_templates_items ();
++	    modules_attrs_items [cn] = create_attrs_items (cn, modules);
++	    replace_module_names (names, current_cn);
++	    replace_templates_items (modules, current_dn);
+ 	    UI::ChangeWidget (`id(`table), `Items,
+ 		modules_attrs_items[current_cn]:[]);
+ 	}
+@@ -1706,7 +1709,7 @@ type, therefore you cannot add a new one.
+ 	    if (value == modules [current_dn, attr]:[]) //nothing was changed
+ 		continue;
+ 	    modules [current_dn, attr] = value;
+-	    modules_attrs_items [current_cn] = create_attrs_items (current_cn);
++	    modules_attrs_items [current_cn] = create_attrs_items (current_cn, modules);
+ 	    UI::ChangeWidget (`id(`table), `Items,
+ 		modules_attrs_items[current_cn]:[]);
+ 	    UI::ChangeWidget (`id(`table), `CurrentItem, attr);
+@@ -1728,10 +1731,10 @@ type, therefore you cannot add a new one.
+ 		names = add (names, cn);
+ 		current_cn = cn;
+ 		current_dn = get_dn (cn);
+-		replace_module_names ();
++		replace_module_names (names, current_cn);
+ 	    }
+ 	    if (tolower (attr) == "susedefaulttemplate")
+-		replace_templates_items ();
++		replace_templates_items (modules, current_dn);
+ 	}
+ 	// configure template
+ 	if (result == `templ_pb)
+@@ -1779,10 +1782,10 @@ type, therefore you cannot add a new one.
+ 			return dn;
+ 		});
+ 		modules_attrs_items [current_cn] =
+-		    create_attrs_items (current_cn);
++                  create_attrs_items (current_cn, modules);
+ 		UI::ChangeWidget (`id(`table), `Items,
+ 		    modules_attrs_items[current_cn]:[]);
+-		replace_templates_items ();
++		replace_templates_items (modules, current_dn);
+ 	    }
+ 	    UI::SetFocus (`id(`table));
+ 	}
 diff --git a/src/modules/LdapPopup.ycp b/src/modules/LdapPopup.ycp
 index 76100cd..e4322d9 100644
 --- a/src/modules/LdapPopup.ycp
