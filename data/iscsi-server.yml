@@ -1,14 +1,12 @@
-# TODO: Process.
-
-files:
-  - src/IscsiServer.ycp
-  - src/complex.ycp
-  - src/dialogs.ycp
-  - src/helps.ycp
-  - src/iscsi-server.ycp
-  - src/iscsi-server_auto.ycp
-  - src/iscsi-server_proposal.ycp
-  - src/widgets.ycp
-  - src/wizards.ycp
-  - testsuite/tests/IscsiServer.ycp
-  - testsuite/tests/readConfig.ycp
+#files:
+#  - src/IscsiServer.ycp
+#  - src/complex.ycp
+#  - src/dialogs.ycp
+#  - src/helps.ycp
+#  - src/iscsi-server.ycp
+#  - src/iscsi-server_auto.ycp
+#  - src/iscsi-server_proposal.ycp
+#  - src/widgets.ycp
+#  - src/wizards.ycp
+#  - testsuite/tests/IscsiServer.ycp
+#  - testsuite/tests/readConfig.ycp

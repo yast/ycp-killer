@@ -1,11 +1,9 @@
-# TODO: Process.
-
-files:
-  - src/AddOnCreator.ycp
-  - src/add-on-creator.ycp
-  - src/complex.ycp
-  - src/dialogs.ycp
-  - src/helps.ycp
-  - src/patterns.ycp
-  - src/wizards.ycp
-  - testsuite/tests/AddOnCreator.ycp
+#files:
+#  - src/AddOnCreator.ycp
+#  - src/add-on-creator.ycp
+#  - src/complex.ycp
+#  - src/dialogs.ycp
+#  - src/helps.ycp
+#  - src/patterns.ycp
+#  - src/wizards.ycp
+#  - testsuite/tests/AddOnCreator.ycp
