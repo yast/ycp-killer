@@ -1,15 +1,13 @@
-# TODO: Process.
-
-files:
-  - src/Kiwi.ycp
-  - src/ProductCreator.ycp
-  - src/commandline.ycp
-  - src/complex.ycp
-  - src/dialogs.ycp
-  - src/helps.ycp
-  - src/image-creator.ycp
-  - src/kiwi.ycp
-  - src/kiwi_dialogs.ycp
-  - src/product-creator.ycp
-  - src/routines.ycp
-  - src/wizards.ycp
+#files:
+#  - src/Kiwi.ycp
+#  - src/ProductCreator.ycp
+#  - src/commandline.ycp
+#  - src/complex.ycp
+#  - src/dialogs.ycp
+#  - src/helps.ycp
+#  - src/image-creator.ycp
+#  - src/kiwi.ycp
+#  - src/kiwi_dialogs.ycp
+#  - src/product-creator.ycp
+#  - src/routines.ycp
+#  - src/wizards.ycp
