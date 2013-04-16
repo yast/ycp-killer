@@ -1,12 +1,16 @@
-# TODO: Process.
+deps:
+  - yast2
 
-files:
-  - src/Squidguard.ycp
-  - src/complex.ycp
-  - src/dialogs.ycp
-  - src/helps.ycp
-  - src/squidguard.ycp
-  - src/squidguard_auto.ycp
-  - src/squidguard_proposal.ycp
-  - src/wizards.ycp
-  - testsuite/tests/Squidguard.ycp
+moves:
+  - from: "src/Squidguard*.{ycp,pm}"
+    to:   src/modules
+  - from: "src/squidguard*.ycp"
+    to:   src/clients
+  - from: "src/{complex,dialogs,helps,wizards}.ycp"
+    to:   src/include/squidguard
+  - from: "src/squidguard.desktop"
+    to:   src/desktop
+  - from: "agents/squidguard.scr"
+    to:   src/scrconf
+  - from: "agents/ag_squidguard"
+    to:   src/servers_non_y2

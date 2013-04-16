@@ -65,7 +65,7 @@ things get gemified, packaged, etc.
 
   6. **Clone the YCP Killer repository and install YCP Killer's dependencies**
 
-         $ sudo zypper in perl-JSON   # Needed to load the Json.pm YCP module
+         $ sudo zypper in perl-JSON cracklib-devel # perl-JSON is needed to load the Json.pm YCP module and cracklib-devel is dependency of users module
          $ git clone git://github.com/yast/ycp-killer.git
          $ cd ycp-killer
          $ bundle install
@@ -101,7 +101,8 @@ tictactoe-server
     ├── scrconf        ->  /usr/share/YaST2/scrconf
     ├── autoyast-rnc   ->  /usr/share/YaST2/schema/autoyast/rnc
     ├── control-rnc    ->  /usr/share/YaST2/schema/control/rnc
-    └── desktop        ->  /usr/share/applications/YaST2
+    ├── desktop        ->  /usr/share/applications/YaST2
+    └── fillup         ->  /var/adm/fillup-templates
 ```
 
 Other directories, like `doc` and `testsuite`, are not restructured now

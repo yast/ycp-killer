@@ -1,81 +1,20 @@
-# TODO: Process.
+deps:
+  - yast2
+  - packager
+  - storage
+  - autoinstallation
+  - country
+  - network
 
-files:
-  - control/tests/complete_workflow.ycp
-  - control/tests/inst_test_workflow.ycp
-  - doc/proposal/dummy_proposal.ycp
-  - src/clients/deploy_image_auto.ycp
-  - src/clients/deploying_proposal.ycp
-  - src/clients/disintegrate_all_extensions.ycp
-  - src/clients/inst_addon_update_sources.ycp
-  - src/clients/inst_ask_online_update.ycp
-  - src/clients/inst_automatic_configuration.ycp
-  - src/clients/inst_check_autoinst_mode.ycp
-  - src/clients/inst_complex_welcome.ycp
-  - src/clients/inst_congratulate.ycp
-  - src/clients/inst_deploy_image.ycp
-  - src/clients/inst_disks_activate.ycp
-  - src/clients/inst_doit.ycp
-  - src/clients/inst_extrasources.ycp
-  - src/clients/inst_fallback_controlfile.ycp
-  - src/clients/inst_features.ycp
-  - src/clients/inst_finish.ycp
-  - src/clients/inst_info.ycp
-  - src/clients/inst_initialization.ycp
-  - src/clients/inst_license.ycp
-  - src/clients/inst_mode.ycp
-  - src/clients/inst_network_check.ycp
-  - src/clients/inst_network_setup.ycp
-  - src/clients/inst_new_desktop.ycp
-  - src/clients/inst_pre_install.ycp
-  - src/clients/inst_prepare_image.ycp
-  - src/clients/inst_prepareprogress.ycp
-  - src/clients/inst_proposal.ycp
-  - src/clients/inst_release_notes.ycp
-  - src/clients/inst_restore_settings.ycp
-  - src/clients/inst_rpmcopy_secondstage.ycp
-  - src/clients/inst_save_hardware_status.ycp
-  - src/clients/inst_scenarios.ycp
-  - src/clients/inst_system_analysis.ycp
-  - src/clients/inst_upgrade_urls.ycp
-  - src/clients/inst_welcome.ycp
-  - src/clients/inst_worker_continue.ycp
-  - src/clients/inst_worker_initial.ycp
-  - src/clients/inst_x11.ycp
-  - src/clients/installation.ycp
-  - src/clients/release_notes_popup.ycp
-  - src/clients/stroj-casu.ycp
-  - src/clients/test_inst_client.ycp
-  - src/clients/test_proposal.ycp
-  - src/clients/update_wizard_steps.ycp
-  - src/include/inst_inc_all.ycp
-  - src/include/inst_inc_first.ycp
-  - src/include/inst_inc_second.ycp
-  - src/include/misc.ycp
-  - src/include/scr_switch_debugger.ycp
-  - src/inst_finish/copy_files_finish.ycp
-  - src/inst_finish/copy_logs_finish.ycp
-  - src/inst_finish/copy_systemfiles_finish.ycp
-  - src/inst_finish/desktop_finish.ycp
-  - src/inst_finish/driver_update1_finish.ycp
-  - src/inst_finish/driver_update2_finish.ycp
-  - src/inst_finish/installation_settings_finish.ycp
-  - src/inst_finish/kernel_finish.ycp
-  - src/inst_finish/ldconfig_finish.ycp
-  - src/inst_finish/network_finish.ycp
-  - src/inst_finish/pre_umount_finish.ycp
-  - src/inst_finish/proxy_finish.ycp
-  - src/inst_finish/random_finish.ycp
-  - src/inst_finish/save_config_finish.ycp
-  - src/inst_finish/save_hw_status_finish.ycp
-  - src/inst_finish/ssh_service_finish.ycp
-  - src/inst_finish/ssh_settings_finish.ycp
-  - src/inst_finish/switch_scr_finish.ycp
-  - src/inst_finish/umount_finish.ycp
-  - src/inst_finish/x11_finish.ycp
-  - src/inst_finish/yast_inf_finish.ycp
-  - src/modules/ImageInstallation.ycp
-  - src/modules/InstData.ycp
-  - src/modules/SystemFilesCopy.ycp
-  - src/modules/Vendor.ycp
-  - src/modules/X11Version.ycp
+moves:
+  - from: "agents/*.scr"
+    to: src/scrconf
+  - from: "agents/sysconfig.security-checksig"
+    to: src/fillup
+  - from: "src/config/*.desktop"
+    to: src/desktop
+  - from: "src/config/*.rnc"
+    to: src/autoyast-rnc
+  - from: "src/inst_finish/*.ycp"
+    to: src/clients
+

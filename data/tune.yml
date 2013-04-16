@@ -1,15 +1,17 @@
-# TODO: Process.
+deps:
+  - yast2
+  - bootloader
 
-files:
-  - hwinfo/src/InitHWinfo.ycp
-  - hwinfo/src/NewID.ycp
-  - hwinfo/src/SystemSettings.ycp
-  - hwinfo/src/hwinfo.ycp
-  - hwinfo/src/hwinfo_proposal.ycp
-  - hwinfo/src/inst_hwinfo.ycp
-  - hwinfo/src/newid.ycp
-  - hwinfo/src/routines.ycp
-  - hwinfo/src/system_settings.ycp
-  - hwinfo/src/system_settings_dialogs.ycp
-  - hwinfo/src/system_settings_finish.ycp
-  - hwinfo/src/system_settings_ui.ycp
+moves:
+  - from: "hwinfo/src/[A-Z]*.ycp"
+    to: src/modules
+  - from: "hwinfo/src/{routines,newid,system_settings_dialogs,system_settings_ui}.ycp"
+    to: src/include/hwinfo
+  - from: "hwinfo/src/{hwinfo,hwinfo_proposal,inst_hwinfo,system_settings,system_settings_finish}.ycp"
+    to: src/clients
+  - from: "hwinfo/doc"
+    to: "."
+  - from: "hwinfo/scrconf"
+    to: src
+  - from: "hwinfo/src/*.desktop"
+    to: src/desktop

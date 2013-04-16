@@ -1,0 +1,37 @@
+diff --git a/doc/Makefile.am b/doc/Makefile.am
+index b3ffc5a..1fb0e86 100644
+--- a/doc/Makefile.am
++++ b/doc/Makefile.am
+@@ -4,7 +4,8 @@
+ # $Id$
+ #
+ 
+-SUBDIRS = autodocs
++# autodocs not yet support ruby
++#SUBDIRS = autodocs
+ 
+ htmldir = $(docdir)
+ 
+diff --git a/yast2-nfs-client.spec.in b/yast2-nfs-client.spec.in
+index 61316d7..73581a6 100644
+--- a/yast2-nfs-client.spec.in
++++ b/yast2-nfs-client.spec.in
+@@ -46,13 +46,12 @@ file system access. It allows access to files on remote machines.
+ %dir @yncludedir@/nfs
+ @yncludedir@/nfs/*
+ %dir @clientdir@
+-@clientdir@/nfs.ycp
+-@clientdir@/nfs-client.ycp
+-@clientdir@/nfs_auto.ycp
+-@clientdir@/nfs-client4part.ycp
++@clientdir@/nfs.rb
++@clientdir@/nfs-client.rb
++@clientdir@/nfs_auto.rb
++@clientdir@/nfs-client4part.rb
+ %dir @moduledir@
+-@moduledir@/Nfs.ycp
+-@moduledir@/Nfs.ybc
++@moduledir@/Nfs.rb
+ %dir @desktopdir@
+ @desktopdir@/nfs.desktop
+ %doc @docdir@
