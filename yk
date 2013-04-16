@@ -39,6 +39,9 @@ module Messages
   end
 end
 
+# Hash: String -> YastModule
+$yast_modules = {}
+
 class YastModule
 
   WORK_DIR   = "work"
@@ -55,11 +58,9 @@ class YastModule
     :excluded,
     :moves
 
-
-  def initialize(name, data, modules, config)
+  def initialize(name, data, config)
     @name       = name
     @data       = data
-    @modules    = modules
     @config     = config
     @work_dir   = "#{@config["yast_dir"]}/#{WORK_DIR}/#@name"
     @result_dir = "#{@config["yast_dir"]}/#{RESULT_DIR}/#@name"
@@ -72,7 +73,7 @@ class YastModule
   end
 
   def transitive_deps
-    (deps.map { |d| @modules[d].transitive_deps }.reduce([], :+) + deps).uniq
+    (deps.map { |d| $yast_modules[d].transitive_deps }.reduce([], :+) + deps).uniq
   end
 
   def convert
@@ -399,7 +400,7 @@ EOS
     unless @module_paths 
       @module_paths = [STUBS_DIR] + exported_module_paths
       transitive_deps.each do |dependency|
-        @module_paths.concat @modules[dependency].exported_module_paths
+        @module_paths.concat $yast_modules[dependency].exported_module_paths
       end
     end
     @module_paths
@@ -411,7 +412,7 @@ EOS
     unless @include_paths
       @include_paths = [STUBS_DIR] + exported_include_paths
       transitive_deps.each do |dependency|
-        @include_paths.concat @modules[dependency].exported_include_paths
+        @include_paths.concat $yast_modules[dependency].exported_include_paths
       end
     end
     @include_paths
@@ -685,7 +686,11 @@ class BuildOrder
   # Therefore, we will break cycles consisting of module-include pairs.
   def tsort_breaking_pair_cycles
     each_strongly_connected_component do |component|
-      if component.size > 2
+      next if component.size == 1
+      if component.all? {|source| source.is_a? Include}
+        # YCP parser breaks include cycles
+        component.last.includes.delete component.first.name
+      elsif component.size > 2
         raise TSort::Cyclic.new("Cycle involving at least 2 modules or 2 includes: #{component.inspect}")
       elsif component.size == 2
         # break the cycle
@@ -832,15 +837,12 @@ class CLI < Thor
   end
 
   def load_module_data
-    @modules = {}
-
     Dir["#{DATA_DIR}/*.yml"].sort.each do |file|
       name = File.basename(file, ".yml")
 
-      @modules[name] = YastModule.new(
+      $yast_modules[name] = YastModule.new(
         name,
         YAML.load_file(file) || {},
-        @modules,
         @config
       )
     end
@@ -856,9 +858,9 @@ class CLI < Thor
 
   def modules_from_names(module_names)
     module_names = [ module_from_cwd ] if module_names.empty?
-    module_names = @modules.keys if module_names == ["all"]
+    module_names = $yast_modules.keys if module_names == ["all"]
 
-    @modules.values_at(*module_names)
+    $yast_modules.values_at(*module_names)
   end
 
   def with_modules(modules, activity, print_status) # :yields: mod

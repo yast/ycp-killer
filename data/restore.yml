@@ -1,10 +1,8 @@
-# TODO: Process.
-
-files:
-  - src/Restore.ycp
-  - src/helps.ycp
-  - src/restore.ycp
-  - src/restore_auto.ycp
-  - src/restore_bootloader.ycp
-  - src/summary_dialog.ycp
-  - src/ui.ycp
+#files:
+#  - src/Restore.ycp
+#  - src/helps.ycp
+#  - src/restore.ycp
+#  - src/restore_auto.ycp
+#  - src/restore_bootloader.ycp
+#  - src/summary_dialog.ycp
+#  - src/ui.ycp

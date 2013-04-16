@@ -1,25 +1,20 @@
-# TODO: Process.
+deps:
+  - network
+  - pam
+  - yast2
 
-files:
-  - src/Ldap.ycp
-  - src/LdapPopup.ycp
-  - src/ldap-client.ycp
-  - src/ldap.ycp
-  - src/ldap_auto.ycp
-  - src/ldap_browser.ycp
-  - src/ldap_config.ycp
-  - src/routines.ycp
-  - src/ui.ycp
-  - src/wizards.ycp
-  - testsuite/tests/ConvertDefaultValues.ycp
-  - testsuite/tests/Export.ycp
-  - testsuite/tests/Export2.ycp
-  - testsuite/tests/Export3.ycp
-  - testsuite/tests/GetAllAttributes.ycp
-  - testsuite/tests/LDAPBind.ycp
-  - testsuite/tests/LDAPInit.ycp
-  - testsuite/tests/Read.ycp
-  - testsuite/tests/Read2.ycp
-  - testsuite/tests/ReadLdapConfEntry.ycp
-  - testsuite/tests/Routines.ycp
-  - testsuite/tests/SingleValued.ycp
+moves:
+  - from: src/Ldap*.ycp
+    to:   src/modules
+  - from: src/ldap*.ycp
+    to:   src/clients
+  - from: src/*.ycp
+    to:   src/include/ldap
+  - from: src/*.desktop
+    to:   src/desktop
+  - from: src/*.rnc
+    to:   src/autoyast-rnc
+  - from: agents/*.scr
+    to:   src/scrconf
+  - from: agents/sysconfig.*
+    to:   src/fillup
