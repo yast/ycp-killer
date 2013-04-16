@@ -5,3 +5,4 @@ excluded:
   # TODO FIXME: does not compile, too old code
   - examples/DemoBrowser.ycp
   - examples/memtest.ycp
+

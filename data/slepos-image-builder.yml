@@ -1,18 +1,16 @@
-# TODO: Process.
-
-files:
-  - src/SleposImageBuilder.ycp
-  - src/complex.ycp
-  - src/dialogs.ycp
-  - src/helps.ycp
-  - src/routines.ycp
-  - src/slepos-image-builder.ycp
-  - src/slepos-image-builder_auto.ycp
-  - src/slepos-image-builder_proposal.ycp
-  - src/subdialogs.ycp
-  - src/subwizards.ycp
-  - src/uifunctions.ycp
-  - src/wizards.ycp
-  - testsuite/tests.old/Read.ycp
-  - testsuite/tests.old/deleteImageDescrTree.ycp
-  - testsuite/tests.old/duplicateImageDescrTree.ycp
+#files:
+#  - src/SleposImageBuilder.ycp
+#  - src/complex.ycp
+#  - src/dialogs.ycp
+#  - src/helps.ycp
+#  - src/routines.ycp
+#  - src/slepos-image-builder.ycp
+#  - src/slepos-image-builder_auto.ycp
+#  - src/slepos-image-builder_proposal.ycp
+#  - src/subdialogs.ycp
+#  - src/subwizards.ycp
+#  - src/uifunctions.ycp
+#  - src/wizards.ycp
+#  - testsuite/tests.old/Read.ycp
+#  - testsuite/tests.old/deleteImageDescrTree.ycp
+#  - testsuite/tests.old/duplicateImageDescrTree.ycp

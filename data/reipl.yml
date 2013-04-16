@@ -1,16 +1,14 @@
-# TODO: Process.
-
-files:
-  - src/Reipl.ycp
-  - src/complex.ycp
-  - src/dialogs.ycp
-  - src/helps.ycp
-  - src/inst_reipl.ycp
-  - src/inst_reiplauto.ycp
-  - src/reipl.ycp
-  - src/reipl_auto.ycp
-  - src/reipl_bootloader_finish.ycp
-  - src/reipl_finish.ycp
-  - src/reipl_proposal.ycp
-  - src/wizards.ycp
-  - testsuite/tests/Reipl.ycp
+#files:
+#  - src/Reipl.ycp
+#  - src/complex.ycp
+#  - src/dialogs.ycp
+#  - src/helps.ycp
+#  - src/inst_reipl.ycp
+#  - src/inst_reiplauto.ycp
+#  - src/reipl.ycp
+#  - src/reipl_auto.ycp
+#  - src/reipl_bootloader_finish.ycp
+#  - src/reipl_finish.ycp
+#  - src/reipl_proposal.ycp
+#  - src/wizards.ycp
+#  - testsuite/tests/Reipl.ycp
