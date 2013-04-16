@@ -1,9 +1,7 @@
-# TODO: Process.
-
-files:
-  - src/clients/answering_machine.ycp
-  - src/clients/fax.ycp
-  - src/modules/Answering_machine.ycp
-  - src/modules/Fax.ycp
-  - src/phone-services/answering_machine.ycp
-  - src/phone-services/fax.ycp
+#files:
+#  - src/clients/answering_machine.ycp
+#  - src/clients/fax.ycp
+#  - src/modules/Answering_machine.ycp
+#  - src/modules/Fax.ycp
+#  - src/phone-services/answering_machine.ycp
+#  - src/phone-services/fax.ycp

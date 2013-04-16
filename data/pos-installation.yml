@@ -1,17 +1,15 @@
-# TODO: Process.
-
-files:
-  - pos-installation/src/clients/inst_slepos_detection.ycp
-  - pos-installation/src/clients/inst_slepos_initialization.ycp
-  - pos-installation/src/clients/inst_slepos_migration.ycp
-  - pos-installation/src/clients/inst_slepos_server_selection.ycp
-  - pos-installation/src/modules/POSInstallation.ycp
-  - src/clients/firstboot_slepos_initialization.ycp
-  - src/clients/firstboot_slepos_installation.ycp
-  - src/clients/firstboot_slepos_selection.ycp
-  - src/clients/firstboot_slepos_synchronization.ycp
-  - src/clients/inst_slepos_detection.ycp
-  - src/clients/inst_slepos_initialization.ycp
-  - src/clients/inst_slepos_migration.ycp
-  - src/clients/inst_slepos_server_selection.ycp
-  - src/modules/POSInstallation.ycp
+#files:
+#  - pos-installation/src/clients/inst_slepos_detection.ycp
+#  - pos-installation/src/clients/inst_slepos_initialization.ycp
+#  - pos-installation/src/clients/inst_slepos_migration.ycp
+#  - pos-installation/src/clients/inst_slepos_server_selection.ycp
+#  - pos-installation/src/modules/POSInstallation.ycp
+#  - src/clients/firstboot_slepos_initialization.ycp
+#  - src/clients/firstboot_slepos_installation.ycp
+#  - src/clients/firstboot_slepos_selection.ycp
+#  - src/clients/firstboot_slepos_synchronization.ycp
+#  - src/clients/inst_slepos_detection.ycp
+#  - src/clients/inst_slepos_initialization.ycp
+#  - src/clients/inst_slepos_migration.ycp
+#  - src/clients/inst_slepos_server_selection.ycp
+#  - src/modules/POSInstallation.ycp

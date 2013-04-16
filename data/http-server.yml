@@ -1,19 +1,17 @@
-# TODO: Process.
-
-files:
-  - src/HttpServer.ycp
-  - src/HttpServerWidgets.ycp
-  - src/complex.ycp
-  - src/dialogs.ycp
-  - src/helps.ycp
-  - src/http-server.ycp
-  - src/http-server_auto.ycp
-  - src/routines.ycp
-  - src/wizard-dialog.ycp
-  - src/wizards.ycp
-  - testsuite/tests/getCurrentListen.ycp
-  - testsuite/tests/listen2item.ycp
-  - testsuite/tests/listen2map.ycp
-  - testsuite/tests/parseDirOption.ycp
-  - testsuite/tests/readHosts.ycp
-  - testsuite/tests/readListen.ycp
+#files:
+#  - src/HttpServer.ycp
+#  - src/HttpServerWidgets.ycp
+#  - src/complex.ycp
+#  - src/dialogs.ycp
+#  - src/helps.ycp
+#  - src/http-server.ycp
+#  - src/http-server_auto.ycp
+#  - src/routines.ycp
+#  - src/wizard-dialog.ycp
+#  - src/wizards.ycp
+#  - testsuite/tests/getCurrentListen.ycp
+#  - testsuite/tests/listen2item.ycp
+#  - testsuite/tests/listen2map.ycp
+#  - testsuite/tests/parseDirOption.ycp
+#  - testsuite/tests/readHosts.ycp
+#  - testsuite/tests/readListen.ycp
