@@ -185,6 +185,7 @@ class YastModule
   end
 
   def restructure
+    puts "WARNING: No 'moves' section found in #{name}.yml" if moves.empty?
     Dir.chdir work_dir do
       moves.each do |move|
         FileUtils.mkdir_p move["to"]
