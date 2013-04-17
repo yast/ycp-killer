@@ -49,6 +49,7 @@ sub this {
 
 package LibStorage;
 
+sub getPresentDisks {}
 *initDefaultLogger = *LibStoragec::initDefaultLogger;
 *setLogDoCallback = *LibStoragec::setLogDoCallback;
 *getLogDoCallback = *LibStoragec::getLogDoCallback;
@@ -2279,6 +2280,7 @@ package LibStorage;
 BEGIN {
     %TYPEINFO = (
         ALL_METHODS => 0,
+        getPresentDisks => ["function", ["list", "string"]],
         initDefaultLogger => ["function", "void"],
         initDefaultLogger => ["function", "void", "&string"],
         setLogDoCallback => ["function", "void", "any"],
