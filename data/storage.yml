@@ -29,3 +29,9 @@ moves:
   - from: storage/src/testsuite
     to: .
 
+excluded:
+  # TODO: These files use the version of LibStorage::initDefaultLogger without
+  #       parameters, which ycpc doesn't like. This should be fixed either
+  #       upstream or in our stubs.
+  - bindings/ycp/callback.ycp
+  - bindings/ycp/example.ycp
