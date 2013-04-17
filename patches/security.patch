@@ -20,3 +20,18 @@ index b54cdda..7b53634 100644
  
  /**
   * Adduser dialog
+diff --git a/yast2-security.spec.in b/yast2-security.spec.in
+index a60270e..1a9d44c 100644
+--- a/yast2-security.spec.in
++++ b/yast2-security.spec.in
+@@ -43,8 +43,8 @@ fi
+ %dir @yncludedir@/security
+ @yncludedir@/security/*
+ @desktopdir@/security.desktop
+-@clientdir@/security*.ycp
+-@moduledir@/Security.y*
++@clientdir@/security*.rb
++@moduledir@/Security.rb
+ @scrconfdir@/*.scr
+ @schemadir@/autoyast/rnc/security.rnc
+ %doc @docdir@
