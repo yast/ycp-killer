@@ -1,9 +1,25 @@
-#files:
-#  - src/AddOnCreator.ycp
-#  - src/add-on-creator.ycp
-#  - src/complex.ycp
-#  - src/dialogs.ycp
-#  - src/helps.ycp
-#  - src/patterns.ycp
-#  - src/wizards.ycp
-#  - testsuite/tests/AddOnCreator.ycp
+deps:
+  - yast2
+
+moves:
+  - from: "src/[A-Z]*.{ycp,pm}"
+    to:   src/modules
+  - from: "src/add-on-creator.ycp"
+    to:   src/clients
+  - from: "src/{complex,dialogs,helps,patterns,wizards}.ycp"
+    to:   src/include/add-on-creator
+  - from: "src/add-on-creator.desktop"
+    to:   src/desktop
+  - from: "src/template.prod"
+    to:   src/data
+  - from: "agents/ag_*"
+    to:   src/scripts
+  - from: "agents/*.scr"
+    to:   src/scrconf
+  - from: "agents/sysconfig.add-on-creator"
+    to:   fillup
+
+excluded:
+  # TODO: Include files, can't be compiled for now.
+  - src/include/add-on-creator/dialogs.ycp
+  - src/include/add-on-creator/patterns.ycp
