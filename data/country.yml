@@ -63,3 +63,10 @@ moves:
   - from: "timezone/agents/*"
     to: timezone/src/scrconf
 
+excluded:
+  # TODO FIXME: hidden storage module dependency
+  - timezone/src/clients/timezone_proposal.ycp
+  - timezone/src/clients/inst_timezone.ycp
+
+  # TODO FIXME: packager module dependency
+  - language/src/clients/select_language.ycp

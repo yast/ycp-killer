@@ -1,0 +1,13 @@
+diff --git a/src/include/drbd/common.ycp b/src/include/drbd/common.ycp
+index f5c46d3..5e7eb23 100644
+--- a/src/include/drbd/common.ycp
++++ b/src/include/drbd/common.ycp
+@@ -8,6 +8,8 @@
+ 	import "Popup";
+ 	import "CWM";
+ 
++        include "drbd/helps.ycp";
++
+ 	list<string> DIALOG = [
+ 		"startup_conf",
+ 		"global_conf",

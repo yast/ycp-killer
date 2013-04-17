@@ -65,7 +65,7 @@ things get gemified, packaged, etc.
 
   6. **Clone the YCP Killer repository and install YCP Killer's dependencies**
 
-         $ sudo zypper in perl-JSON   # Needed to load the Json.pm YCP module
+         $ sudo zypper in perl-JSON cracklib-devel # perl-JSON is needed to load the Json.pm YCP module and cracklib-devel is dependency of users module
          $ git clone git://github.com/yast/ycp-killer.git
          $ cd ycp-killer
          $ bundle install
@@ -101,7 +101,8 @@ tictactoe-server
     ├── scrconf        ->  /usr/share/YaST2/scrconf
     ├── autoyast-rnc   ->  /usr/share/YaST2/schema/autoyast/rnc
     ├── control-rnc    ->  /usr/share/YaST2/schema/control/rnc
-    └── desktop        ->  /usr/share/applications/YaST2
+    ├── desktop        ->  /usr/share/applications/YaST2
+    └── fillup         ->  /var/adm/fillup-templates
 ```
 
 Other directories, like `doc` and `testsuite`, are not restructured now
@@ -133,9 +134,12 @@ Tasks:
 The commands operate on two distinct directory trees: the *working* tree and
 the *result* tree.
 
+The module name can be omitted if it is the current working directory in the
+*working* tree.
+
 #### yk convert
 
-Does everything at once: `clone`, `restructure`, `patch`, `compile`.
+Does everything at once: `clone`, `restructure`, `patch`, `compile`, `makefile`, `package`.
 
 #### yk clone
 
@@ -198,8 +202,10 @@ binaries specified by the `ycpc` and `y2r` setting in `config.xml`.
 The compilation of each file may finish in one the following states:
 
   * **OK** – the compilation was successful
-  * **ERROR(y2r)** – the compilation failed when running `ycpc` or `y2r` on the
-    module code
+  * **ERROR(ybc)** – the compilation failed when running `ycpc`
+    on the module code
+  * **ERROR(y2r)** – the compilation failed when running `y2r`
+    on the module code
   * **ERROR(ruby)** – the compilation failed because it produced a result which
     was invalid Ruby (as determined by `ruby -c`)
   * **ERROR(other)** – the compilation failed for some other reason
@@ -229,6 +235,7 @@ $ ./yk compile testsuite
 
 Total OK:           3
 Total EXCLUDED:     0
+Total ERROR(ybc):   0
 Total ERROR(y2r):   6
 Total ERROR(ruby):  0
 Total ERROR(other): 0
@@ -246,6 +253,15 @@ $ ./yk genpatch testsuite
 [1/1] Generating patch testsuite...                                   OK
 ```
 
+#### yk makefile
+
+Generates Makefile.am for exported directories of module(s)
+
+#### yk package
+
+Creates packages for module(s) in the build service directory, which is a
+third tree alongside the *working* and *result* ones.
+
 ### Module Metadata
 
 Modules have metadata files placed in `data/foo.yml`, in the [YAML][yaml]
@@ -254,7 +270,9 @@ format.
 [yaml]: http://en.wikipedia.org/wiki/YAML
 
 ```
-# A list of modules this one depends on to compile.
+# A list of modules this one depends on to compile. Only direct dependencies
+# need to be stated here (the indirect ones are computed automatically when
+# needed).
 # Default: []
 deps:
   - yast2

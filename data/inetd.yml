@@ -1,40 +1,26 @@
-# TODO: Process.
+---
+deps:
+  - yast2
+  - users
 
-files:
-  - src/Inetd.ycp
-  - src/complex.ycp
+moves:
+  - from: agents/*.scr
+    to:   src/scrconf
+  - from: src/config/*.rnc
+    to:   src/autoyast
+  - from: src/{xinetd,inetd,inetd_auto,inetd_proposal}.ycp
+    to:   src/clients
+  - from: src/{helps,wizards,dialogs,complex,routines,default_conf_xinetd}.ycp
+    to:   src/include/inetd
+  - from: src/Inetd.ycp
+    to:   src/modules
+  - from: src/inetd.desktop
+    to:   src/desktop
+
+# TODO
+excluded:
+  # hopefully replaced by something entirely different
   - src/default_conf_create.ycp
-  - src/default_conf_xinetd.ycp
-  - src/dialogs.ycp
-  - src/helps.ycp
-  - src/inetd.ycp
-  - src/inetd_auto.ycp
-  - src/inetd_proposal.ycp
-  - src/routines.ycp
-  - src/wizards.ycp
-  - src/xinetd.ycp
-  - testsuite/tests.ag/i1.ycp
-  - testsuite/tests.ag/i2.ycp
-  - testsuite/tests.ag/i3.ycp
-  - testsuite/tests.ag/i4.ycp
-  - testsuite/tests.ag/i5.ycp
-  - testsuite/tests.ag/i_add.ycp
-  - testsuite/tests.ag/i_add2.ycp
-  - testsuite/tests.ag/i_add3.ycp
-  - testsuite/tests.ag/i_del.ycp
-  - testsuite/tests.ag/x1.ycp
-  - testsuite/tests.ag/x4.ycp
-  - testsuite/tests.ag/x5.ycp
-  - testsuite/tests.ag/x_81.ycp
-  - testsuite/tests.ag/x_add.ycp
-  - testsuite/tests.ag/x_add2.ycp
-  - testsuite/tests.ag/x_add3.ycp
-  - testsuite/tests.ag/x_del.ycp
-  - testsuite/tests.ag/x_double.ycp
-  - testsuite/tests.ag/x_multi.ycp
-  - testsuite/tests.ag/x_multi_add.ycp
-  - testsuite/tests/Inetd.ycp
-  - testsuite/tests/Inetd2.ycp
-  - testsuite/tests/Inetd3.ycp
-  - testsuite/tests/Inetd_r2.ycp
-  - testsuite/tests/dialogs.ycp
+  # to be resolved; not known where to with these files:
+  #- src/all-services.sh
+  #- src/all-services.conf

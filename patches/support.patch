@@ -1,0 +1,12 @@
+diff --git a/src/include/support/dialogs.ycp b/src/include/support/dialogs.ycp
+index 105e952..f651ee3 100644
+--- a/src/include/support/dialogs.ycp
++++ b/src/include/support/dialogs.ycp
+@@ -32,6 +32,7 @@
+ textdomain "support";
+ 
+ import "Label";
++import "Popup";
+ import "Report";
+ import "Wizard";
+ import "Support";

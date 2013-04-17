@@ -1,22 +1,16 @@
-# TODO: Process.
+deps:
+  - yast2
 
-files:
-  - src/Squid.ycp
-  - src/SquidACL.ycp
-  - src/SquidACL_local_functions.ycp
-  - src/SquidErrorMessages.ycp
-  - src/complex.ycp
-  - src/dialogs.ycp
-  - src/handlers.ycp
-  - src/helper_functions.ycp
-  - src/helps.ycp
-  - src/inits.ycp
-  - src/popup_dialogs.ycp
-  - src/squid.ycp
-  - src/squid_auto.ycp
-  - src/store_del.ycp
-  - src/wizards.ycp
-  - testsuite/tests/Squid-Read.ycp
-  - testsuite/tests/Squid.ycp
-  - testsuite/tests/SquidACL.ycp
-  - testsuite/tests/SquidErrorMessages.ycp
+moves:
+  - from: "src/{Squid,SquidACL,SquidErrorMessages}.ycp"
+    to:   src/modules
+  - from: "src/squid*.ycp"
+    to:   src/clients
+  - from: "src/*.ycp"
+    to:   src/include/squid
+  - from: "agents/config/squid.scr"
+    to:   src/scrconf
+  - from: "config/squid.desktop"
+    to:   src/desktop
+  - from: "config/squid.rnc"
+    to:   src/autoyast-rnc

@@ -1,15 +1,17 @@
-# TODO: Process.
+deps:
+  - yast2
 
-files:
-  - src/Drbd.ycp
-  - src/common.ycp
-  - src/complex.ycp
-  - src/dialogs.ycp
-  - src/drbd.ycp
-  - src/drbd_auto.ycp
-  - src/drbd_proposal.ycp
-  - src/global_conf.ycp
-  - src/helps.ycp
-  - src/resource_conf.ycp
-  - src/startup_conf.ycp
-  - src/wizards.ycp
+moves:
+  - from: "src/Drbd.ycp"
+    to:   src/modules
+  - from: "src/drbd*.ycp"
+    to:   src/clients
+  - from: "src/{common,complex,dialogs,global_conf,helps,resource_conf,startup_conf,wizards}.ycp"
+    to:   src/include/drbd
+  - from: "src/drbd.desktop"
+    to:   src/desktop
+  - from: "agents/drbd.scr"
+    to:   src/scrconf
+  - from: "agents/{ag_drbd,drbd.rb.yy,Makefile.*}"
+    to:   src/servers_non_y2
+

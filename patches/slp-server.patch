@@ -1,0 +1,14 @@
+diff --git a/src/include/slp-server/dialogs.ycp b/src/include/slp-server/dialogs.ycp
+index 5004c0f..cc955c9 100644
+--- a/src/include/slp-server/dialogs.ycp
++++ b/src/include/slp-server/dialogs.ycp
+@@ -23,7 +23,9 @@ import "LogView";
+ import "IP";
+ import "String";
+ import "Address";
++import "Popup";
+ include "slp-server/helps.ycp";
++include "slp-server/complex.ycp";
+ 
+ void initServerSettings(string key);
+ symbol handleServerSettings(string key, map event );

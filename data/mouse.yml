@@ -1,10 +1,15 @@
-# TODO: Process.
+deps:
+  - yast2
 
-files:
-  - data/mouse_raw.ycp
-  - src/inst_init_mouse.ycp
-  - src/inst_mouse.ycp
-  - src/modules/Mouse.ycp
-  - src/mouse.ycp
-  - src/mouse_finish.ycp
-  - src/proposal/mouse_proposal.ycp
+moves:
+  - from: "agents/*"
+    to: src/scrconf
+  - from: "data"
+    to: src
+  - from: "src/proposal/mouse_proposal.ycp"
+    to: src/clients
+  - from: "src/*.ycp"
+    to: src/clients
+  - from: "src/*.desktop"
+    to: src/desktop
+

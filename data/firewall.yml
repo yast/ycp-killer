@@ -1,17 +1,20 @@
-# TODO: Process.
+---
+deps:
+  - yast2
+  - testsuite
 
-files:
-  - src/SuSEFirewallCMDLine.ycp
-  - src/SuSEFirewallUI.ycp
-  - src/complex.ycp
-  - src/dialogs.ycp
-  - src/firewall.ycp
-  - src/firewall_auto.ycp
-  - src/firewall_proposal.ycp
-  - src/generalfunctions.ycp
-  - src/helps.ycp
-  - src/subdialogs.ycp
-  - src/summary.ycp
-  - src/uifunctions.ycp
-  - src/wizards.ycp
-  - testsuite/tests/Functions.ycp
+moves:
+  - from: config/firewall.rnc
+    to:   src/autoyast-rnc
+  - from: src/{firewall,firewall_auto,firewall_proposal}.ycp
+    to:   src/clients
+  - from: src/{complex,dialogs,wizards,subdialogs,uifunctions,helps,summary,generalfunctions}.ycp
+    to:   src/include/firewall
+  - from: src/{SuSEFirewallCMDLine,SuSEFirewallUI}.ycp
+    to:   src/modules
+  - from: src/firewall.desktop
+    to:   src/desktop
+
+excluded:
+  # Undeclared identifier 'AbortDialog'
+  - src/include/firewall/dialogs.ycp

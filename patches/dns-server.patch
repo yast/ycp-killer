@@ -1,0 +1,15 @@
+diff --git a/src/include/dns-server/dialog-main.ycp b/src/include/dns-server/dialog-main.ycp
+index 02ebf85..364ff6a 100644
+--- a/src/include/dns-server/dialog-main.ycp
++++ b/src/include/dns-server/dialog-main.ycp
+@@ -1593,7 +1593,9 @@ void RedrawZonesListWidget () {
+ 		// TRANSLATORS: Table item - Server type
+ 		type_trans = _("Forward");
+ 		break;
+-	    y2warning("Unknown zone type %1", type_trans);
++            default:
++                y2warning("Unknown zone type %1", type_trans);
++                break;
+ 	}
+ 
+ 	return `item (`id (index), enc_to_dec[zone_name]:zone_name, type_trans);

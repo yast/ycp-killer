@@ -1,10 +1,13 @@
-# TODO: Process.
+deps:
+  - yast2
+  - packager
+  - installation
+  - autoinstallation
+  - country
+  - runlevel
+  - mouse
 
-files:
-  - src/clients/dirinstall.ycp
-  - src/clients/dirinstall_options.ycp
-  - src/clients/dirinstall_options_proposal.ycp
-  - src/clients/inst_dirinstall.ycp
-  - src/clients/inst_dirinstall_finish.ycp
-  - src/include/ui.ycp
-  - src/modules/DirInstall.ycp
+moves:
+  - from: "src/include/*.ycp"
+    to: src/include/dirinstall
+

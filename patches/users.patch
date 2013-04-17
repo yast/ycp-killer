@@ -1,0 +1,2296 @@
+diff --git a/agent-nis/Makefile.am b/agent-nis/Makefile.am
+index fab125c..0d39f54 100644
+--- a/agent-nis/Makefile.am
++++ b/agent-nis/Makefile.am
+@@ -1,10 +1,10 @@
+ #
+ # Makefile.am for users/agent-nis
+ #
++# moved
++# agentdir = @execcompdir@/servers_non_y2
+ 
+-agentdir = @execcompdir@/servers_non_y2
+-
+-agent_SCRIPTS = ag_nis
+-scrconf_DATA = nis.scr
++agent_SCRIPTS = # ag_nis
++scrconf_DATA = # nis.scr
+ 
+ EXTRA_DIST = $(agent_SCRIPTS) $(scrconf_DATA)
+diff --git a/agent-uid/Makefile.am b/agent-uid/Makefile.am
+index 78c0fff..ea980c5 100644
+--- a/agent-uid/Makefile.am
++++ b/agent-uid/Makefile.am
+@@ -1,10 +1,10 @@
+ #
+ # Makefile.am for users/agent-uid
+ #
++# moved
++# agentdir = @execcompdir@/servers_non_y2
+ 
+-agentdir = @execcompdir@/servers_non_y2
+-
+-agent_SCRIPTS = ag_uid
+-scrconf_DATA = uid.scr
++agent_SCRIPTS = #ag_uid
++scrconf_DATA = #uid.scr
+ 
+ EXTRA_DIST = $(agent_SCRIPTS) $(scrconf_DATA)
+diff --git a/doc/Makefile.am b/doc/Makefile.am
+index b6bc8cc..1412807 100644
+--- a/doc/Makefile.am
++++ b/doc/Makefile.am
+@@ -1,8 +1,8 @@
+ #
+ # Makefile.am for y2c_users/doc
+ #
+-
+-SUBDIRS = autodocs
++# TODO no autodocs for rb yet
++SUBDIRS = #autodocs
+ 
+ htmldir = @docdir@
+ 
+diff --git a/src/include/users/dialogs.ycp b/src/include/users/dialogs.ycp
+index 26e0b94..c1c51bb 100644
+--- a/src/include/users/dialogs.ycp
++++ b/src/include/users/dialogs.ycp
+@@ -151,183 +151,6 @@ Try again."));
+     return (ret == `ok) ? pw : nil;
+ }
+ 
+-/**
+- * Dialog for adding or editing a user.
+- * @param what "add_user" or "edit_user"
+- * @return symbol for wizard sequencer
+- */
+-define symbol EditUserDialog (string what) {
+-
+-    // user has returned to the "add user dialog" during installation workflow:
+-    if (Users::StartDialog ("user_add") && installation () && Users::UseNextTime ())
+-    {
+-	Users::RestoreCurrentUser ();
+-	Users::SetUseNextTime (false);
+-    }
+-
+-    map display_info        = UI::GetDisplayInfo ();
+-    boolean text_mode	= display_info["TextMode"]:false;
+-
+-    map<string,any>user	= Users::GetCurrentUser ();
+-    string error_msg	= "";
+-
+-    if (user == $[])
+-    {
+-	error_msg = Users::AddUser ($[]);
+-	if (error_msg != "")
+-	{
+-	    Popup::Error (error_msg);
+-	    return `back;
+-	}
+-	user = Users::GetCurrentUser ();
+-    }
+-
+-    string action = user["modified"]:"";
+-    if (action == "")
+-	action = (what == "add_user") ? "added" : "edited";
+-
+-    string user_type	= user["type"]:"local";
+-    string username	= user["uid"]:"";
+-    string cn		= "";
+-    // in LDAP, cn is list of strings
+-    if (is (user["cn"]:nil, list))
+-	cn	= user["cn",0]:"";
+-    else
+-	cn	= user["cn"]:"";
+-    string tmp_fullname	= cn; // for login proposing
+-    string default_home = Users::GetDefaultHome (user_type);
+-    string home		= user["homeDirectory"]:default_home;
+-    string org_home	= user["org_homeDirectory"]:home;
+-    string default_mode	=
+-	sformat ("%1", 777 - tointeger (String::CutZeros (Users::GetUmask ())));
+-    string mode		= user["home_mode"]:default_mode;
+-    integer default_crypted_size	= 100;
+-    integer crypted_home_size	= GetInt (user["crypted_home_size"]:nil, 0);
+-    integer org_crypted_home_size	= GetInt (user["org_user","crypted_home_size"]:nil, 0);
+-    string password	= (string)user["userPassword"]:nil;
+-    string org_username = user["org_uid"]:username;
+-    integer uid		= GetInt (user["uidNumber"]:nil, nil);
+-    integer gid		=
+-	GetInt (user["gidNumber"]:nil, Users::GetDefaultGID (user_type));
+-    boolean enabled	= user["enabled"]:true;
+-    if (user["disabled"]:false)
+-	enabled		= false;
+-
+-    string shell        = user["loginShell"]:"";
+-    string defaultgroup = user["groupname"]:"";
+-    // additional parts of GECOS (shown by `finger <username>`) (passwd only)
+-    string addit_data	= user["addit_data"]:"";
+-
+-    // this user gets root's mail
+-    boolean root_mail	= haskey (Users::GetRootAliases (), username);
+-    boolean root_mail_checked	= root_mail;
+-
+-    // if user's password should be set to root
+-    boolean root_pw		= false;
+-
+-    // only for LDAP users:
+-    string sn		= "";
+-    if (haskey (user, "sn"))
+-    {
+-	if (is (user["sn"]:nil, list))
+-	    sn	= user["sn",0]:SplitFullName(`sn, cn);
+-	else
+-	    sn	= user["sn"]:SplitFullName(`sn, cn);
+-    }
+-    string givenname		= "";
+-    if (haskey (user, "givenName"))
+-    {
+-	if (is (user["givenName"]:nil, list))
+-	    givenname	= user["givenName",0]:SplitFullName(`givenname, cn);
+-	else if (is (user["givenName"]:nil, string))
+-	    givenname	= user["givenName"]:SplitFullName(`givenname, cn);
+-    }
+-
+-    boolean create_home		= user["create_home"]:true;
+-    boolean chown_home		= user["chown_home"]:true;
+-    boolean no_skel		= user["no_skeleton"]:false;
+-    boolean do_not_edit		= (user_type == "nis");
+-    boolean crypted_home_enabled=
+-	UsersRoutines::CryptedHomesEnabled () &&
+-	((user_type == "ldap" && Ldap::file_server) ||
+-	(user_type == "local" || user_type == "system"));
+-
+-    boolean complex_layout = installation () && Users::StartDialog ("user_add");
+-    map<string,integer> groups	= user["grouplist"]:$[];
+-
+-    list available_shells	= Users::AllShells ();
+-    string grouplist		= "";
+-    string new_type		= user_type;
+-
+-    map<string,map<string,integer> > all_groupnames	=
+-	UsersCache::GetAllGroupnames ();
+-
+-    // backup NIS groups of user (they are not shown in details dialog)
+-    map<string,integer> nis_groups	= $[];
+-    foreach (string group, integer val, groups, {
+-	if (all_groupnames ["nis", group]:0 == 1)
+-	    nis_groups [group] = 1;
+-    });
+-    // of local group list of remote user was modified
+-    boolean grouplist_modified	= false;
+-
+-    // date of passwrod expiration
+-    string exp_date = "";
+-
+-    string plugin_client	= "";
+-    string plugin		= "";
+-    map client2plugin		= $[];
+-    // names of plugin GUI clients
+-    list<string> clients	= [];
+-
+-    /**
+-     * initialize local variables with current state of user
+-     */
+-    define void reinit_userdata () {
+-
+-	user_type	= user["type"]:user_type;
+-	username	= user["uid"]:username;
+-	if (is (user["cn"]:nil, list))
+-	    cn	= user["cn",0]:cn;
+-	else
+-	    cn	= user["cn"]:cn;
+-	home		= user["homeDirectory"]:home;
+-	org_home	= user["org_homeDirectory"]:org_home;
+-	crypted_home_size	= GetInt (user["crypted_home_size"]:nil, 0);
+-	mode		= user["home_mode"]:default_mode;
+-	password	= user["userPassword"]:password;
+-	org_username	= user["org_uid"]:org_username;
+-	uid		= GetInt (user["uidNumber"]:nil, uid);
+-	gid		= GetInt (user["gidNumber"]:nil, gid);
+-	enabled		= user["enabled"]:true;
+-	if (user["disabled"]:false)
+-	    enabled	= false;
+-
+-	shell		= user["loginShell"]:shell;
+-	defaultgroup	= user["groupname"]:defaultgroup;
+-	addit_data	= user["addit_data"]:addit_data;
+-
+-	if (haskey (user, "sn"))
+-	{
+-	    if (is (user["sn"]:nil, list))
+-		sn	= user["sn",0]:SplitFullName(`sn, cn);
+-	    else
+-		sn	= user["sn"]:SplitFullName(`sn, cn);
+-	}
+-	if (haskey (user, "givenName"))
+-	{
+-	    if (is (user["givenName"]:nil, list))
+-		givenname = user["givenName",0]:SplitFullName(`givenname, cn);
+-	    else if (is (user["givenName"]:nil, string))
+-		givenname = user["givenName"]:SplitFullName(`givenname, cn);
+-	}
+-
+-	chown_home	= user["chown_home"]:chown_home;
+-	no_skel		= user["no_skeleton"]:no_skel;
+-	groups		= user["grouplist"]:$[];
+-	do_not_edit	= (user_type == "nis");
+-    }
+-
+     /**
+      * helper function: show a popup if existing crypted home directory file
+      * should be used by current user
+@@ -378,7 +201,9 @@ Use it anyway?"), dir)),
+     /**
+      * generate contents for User Data Dialog
+      */
+-    define term get_edit_term () {
++    define term get_edit_user_term (string &what, string &cn, string &givenname,
++        string &sn, string &username, boolean root_mail_checked, boolean do_not_edit,
++        boolean &enabled, string &user_type, boolean complex_layout) {
+ 
+ 	// text entry
+ 	string fullnamelabel	= _("User's &Full Name");
+@@ -473,305 +298,179 @@ Use it anyway?"), dir)),
+     }
+ 
+     /**
+-     * generate contents for User Details Dialog
++     * generate contents for Plugins Dialog
+      */
+-    define term get_details_term () {
+-
+-	list available_groups		= [];
+-	list additional_groups		= [];
+-	list additional_ldap_groups	= [];
+-	boolean defaultgroup_shown	= false;
++    define term get_user_plugins_term (map &client2plugin, list<string> &clients,
++        string &plugin_client, string &plugin, map &user) {
+ 
+-	// fill the list available_groups and set the user default group true
+-	foreach (string grouptype, map<string,integer> groupmap, all_groupnames,
+-	{
+-        if (grouptype == "local" || grouptype == "system" ||
+-            (grouptype == "ldap" && user_type == "ldap"))
+-	{
+-          foreach (string group, integer val, groupmap, {
++	plugin_client	= clients[0]:"";
++	plugin		= client2plugin[plugin_client]:plugin_client;
+ 
+-            if (user_type == "ldap")
+-            {
+-                if (grouptype == "ldap")
+-                {
+-                    if ( group == defaultgroup )
+-		    {
+-                        available_groups = add (available_groups,
+-                            `item( `id(group), group, true));
+-			defaultgroup_shown	= true;
+-		    }
+-                    else
+-                        available_groups = add (available_groups,
+-                            `item( `id(group), group));
+-                    if ( haskey (groups, group))
+-                        additional_ldap_groups = add (additional_ldap_groups,
+-                            `item( `id(group), group, true ));
+-                    else
+-                        additional_ldap_groups = add (additional_ldap_groups,
+-                            `item( `id(group), group, false));
+-                }
+-                else
+-                {
+-		    // if there is a group with same name, use only that
+-		    // with type "ldap"
+-		    if ( all_groupnames ["ldap",group]:0 == 1 )
+-			return;
+-                    if ( haskey (groups, group))
+-                        additional_groups = add (additional_groups,
+-                            `item( `id(group), group, true ));
+-                    else
+-                        additional_groups = add (additional_groups,
+-                            `item( `id(group), group, false));
+-                }
+-            }
+-            else
+-            {
+-                if ( group == defaultgroup )
+-		{
+-                    available_groups = add (available_groups,
+-                        `item( `id(group), group, true));
+-		    defaultgroup_shown	= true;
+-		}
+-                else
+-                    available_groups = add (available_groups,
+-                        `item( `id(group), group));
+-                if ( haskey (groups, group))
+-                    additional_groups = add (additional_groups,
+-                        `item( `id(group), group, true ));
+-                else
+-                    additional_groups = add (additional_groups,
+-                        `item( `id(group), group, false));
+-            }
+-          });
+-	}
++	list items = [];
++	foreach (string cl, clients, {
++	    any summary = WFM::CallFunction (cl, ["Summary", $["what" : "user"]]);
++	    string pl	= client2plugin[cl]:cl;
++	    if (is (summary, string))
++		items = add (items, `item(`id(cl),
++		    contains (user["plugins"]:[], pl) ?
++			UI::Glyph (`CheckMark) : " ",
++		    summary)
++		);
+ 	});
+-	// show default group, even if the type is 'wrong' (#43433)
+-	if (!defaultgroup_shown)
+-	{
+-	    if (all_groupnames ["local", defaultgroup]:0 == 1 ||
+-		all_groupnames ["system", defaultgroup]:0 == 1)
+-	    {
+-		available_groups = add (available_groups,
+-		    `item( `id(defaultgroup), defaultgroup, true));
+-	    }
+-	}
++	return `HBox (`HSpacing (0.5), `VBox (
++	    `Table (`id(`table), `opt(`notify), `header (" ",
++		// table header
++	        _("Plug-In Description")), items
++	    ),
++	    `HBox (
++		`PushButton (`id(`change), `opt(`key_F3),
++		    // pushbutton label
++		    _("Add &or Remove Plug-In")),
++		// pushbutton label
++		`Right (`PushButton(`id(`run), `opt(`key_F6), _("&Launch")))
++	    ),
++	    `VSpacing (0.5)
++	), `HSpacing (0.5));
++    }
++
++    // switch focus to specified tab (after error message) and widget inside
++    define symbol focus_tab (symbol tab, any widget, boolean has_tabs) {
++	if (has_tabs)
++	    UI::ChangeWidget (`id (`tabs), `CurrentItem, tab);
++	UI::SetFocus (`id (widget));
++	return `notnext;
++    }
++
++
++
++/**
++ * Dialog for adding or editing a user.
++ * @param what "add_user" or "edit_user"
++ * @return symbol for wizard sequencer
++ */
++define symbol EditUserDialog (string what) {
++
++    // user has returned to the "add user dialog" during installation workflow:
++    if (Users::StartDialog ("user_add") && installation () && Users::UseNextTime ())
++    {
++	Users::RestoreCurrentUser ();
++	Users::SetUseNextTime (false);
++    }
+ 
+-	if (defaultgroup == "")
++    map display_info        = UI::GetDisplayInfo ();
++    boolean text_mode	= display_info["TextMode"]:false;
++
++    map<string,any>user	= Users::GetCurrentUser ();
++    string error_msg	= "";
++
++    if (user == $[])
++    {
++	error_msg = Users::AddUser ($[]);
++	if (error_msg != "")
+ 	{
+-	    available_groups = add (available_groups,
+-		// group name is not known (combobox item):
+-		`item( `id(""), _("(Unknown)"), true));
++	    Popup::Error (error_msg);
++	    return `back;
+ 	}
++	user = Users::GetCurrentUser ();
++    }
+ 
+-	term edit_defaultgroup = `ComboBox(`id(`defaultgroup), `opt(`hstretch),
+-	    // combobox label
+-	    _("De&fault Group"), available_groups );
+-	term edit_shell = `ComboBox(`id(`shell), `opt(`hstretch, `editable),
+-	    // combobox label
+-	    _("Login &Shell"), available_shells );
++    string action = user["modified"]:"";
++    if (action == "")
++	action = (what == "add_user") ? "added" : "edited";
+ 
+-	term additional_data = `Empty();
+-	if (user_type == "system" || user_type == "local")
+-	    additional_data = `Top (`InputField (`id(`addd), `opt(`hstretch),
+-		// textentry label
+-		_("Addi&tional User Information"), addit_data)
+-	    );
++    string user_type	= user["type"]:"local";
++    string username	= user["uid"]:"";
++    string cn		= "";
++    // in LDAP, cn is list of strings
++    if (is (user["cn"]:nil, list))
++	cn	= user["cn",0]:"";
++    else
++	cn	= user["cn"]:"";
++    string tmp_fullname	= cn; // for login proposing
++    string default_home = Users::GetDefaultHome (user_type);
++    string home		= user["homeDirectory"]:default_home;
++    string org_home	= user["org_homeDirectory"]:home;
++    string default_mode	=
++	sformat ("%1", 777 - tointeger (String::CutZeros (Users::GetUmask ())));
++    string mode		= user["home_mode"]:default_mode;
++    integer default_crypted_size	= 100;
++    integer crypted_home_size	= GetInt (user["crypted_home_size"]:nil, 0);
++    integer org_crypted_home_size	= GetInt (user["org_user","crypted_home_size"]:nil, 0);
++    string password	= (string)user["userPassword"]:nil;
++    string org_username = user["org_uid"]:username;
++    integer uid		= GetInt (user["uidNumber"]:nil, nil);
++    integer gid		=
++	GetInt (user["gidNumber"]:nil, Users::GetDefaultGID (user_type));
++    boolean enabled	= user["enabled"]:true;
++    if (user["disabled"]:false)
++	enabled		= false;
+ 
+-	term browse = `VBox(
+-	    `Label (""),
+-	    // button label
+-	    `PushButton( `id(`browse), `opt(`key_F6), _("B&rowse...")),
+-	    action != "edited" ? `Empty () : `Label ("")
+-	);
++    string shell        = user["loginShell"]:"";
++    string defaultgroup = user["groupname"]:"";
++    // additional parts of GECOS (shown by `finger <username>`) (passwd only)
++    string addit_data	= user["addit_data"]:"";
+ 
+-	term home_w = `VBox(
+-	    // textentry label
+-	    `InputField (`id(`home),`opt(`hstretch),_("&Home Directory"), home),
+-	    action != "edited" ? `Empty () :
+-	    `HBox (`HSpacing (), `Left (`CheckBox (`id (`move_home),
+-		// check box label
+-		_("&Move to New Location"), create_home))
+-	    )
+-	);
+-	term new_user_term	= action != "added" ? `VBox () : `VBox (
+-	    `InputField (`id(`mode), `opt (`hstretch),
+-		// textentry label
+-		_("Home Directory &Permission Mode"), mode),
+-	    // check box label
+-	    `HBox (`HSpacing (), `Left (
+-		`CheckBox (`id(`skel), _("E&mpty Home"), no_skel))
+-	    )
+-	);
+-	term crypted_home_term	= crypted_home_enabled ? `HBox (
+-		`VBox (
+-		    `Label (""),
+-		    `HBox (`HSpacing (), `Left (
+-			`CheckBox (`id(`crypted_home), `opt (`notify),
+-			// check box label
+-			_("&Use Encrypted Home Directory"), crypted_home_size > 0))
+-		    )
+-		),
+-		// IntField label
+-		`IntField (`id (`dirsize), _("&Directory Size in MB"), 10, 2147483647, crypted_home_size) // for max value, see bug 244631 :-)
+-	) : `HBox ();
++    // this user gets root's mail
++    boolean root_mail	= haskey (Users::GetRootAliases (), username);
++    boolean root_mail_checked	= root_mail;
+ 
+-	return `HBox (
+-          `HSpacing(1),
+-          `VBox(
+-           // label
+-           do_not_edit ? `Label(_("For remote users, only additional 
+-group memberships can be changed.")) : `VSpacing (0),
+-           `VSpacing(0.5),
+-           `HBox(
+-		text_mode ? `Empty () : `HSpacing (1),
+-		`HWeight (3, `VBox(
+-		    `VSpacing (0.5),
+-                    `Top(`InputField( `id(`uid), `opt (`hstretch),
+-			// textentry label
+-			 _("User &ID (uid)"), sformat("%1",uid ))),
+-                    `Top(`VBox(
+-			`HBox ( home_w, browse),
+-			new_user_term,
+-			crypted_home_term
+-		    )),
+-                    additional_data,
+-                    `Top(edit_shell),
+-                    `Top(edit_defaultgroup),
+-                    `VStretch()
+-                )),
+-                text_mode ? `Empty () : `HSpacing (2),
+-		`HWeight (2, `VBox (
+-		    `VSpacing (0.5),
+-		    `MultiSelectionBox( `id(`grouplist),
+-			// selection box label
+-			_("Additional Gr&oups"), additional_groups),
+-		    (user_type == "ldap")
+-		    ? `MultiSelectionBox( `id(`ldapgrouplist),
+-			// selection box label
+-			_("&LDAP Groups"), additional_ldap_groups)
+-		    : `Empty()
+-		)),
+-		text_mode ? `Empty () : `HSpacing (1)
+-	    ),
+-            `VSpacing(0.5)
+-           ),
+-           `HSpacing(1)
+-	);
+-    }
++    // if user's password should be set to root
++    boolean root_pw		= false;
+ 
+-    /**
+-     * generate contents for Password Settings Dialog
+-     */
+-    define term get_password_term () {
++    // only for LDAP users:
++    string sn		= "";
++    if (haskey (user, "sn"))
++    {
++	if (is (user["sn"]:nil, list))
++	    sn	= user["sn",0]:SplitFullName(`sn, cn);
++	else
++	    sn	= user["sn"]:SplitFullName(`sn, cn);
++    }
++    string givenname		= "";
++    if (haskey (user, "givenName"))
++    {
++	if (is (user["givenName"]:nil, list))
++	    givenname	= user["givenName",0]:SplitFullName(`givenname, cn);
++	else if (is (user["givenName"]:nil, string))
++	    givenname	= user["givenName"]:SplitFullName(`givenname, cn);
++    }
+ 
+-	string last_change	= GetString (user["shadowLastChange"]:nil, "0");
+-	string last_change_label= "";
+-	string expires		= GetString (user["shadowExpire"]:nil, "0");
+-	if (expires == "")
+-	    expires = "0";
++    boolean create_home		= user["create_home"]:true;
++    boolean chown_home		= user["chown_home"]:true;
++    boolean no_skel		= user["no_skeleton"]:false;
++    boolean do_not_edit		= (user_type == "nis");
++    boolean crypted_home_enabled=
++	UsersRoutines::CryptedHomesEnabled () &&
++	((user_type == "ldap" && Ldap::file_server) ||
++	(user_type == "local" || user_type == "system"));
+ 
+-	integer inact	= GetInt (user["shadowInactive"]:nil, -1);
+-	integer max	= GetInt (user["shadowMax"]:nil, -1);
+-	integer min	= GetInt (user["shadowMin"]:nil, -1);
+-	integer warn	= GetInt (user["shadowWarning"]:nil, -1);
++    boolean complex_layout = installation () && Users::StartDialog ("user_add");
++    map<string,integer> groups	= user["grouplist"]:$[];
+ 
+-	if (last_change != "0")
+-	{
+-	    map out	= (map)SCR::Execute (.target.bash_output, sformat ("date --date='1970-01-01 00:00:01 %1 days' +\"%%x\"", last_change));
+-	    // label (date of last password change)
+-	    last_change_label = out["stdout"]:_("Unknown");
+-	}
+-	else
+-	{
+-	    // label (date of last password change)
+-	    last_change_label = _("Never");
+-	}
+-	if (expires != "0" && expires != "-1" && expires != "")
+-	{
+-	    map out	= (map)SCR::Execute (.target.bash_output, sformat ("date --date='1970-01-01 00:00:01 %1 days' ", expires) + "+\"%Y-%m-%d\"");
+-	    // remove \n from the end
+-	    exp_date	= deletechars (out["stdout"]:"", "\n");
+-	}
+-	return `HBox (
+-	    `HSpacing (3),
+-            `VBox (
+-                `VStretch(),
+-		`Left (`Label ("")),
+-                `HSquash(`VBox(
+-		    `Left (`Label (sformat (
+-			// label
+-			_("Last Password Change: %1"), last_change_label ))),
+-		    `VSpacing (0.2),
+-		    `Left (
+-			// check box label
+-			`CheckBox (`id (`force_pw), _("Force Password Change"),
+-			last_change == "0")
+-		    ),
+-		    `VSpacing (1),
+-                    `IntField (`id ("shadowWarning"),
+-			// intfield label
+-			_("Days &before Password Expiration to Issue Warning"),
+-			-1, 99999, warn),
+-                    `VSpacing (0.5),
+-                    `IntField (`id ("shadowInactive"),
+-			// intfield label
+-			_("Days after Password Expires with Usable &Login"),
+-			-1, 99999, inact),
+-                    `VSpacing (0.5),
+-                    `IntField (`id ("shadowMax"),
+-			// intfield label
+-			_("Ma&ximum Number of Days for the Same Password"),
+-			-1, 99999, max),
+-                    `VSpacing (0.5),
+-                    `IntField (`id ("shadowMin"),
+-			// intfield label
+-			_("&Minimum Number of Days for the Same Password"),
+-			-1, 99999, min),
+-                    `VSpacing (0.5),
+-                    `InputField (`id ("shadowExpire"), `opt (`hstretch),
+-			// textentry label
+-			_("Ex&piration Date"), exp_date)
+-                )),
+-                `VStretch ()),
+-            `HSpacing (3)
+-	);
+-    }
++    list available_shells	= Users::AllShells ();
++    string grouplist		= "";
++    string new_type		= user_type;
+ 
+-    /**
+-     * generate contents for Plugins Dialog
+-     */
+-    define term get_plugins_term () {
++    map<string,map<string,integer> > all_groupnames	=
++	UsersCache::GetAllGroupnames ();
+ 
+-	plugin_client	= clients[0]:"";
+-	plugin		= client2plugin[plugin_client]:plugin_client;
++    // backup NIS groups of user (they are not shown in details dialog)
++    map<string,integer> nis_groups	= $[];
++    foreach (string group, integer val, groups, {
++	if (all_groupnames ["nis", group]:0 == 1)
++	    nis_groups [group] = 1;
++    });
++    // of local group list of remote user was modified
++    boolean grouplist_modified	= false;
+ 
+-	list items = [];
+-	foreach (string cl, clients, {
+-	    any summary = WFM::CallFunction (cl, ["Summary", $["what" : "user"]]);
+-	    string pl	= client2plugin[cl]:cl;
+-	    if (is (summary, string))
+-		items = add (items, `item(`id(cl),
+-		    contains (user["plugins"]:[], pl) ?
+-			UI::Glyph (`CheckMark) : " ",
+-		    summary)
+-		);
+-	});
+-	return `HBox (`HSpacing (0.5), `VBox (
+-	    `Table (`id(`table), `opt(`notify), `header (" ",
+-		// table header
+-	        _("Plug-In Description")), items
+-	    ),
+-	    `HBox (
+-		`PushButton (`id(`change), `opt(`key_F3),
+-		    // pushbutton label
+-		    _("Add &or Remove Plug-In")),
+-		// pushbutton label
+-		`Right (`PushButton(`id(`run), `opt(`key_F6), _("&Launch")))
+-	    ),
+-	    `VSpacing (0.5)
+-	), `HSpacing (0.5));
+-    }
++    // date of passwrod expiration
++    string exp_date = "";
+ 
++    string plugin_client	= "";
++    string plugin		= "";
++    map client2plugin		= $[];
++    // names of plugin GUI clients
++    list<string> clients	= [];
+ 
+     map dialog_labels = $[
+         "add_user": $[
+@@ -827,7 +526,8 @@ group memberships can be changed.")) : `VSpacing (0),
+ 
+     term dialog_contents = `VBox (
+ 	`DumbTab (`id(`tabs), tabs,
+-	    `ReplacePoint(`id(`tabContents ), get_edit_term ()))
++	    `ReplacePoint(`id(`tabContents ), get_edit_user_term(what, cn, givenname, sn, username, 
++          root_mail_checked, do_not_edit, enabled, user_type, complex_layout)))
+     );
+     boolean has_tabs	= true;
+     if (!UI::HasSpecialWidget (`DumbTab))
+@@ -839,12 +539,14 @@ group memberships can be changed.")) : `VSpacing (0),
+ 	    tabbar = add (tabbar,`PushButton (it[0]:`id(label), label));
+ 	});
+ 	dialog_contents = `VBox (`Left(tabbar),
+-	    `Frame ("", `ReplacePoint(`id(`tabContents), get_edit_term ()))
++	    `Frame ("", `ReplacePoint(`id(`tabContents), get_edit_user_term(what, cn, givenname, sn, username, 
++          root_mail_checked, do_not_edit, enabled, user_type, complex_layout)))
+ 	);
+     }
+     if (complex_layout)
+     {
+-	dialog_contents	= `ReplacePoint(`id(`tabContents), get_edit_term ());
++	dialog_contents	= `ReplacePoint(`id(`tabContents), get_edit_user_term(what, cn, givenname, sn, username, 
++          root_mail_checked, do_not_edit, enabled, user_type, complex_layout));
+ 	Wizard::SetContents (
+ 	    dialog_labels [ what, user_type ]:"",
+ 	    dialog_contents,
+@@ -870,14 +572,6 @@ group memberships can be changed.")) : `VSpacing (0),
+     list tabids		= [ `edit, `details, `passwordsettings, `plugins ];
+     map ldap_user_defaults = UsersLDAP::GetUserDefaults ();
+ 
+-    // switch focus to specified tab (after error message) and widget inside
+-    define void focus_tab (symbol tab, any widget) {
+-	if (has_tabs)
+-	    UI::ChangeWidget (`id (`tabs), `CurrentItem, tab);
+-	UI::SetFocus (`id (widget));
+-	ret = `notnext;
+-    }
+-
+     // map with id's of confirmed questions
+     map<string,any> ui_map	= $[];
+ 
+@@ -930,7 +624,7 @@ Leave it empty?")))
+ 		    ret = `nextmodule;
+ 		    break;
+ 		}
+-		focus_tab (current, `username);
++		ret = focus_tab (current, `username, has_tabs);
+ 		continue;
+ 	    }
+ 
+@@ -982,7 +676,7 @@ Leave it empty?")))
+ 		if (error != "")
+ 		{
+ 		    Report::Error (error);
+-		    focus_tab (current, `cn);
++		    ret = focus_tab (current, `cn, has_tabs);
+ 		    continue;
+ 		}
+ 	    }
+@@ -1041,7 +735,7 @@ Leave it empty?")))
+ 	    if (error != "")
+ 	    {
+                 Report::Error (error);
+-		focus_tab (current, `username);
++		ret = focus_tab (current, `username, has_tabs);
+                 continue;
+ 	    }
+ 	    user["uid"]		= username;
+@@ -1053,7 +747,7 @@ Leave it empty?")))
+ 		if (error != "")
+ 		{
+ 		    Report::Error (error);
+-		    focus_tab (current, `details);
++		    ret = focus_tab (current, `details, has_tabs);
+ 		    continue;
+ 		}
+ 	    }
+@@ -1068,7 +762,7 @@ Leave it empty?")))
+                 // error popup
+                 Report::Error(_("The passwords do not match.
+ Try again."));
+-		focus_tab (current, `pw1);
++		ret = focus_tab (current, `pw1, has_tabs);
+                 continue;
+             }
+             if ((pw1 != "" || !tab) && pw1 != default_pw)
+@@ -1077,7 +771,7 @@ Try again."));
+ 		if (error != "")
+ 		{
+ 		    Report::Error (error);
+-		    focus_tab (current, `pw1);
++		    ret = focus_tab (current, `pw1, has_tabs);
+ 		    continue;
+ 		}
+ 
+@@ -1093,7 +787,7 @@ Try again."));
+ 		    "\n\n" + _("Really use this password?");
+ 		    if (!Popup::YesNo (message))
+ 		    {
+-			focus_tab (current, `pw1);
++			ret = focus_tab (current, `pw1, has_tabs);
+ 			continue;
+ 		    }
+ 		}
+@@ -1185,7 +879,7 @@ _("Change home directory to %1?"), generated_home))))
+ 	    {
+ 		if (AskForUppercasePopup (username) != `ok)
+ 		{
+-		    focus_tab (current, `username);
++		    ret = focus_tab (current, `username, has_tabs);
+ 		    continue;
+ 		}
+ 	    }
+@@ -1303,8 +997,7 @@ Log the user out first."));
+ 		if (error != "")
+ 		{
+ 		    Report::Error (error);
+-		    focus_tab (current, `addd);
+-		    ret = `notnext;
++		    ret = focus_tab (current, `addd, has_tabs);
+ 		    continue;
+ 		}
+             }
+@@ -1316,7 +1009,7 @@ Log the user out first."));
+ 		if (error != "")
+ 		{
+ 		    Report::Error (error);
+-		    focus_tab (current, `uid);
++		    ret = focus_tab (current, `uid, has_tabs);
+ 		    continue;
+ 		}
+ 		boolean failed                  = false;
+@@ -1327,7 +1020,7 @@ Log the user out first."));
+ 		    {
+ 			if (!Popup::YesNo (error_map ["question"]:""))
+ 			{
+-			    focus_tab (current, `uid);
++			    ret = focus_tab (current, `uid, has_tabs);
+ 			    failed	= true;
+ 			}
+ 			else
+@@ -1344,7 +1037,7 @@ Log the user out first."));
+ 		} while (error_map != $[] && !failed);
+ 		if (failed)
+ 		{
+-		    focus_tab (current, `uid);
++		    ret = focus_tab (current, `uid, has_tabs);
+ 		    continue;
+ 		}
+             } // end of uid checks
+@@ -1364,7 +1057,7 @@ Log the user out first."));
+ 		if (error != "")
+ 		{
+ 		    Report::Error (error);
+-		    focus_tab (current, `home);
++		    ret = focus_tab (current, `home, has_tabs);
+ 		    continue;
+ 		}
+ 		boolean failed			= false;
+@@ -1397,7 +1090,7 @@ Log the user out first."));
+ 
+ 		if (failed)
+ 		{
+-		    focus_tab (current, `home);
++		    ret = focus_tab (current, `home, has_tabs);
+ 		    continue;
+ 		}
+ 	    }
+@@ -1411,7 +1104,7 @@ Log the user out first."));
+ 		    {
+ 			// error popup
+ 			Popup::Error (_("Enter the size for the home directory."));
+-			focus_tab (current, `dirsize);
++			ret = focus_tab (current, `dirsize, has_tabs);
+ 			continue;
+ 		    }
+ 		    crypted_home_size	= home_size;
+@@ -1425,7 +1118,7 @@ Log the user out first."));
+ 	    {
+ 		if (!Popup::YesNo (error_map ["question"]:""))
+ 		{
+-		    focus_tab (current, `shell);
++		    ret = focus_tab (current, `shell, has_tabs);
+ 		    continue;
+ 		}
+ 		else
+@@ -1491,7 +1184,7 @@ Log the user out first."));
+ 		// popup text: Don't reorder the letters YYYY-MM-DD!!!
+ 		// The date must stay in this format
+ 		Popup::Message(_("The expiration date must be in the format YYYY-MM-DD."));
+-		focus_tab (current, "shadowExpire");
++		ret = focus_tab (current, "shadowExpire", has_tabs);
+ 		continue;
+             }
+ 
+@@ -1586,7 +1279,50 @@ Log the user out first."));
+ 		    continue;
+ 		}
+ 		user	= Users::GetCurrentUser ();
+-		reinit_userdata ();
++                // begin of inlined reinit_userdata
++                user_type	= user["type"]:user_type;
++                username	= user["uid"]:username;
++                if (is (user["cn"]:nil, list))
++                    cn	= user["cn",0]:cn;
++                else
++                    cn	= user["cn"]:cn;
++                home		= user["homeDirectory"]:home;
++                org_home	= user["org_homeDirectory"]:org_home;
++                crypted_home_size	= GetInt (user["crypted_home_size"]:nil, 0);
++                mode		= user["home_mode"]:default_mode;
++                password	= user["userPassword"]:password;
++                org_username	= user["org_uid"]:org_username;
++                uid		= GetInt (user["uidNumber"]:nil, uid);
++                gid		= GetInt (user["gidNumber"]:nil, gid);
++                enabled		= user["enabled"]:true;
++                if (user["disabled"]:false)
++                    enabled	= false;
++
++                shell		= user["loginShell"]:shell;
++                defaultgroup	= user["groupname"]:defaultgroup;
++                addit_data	= user["addit_data"]:addit_data;
++
++                if (haskey (user, "sn"))
++                {
++                    if (is (user["sn"]:nil, list))
++                        sn	= user["sn",0]:SplitFullName(`sn, cn);
++                    else
++                        sn	= user["sn"]:SplitFullName(`sn, cn);
++                }
++                if (haskey (user, "givenName"))
++                {
++                    if (is (user["givenName"]:nil, list))
++                        givenname = user["givenName",0]:SplitFullName(`givenname, cn);
++                    else if (is (user["givenName"]:nil, string))
++                        givenname = user["givenName"]:SplitFullName(`givenname, cn);
++                }
++
++                chown_home	= user["chown_home"]:chown_home;
++                no_skel		= user["no_skeleton"]:no_skel;
++                groups		= user["grouplist"]:$[];
++                do_not_edit	= (user_type == "nis");
++                // end of inlined reinit_userdata
++
+ 		UI::ChangeWidget (`id(`table), `Item (plugin_client,0),
+ 		    UI::Glyph (`CheckMark));
+ 	    }
+@@ -1600,7 +1336,50 @@ Log the user out first."));
+ 		    continue;
+ 		}
+ 		user	= Users::GetCurrentUser ();
+-		reinit_userdata ();
++                // begin of inlined reinit_userdata
++                user_type	= user["type"]:user_type;
++                username	= user["uid"]:username;
++                if (is (user["cn"]:nil, list))
++                    cn	= user["cn",0]:cn;
++                else
++                    cn	= user["cn"]:cn;
++                home		= user["homeDirectory"]:home;
++                org_home	= user["org_homeDirectory"]:org_home;
++                crypted_home_size	= GetInt (user["crypted_home_size"]:nil, 0);
++                mode		= user["home_mode"]:default_mode;
++                password	= user["userPassword"]:password;
++                org_username	= user["org_uid"]:org_username;
++                uid		= GetInt (user["uidNumber"]:nil, uid);
++                gid		= GetInt (user["gidNumber"]:nil, gid);
++                enabled		= user["enabled"]:true;
++                if (user["disabled"]:false)
++                    enabled	= false;
++
++                shell		= user["loginShell"]:shell;
++                defaultgroup	= user["groupname"]:defaultgroup;
++                addit_data	= user["addit_data"]:addit_data;
++
++                if (haskey (user, "sn"))
++                {
++                    if (is (user["sn"]:nil, list))
++                        sn	= user["sn",0]:SplitFullName(`sn, cn);
++                    else
++                        sn	= user["sn"]:SplitFullName(`sn, cn);
++                }
++                if (haskey (user, "givenName"))
++                {
++                    if (is (user["givenName"]:nil, list))
++                        givenname = user["givenName",0]:SplitFullName(`givenname, cn);
++                    else if (is (user["givenName"]:nil, string))
++                        givenname = user["givenName"]:SplitFullName(`givenname, cn);
++                }
++
++                chown_home	= user["chown_home"]:chown_home;
++                no_skel		= user["no_skeleton"]:no_skel;
++                groups		= user["grouplist"]:$[];
++                do_not_edit	= (user_type == "nis");
++                // end of inlined reinit_userdata
++
+ 		UI::ChangeWidget (`id(`table), `Item (plugin_client,0), " ");
+ 	    }
+ 	    if (ret == `run)
+@@ -1618,7 +1397,50 @@ Log the user out first."));
+ 		    }
+ 		    plugin_added	= true;
+ 		    user	= Users::GetCurrentUser ();
+-		    reinit_userdata ();
++                    // begin of inlined reinit_userdata
++                    user_type	= user["type"]:user_type;
++                    username	= user["uid"]:username;
++                    if (is (user["cn"]:nil, list))
++                        cn	= user["cn",0]:cn;
++                    else
++                        cn	= user["cn"]:cn;
++                    home		= user["homeDirectory"]:home;
++                    org_home	= user["org_homeDirectory"]:org_home;
++                    crypted_home_size	= GetInt (user["crypted_home_size"]:nil, 0);
++                    mode		= user["home_mode"]:default_mode;
++                    password	= user["userPassword"]:password;
++                    org_username	= user["org_uid"]:org_username;
++                    uid		= GetInt (user["uidNumber"]:nil, uid);
++                    gid		= GetInt (user["gidNumber"]:nil, gid);
++                    enabled		= user["enabled"]:true;
++                    if (user["disabled"]:false)
++                        enabled	= false;
++
++                    shell		= user["loginShell"]:shell;
++                    defaultgroup	= user["groupname"]:defaultgroup;
++                    addit_data	= user["addit_data"]:addit_data;
++
++                    if (haskey (user, "sn"))
++                    {
++                        if (is (user["sn"]:nil, list))
++                            sn	= user["sn",0]:SplitFullName(`sn, cn);
++                        else
++                            sn	= user["sn"]:SplitFullName(`sn, cn);
++                    }
++                    if (haskey (user, "givenName"))
++                    {
++                        if (is (user["givenName"]:nil, list))
++                            givenname = user["givenName",0]:SplitFullName(`givenname, cn);
++                        else if (is (user["givenName"]:nil, string))
++                            givenname = user["givenName"]:SplitFullName(`givenname, cn);
++                    }
++
++                    chown_home	= user["chown_home"]:chown_home;
++                    no_skel		= user["no_skeleton"]:no_skel;
++                    groups		= user["grouplist"]:$[];
++                    do_not_edit	= (user_type == "nis");
++                    // end of inlined reinit_userdata
++
+ 		}
+ 		any plugin_ret = WFM::CallFunction (
+ 		    plugin_client, ["Dialog", $[ "what"	: "user" ], user ]);
+@@ -1626,7 +1448,50 @@ Log the user out first."));
+ 		{
+ 		    // update the map of changed user
+ 		    user	= Users::GetCurrentUser ();
+-		    reinit_userdata ();
++                    // begin of inlined reinit_userdata
++                    user_type	= user["type"]:user_type;
++                    username	= user["uid"]:username;
++                    if (is (user["cn"]:nil, list))
++                        cn	= user["cn",0]:cn;
++                    else
++                        cn	= user["cn"]:cn;
++                    home		= user["homeDirectory"]:home;
++                    org_home	= user["org_homeDirectory"]:org_home;
++                    crypted_home_size	= GetInt (user["crypted_home_size"]:nil, 0);
++                    mode		= user["home_mode"]:default_mode;
++                    password	= user["userPassword"]:password;
++                    org_username	= user["org_uid"]:org_username;
++                    uid		= GetInt (user["uidNumber"]:nil, uid);
++                    gid		= GetInt (user["gidNumber"]:nil, gid);
++                    enabled		= user["enabled"]:true;
++                    if (user["disabled"]:false)
++                        enabled	= false;
++
++                    shell		= user["loginShell"]:shell;
++                    defaultgroup	= user["groupname"]:defaultgroup;
++                    addit_data	= user["addit_data"]:addit_data;
++
++                    if (haskey (user, "sn"))
++                    {
++                        if (is (user["sn"]:nil, list))
++                            sn	= user["sn",0]:SplitFullName(`sn, cn);
++                        else
++                            sn	= user["sn"]:SplitFullName(`sn, cn);
++                    }
++                    if (haskey (user, "givenName"))
++                    {
++                        if (is (user["givenName"]:nil, list))
++                            givenname = user["givenName",0]:SplitFullName(`givenname, cn);
++                        else if (is (user["givenName"]:nil, string))
++                            givenname = user["givenName"]:SplitFullName(`givenname, cn);
++                    }
++
++                    chown_home	= user["chown_home"]:chown_home;
++                    no_skel		= user["no_skeleton"]:no_skel;
++                    groups		= user["grouplist"]:$[];
++                    do_not_edit	= (user_type == "nis");
++                    // end of inlined reinit_userdata
++
+ 		    UI::ChangeWidget (`id(`table), `Item (plugin_client,0), UI::Glyph (`CheckMark));
+ 		}
+ 		// for `cancel we must remove the plugin if it was added because of `run
+@@ -1640,7 +1505,49 @@ Log the user out first."));
+ 			continue;
+ 		    }
+ 		    user	= Users::GetCurrentUser ();
+-		    reinit_userdata ();
++                    // begin of inlined reinit_userdata
++                    user_type	= user["type"]:user_type;
++                    username	= user["uid"]:username;
++                    if (is (user["cn"]:nil, list))
++                        cn	= user["cn",0]:cn;
++                    else
++                        cn	= user["cn"]:cn;
++                    home		= user["homeDirectory"]:home;
++                    org_home	= user["org_homeDirectory"]:org_home;
++                    crypted_home_size	= GetInt (user["crypted_home_size"]:nil, 0);
++                    mode		= user["home_mode"]:default_mode;
++                    password	= user["userPassword"]:password;
++                    org_username	= user["org_uid"]:org_username;
++                    uid		= GetInt (user["uidNumber"]:nil, uid);
++                    gid		= GetInt (user["gidNumber"]:nil, gid);
++                    enabled		= user["enabled"]:true;
++                    if (user["disabled"]:false)
++                        enabled	= false;
++
++                    shell		= user["loginShell"]:shell;
++                    defaultgroup	= user["groupname"]:defaultgroup;
++                    addit_data	= user["addit_data"]:addit_data;
++
++                    if (haskey (user, "sn"))
++                    {
++                        if (is (user["sn"]:nil, list))
++                            sn	= user["sn",0]:SplitFullName(`sn, cn);
++                        else
++                            sn	= user["sn"]:SplitFullName(`sn, cn);
++                    }
++                    if (haskey (user, "givenName"))
++                    {
++                        if (is (user["givenName"]:nil, list))
++                            givenname = user["givenName",0]:SplitFullName(`givenname, cn);
++                        else if (is (user["givenName"]:nil, string))
++                            givenname = user["givenName"]:SplitFullName(`givenname, cn);
++                    }
++
++                    chown_home	= user["chown_home"]:chown_home;
++                    no_skel		= user["no_skeleton"]:no_skel;
++                    groups		= user["grouplist"]:$[];
++                    do_not_edit	= (user_type == "nis");
++                    // end of inlined reinit_userdata
+ 		}
+ 	    }
+ 	}
+@@ -1650,7 +1557,8 @@ Log the user out first."));
+ 	{
+ 	    Wizard::SetHelpText (
+ 		EditUserDialogHelp (installation (), user_type, what));
+-	    UI::ReplaceWidget(`tabContents, get_edit_term ());
++	    UI::ReplaceWidget(`tabContents, get_edit_user_term(what, cn, givenname, sn, username, 
++          root_mail_checked, do_not_edit, enabled, user_type, complex_layout));
+ 
+ 	    // update the contets of User Data Dialog
+ 	    if (do_not_edit)
+@@ -1691,7 +1599,187 @@ Log the user out first."));
+ 	}
+ 	if (ret == `details)
+ 	{
+-	    UI::ReplaceWidget(`tabContents, get_details_term ());
++              list available_groups		= [];
++              list additional_groups		= [];
++              list additional_ldap_groups	= [];
++              boolean defaultgroup_shown	= false;
++
++              // fill the list available_groups and set the user default group true
++              foreach (string grouptype, map<string,integer> groupmap, all_groupnames,
++              {
++              if (grouptype == "local" || grouptype == "system" ||
++                  (grouptype == "ldap" && user_type == "ldap"))
++              {
++                foreach (string group, integer val, groupmap, {
++
++                  if (user_type == "ldap")
++                  {
++                      if (grouptype == "ldap")
++                      {
++                          if ( group == defaultgroup )
++                          {
++                              available_groups = add (available_groups,
++                                  `item( `id(group), group, true));
++                              defaultgroup_shown	= true;
++                          }
++                          else
++                              available_groups = add (available_groups,
++                                  `item( `id(group), group));
++                          if ( haskey (groups, group))
++                              additional_ldap_groups = add (additional_ldap_groups,
++                                  `item( `id(group), group, true ));
++                          else
++                              additional_ldap_groups = add (additional_ldap_groups,
++                                  `item( `id(group), group, false));
++                      }
++                      else
++                      {
++                          // if there is a group with same name, use only that
++                          // with type "ldap"
++                          if ( all_groupnames ["ldap",group]:0 == 1 )
++                              return;
++                          if ( haskey (groups, group))
++                              additional_groups = add (additional_groups,
++                                  `item( `id(group), group, true ));
++                          else
++                              additional_groups = add (additional_groups,
++                                  `item( `id(group), group, false));
++                      }
++                  }
++                  else
++                  {
++                      if ( group == defaultgroup )
++                      {
++                          available_groups = add (available_groups,
++                              `item( `id(group), group, true));
++                          defaultgroup_shown	= true;
++                      }
++                      else
++                          available_groups = add (available_groups,
++                              `item( `id(group), group));
++                      if ( haskey (groups, group))
++                          additional_groups = add (additional_groups,
++                              `item( `id(group), group, true ));
++                      else
++                          additional_groups = add (additional_groups,
++                              `item( `id(group), group, false));
++                  }
++                });
++              }
++              });
++              // show default group, even if the type is 'wrong' (#43433)
++              if (!defaultgroup_shown)
++              {
++                  if (all_groupnames ["local", defaultgroup]:0 == 1 ||
++                      all_groupnames ["system", defaultgroup]:0 == 1)
++                  {
++                      available_groups = add (available_groups,
++                          `item( `id(defaultgroup), defaultgroup, true));
++                  }
++              }
++
++              if (defaultgroup == "")
++              {
++                  available_groups = add (available_groups,
++                      // group name is not known (combobox item):
++                      `item( `id(""), _("(Unknown)"), true));
++              }
++
++              term edit_defaultgroup = `ComboBox(`id(`defaultgroup), `opt(`hstretch),
++                  // combobox label
++                  _("De&fault Group"), available_groups );
++              term edit_shell = `ComboBox(`id(`shell), `opt(`hstretch, `editable),
++                  // combobox label
++                  _("Login &Shell"), available_shells );
++
++              term additional_data = `Empty();
++              if (user_type == "system" || user_type == "local")
++                  additional_data = `Top (`InputField (`id(`addd), `opt(`hstretch),
++                      // textentry label
++                      _("Addi&tional User Information"), addit_data)
++                  );
++
++              term browse = `VBox(
++                  `Label (""),
++                  // button label
++                  `PushButton( `id(`browse), `opt(`key_F6), _("B&rowse...")),
++                  action != "edited" ? `Empty () : `Label ("")
++              );
++
++              term home_w = `VBox(
++                  // textentry label
++                  `InputField (`id(`home),`opt(`hstretch),_("&Home Directory"), home),
++                  action != "edited" ? `Empty () :
++                  `HBox (`HSpacing (), `Left (`CheckBox (`id (`move_home),
++                      // check box label
++                      _("&Move to New Location"), create_home))
++                  )
++              );
++              term new_user_term	= action != "added" ? `VBox () : `VBox (
++                  `InputField (`id(`mode), `opt (`hstretch),
++                      // textentry label
++                      _("Home Directory &Permission Mode"), mode),
++                  // check box label
++                  `HBox (`HSpacing (), `Left (
++                      `CheckBox (`id(`skel), _("E&mpty Home"), no_skel))
++                  )
++              );
++              term crypted_home_term	= crypted_home_enabled ? `HBox (
++                      `VBox (
++                          `Label (""),
++                          `HBox (`HSpacing (), `Left (
++                              `CheckBox (`id(`crypted_home), `opt (`notify),
++                              // check box label
++                              _("&Use Encrypted Home Directory"), crypted_home_size > 0))
++                          )
++                      ),
++                      // IntField label
++                      `IntField (`id (`dirsize), _("&Directory Size in MB"), 10, 2147483647, crypted_home_size) // for max value, see bug 244631 :-)
++              ) : `HBox ();
++
++              term details_term = `HBox (
++                `HSpacing(1),
++                `VBox(
++                 // label
++                 do_not_edit ? `Label(_("For remote users, only additional 
++      group memberships can be changed.")) : `VSpacing (0),
++                 `VSpacing(0.5),
++                 `HBox(
++                      text_mode ? `Empty () : `HSpacing (1),
++                      `HWeight (3, `VBox(
++                          `VSpacing (0.5),
++                          `Top(`InputField( `id(`uid), `opt (`hstretch),
++                              // textentry label
++                               _("User &ID (uid)"), sformat("%1",uid ))),
++                          `Top(`VBox(
++                              `HBox ( home_w, browse),
++                              new_user_term,
++                              crypted_home_term
++                          )),
++                          additional_data,
++                          `Top(edit_shell),
++                          `Top(edit_defaultgroup),
++                          `VStretch()
++                      )),
++                      text_mode ? `Empty () : `HSpacing (2),
++                      `HWeight (2, `VBox (
++                          `VSpacing (0.5),
++                          `MultiSelectionBox( `id(`grouplist),
++                              // selection box label
++                              _("Additional Gr&oups"), additional_groups),
++                          (user_type == "ldap")
++                          ? `MultiSelectionBox( `id(`ldapgrouplist),
++                              // selection box label
++                              _("&LDAP Groups"), additional_ldap_groups)
++                          : `Empty()
++                      )),
++                      text_mode ? `Empty () : `HSpacing (1)
++                  ),
++                  `VSpacing(0.5)
++                 ),
++                 `HSpacing(1)
++              );
++	    UI::ReplaceWidget(`tabContents, details_term);
+ 	    Wizard::SetHelpText (EditUserDetailsDialogHelp (user_type, what));
+ 
+ 	    if (do_not_edit)
+@@ -1728,7 +1816,78 @@ Log the user out first."));
+ 	}
+ 	if (ret == `passwordsettings)
+ 	{
+-	    UI::ReplaceWidget(`tabContents, get_password_term ());
++            string last_change	= GetString (user["shadowLastChange"]:nil, "0");
++            string last_change_label= "";
++            string expires		= GetString (user["shadowExpire"]:nil, "0");
++            if (expires == "")
++                expires = "0";
++
++            integer inact	= GetInt (user["shadowInactive"]:nil, -1);
++            integer max	= GetInt (user["shadowMax"]:nil, -1);
++            integer min	= GetInt (user["shadowMin"]:nil, -1);
++            integer warn	= GetInt (user["shadowWarning"]:nil, -1);
++
++            if (last_change != "0")
++            {
++                map out	= (map)SCR::Execute (.target.bash_output, sformat ("date --date='1970-01-01 00:00:01 %1 days' +\"%%x\"", last_change));
++                // label (date of last password change)
++                last_change_label = out["stdout"]:_("Unknown");
++            }
++            else
++            {
++                // label (date of last password change)
++                last_change_label = _("Never");
++            }
++            if (expires != "0" && expires != "-1" && expires != "")
++            {
++                map out	= (map)SCR::Execute (.target.bash_output, sformat ("date --date='1970-01-01 00:00:01 %1 days' ", expires) + "+\"%Y-%m-%d\"");
++                // remove \n from the end
++                exp_date	= deletechars (out["stdout"]:"", "\n");
++            }
++            term password_term = `HBox (
++                `HSpacing (3),
++                `VBox (
++                    `VStretch(),
++                    `Left (`Label ("")),
++                    `HSquash(`VBox(
++                        `Left (`Label (sformat (
++                            // label
++                            _("Last Password Change: %1"), last_change_label ))),
++                        `VSpacing (0.2),
++                        `Left (
++                            // check box label
++                            `CheckBox (`id (`force_pw), _("Force Password Change"),
++                            last_change == "0")
++                        ),
++                        `VSpacing (1),
++                        `IntField (`id ("shadowWarning"),
++                            // intfield label
++                            _("Days &before Password Expiration to Issue Warning"),
++                            -1, 99999, warn),
++                        `VSpacing (0.5),
++                        `IntField (`id ("shadowInactive"),
++                            // intfield label
++                            _("Days after Password Expires with Usable &Login"),
++                            -1, 99999, inact),
++                        `VSpacing (0.5),
++                        `IntField (`id ("shadowMax"),
++                            // intfield label
++                            _("Ma&ximum Number of Days for the Same Password"),
++                            -1, 99999, max),
++                        `VSpacing (0.5),
++                        `IntField (`id ("shadowMin"),
++                            // intfield label
++                            _("&Minimum Number of Days for the Same Password"),
++                            -1, 99999, min),
++                        `VSpacing (0.5),
++                        `InputField (`id ("shadowExpire"), `opt (`hstretch),
++                            // textentry label
++                            _("Ex&piration Date"), exp_date)
++                    )),
++                    `VStretch ()),
++                `HSpacing (3)
++            );
++	    UI::ReplaceWidget(`tabContents, password_term);
+ 	    if (GetString (user["shadowLastChange"]:nil, "0") == "0")
+ 	    {
+ 		// forcing password change cannot be undone
+@@ -1739,7 +1898,7 @@ Log the user out first."));
+ 	}
+ 	if (ret == `plugins)
+ 	{
+-	    UI::ReplaceWidget(`tabContents, get_plugins_term ());
++	    UI::ReplaceWidget(`tabContents, get_user_plugins_term ( client2plugin, clients, plugin_client, plugin, user));
+ 	    Wizard::SetHelpText (PluginDialogHelp ());
+ 	    UI::ChangeWidget (`id(`table),`CurrentItem, plugin_client);
+ 	    current	= ret;
+@@ -1875,79 +2034,11 @@ Log the user out first."));
+     return ret;
+ }
+ 
+-/**
+- * Dialog for adding/editing group
+- * @param what "add_group" or "edit_group"
+- * @return symbol for wizard sequencer
+- */
+-define symbol EditGroupDialog (string what) {
+-
+-    // create a local copy of current group
+-    map<string,any> group	= Users::GetCurrentGroup ();
+-    string  groupname		= group["cn"]:"";
+-    string  password		= (string) group["userPassword"]:nil;
+-    integer gid			= GetInt (group["gidNumber"]:nil, -1);
+-    // these are the users with this group as a default:
+-    map<string,any> more_users	= group["more_users"]:$[];
+-    // these are users from /etc/group:
+-    map<string,any> userlist	= group["userlist"]:$[];
+-    string group_type		= group["type"]:"";
+-    string new_type		= group_type;
+-    list additional_users	= [];
+-    string member_attribute	= UsersLDAP::GetMemberAttribute ();
+-
+-    if (group_type == "ldap")
+-    {
+-	userlist		= group[member_attribute]:$[];
+-    }
+-
+-    boolean more = size (more_users) > 0;
+-
+-    map dialog_labels = $[
+-        "add_group": $[
+-            // dialog caption:
+-            "local":	_("New Local Group"),
+-            // dialog caption:
+-            "system":	_("New System Group"),
+-            // dialog caption:
+-            "ldap":     _("New LDAP Group")
+-        ],
+-        "edit_group": $[
+-            // dialog caption:
+-            "local":     _("Existing Local Group"),
+-            // dialog caption:
+-            "system":	_("Existing System Group"),
+-            // dialog caption:
+-            "ldap":     _("Existing LDAP Group")
+-        ]
+-    ];
+-
+-    string plugin_client	= "";
+-    string plugin		= "";
+-    map client2plugin		= $[];
+-    list<string> clients	= [];
+-
+-    /**
+-     * initialize local variables with current state of group
+-     */
+-    define void reinit_groupdata () {
+-
+-	groupname	= group["cn"]:groupname;
+-	password	= group["userPassword"]:password;
+-	gid		= GetInt (group["gidNumber"]:nil, gid);
+-	more_users	= group["more_users"]:more_users;
+-	userlist	= group["userlist"]:userlist;
+-	group_type	= group["type"]:group_type;
+-	if (group_type == "ldap")
+-	{
+-	    userlist	= group[member_attribute]:$[];
+-	}
+-    }
+-
+     /**
+      * generate contents for Group Data Dialog
+      */
+-    define term get_edit_term () {
++    define term get_edit_group_term (map<string,any> &more_users,
++        string &groupname, integer gid, boolean more) {
+ 
+ 	integer i = 0;
+ 	list more_users_items	= [];
+@@ -1995,7 +2086,8 @@ define symbol EditGroupDialog (string what) {
+     /**
+      * generate contents for Plugins Dialog
+      */
+-    define term get_plugins_term () {
++    define term get_group_plugins_term (map &client2plugin, list<string> &clients,
++        string &plugin_client, string &plugin, map &group) {
+ 
+ 	plugin_client	= clients[0]:"";
+ 	plugin		= client2plugin[plugin_client]:plugin_client;
+@@ -2027,6 +2119,58 @@ define symbol EditGroupDialog (string what) {
+ 	), `HSpacing (0.5));
+     }
+ 
++
++/**
++ * Dialog for adding/editing group
++ * @param what "add_group" or "edit_group"
++ * @return symbol for wizard sequencer
++ */
++define symbol EditGroupDialog (string what) {
++
++    // create a local copy of current group
++    map<string,any> group	= Users::GetCurrentGroup ();
++    string  groupname		= group["cn"]:"";
++    string  password		= (string) group["userPassword"]:nil;
++    integer gid			= GetInt (group["gidNumber"]:nil, -1);
++    // these are the users with this group as a default:
++    map<string,any> more_users	= group["more_users"]:$[];
++    // these are users from /etc/group:
++    map<string,any> userlist	= group["userlist"]:$[];
++    string group_type		= group["type"]:"";
++    string new_type		= group_type;
++    list additional_users	= [];
++    string member_attribute	= UsersLDAP::GetMemberAttribute ();
++
++    if (group_type == "ldap")
++    {
++	userlist		= group[member_attribute]:$[];
++    }
++
++    boolean more = size (more_users) > 0;
++
++    map dialog_labels = $[
++        "add_group": $[
++            // dialog caption:
++            "local":	_("New Local Group"),
++            // dialog caption:
++            "system":	_("New System Group"),
++            // dialog caption:
++            "ldap":     _("New LDAP Group")
++        ],
++        "edit_group": $[
++            // dialog caption:
++            "local":     _("Existing Local Group"),
++            // dialog caption:
++            "system":	_("Existing System Group"),
++            // dialog caption:
++            "ldap":     _("Existing LDAP Group")
++        ]
++    ];
++
++    string plugin_client	= "";
++    string plugin		= "";
++    map client2plugin		= $[];
++    list<string> clients	= [];
+     list<term> tabs		= [];
+     term dialog_contents	= `Empty ();
+ 
+@@ -2056,7 +2200,7 @@ define symbol EditGroupDialog (string what) {
+ 
+ 	dialog_contents = `VBox (
+ 	    `DumbTab (`id(`tabs), tabs,
+-		`ReplacePoint(`id(`tabContents ), get_edit_term ()))
++		`ReplacePoint(`id(`tabContents ), get_edit_group_term(more_users,groupname,gid,more)))
+ 	);
+ 	if (!UI::HasSpecialWidget (`DumbTab))
+ 	{
+@@ -2067,13 +2211,13 @@ define symbol EditGroupDialog (string what) {
+ 		tabbar = add (tabbar,`PushButton (it[0]:`id(label), label));
+ 	    });
+ 	    dialog_contents = `VBox (`Left(tabbar),
+-		`Frame ("", `ReplacePoint(`id(`tabContents), get_edit_term ()))
++		`Frame ("", `ReplacePoint(`id(`tabContents), get_edit_group_term(more_users,groupname,gid,more)))
+ 	    );
+ 	}
+     }
+     else
+     {
+-	dialog_contents		= get_edit_term ();
++	dialog_contents		= get_edit_group_term(more_users,groupname,gid,more);
+     }
+ 
+     Wizard::SetContentsButtons (
+@@ -2087,14 +2231,6 @@ define symbol EditGroupDialog (string what) {
+     symbol current	= nil;
+     list tabids		= [`edit, `plugins ];
+ 
+-    // switch focus to specified tab (after error message) and widget inside
+-    define void focus_tab (symbol tab, any widget) {
+-	if (use_tabs && has_tabs)
+-	    UI::ChangeWidget (`id (`tabs), `CurrentItem, tab);
+-	UI::SetFocus (`id (widget));
+-	ret = `notnext;
+-    }
+-
+     repeat
+     {
+ 	// map returned from Check*UI functions
+@@ -2138,7 +2274,7 @@ define symbol EditGroupDialog (string what) {
+ 	    if (error != "")
+ 	    {
+ 		Report::Error (error);
+-		focus_tab (current, `groupname);
++		ret = focus_tab (current, `groupname, use_tabs && has_tabs);
+ 		continue;
+ 	    }
+ 	    // --------------------------------- password checks
+@@ -2149,7 +2285,7 @@ define symbol EditGroupDialog (string what) {
+                 Report::Error(_("The passwords do not match.
+ Try again.")) ;
+ 
+-		focus_tab (current, `pw1);
++		ret = focus_tab (current, `pw1, use_tabs && has_tabs);
+                 continue;
+             }
+             if ( pw1 != "" && pw1 != default_pw )
+@@ -2158,7 +2294,7 @@ Try again.")) ;
+ 		if (error != "")
+ 		{
+ 		    Report::Error (error);
+-		    focus_tab (current, `pw1);
++		    ret = focus_tab (current, `pw1, use_tabs && has_tabs);
+ 		    continue;
+ 		}
+ 
+@@ -2174,7 +2310,7 @@ Try again.")) ;
+ 		    "\n\n" + _("Really use this password?");
+ 		    if (!Popup::YesNo (message))
+ 		    {
+-			focus_tab (current, `pw1);
++			ret = focus_tab (current, `pw1, use_tabs && has_tabs);
+ 			continue;
+ 		    }
+ 		}
+@@ -2191,7 +2327,7 @@ Try again.")) ;
+ 		if (error != "")
+ 		{
+ 		    Report::Error (error);
+-		    focus_tab (current, `gid);
++		    ret = focus_tab (current, `gid, use_tabs && has_tabs);
+ 		    continue;
+ 		}
+ 		boolean failed	= false;
+@@ -2218,7 +2354,7 @@ Try again.")) ;
+ 		} while (error_map != $[] && !failed);
+ 		if (failed)
+                 {
+-		    focus_tab (current, `gid);
++		    ret = focus_tab (current, `gid, use_tabs && has_tabs);
+ 		    continue;
+ 		}
+ 	    }
+@@ -2242,7 +2378,19 @@ Try again.")) ;
+ 	    {
+ 		group["userlist"]	= new_userlist;
+ 	    }
+-	    reinit_groupdata ();
++            // begin of inlined reinit_groupdata
++            groupname	= group["cn"]:groupname;
++            password	= group["userPassword"]:password;
++            gid		= GetInt (group["gidNumber"]:nil, gid);
++            more_users	= group["more_users"]:more_users;
++            userlist	= group["userlist"]:userlist;
++            group_type	= group["type"]:group_type;
++            if (group_type == "ldap")
++            {
++                userlist	= group[member_attribute]:$[];
++            }
++            // end of inlined reinit_groupdata
++
+ 	}
+ 
+ 	// inside plugins dialog
+@@ -2296,7 +2444,19 @@ Try again.")) ;
+ 		    continue;
+ 		}
+ 		group	= Users::GetCurrentGroup ();
+-		reinit_groupdata ();
++                // begin of inlined reinit_groupdata
++                groupname	= group["cn"]:groupname;
++                password	= group["userPassword"]:password;
++                gid		= GetInt (group["gidNumber"]:nil, gid);
++                more_users	= group["more_users"]:more_users;
++                userlist	= group["userlist"]:userlist;
++                group_type	= group["type"]:group_type;
++                if (group_type == "ldap")
++                {
++                    userlist	= group[member_attribute]:$[];
++                }
++                // end of inlined reinit_groupdata
++
+ 		UI::ChangeWidget (`id(`table), `Item (plugin_client,0),
+ 		    UI::Glyph (`CheckMark));
+ 	    }
+@@ -2310,7 +2470,19 @@ Try again.")) ;
+ 		    continue;
+ 		}
+ 		group	= Users::GetCurrentGroup ();
+-		reinit_groupdata ();
++                // begin of inlined reinit_groupdata
++                groupname	= group["cn"]:groupname;
++                password	= group["userPassword"]:password;
++                gid		= GetInt (group["gidNumber"]:nil, gid);
++                more_users	= group["more_users"]:more_users;
++                userlist	= group["userlist"]:userlist;
++                group_type	= group["type"]:group_type;
++                if (group_type == "ldap")
++                {
++                    userlist	= group[member_attribute]:$[];
++                }
++                // end of inlined reinit_groupdata
++
+ 		UI::ChangeWidget (`id(`table), `Item (plugin_client,0), " ");
+ 	    }
+ 	    if (ret == `run)
+@@ -2328,7 +2500,19 @@ Try again.")) ;
+ 		    }
+ 		    plugin_added	= true;
+ 		    group	= Users::GetCurrentGroup ();
+-		    reinit_groupdata ();
++                    // begin of inlined reinit_groupdata
++                    groupname	= group["cn"]:groupname;
++                    password	= group["userPassword"]:password;
++                    gid		= GetInt (group["gidNumber"]:nil, gid);
++                    more_users	= group["more_users"]:more_users;
++                    userlist	= group["userlist"]:userlist;
++                    group_type	= group["type"]:group_type;
++                    if (group_type == "ldap")
++                    {
++                        userlist	= group[member_attribute]:$[];
++                    }
++                    // end of inlined reinit_groupdata
++
+ 		}
+ 		any plugin_ret = WFM::CallFunction (
+ 		    plugin_client, ["Dialog", $[ "what"	: "group" ], group ]);
+@@ -2336,7 +2520,19 @@ Try again.")) ;
+ 		{
+ 		    // update the map of changed group
+ 		    group	= Users::GetCurrentGroup ();
+-		    reinit_groupdata ();
++                    // begin of inlined reinit_groupdata
++                    groupname	= group["cn"]:groupname;
++                    password	= group["userPassword"]:password;
++                    gid		= GetInt (group["gidNumber"]:nil, gid);
++                    more_users	= group["more_users"]:more_users;
++                    userlist	= group["userlist"]:userlist;
++                    group_type	= group["type"]:group_type;
++                    if (group_type == "ldap")
++                    {
++                        userlist	= group[member_attribute]:$[];
++                    }
++                    // end of inlined reinit_groupdata
++
+ 		    UI::ChangeWidget (`id(`table), `Item (plugin_client,0), UI::Glyph (`CheckMark));
+ 		}
+ 		else if (plugin_added)
+@@ -2349,7 +2545,19 @@ Try again.")) ;
+ 			continue;
+ 		    }
+ 		    group	= Users::GetCurrentGroup ();
+-		    reinit_groupdata ();
++                    // begin of inlined reinit_groupdata
++                    groupname	= group["cn"]:groupname;
++                    password	= group["userPassword"]:password;
++                    gid		= GetInt (group["gidNumber"]:nil, gid);
++                    more_users	= group["more_users"]:more_users;
++                    userlist	= group["userlist"]:userlist;
++                    group_type	= group["type"]:group_type;
++                    if (group_type == "ldap")
++                    {
++                        userlist	= group[member_attribute]:$[];
++                    }
++                    // end of inlined reinit_groupdata
++
+ 		}
+ 	    }
+ 	}
+@@ -2360,7 +2568,7 @@ Try again.")) ;
+ 	    if (use_tabs)
+ 	    {
+ 		Wizard::SetHelpText (EditGroupDialogHelp (more));
+-		UI::ReplaceWidget (`tabContents, get_edit_term ());
++		UI::ReplaceWidget (`tabContents, get_edit_group_term(more_users,groupname,gid,more));
+ 	    }
+ 
+ 	    if (what == "add_group") UI::SetFocus(`id(`groupname));
+@@ -2394,7 +2602,8 @@ Try again.")) ;
+ 
+ 	if (ret == `plugins)
+ 	{
+-	    UI::ReplaceWidget (`tabContents, get_plugins_term ());
++	    UI::ReplaceWidget (`tabContents, get_group_plugins_term (client2plugin,
++                  clients, plugin_client, plugin, group));
+ 	    Wizard::SetHelpText (PluginDialogHelp ());
+ 	    UI::ChangeWidget (`id(`table),`CurrentItem, plugin_client);
+ 	    current	= ret;
+diff --git a/src/include/users/ldap_dialogs.ycp b/src/include/users/ldap_dialogs.ycp
+index 5018f6e..5d04086 100644
+--- a/src/include/users/ldap_dialogs.ycp
++++ b/src/include/users/ldap_dialogs.ycp
+@@ -39,132 +39,8 @@ include "ldap/routines.ycp";
+ 
+ textdomain "users";
+ 
+-/**
+- * dialog for Password Policy configuration object
+- * @param ppolicy data with Password Policy object to be edited (as obtained from LDAP search)
+- * @return map with modifications of ppolicy object, nil in case of `cancel
+- */
+-define map PasswordPolicyDialog (map ppolicy) {
+-
+-    // reduce the list values to single ones
+-    ppolicy	= mapmap (string a, any val, (map<string,any>)ppolicy, {
+-	if (is (val, list) && (Ldap::SingleValued (a) || size ((list)val) == 1))
+-	    val	= ((list)val)[0]:nil;
+-	if (val == "TRUE" || val == "FALSE")
+-	    val	= (val == "TRUE");
+-	return $[ a: val ];
+-    });
+-    map ppolicy_orig	= ppolicy;
+-
+-    // help text for Password Policy Dialog
+-    string help_text = _("<p>Select the <b>Password Change Policies</b>, <b>Password Aging Policies</b>, and <b>Lockout Policies</b> tabs to choose LDAP password policy groups of attributes to configure.</p>");
+-
+-
+-    // tab-specific help texts
+-    map tabs_help_text	= $[
+-	// help text for pwdInHistory attribute
+-	`pwchange	: _("<p>Specify the <b>Maximum Number of Passwords Stored in History</b> to set how many previously used passwords should be saved. Saved passwords may not be used.</p>") +
+-
+-	// help text for pwdMustChange attribute
+-	_("<p>Check <b>User Must Change Password after Reset</b> to force users to change their passwords after the the password is reset or changed by an administrator.</p>") +
+-
+-	// help text for pwdAllowUserChange attribute
+-	_("<p>Check <b>User Can Change Password</b> to allow users to change their passwords.</p>") +
+-
+-	// help text for pwdSafeModify attribute
+-	_("<p>If the existing password must be provided along with the new password, check <b>Old Password Required for Password Change</b>.</p>") +
+-
+-	// help text for pwdCheckQuality attribute
+-	_("<p>Select whether the password quality should be verified while passwords are modified or added. Select <b>No Checking</b> if passwords should not be checked at all. With <b>Accept Uncheckable Passwords</b>, passwords are accepted even if the check cannot be performed, for example, if the user has provided an encrypted password. With <b>Only Accept Checked Passwords</b> passwords are refused if the quality test fails or the password cannot be checked.</p>") +
+-
+-	// help text for pwdMinLength attribute
+-	_("Set the minimum number of characters that must be used in a password in <b>Minimum Password Length</b>.</p>"),
+-
+-	// help text for pwdMinAge attribute
+-	`aging		: _("<p><b>Minimum Password Age</b> sets how much time must pass between modifications to the password.</p>") +
+-
+-	// help text for pwdMaxAge attribute
+-	_("<p><b>Maximum Password Age</b> sets how long after modification a password expires.</p>") +
+-
+-	// help text for pwdExpireWarning attribute
+-	_("<p>In <b>Time before Password Expiration to Issue Warning</b> set how long before a password is due to expire that an expiration warning messages should be given to an authenticating user.</p>") +
+-
+-	// help text for pwdGraceAuthNLimit attribute
+-	_("<p>Set the number of times an expired password can be used to authenticate in <b>Allowed Uses of an Expired Password</b>.</p>"),
+-
+-	// help text for pwdLockout attribute
+-	`lockout	: _("<p>Check <b>Enable Password Locking</b> to forbid use of a password after a specified number of consecutive failed bind attempts.</p>") +
+-
+-	// help text for pwdMaxFailure attribute
+-	_("<p>Set the number of consecutive failed bind  attempts after which the password may not be used to authenticate in <b>Bind Failures to Lock the Password</b>.</p>") +
+-
+-	// help text for pwdLockoutDuration attribute
+-	_("<p>Set how long the password cannot be used in <b>Password Lock Duration</b>.</p>") +
+-
+-	// help text for pwdFailureCountInterval attribute
+-	_("<p><b>Bind Failures Cache Duration</b> sets how long before password failures are purged from the failure counter even though no successful authentication has occurred.</p>"),
+-    ];
+-
+-    // map of attribute names for each tab
+-    map attributes	= $[
+-	`pwchange	: [
+-	    "pwdInHistory", "pwdMustChange", "pwdAllowUserChange",
+-	    "pwdSafeModify", "pwdCheckQuality", "pwdMinLength"
+-	],
+-	`aging		: [
+-	    "pwdMinAge", "pwdMaxAge", "pwdExpireWarning", "pwdGraceAuthNLimit"
+-	],
+-	`lockout	: [
+-	    "pwdLockout", "pwdLockoutDuration", "pwdMaxFailure",
+-	    "pwdFailureCountInterval"
+-	],
+-    ];
+-
+-    list time_attributes = [
+-	"pwdMinAge", "pwdMaxAge", "pwdExpireWarning", "pwdLockoutDuration",
+-	"pwdFailureCountInterval"
+-    ];
+-
+-    map default_values	= $[
+-	"pwdMustChange"		: false,
+-	"pwdAllowUserChange"	: true,
+-	"pwdSafeModify"		: false,
+-	"pwdLockout"		: false,
+-    ];
+-
+-    // maximal value of IntFields
+-    integer max		= 99999;
+-
+-    list<term> tabs	= [
+-	// tab label
+-	`item(`id(`pwchange), _("&Password Change Policies"), true),
+-	// tab label
+-	`item(`id(`aging), _("Pa&ssword Aging Policies")),
+-	// tab label
+-	`item(`id(`lockout), _("&Lockout Policies")),
+-    ];
+-    term tabs_term = `VBox (
+-	`DumbTab (`id(`tabs), tabs,
+-	    `ReplacePoint(`id(`tabContents ), `VBox (`Empty ())))
+-    );
+-    boolean has_tabs	= true;
+-    if (!UI::HasSpecialWidget (`DumbTab))
+-    {
+-	has_tabs	= false;
+-	term tabbar	= `HBox ();
+-	foreach (term it, tabs, {
+-	    string label = it[1]:"";
+-	    tabbar = add (tabbar,`PushButton (it[0]:`id(label), label));
+-	});
+-	tabs_term = `VBox (`Left(tabbar),
+-	    `Frame ("", `ReplacePoint(`id(`tabContents), `Empty ()))
+-	);
+-    }
+-
+-    term contents = tabs_term;
+-
+-    // generate the term of password policy tab and update the help text
+-    void set_password_policies_term () {
++  // generate the term of password policy tab and update the help text
++    void set_password_policies_term (map &ppolicy, integer max) {
+ 	integer	pwdcheckquality	= tointeger (ppolicy["pwdCheckQuality"]:"0");
+ 	term tab_cont	= `Top (`HBox (`HSpacing (0.5), `VBox (
+ 	    `VSpacing (0.8),
+@@ -213,7 +89,7 @@ define map PasswordPolicyDialog (map ppolicy) {
+ 	return;
+     }
+ 
+-    term time_dialog (string id, string label) {
++    term time_dialog (string id, string label, map &ppolicy, integer max) {
+ 
+ 	integer value	= tointeger (ppolicy[id]:"0");
+ 	integer days	= value / (24*60*60);
+@@ -240,19 +116,19 @@ define map PasswordPolicyDialog (map ppolicy) {
+     }
+ 
+     // generate the term of password aging tab
+-    void set_aging_policies_term () {
++    void set_aging_policies_term (map &ppolicy, integer max) {
+ 
+ 	term tab_cont = `Top (`HBox (`HSpacing (0.5), `VBox (
+ 	    `VSpacing (0.7),
+ 	    // frame label
+-	    time_dialog ("pwdMinAge", _("Minimum Password Age")),
++	    time_dialog ("pwdMinAge", _("Minimum Password Age"), ppolicy, max),
+ 	    `VSpacing (0.4),
+ 	    // frame label
+-	    time_dialog ("pwdMaxAge", _("Maximum Password Age")),
++	    time_dialog ("pwdMaxAge", _("Maximum Password Age"), ppolicy, max),
+ 	    `VSpacing (0.4),
+ 	    time_dialog ("pwdExpireWarning",
+ 		// frame label
+-		_("Time before Password Expiration to Issue Warning")),
++		_("Time before Password Expiration to Issue Warning"), ppolicy, max),
+ 	    `VSpacing (0.2),
+ 	    `IntField (`id ("pwdGraceAuthNLimit"),
+ 		// IntField label
+@@ -265,7 +141,7 @@ define map PasswordPolicyDialog (map ppolicy) {
+     }
+ 
+     // generate the term of lockout aging tab
+-    void set_lockout_policies_term () {
++    void set_lockout_policies_term (map &ppolicy, integer max) {
+ 
+ 	boolean pwdlockout	= ppolicy["pwdLockout"]:false;
+ 
+@@ -281,11 +157,11 @@ define map PasswordPolicyDialog (map ppolicy) {
+ 		_("Bind Failures to Lock the Password"),
+ 		0, max, tointeger (ppolicy["pwdMaxFailure"]:"0")),
+ 	    // frame label
+-	    time_dialog ("pwdLockoutDuration", _("Password Lock Duration")),
++	    time_dialog ("pwdLockoutDuration", _("Password Lock Duration"), ppolicy, max),
+ 	    `VSpacing (0.4),
+ 	    time_dialog ("pwdFailureCountInterval",
+ 		// frame label
+-		_("Bind Failures Cache Duration"))
++		_("Bind Failures Cache Duration"), ppolicy, max)
+ 	), `HSpacing (0.5)));
+ 
+ 	UI::ReplaceWidget (`tabContents, tab_cont);
+@@ -299,6 +175,130 @@ define map PasswordPolicyDialog (map ppolicy) {
+ 	return;
+     }
+ 
++/**
++ * dialog for Password Policy configuration object
++ * @param ppolicy data with Password Policy object to be edited (as obtained from LDAP search)
++ * @return map with modifications of ppolicy object, nil in case of `cancel
++ */
++define map PasswordPolicyDialog (map ppolicy) {
++
++    // reduce the list values to single ones
++    ppolicy	= mapmap (string a, any val, (map<string,any>)ppolicy, {
++	if (is (val, list) && (Ldap::SingleValued (a) || size ((list)val) == 1))
++	    val	= ((list)val)[0]:nil;
++	if (val == "TRUE" || val == "FALSE")
++	    val	= (val == "TRUE");
++	return $[ a: val ];
++    });
++    map ppolicy_orig	= ppolicy;
++
++    // help text for Password Policy Dialog
++    string help_text = _("<p>Select the <b>Password Change Policies</b>, <b>Password Aging Policies</b>, and <b>Lockout Policies</b> tabs to choose LDAP password policy groups of attributes to configure.</p>");
++
++
++    // tab-specific help texts
++    map tabs_help_text	= $[
++	// help text for pwdInHistory attribute
++	`pwchange	: _("<p>Specify the <b>Maximum Number of Passwords Stored in History</b> to set how many previously used passwords should be saved. Saved passwords may not be used.</p>") +
++
++	// help text for pwdMustChange attribute
++	_("<p>Check <b>User Must Change Password after Reset</b> to force users to change their passwords after the the password is reset or changed by an administrator.</p>") +
++
++	// help text for pwdAllowUserChange attribute
++	_("<p>Check <b>User Can Change Password</b> to allow users to change their passwords.</p>") +
++
++	// help text for pwdSafeModify attribute
++	_("<p>If the existing password must be provided along with the new password, check <b>Old Password Required for Password Change</b>.</p>") +
++
++	// help text for pwdCheckQuality attribute
++	_("<p>Select whether the password quality should be verified while passwords are modified or added. Select <b>No Checking</b> if passwords should not be checked at all. With <b>Accept Uncheckable Passwords</b>, passwords are accepted even if the check cannot be performed, for example, if the user has provided an encrypted password. With <b>Only Accept Checked Passwords</b> passwords are refused if the quality test fails or the password cannot be checked.</p>") +
++
++	// help text for pwdMinLength attribute
++	_("Set the minimum number of characters that must be used in a password in <b>Minimum Password Length</b>.</p>"),
++
++	// help text for pwdMinAge attribute
++	`aging		: _("<p><b>Minimum Password Age</b> sets how much time must pass between modifications to the password.</p>") +
++
++	// help text for pwdMaxAge attribute
++	_("<p><b>Maximum Password Age</b> sets how long after modification a password expires.</p>") +
++
++	// help text for pwdExpireWarning attribute
++	_("<p>In <b>Time before Password Expiration to Issue Warning</b> set how long before a password is due to expire that an expiration warning messages should be given to an authenticating user.</p>") +
++
++	// help text for pwdGraceAuthNLimit attribute
++	_("<p>Set the number of times an expired password can be used to authenticate in <b>Allowed Uses of an Expired Password</b>.</p>"),
++
++	// help text for pwdLockout attribute
++	`lockout	: _("<p>Check <b>Enable Password Locking</b> to forbid use of a password after a specified number of consecutive failed bind attempts.</p>") +
++
++	// help text for pwdMaxFailure attribute
++	_("<p>Set the number of consecutive failed bind  attempts after which the password may not be used to authenticate in <b>Bind Failures to Lock the Password</b>.</p>") +
++
++	// help text for pwdLockoutDuration attribute
++	_("<p>Set how long the password cannot be used in <b>Password Lock Duration</b>.</p>") +
++
++	// help text for pwdFailureCountInterval attribute
++	_("<p><b>Bind Failures Cache Duration</b> sets how long before password failures are purged from the failure counter even though no successful authentication has occurred.</p>"),
++    ];
++
++    // map of attribute names for each tab
++    map attributes	= $[
++	`pwchange	: [
++	    "pwdInHistory", "pwdMustChange", "pwdAllowUserChange",
++	    "pwdSafeModify", "pwdCheckQuality", "pwdMinLength"
++	],
++	`aging		: [
++	    "pwdMinAge", "pwdMaxAge", "pwdExpireWarning", "pwdGraceAuthNLimit"
++	],
++	`lockout	: [
++	    "pwdLockout", "pwdLockoutDuration", "pwdMaxFailure",
++	    "pwdFailureCountInterval"
++	],
++    ];
++
++    list time_attributes = [
++	"pwdMinAge", "pwdMaxAge", "pwdExpireWarning", "pwdLockoutDuration",
++	"pwdFailureCountInterval"
++    ];
++
++    map default_values	= $[
++	"pwdMustChange"		: false,
++	"pwdAllowUserChange"	: true,
++	"pwdSafeModify"		: false,
++	"pwdLockout"		: false,
++    ];
++
++    // maximal value of IntFields
++    integer max		= 99999;
++
++    list<term> tabs	= [
++	// tab label
++	`item(`id(`pwchange), _("&Password Change Policies"), true),
++	// tab label
++	`item(`id(`aging), _("Pa&ssword Aging Policies")),
++	// tab label
++	`item(`id(`lockout), _("&Lockout Policies")),
++    ];
++    term tabs_term = `VBox (
++	`DumbTab (`id(`tabs), tabs,
++	    `ReplacePoint(`id(`tabContents ), `VBox (`Empty ())))
++    );
++    boolean has_tabs	= true;
++    if (!UI::HasSpecialWidget (`DumbTab))
++    {
++	has_tabs	= false;
++	term tabbar	= `HBox ();
++	foreach (term it, tabs, {
++	    string label = it[1]:"";
++	    tabbar = add (tabbar,`PushButton (it[0]:`id(label), label));
++	});
++	tabs_term = `VBox (`Left(tabbar),
++	    `Frame ("", `ReplacePoint(`id(`tabContents), `Empty ()))
++	);
++    }
++
++    term contents = tabs_term;
++
+     symbol current_tab	= `pwchange;
+     any result		= nil;
+ 
+@@ -310,7 +310,7 @@ define map PasswordPolicyDialog (map ppolicy) {
+ 	Label::CancelButton(), Label::OKButton());
+     Wizard::HideAbortButton();
+ 
+-    set_password_policies_term ();
++    set_password_policies_term (ppolicy, max);
+ 
+     while (true)
+     {
+@@ -337,11 +337,11 @@ define map PasswordPolicyDialog (map ppolicy) {
+ 	    result!= current_tab)
+ 	{
+ 	    if (result == `pwchange)
+-		set_password_policies_term ();
++		set_password_policies_term (ppolicy, max);
+ 	    else if (result == `aging)
+-		set_aging_policies_term ();
++		set_aging_policies_term (ppolicy, max);
+ 	    else if (result == `lockout)
+-		set_lockout_policies_term ();
++		set_lockout_policies_term (ppolicy, max);
+ 	    current_tab	= (symbol) result;
+ 	    if (has_tabs)
+ 		UI::ChangeWidget (`id (`tabs), `CurrentItem, current_tab);
+@@ -406,34 +406,10 @@ Enter a value."), attr));
+     return (result == `next) ? ret : nil;
+ }
+ 
+-/**
+- * Dialog for administering User & Group specific LDAP settigns
+- */
+-define boolean LdapAdministrationDialog () {
+-
+-    if (!Users::LdapSettingsRead ())
+-    {
+-        Users::SetLdapSettingsRead (Ldap::Read ());
+-    }
+-
+-    string base_dn      = Ldap::GetBaseDN ();
+-    boolean file_server = Ldap::file_server;
+-    boolean modified    = true;
+-
+-    list ppolicy_list	= [];
+-
+-    boolean ppolicies_enabled	= false;
+-    map<string,map> ppolicies	= $[];
+-    map<string,map> ppolicies_orig= $[];
+-    list<string> ppolicies_deleted	= []; // list of DN
+-
+-    // map with modifications of Password Policies objects
+-    map<string,map> write_ppolicies	= $[];
++    boolean read_ppolicies (string base_dn, map &ppolicies, map &ppolicies_orig) {
++        boolean ret = false;
+ 
+-    // read the list of pwdpolicy objects under base_config_dn
+-    void read_ppolicies () {
+-
+-	if (base_dn == "") return;
++	if (base_dn == "") return ret;
+ 
+ 	if (Ldap::ldap_initialized && Ldap::tls_when_initialized != Ldap::ldap_tls)
+ 	{
+@@ -442,7 +418,7 @@ define boolean LdapAdministrationDialog () {
+ 
+ 	if (Ldap::ldap_initialized || Ldap::LDAPInit () == "")
+ 	{
+-	    ppolicies_enabled	= (boolean) SCR::Execute (.ldap.ppolicy, $[
++	    ret	= (boolean) SCR::Execute (.ldap.ppolicy, $[
+ 		"hostname"	: Ldap::GetFirstServer (Ldap::server),
+ 		"bind_dn"	: Ldap::GetBaseDN ()
+ 	    ]);
+@@ -471,9 +447,36 @@ define boolean LdapAdministrationDialog () {
+ 		}
+ 	    }
+ 	}
++
++        return ret;
+     }
+ 
+-    read_ppolicies ();
++
++/**
++ * Dialog for administering User & Group specific LDAP settigns
++ */
++define boolean LdapAdministrationDialog () {
++
++    if (!Users::LdapSettingsRead ())
++    {
++        Users::SetLdapSettingsRead (Ldap::Read ());
++    }
++
++    string base_dn      = Ldap::GetBaseDN ();
++    boolean file_server = Ldap::file_server;
++    boolean modified    = true;
++
++    list ppolicy_list	= [];
++
++    map<string,map> ppolicies	= $[];
++    map<string,map> ppolicies_orig= $[];
++    list<string> ppolicies_deleted	= []; // list of DN
++
++    // map with modifications of Password Policies objects
++    map<string,map> write_ppolicies	= $[];
++
++    // read the list of pwdpolicy objects under base_config_dn
++    boolean ppolicies_enabled = read_ppolicies (base_dn, ppolicies, ppolicies_orig);
+ 
+     string help_text    = // help text caption
+     _("<p><b>Home Directories</b></p>") +
+diff --git a/yast2-users.spec.in b/yast2-users.spec.in
+index dda3d5f..d6676a8 100644
+--- a/yast2-users.spec.in
++++ b/yast2-users.spec.in
+@@ -38,10 +38,10 @@ This package provides GUI for maintenance of linux users and groups.
+ %defattr(-,root,root)
+ %dir @yncludedir@/users
+ %dir @moduledir@/YaPI
+-@clientdir@/*.ycp
++@clientdir@/*.rb
+ @desktopdir@/*.desktop
+ @moduledir@/*.pm
+-@moduledir@/UsersUI.y*
++@moduledir@/UsersUI.rb
+ @moduledir@/YaPI/*.pm
+ @yncludedir@/users/*
+ @schemadir@/autoyast/rnc/users.rnc

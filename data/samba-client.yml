@@ -1,12 +1,21 @@
-# TODO: Process.
+deps:
+  - yast2
+  - pam
 
-files:
-  - src/Samba.ycp
-  - src/complex.ycp
-  - src/dialogs.ycp
-  - src/helps.ycp
-  - src/routines.ycp
-  - src/samba-client.ycp
-  - src/samba-client_auto.ycp
-  - src/wizards.ycp
-  - testsuite/tests/SambaConfig_ExportImport.ycp
+moves:
+  - from: "src/Samba*.{ycp,pm}"
+    to:   src/modules
+  - from: "src/samba-*.ycp"
+    to:   src/clients
+  - from: "src/{complex,dialogs,helps,routines,wizards}.ycp"
+    to:   src/include/samba-client
+  - from: "src/samba-client.desktop"
+    to:   src/desktop
+  - from: "src/samba-client.rnc"
+    to:   src/autoyast-rnc
+  - from: "agents/*.scr"
+    to:   src/scrconf
+  - from: "agent-pam_mount/pam_mount.scr"
+    to:   src/scrconf
+  - from: "agent-pam_mount/ag_pam_mount"
+    to:   src/servers_non_y2

@@ -10,11 +10,12 @@ moves:
     to: src/include/packager
 
 excluded:
-  # some obsoleted tests (do not work anymore due to changed API)
-  # should be removed from the package
-  - testsuite/old-tests/ChangeCD.ycp
-  - testsuite/old-tests/EvaluateFreeSpace.ycp
-  - testsuite/old-tests/GetBootDevice.ycp
-  - testsuite/old-tests/MergeProposals.ycp
-  - testsuite/old-tests/MergeWorkflows.ycp
-  - testsuite/old-tests/evaluateFreeSpace.ycp
+  # TODO FIXME: hidden storage module dependency
+  - src/clients/wrapper_storage.ycp
+
+  # TODO FIXME: hidden add-on module dependency
+  - src/clients/inst_check_memsize.ycp
+
+  # TODO FIXME: hidden installation module dependency
+  - src/clients/inst_productsources.ycp
+
