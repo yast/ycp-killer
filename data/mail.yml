@@ -7,6 +7,7 @@ deps:
   - pam
 
 exports:
+  - src
   - users-plugin
 
 moves:
