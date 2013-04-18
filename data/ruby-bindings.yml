@@ -1,7 +1,0 @@
-#files:
-#  - examples/ruby/ruby_from_ycp.ycp
-#  - examples/ruby/ruby_from_ycp_2.ycp
-#  - examples/ruby/scr.ycp
-#  - tests/ruby/modules/Arch.ycp
-#  - tests/ycp/ruby_from_ycp.ycp
-#  - tests/ycp/ruby_object.ycp
