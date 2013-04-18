@@ -1,17 +1,26 @@
-#files:
-#  - src/HttpServer.ycp
-#  - src/HttpServerWidgets.ycp
-#  - src/complex.ycp
-#  - src/dialogs.ycp
-#  - src/helps.ycp
-#  - src/http-server.ycp
-#  - src/http-server_auto.ycp
-#  - src/routines.ycp
-#  - src/wizard-dialog.ycp
-#  - src/wizards.ycp
-#  - testsuite/tests/getCurrentListen.ycp
-#  - testsuite/tests/listen2item.ycp
-#  - testsuite/tests/listen2map.ycp
-#  - testsuite/tests/parseDirOption.ycp
-#  - testsuite/tests/readHosts.ycp
-#  - testsuite/tests/readListen.ycp
+deps:
+  - yast2
+  - network
+
+moves:
+  - from: "src/HttpServer*.ycp"
+    to:   src/modules
+  - from: "src/YaPI/*.pm"
+    to:   src/modules/YaPI
+  - from: "src/YaST/*.pm"
+    to:   src/modules/YaST
+  - from: "src/http-server*.ycp"
+    to:   src/clients
+  - from: "src/{complex,dialogs,helps,routines,wizard-dialog,wizards}.ycp"
+    to:   src/include/http-server
+  - from: "src/http-server.desktop"
+    to:   src/desktop
+  - from: "agents/*.scr"
+    to:   src/scrconf
+  - from: "agents/ag_*"
+    to:   src/scripts
+
+excluded:
+  - src/include/http-server/dialogs.ycp
+  - src/include/http-server/routines.ycp
+  - src/include/http-server/wizard-dialog.ycp
