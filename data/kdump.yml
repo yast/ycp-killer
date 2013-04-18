@@ -1,12 +1,22 @@
-#files:
-#  - src/Kdump.ycp
-#  - src/complex.ycp
-#  - src/dialogs.ycp
-#  - src/helps.ycp
-#  - src/kdump.ycp
-#  - src/kdump_auto.ycp
-#  - src/kdump_finish.ycp
-#  - src/kdump_proposal.ycp
-#  - src/uifunctions.ycp
-#  - src/wizards.ycp
-#  - testsuite/tests/Kdump.ycp
+deps:
+  - yast2
+  - bootloader
+
+moves:
+  - from: "src/Kdump.ycp"
+    to:   src/modules
+  - from: "src/kdump*.ycp"
+    to:   src/clients
+  - from: "src/{complex,dialogs,helps,uifunctions,wizards}.ycp"
+    to:   src/include/kdump
+  - from: "src/kdump.desktop"
+    to:   src/desktop
+  - from: "agents/cfg_kdump.scr"
+    to:   src/scrconf
+  - from: "config/kdump.rnc"
+    to:   src/autoyast-rnc
+
+excluded:
+  # TODO: Include files, can't be compiled for now.
+  - src/include/kdump/dialogs.ycp
+  - src/include/kdump/uifunctions.ycp
