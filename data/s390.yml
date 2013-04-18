@@ -1,3 +1,31 @@
+deps:
+  - yast2
+  - bootloader
+  - users
+
+moves:
+  - from: "src/dasd/*.ycp"
+    to:   src/include/s390/dasd
+  - from: "src/dump/*.ycp"
+    to:   src/include/s390/dump
+  - from: "src/iucvterminal/*.ycp"
+    to:   src/include/s390/iucvterminal
+  - from: "src/iucvterminal-server/*.ycp"
+    to:   src/include/s390/iucvterminal-server
+  - from: "src/onpanic/*.ycp"
+    to:   src/include/s390/onpanic
+  - from: "src/xpram/*.ycp"
+    to:   src/include/s390/xpram
+  - from: "src/zfcp/*.ycp"
+    to:   src/include/s390/zfcp
+  - from: "src/clients/*.desktop"
+    to:   src/desktop
+  - from: "src/config/*.rnc"
+    to:   src/autoyast-rnc
+  - from: "agents/*.scr"
+    to:   src/scrconf
+
+
 #files:
 #  - src/clients/dasd.ycp
 #  - src/clients/dasd_auto.ycp
