@@ -1,4 +1,4 @@
-deps:
+ybc_deps:
   - packager
   # for clients/iscsi-client_finish.ycp
   - installation
