@@ -5,7 +5,7 @@ deps:
   - samba-client
 
 moves:
-  - from: "src/Samba*.{ycp,pm}"
+  - from: "src/Samba*.pm"
     to:   src/modules
   - from: "src/YaPI/*.pm"
     to:   src/modules/YaPI
