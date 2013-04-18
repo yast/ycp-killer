@@ -691,24 +691,20 @@ class BuildOrder
       if component.all? {|source| source.is_a? Include}
         # YCP parser breaks include cycles
         component.last.includes.delete component.first.name
-      elsif component.size > 2
-        raise TSort::Cyclic.new("Cycle involving at least 2 modules or 2 includes: #{component.inspect}")
-      elsif component.size == 2
-        # break the cycle
-        # pretend the module did not include that one
-        if component.first.is_a? Module
-          mod = component.first
-          inc = component.last
-          inc.is_a? Include or raise TSort::Cyclic.new("Cycle involving two modules: #{component.inspect}")
-        else
-          inc = component.first
-          mod = component.last
-          mod.is_a? Module or raise TSort::Cyclic.new("Cycle involving two includes: #{component.inspect}")
-        end
-        mod.includes.delete inc.name
-        # Be verbose because I wonder whether it only happens in yast2-network
-        puts "Broke a cyclic dependency between #{mod.name} and #{inc.name}"
+        next
       end
+      modules = component.find_all {|source| source.is_a? Module}
+      if modules.size > 1
+        raise TSort::Cyclic.new("Cycle involving 2 modules: #{component.inspect}")
+      end
+      # Now we have a component of one module and some includes,
+      # with possibly multiple cycles in it.
+      # Discard all dependencies leading from the module.
+      mod = modules.first
+      mod.includes.each do |i|
+        puts "Broke a cyclic dependencies between #{mod.name} and #{i}."
+      end
+      mod.includes.clear
     end
     # all harmless cycles are broken; run for real
     tsort
