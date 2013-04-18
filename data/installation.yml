@@ -17,4 +17,5 @@ moves:
     to: src/autoyast-rnc
   - from: "src/inst_finish/*.ycp"
     to: src/clients
-
+  - from: src/include/*.ycp
+    to: src/include/installation
