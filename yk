@@ -40,7 +40,10 @@ module Messages
 end
 
 # Hash: String -> YastModule
-$yast_modules = {}
+$yast_modules = Hash.new do |hash, missing_key|
+  #report misspelled modules instead of producing nil
+  raise "Unknown yast module #{missing_key}"
+end
 
 class YastModule
 
