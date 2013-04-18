@@ -1,8 +1,11 @@
 deps:
+  - mouse
   - yast2
+  - packager
+  - update
   - slp
-  - transfer
   - storage
+  - transfer
 
 moves:
   - from: src/{dialogs,include}/*.ycp
