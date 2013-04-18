@@ -1,0 +1,24 @@
+diff --git a/src/include/ftp-server/wid_functions.ycp b/src/include/ftp-server/wid_functions.ycp
+index 592e527..fe65d56 100644
+--- a/src/include/ftp-server/wid_functions.ycp
++++ b/src/include/ftp-server/wid_functions.ycp
+@@ -11,6 +11,7 @@
+ 
+ textdomain "ftp-server";
+ 
++import "FtpServer";
+ import "Popup";
+ import "Wizard";
+ import "Report";
+diff --git a/src/include/ftp-server/write_load.ycp b/src/include/ftp-server/write_load.ycp
+index 8fc5f60..16d0935 100644
+--- a/src/include/ftp-server/write_load.ycp
++++ b/src/include/ftp-server/write_load.ycp
+@@ -11,6 +11,7 @@
+ 
+ textdomain "ftp-server";
+ 
++import "FtpServer";
+ import "Service";
+ import "Popup";
+ import "Inetd";
