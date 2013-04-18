@@ -1,7 +1,8 @@
 deps:
-  - yast2
   - country
+  - proxy
   - storage
+  - yast2
 
 moves:
   - from: agents/*.scr
@@ -42,3 +43,13 @@ moves:
     to: src/include/network
   - from: src/services/*.ycp
     to: src/include/network/services
+
+excluded:
+  # these are partial includes that want symbols from the including files
+  - src/include/network/isdn/config.ycp
+  - src/include/network/hardware.ycp
+  - src/include/network/lan/wireless.ycp
+  - src/include/network/lan/bridge.ycp
+  - src/include/network/provider/wizards.ycp
+  - src/include/network/provider/complex.ycp
+  - src/include/network/devices.ycp
