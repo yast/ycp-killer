@@ -1,10 +1,15 @@
-#files:
-#  - src/ProfileManager.ycp
-#  - src/complex.ycp
-#  - src/dialogs.ycp
-#  - src/helps.ycp
-#  - src/profile-manager.ycp
-#  - src/profile_manager.ycp
-#  - src/wizards.ycp
-#  - testsuite/tests/CheckNameValidity.ycp
-#  - testsuite/tests/GetProgressText.ycp
+deps:
+  - yast2
+  - users
+
+moves:
+  - from: "src/ProfileManager.ycp"
+    to:   src/modules
+  - from: "src/profile*.ycp"
+    to:   src/clients
+  - from: "src/{complex,dialogs,helps,wizards}.ycp"
+    to:   src/include/profile-manager
+  - from: "src/profile-manager.desktop"
+    to:   src/desktop
+  - from: "agents/cfg_scpm.scr"
+    to:   src/scrconf
