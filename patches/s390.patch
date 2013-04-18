@@ -1,0 +1,115 @@
+diff --git a/src/include/s390/dasd/dialogs.ycp b/src/include/s390/dasd/dialogs.ycp
+index 0ed30cd..7db8079 100644
+--- a/src/include/s390/dasd/dialogs.ycp
++++ b/src/include/s390/dasd/dialogs.ycp
+@@ -189,6 +189,22 @@ list<term> GetDASDDiskItems()
+ 	    switch (action)
+ 	    {
+ 		case `activate:
++		{
++		    boolean value = action == `activate;
++
++		    foreach (integer id, selected, {
++			string channel = DASDController::devices[id, "channel"]:"";
++			boolean diag = DASDController::diag[channel]:false;
++			if (value)
++			    DASDController::ActivateDisk(channel, diag);
++			else
++			    DASDController::DeactivateDisk(channel, diag);
++		    });
++		    DASDController::ProbeDisks();
++
++		    return true;
++                    break;
++		}
+ 		case `deactivate:
+ 		{
+ 		    boolean value = action == `activate;
+@@ -204,9 +220,25 @@ list<term> GetDASDDiskItems()
+ 		    DASDController::ProbeDisks();
+ 
+ 		    return true;
++                    break;
+ 		}
+ 
+ 		case `diag_on:
++		{
++		    boolean value = action == `diag_on;
++
++		    foreach (integer id, selected, {
++			string channel = DASDController::devices[id, "channel"]:"";
++			boolean active = DASDController::devices[id, "resource", "io", 0, "active"]:false;
++			DASDController::diag[channel] = value;
++			if (active)
++			    DASDController::ActivateDisk(channel, value);
++		    });
++		    DASDController::ProbeDisks();
++
++		    return true;
++                    break;
++		}
+ 		case `diag_off:
+ 		{
+ 		    boolean value = action == `diag_on;
+@@ -221,6 +253,7 @@ list<term> GetDASDDiskItems()
+ 		    DASDController::ProbeDisks();
+ 
+ 		    return true;
++                    break;
+ 		}
+ 
+ 		case `format:
+@@ -298,6 +331,7 @@ Really format the following disks?<br>
+ 		    DASDController::ProbeDisks();
+ 
+ 		    return true;
++                    break;
+ 		}
+ 	    }
+ 	}
+@@ -306,6 +340,16 @@ Really format the following disks?<br>
+ 	    switch (action)
+ 	    {
+ 		case `diag_on:
++		{
++		    boolean value = action == `diag_on;
++
++		    foreach (integer id, selected, {
++			DASDController::devices[id, "diag"] = value;
++		    });
++
++		    return true;
++                    break;
++		}
+ 		case `diag_off:
+ 		{
+ 		    boolean value = action == `diag_on;
+@@ -315,9 +359,20 @@ Really format the following disks?<br>
+ 		    });
+ 
+ 		    return true;
++                    break;
+ 		}
+ 
+ 		case `format_on:
++		{
++		    boolean value = action == `format_on;
++		    
++		    foreach (integer id, selected, {
++			DASDController::devices[id, "format"] = value;
++		    });
++
++		    return true;
++                    break;
++		}
+ 		case `format_off:
+ 		{
+ 		    boolean value = action == `format_on;
+@@ -327,6 +382,7 @@ Really format the following disks?<br>
+ 		    });
+ 
+ 		    return true;
++                    break;
+ 		}
+ 	    }
+ 	}
