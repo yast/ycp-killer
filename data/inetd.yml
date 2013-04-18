@@ -19,8 +19,6 @@ moves:
 
 # TODO
 excluded:
-  # Y2R::Parser::SyntaxError: unexpected SYMBOL
-  - src/include/inetd/default_conf_xinetd.ycp
   # hopefully replaced by something entirely different
   # src/default_conf_create.ycp
   # to be resolved; not known where-to with these files:
