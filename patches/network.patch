@@ -1,0 +1,139 @@
+diff --git a/src/clients/inst_netprobe.ycp b/src/clients/inst_netprobe.ycp
+index b0609ea..fd22cff 100644
+--- a/src/clients/inst_netprobe.ycp
++++ b/src/clients/inst_netprobe.ycp
+@@ -33,6 +33,10 @@ textdomain "network";
+ 
+ import "NetHwDetection";
+ 
++// y2r: bug in upstream,
++// https://github.com/yast/yast-network/pull/75#issuecomment-16511001
++include "network/routines.ycp";
++
+ y2milestone("----------------------------------------");
+ y2milestone("Lan netprobe module started");
+ y2milestone("Args: %1", WFM::Args());
+diff --git a/src/include/network/lan/bridge.ycp b/src/include/network/lan/bridge.ycp
+index e597956..ec028b3 100644
+--- a/src/include/network/lan/bridge.ycp
++++ b/src/include/network/lan/bridge.ycp
+@@ -30,6 +30,10 @@
+ {
+ textdomain "network";
+ 
++import "LanItems";
++import "NetworkInterfaces";
++import "Map";
++import "Popup";
+ 
+ /**
+  * Initializes widget (BRIDGE_PORTS) which contains list of devices available
+diff --git a/src/include/network/lan/complex.ycp b/src/include/network/lan/complex.ycp
+index e11a8a4..d1b12aa 100644
+--- a/src/include/network/lan/complex.ycp
++++ b/src/include/network/lan/complex.ycp
+@@ -340,6 +340,8 @@ symbol handleOverview( string key, map event ) {
+ 	LanItems::AddNew();
+ 	Lan::Add();
+ 	return `add;
++        break;
++
+    case `edit:
+ 	if( LanItems::IsCurrentConfigured())
+         {
+@@ -355,7 +357,9 @@ If you edit the settings for this interface here,
+ the interface will no longer be managed by NetworkManager.
+ ")))
+                 {
+-                    break; // means cancel
++                    // y2r: cannot break from middle of switch
++                    // but in this function return will do
++                    return nil; // means cancel
+                 }
+ 
+                 // TODO move the defaults to GetDefaultsForHW
+@@ -367,7 +371,9 @@ the interface will no longer be managed by NetworkManager.
+             if (! AddInterface ()) 
+             {
+                 y2error( "handleOverview: AddInterface failed.");
+-                break;
++                // y2r: cannot break from middle of switch
++                // but in this function return will do
++                return nil;
+             }
+ 
+             if( !DeviceReady( LanItems::getCurrentItem()[ "hwinfo", "dev_name"]:"") )
+@@ -377,6 +383,7 @@ the interface will no longer be managed by NetworkManager.
+         }
+ 
+         return `edit;
++        break;
+ 
+    case `delete:
+ 
+@@ -386,11 +393,20 @@ will be deleted as well.
+ Really continue?
+ "), LanItems::getCurrentItem()["ifcfg"]:"");
+ 	    if(LanItems::InterfaceHasAliases() && Popup::YesNoHeadline(Label::WarningMsg(), pop) != true)
+-		break;
++            {
++                // y2r: cannot break from middle of switch
++                // but in this function return will do
++		return nil;
++            }
+ 
+ 	    // warn user when device to delete has STARTMODE=nfsroot (bnc#433867)
+ 	    if(NetworkInterfaces::GetValue(LanItems::getCurrentItem()["ifcfg"]:"", "STARTMODE")=="nfsroot"){
+-		if(!Popup::YesNoHeadline(Label::WarningMsg(), _("Device you select has STARTMODE=nfsroot. Really delete?"))) break;
++		if(!Popup::YesNoHeadline(Label::WarningMsg(), _("Device you select has STARTMODE=nfsroot. Really delete?")))
++                {
++                    // y2r: cannot break from middle of switch
++                    // but in this function return will do
++                    return nil;
++                }
+ 	    }
+ 
+ 	    LanItems::DeleteItem();
+diff --git a/src/include/network/lan/s390.ycp b/src/include/network/lan/s390.ycp
+index 2d55233..02723df 100644
+--- a/src/include/network/lan/s390.ycp
++++ b/src/include/network/lan/s390.ycp
+@@ -6,7 +6,7 @@
+  *
+  * Functions for accessing and handling s390 specific needs.
+  */
+-
++{
+ import "FileUtils";
+ 
+ include "network/routines.ycp";
+@@ -89,3 +89,5 @@ define map<string, any> s390_ReadQethConfig( string devname)
+ 
+     return result;
+ }
++
++}
+diff --git a/src/include/network/lan/virtual.ycp b/src/include/network/lan/virtual.ycp
+index cde9148..cb979fa 100644
+--- a/src/include/network/lan/virtual.ycp
++++ b/src/include/network/lan/virtual.ycp
+@@ -34,6 +34,7 @@ textdomain "network";
+ import "IP";
+ import "Label";
+ import "Lan";
++import "LanItems";
+ import "Netmask";
+ import "NetworkInterfaces";
+ import "NetworkService";
+diff --git a/src/include/network/services/dns.ycp b/src/include/network/services/dns.ycp
+index c29640e..1adbc3f 100644
+--- a/src/include/network/services/dns.ycp
++++ b/src/include/network/services/dns.ycp
+@@ -44,6 +44,7 @@ import "NetworkConfig";
+ import "Popup";
+ import "Map";
+ import "CWMTab";
++import "Wizard";
+ 
+ include "network/routines.ycp";
+ include "network/widgets.ycp";

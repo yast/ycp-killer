@@ -1,0 +1,416 @@
+diff --git a/testsuite/YaPI/tests/YaPI-AddSAM-2.ycp b/testsuite/YaPI/tests/YaPI-AddSAM-2.ycp
+index 49173d7..2ea5476 100644
+--- a/testsuite/YaPI/tests/YaPI-AddSAM-2.ycp
++++ b/testsuite/YaPI/tests/YaPI-AddSAM-2.ycp
+@@ -8,7 +8,7 @@
+     import "SambaConfig";
+ 
+     include "testsuite.ycp";
+-    include "./tests/tests-common.yh";
++    include "tests-common.yh";
+ 
+     import "YaPI::Samba";
+ 
+diff --git a/testsuite/YaPI/tests/YaPI-AddSAM.ycp b/testsuite/YaPI/tests/YaPI-AddSAM.ycp
+index 098a3a6..d2d3d3a 100644
+--- a/testsuite/YaPI/tests/YaPI-AddSAM.ycp
++++ b/testsuite/YaPI/tests/YaPI-AddSAM.ycp
+@@ -8,7 +8,7 @@
+     import "SambaConfig";
+ 
+     include "testsuite.ycp";
+-    include "./tests/tests-common.yh";
++    include "tests-common.yh";
+ 
+     import "YaPI::Samba";
+ 
+diff --git a/testsuite/YaPI/tests/YaPI-AddShare.ycp b/testsuite/YaPI/tests/YaPI-AddShare.ycp
+index aa3ecc1..0594b6d 100644
+--- a/testsuite/YaPI/tests/YaPI-AddShare.ycp
++++ b/testsuite/YaPI/tests/YaPI-AddShare.ycp
+@@ -7,7 +7,7 @@
+     import "SambaConfig";
+ 
+     include "testsuite.ycp";
+-    include "./tests/tests-common.yh";
++    include "tests-common.yh";
+ 
+     SambaConfig::Import(
+ 	    $["global" : $[
+diff --git a/testsuite/YaPI/tests/YaPI-DeleteSAM-2.ycp b/testsuite/YaPI/tests/YaPI-DeleteSAM-2.ycp
+index 8aaae7e..c64a56e 100644
+--- a/testsuite/YaPI/tests/YaPI-DeleteSAM-2.ycp
++++ b/testsuite/YaPI/tests/YaPI-DeleteSAM-2.ycp
+@@ -8,7 +8,7 @@
+     import "SambaConfig";
+ 
+     include "testsuite.ycp";
+-    include "./tests/tests-common.yh";
++    include "tests-common.yh";
+ 
+     SambaConfig::Import( $[
+                     "global" : $[
+diff --git a/testsuite/YaPI/tests/YaPI-DeleteSAM-3.ycp b/testsuite/YaPI/tests/YaPI-DeleteSAM-3.ycp
+index f01b98a..6d84227 100644
+--- a/testsuite/YaPI/tests/YaPI-DeleteSAM-3.ycp
++++ b/testsuite/YaPI/tests/YaPI-DeleteSAM-3.ycp
+@@ -8,7 +8,7 @@
+     import "SambaConfig";
+ 
+     include "testsuite.ycp";
+-    include "./tests/tests-common.yh";
++    include "tests-common.yh";
+ 
+     SambaConfig::Import($[
+                     "global" : $[
+diff --git a/testsuite/YaPI/tests/YaPI-DeleteSAM.ycp b/testsuite/YaPI/tests/YaPI-DeleteSAM.ycp
+index 147e7d3..789d1ff 100644
+--- a/testsuite/YaPI/tests/YaPI-DeleteSAM.ycp
++++ b/testsuite/YaPI/tests/YaPI-DeleteSAM.ycp
+@@ -8,7 +8,7 @@
+     import "SambaConfig";
+ 
+     include "testsuite.ycp";
+-    include "./tests/tests-common.yh";
++    include "tests-common.yh";
+ 
+     SambaConfig::Import( $[
+                     "global" : $[
+diff --git a/testsuite/YaPI/tests/YaPI-DeleteShare-2.ycp b/testsuite/YaPI/tests/YaPI-DeleteShare-2.ycp
+index 041a15b..7eecd72 100644
+--- a/testsuite/YaPI/tests/YaPI-DeleteShare-2.ycp
++++ b/testsuite/YaPI/tests/YaPI-DeleteShare-2.ycp
+@@ -7,7 +7,7 @@
+     import "SambaConfig";
+ 
+     include "testsuite.ycp";
+-    include "./tests/tests-common.yh";
++    include "tests-common.yh";
+ 
+     SambaConfig::Import( $[
+                     "global" : $[
+diff --git a/testsuite/YaPI/tests/YaPI-DeleteShare.ycp b/testsuite/YaPI/tests/YaPI-DeleteShare.ycp
+index a4df80e..8180215 100644
+--- a/testsuite/YaPI/tests/YaPI-DeleteShare.ycp
++++ b/testsuite/YaPI/tests/YaPI-DeleteShare.ycp
+@@ -7,7 +7,7 @@
+     import "SambaConfig";
+ 
+     include "testsuite.ycp";
+-    include "./tests/tests-common.yh";
++    include "tests-common.yh";
+ 
+     SambaConfig::Import( $[
+                     "global" : $[
+diff --git a/testsuite/YaPI/tests/YaPI-DetermineRole1.ycp b/testsuite/YaPI/tests/YaPI-DetermineRole1.ycp
+index d478e35..0abfe06 100644
+--- a/testsuite/YaPI/tests/YaPI-DetermineRole1.ycp
++++ b/testsuite/YaPI/tests/YaPI-DetermineRole1.ycp
+@@ -7,7 +7,7 @@
+     import "SambaConfig";
+ 
+     include "testsuite.ycp";
+-    include "./tests/tests-common.yh";
++    include "tests-common.yh";
+ 
+     SambaConfig::Import( $["global" : $[
+                         "workgroup" : "Test",
+diff --git a/testsuite/YaPI/tests/YaPI-DetermineRole2.ycp b/testsuite/YaPI/tests/YaPI-DetermineRole2.ycp
+index 617fb20..d55ee33 100644
+--- a/testsuite/YaPI/tests/YaPI-DetermineRole2.ycp
++++ b/testsuite/YaPI/tests/YaPI-DetermineRole2.ycp
+@@ -7,7 +7,7 @@
+     import "SambaConfig";
+ 
+     include "testsuite.ycp";
+-    include "./tests/tests-common.yh";
++    include "tests-common.yh";
+ 
+     SambaConfig::Import( $["global" : $[
+                         "workgroup" : "Test",
+diff --git a/testsuite/YaPI/tests/YaPI-DetermineRole3.ycp b/testsuite/YaPI/tests/YaPI-DetermineRole3.ycp
+index e51f67e..e3af9ca 100644
+--- a/testsuite/YaPI/tests/YaPI-DetermineRole3.ycp
++++ b/testsuite/YaPI/tests/YaPI-DetermineRole3.ycp
+@@ -7,7 +7,7 @@
+     import "SambaConfig";
+ 
+     include "testsuite.ycp";
+-    include "./tests/tests-common.yh";
++    include "tests-common.yh";
+ 
+     SambaConfig::Import( $["global" : $[
+                         "workgroup" : "Test",
+diff --git a/testsuite/YaPI/tests/YaPI-EditDefaultSAM.ycp b/testsuite/YaPI/tests/YaPI-EditDefaultSAM.ycp
+index 0b87c2d..4c37ec4 100644
+--- a/testsuite/YaPI/tests/YaPI-EditDefaultSAM.ycp
++++ b/testsuite/YaPI/tests/YaPI-EditDefaultSAM.ycp
+@@ -8,7 +8,7 @@
+     import "SambaConfig";
+ 
+     include "testsuite.ycp";
+-    include "./tests/tests-common.yh";
++    include "tests-common.yh";
+ 
+     SambaConfig::Import( $[
+                     "global" : $[
+diff --git a/testsuite/YaPI/tests/YaPI-EditSAMConfiguration.ycp b/testsuite/YaPI/tests/YaPI-EditSAMConfiguration.ycp
+index fb7d23e..3ce1ae1 100644
+--- a/testsuite/YaPI/tests/YaPI-EditSAMConfiguration.ycp
++++ b/testsuite/YaPI/tests/YaPI-EditSAMConfiguration.ycp
+@@ -7,7 +7,7 @@
+     import "SambaConfig";
+ 
+     include "testsuite.ycp";
+-    include "./tests/tests-common.yh";
++    include "tests-common.yh";
+ 
+     SambaConfig::Import( $[
+                     "global" : $[
+diff --git a/testsuite/YaPI/tests/YaPI-EditServerAsBDC.ycp b/testsuite/YaPI/tests/YaPI-EditServerAsBDC.ycp
+index 365c9e1..921f268 100644
+--- a/testsuite/YaPI/tests/YaPI-EditServerAsBDC.ycp
++++ b/testsuite/YaPI/tests/YaPI-EditServerAsBDC.ycp
+@@ -7,7 +7,7 @@
+     import "SambaConfig";
+ 
+     include "testsuite.ycp";
+-    include "./tests/tests-common.yh";
++    include "tests-common.yh";
+ 
+     map r = depth_union(r_common, $["etc" : $[ "nsswitch_conf" : $[
+                 "passwd" : "",
+diff --git a/testsuite/YaPI/tests/YaPI-EditServerAsPDC.ycp b/testsuite/YaPI/tests/YaPI-EditServerAsPDC.ycp
+index 1966a81..20cc29d 100644
+--- a/testsuite/YaPI/tests/YaPI-EditServerAsPDC.ycp
++++ b/testsuite/YaPI/tests/YaPI-EditServerAsPDC.ycp
+@@ -7,7 +7,7 @@
+     import "SambaConfig";
+ 
+     include "testsuite.ycp";
+-    include "./tests/tests-common.yh";
++    include "tests-common.yh";
+ 
+     map r = depth_union(r_common, $["etc" : $[ "nsswitch_conf" : $[
+                 "passwd" : "",
+diff --git a/testsuite/YaPI/tests/YaPI-EditServerAsStandalone.ycp b/testsuite/YaPI/tests/YaPI-EditServerAsStandalone.ycp
+index 2dad587..eeef466 100644
+--- a/testsuite/YaPI/tests/YaPI-EditServerAsStandalone.ycp
++++ b/testsuite/YaPI/tests/YaPI-EditServerAsStandalone.ycp
+@@ -7,7 +7,7 @@
+     import "SambaConfig";
+ 
+     include "testsuite.ycp";
+-    include "./tests/tests-common.yh";
++    include "tests-common.yh";
+ 
+     map r = depth_union(r_common, $["etc" : $[ "nsswitch_conf" : $[
+                 "passwd" : "",
+diff --git a/testsuite/YaPI/tests/YaPI-EditServerDescription.ycp b/testsuite/YaPI/tests/YaPI-EditServerDescription.ycp
+index b55ed0e..a381902 100644
+--- a/testsuite/YaPI/tests/YaPI-EditServerDescription.ycp
++++ b/testsuite/YaPI/tests/YaPI-EditServerDescription.ycp
+@@ -7,7 +7,7 @@
+     import "SambaConfig";
+ 
+     include "testsuite.ycp";
+-    include "./tests/tests-common.yh";
++    include "tests-common.yh";
+ 
+     SambaConfig::Import( $["global" : $[
+                         "workgroup" : "Test",
+diff --git a/testsuite/YaPI/tests/YaPI-EditService.ycp b/testsuite/YaPI/tests/YaPI-EditService.ycp
+index 92c02aa..1a3e1c3 100644
+--- a/testsuite/YaPI/tests/YaPI-EditService.ycp
++++ b/testsuite/YaPI/tests/YaPI-EditService.ycp
+@@ -7,7 +7,7 @@
+     import "SambaConfig";
+ 
+     include "testsuite.ycp";
+-    include "./tests/tests-common.yh";
++    include "tests-common.yh";
+ 
+     map r = depth_union(r_common, $[]);
+     map w = depth_union(w_common, $[]);
+diff --git a/testsuite/YaPI/tests/YaPI-EditShare.ycp b/testsuite/YaPI/tests/YaPI-EditShare.ycp
+index cfe64b9..04de8f5 100644
+--- a/testsuite/YaPI/tests/YaPI-EditShare.ycp
++++ b/testsuite/YaPI/tests/YaPI-EditShare.ycp
+@@ -7,7 +7,7 @@
+     import "SambaConfig";
+ 
+     include "testsuite.ycp";
+-    include "./tests/tests-common.yh";
++    include "tests-common.yh";
+ 
+     SambaConfig::Import( $[
+                     "global" : $[
+diff --git a/testsuite/YaPI/tests/YaPI-EnableHomes.ycp b/testsuite/YaPI/tests/YaPI-EnableHomes.ycp
+index e06ce12..b339bc3 100644
+--- a/testsuite/YaPI/tests/YaPI-EnableHomes.ycp
++++ b/testsuite/YaPI/tests/YaPI-EnableHomes.ycp
+@@ -7,7 +7,7 @@
+     import "SambaConfig";
+ 
+     include "testsuite.ycp";
+-    include "./tests/tests-common.yh";
++    include "tests-common.yh";
+ 
+     SambaConfig::Import( $["global" : $[
+ 			"_modified" : "1",
+diff --git a/testsuite/YaPI/tests/YaPI-EnableNetlogon.ycp b/testsuite/YaPI/tests/YaPI-EnableNetlogon.ycp
+index 9d825e1..92af1dc 100644
+--- a/testsuite/YaPI/tests/YaPI-EnableNetlogon.ycp
++++ b/testsuite/YaPI/tests/YaPI-EnableNetlogon.ycp
+@@ -7,7 +7,7 @@
+     import "SambaConfig";
+ 
+     include "testsuite.ycp";
+-    include "./tests/tests-common.yh";
++    include "tests-common.yh";
+ 
+     SambaConfig::Import( $["global" : $[
+ 			"_modified" : "1",
+diff --git a/testsuite/YaPI/tests/YaPI-EnablePrinters.ycp b/testsuite/YaPI/tests/YaPI-EnablePrinters.ycp
+index d0fbb1a..58909eb 100644
+--- a/testsuite/YaPI/tests/YaPI-EnablePrinters.ycp
++++ b/testsuite/YaPI/tests/YaPI-EnablePrinters.ycp
+@@ -7,7 +7,7 @@
+     import "SambaConfig";
+ 
+     include "testsuite.ycp";
+-    include "./tests/tests-common.yh";
++    include "tests-common.yh";
+ 
+     SambaConfig::Import( $[
+                     "global" : $[
+diff --git a/testsuite/YaPI/tests/YaPI-EnableShare-2.ycp b/testsuite/YaPI/tests/YaPI-EnableShare-2.ycp
+index 3c85b6c..961ff55 100644
+--- a/testsuite/YaPI/tests/YaPI-EnableShare-2.ycp
++++ b/testsuite/YaPI/tests/YaPI-EnableShare-2.ycp
+@@ -7,7 +7,7 @@
+     import "SambaConfig";
+ 
+     include "testsuite.ycp";
+-    include "./tests/tests-common.yh";
++    include "tests-common.yh";
+ 
+     SambaConfig::Import( $[
+                     "global" : $[
+diff --git a/testsuite/YaPI/tests/YaPI-EnableShare.ycp b/testsuite/YaPI/tests/YaPI-EnableShare.ycp
+index 41a86bf..9d84689 100644
+--- a/testsuite/YaPI/tests/YaPI-EnableShare.ycp
++++ b/testsuite/YaPI/tests/YaPI-EnableShare.ycp
+@@ -7,7 +7,7 @@
+     import "SambaConfig";
+ 
+     include "testsuite.ycp";
+-    include "./tests/tests-common.yh";
++    include "tests-common.yh";
+ 
+     SambaConfig::Import( $[
+                     "global" : $[
+diff --git a/testsuite/YaPI/tests/YaPI-GetAllDirectories.ycp b/testsuite/YaPI/tests/YaPI-GetAllDirectories.ycp
+index 056fbcc..39605df 100644
+--- a/testsuite/YaPI/tests/YaPI-GetAllDirectories.ycp
++++ b/testsuite/YaPI/tests/YaPI-GetAllDirectories.ycp
+@@ -7,7 +7,7 @@
+     import "SambaConfig";
+ 
+     include "testsuite.ycp";
+-    include "./tests/tests-common.yh";
++    include "tests-common.yh";
+ 
+     SambaConfig::Import( $[
+                     "global" : $[
+diff --git a/testsuite/YaPI/tests/YaPI-GetAllPrinters.ycp b/testsuite/YaPI/tests/YaPI-GetAllPrinters.ycp
+index 33057d6..073e286 100644
+--- a/testsuite/YaPI/tests/YaPI-GetAllPrinters.ycp
++++ b/testsuite/YaPI/tests/YaPI-GetAllPrinters.ycp
+@@ -7,7 +7,7 @@
+     import "SambaConfig";
+ 
+     include "testsuite.ycp";
+-    include "./tests/tests-common.yh";
++    include "tests-common.yh";
+ 
+     SambaConfig::Import( $[
+                     "global" : $[
+diff --git a/testsuite/YaPI/tests/YaPI-GetSAMBackends.ycp b/testsuite/YaPI/tests/YaPI-GetSAMBackends.ycp
+index 5cfa4a7..a68daf1 100644
+--- a/testsuite/YaPI/tests/YaPI-GetSAMBackends.ycp
++++ b/testsuite/YaPI/tests/YaPI-GetSAMBackends.ycp
+@@ -7,7 +7,7 @@
+     import "SambaConfig";
+ 
+     include "testsuite.ycp";
+-    include "./tests/tests-common.yh";
++    include "tests-common.yh";
+ 
+     SambaConfig::Import( $["global" : $[
+                         "workgroup" : "Test",
+diff --git a/testsuite/YaPI/tests/YaPI-GetSAMConfiguration.ycp b/testsuite/YaPI/tests/YaPI-GetSAMConfiguration.ycp
+index 41f851a..f9cc560 100644
+--- a/testsuite/YaPI/tests/YaPI-GetSAMConfiguration.ycp
++++ b/testsuite/YaPI/tests/YaPI-GetSAMConfiguration.ycp
+@@ -7,7 +7,7 @@
+     import "SambaConfig";
+ 
+     include "testsuite.ycp";
+-    include "./tests/tests-common.yh";
++    include "tests-common.yh";
+ 
+     SambaConfig::Import( $[
+                     "global" : $[
+diff --git a/testsuite/YaPI/tests/YaPI-GetServerDescription.ycp b/testsuite/YaPI/tests/YaPI-GetServerDescription.ycp
+index 2132c0a..dd1492e 100644
+--- a/testsuite/YaPI/tests/YaPI-GetServerDescription.ycp
++++ b/testsuite/YaPI/tests/YaPI-GetServerDescription.ycp
+@@ -7,7 +7,7 @@
+     import "SambaConfig";
+ 
+     include "testsuite.ycp";
+-    include "./tests/tests-common.yh";
++    include "tests-common.yh";
+ 
+     SambaConfig::Import( $["global" : $[
+                         "workgroup" : "Test",
+diff --git a/testsuite/YaPI/tests/YaPI-GetServiceStatus.ycp b/testsuite/YaPI/tests/YaPI-GetServiceStatus.ycp
+index 95d279f..cf6cd5f 100644
+--- a/testsuite/YaPI/tests/YaPI-GetServiceStatus.ycp
++++ b/testsuite/YaPI/tests/YaPI-GetServiceStatus.ycp
+@@ -6,7 +6,7 @@
+     import "SambaConfig";
+ 
+     include "testsuite.ycp";
+-    include "./tests/tests-common.yh";
++    include "tests-common.yh";
+ 
+     map r = depth_union(r_common, $[]);
+     map w = depth_union(w_common, $[]);
+diff --git a/testsuite/YaPI/tests/YaPI-GetShare.ycp b/testsuite/YaPI/tests/YaPI-GetShare.ycp
+index 806b179..c6aa0d9 100644
+--- a/testsuite/YaPI/tests/YaPI-GetShare.ycp
++++ b/testsuite/YaPI/tests/YaPI-GetShare.ycp
+@@ -7,7 +7,7 @@
+     import "SambaConfig";
+ 
+     include "testsuite.ycp";
+-    include "./tests/tests-common.yh";
++    include "tests-common.yh";
+ 
+     SambaConfig::Import( $[
+                     "global" : $[
+diff --git a/testsuite/YaPI/tests/YaPI-ShareEnabled.ycp b/testsuite/YaPI/tests/YaPI-ShareEnabled.ycp
+index 3b224c7..1d6c62f 100644
+--- a/testsuite/YaPI/tests/YaPI-ShareEnabled.ycp
++++ b/testsuite/YaPI/tests/YaPI-ShareEnabled.ycp
+@@ -7,7 +7,7 @@
+     import "SambaConfig";
+ 
+     include "testsuite.ycp";
+-    include "./tests/tests-common.yh";
++    include "tests-common.yh";
+ 
+     SambaConfig::Import( $[
+                     "lp2" : $[

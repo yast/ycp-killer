@@ -2,7 +2,7 @@ deps:
   - yast2
   - testsuite
   - nfs-client
-  - autoinstall
+  - autoinstallation
 
 moves:
   - from: "src/[A-Z]*.ycp"

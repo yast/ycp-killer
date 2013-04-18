@@ -1,12 +1,12 @@
-#files:
-#  - src/IscsiServer.ycp
-#  - src/complex.ycp
-#  - src/dialogs.ycp
-#  - src/helps.ycp
-#  - src/iscsi-server.ycp
-#  - src/iscsi-server_auto.ycp
-#  - src/iscsi-server_proposal.ycp
-#  - src/widgets.ycp
-#  - src/wizards.ycp
-#  - testsuite/tests/IscsiServer.ycp
-#  - testsuite/tests/readConfig.ycp
+deps:
+  - yast2
+
+moves:
+  - from: src/iscsi-server*.ycp
+    to:   src/clients
+  - from: src/IscsiServer*.{ycp,pm}
+    to:   src/modules
+  - from: src/*.ycp
+    to:   src/include/iscsi-server
+  - from: src/*.desktop
+    to:   src/desktop

@@ -1,3 +1,35 @@
+deps:
+  - yast2
+  - ldap-client
+  - users
+  - samba-client
+
+moves:
+  - from: "src/Samba*.pm"
+    to:   src/modules
+  - from: "src/YaPI/*.pm"
+    to:   src/modules/YaPI
+  - from: "users-plugin/UsersPluginSamba*.pm"
+    to:   src/modules
+  - from: "src/samba-server*.ycp"
+    to:   src/clients
+  - from: "users-plugin/users_plugin_samba*.ycp"
+    to:   src/clients
+  - from: "src/{complex,dialogs,dialogs-items,helps,ldap-widget,wizards}.ycp"
+    to:   src/include/samba-server
+  - from: "src/samba-options-*.ycp"
+    to:   src/include/samba-server
+  - from: "src/samba-server.desktop"
+    to:   src/desktop
+  - from: "src/add_machine.ycp"
+    to:   src/data
+  - from: "src/config/samba-server.rnc"
+    to:   src/autoyast-rnc
+
+excluded:
+  # TODO: Include file, can't be compiled for now.
+  - src/include/samba-server/samba-options-local.ycp
+
 #files:
 #  - src/add_machine.ycp
 #  - src/complex.ycp
