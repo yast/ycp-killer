@@ -1,0 +1,235 @@
+diff --git a/src/include/bootloader/elilo/options.ycp b/src/include/bootloader/elilo/options.ycp
+index 1584c1e..2a1b431 100644
+--- a/src/include/bootloader/elilo/options.ycp
++++ b/src/include/bootloader/elilo/options.ycp
+@@ -21,7 +21,7 @@ import "Label";
+ import "BootCommon";
+ 
+ include "bootloader/elilo/helps.ycp";
+-
++include "bootloader/routines/common_options.ycp";
+ 
+ /**
+  * Common widgets of global settings for ELILO
+@@ -60,4 +60,4 @@ map<string,map<string,any> > EliloOptions()
+ 
+ 
+ 
+-}
+\ No newline at end of file
++}
+diff --git a/src/include/bootloader/elilo/widgets.ycp b/src/include/bootloader/elilo/widgets.ycp
+index f5ce18c..187ae4d 100644
+--- a/src/include/bootloader/elilo/widgets.ycp
++++ b/src/include/bootloader/elilo/widgets.ycp
+@@ -23,6 +23,7 @@
+     import "Label";
+     import "Mode";
+     import "BootCommon";
++    import "BootELILO";
+     include "bootloader/routines/popups.ycp";
+ 
+ 
+@@ -34,7 +35,7 @@
+       * @return widget term
+       */
+     global define term getTargetWidget () ``{
+-	boolean have_old = (old_efi_entry != nil && old_efi_entry != "");
++	boolean have_old = (BootELILO::old_efi_entry != nil && BootELILO::old_efi_entry != "");
+ 
+ 	term widget = `VBox (`Frame ( _("EFI Label"), `HBox(`HSpacing(1),`VBox(
+ 	    `VSpacing (1),
+@@ -55,9 +56,9 @@
+       * @param opt_key any option key
+       */
+     global define void targetInit (string widget) ``{
+-	UI::ChangeWidget (`id (`create_entry), `Value, create_efi_entry);
++	UI::ChangeWidget (`id (`create_entry), `Value, BootELILO::create_efi_entry);
+ 	UI::ChangeWidget (`id (`location), `Value, BootCommon::globals["boot_efilabel"]:"");
+-	UI::ChangeWidget (`id (`location), `Enabled, create_efi_entry);
++	UI::ChangeWidget (`id (`location), `Enabled, BootELILO::create_efi_entry);
+     }
+ 
+     /**
+@@ -81,7 +82,7 @@
+ 	BootCommon::globals["boot_efilabel"] = (string)
+ 	    UI::QueryWidget (`id (`location), `Value);
+ 	BootCommon::location_changed = true;
+-	create_efi_entry = (boolean)
++	BootELILO::create_efi_entry = (boolean)
+ 	    UI::QueryWidget (`id (`create_entry), `Value);
+     }
+ 
+diff --git a/src/include/bootloader/grub/misc.ycp b/src/include/bootloader/grub/misc.ycp
+index 7a50307..5fd7869 100644
+--- a/src/include/bootloader/grub/misc.ycp
++++ b/src/include/bootloader/grub/misc.ycp
+@@ -21,7 +21,9 @@
+     import "Storage";
+     import "StorageDevices";
+     import "Mode";
++    import "Stage";
+     import "BootCommon";
++    import "BootStorage";
+     import "PackageSystem";
+     import "Map";
+ 
+diff --git a/src/include/bootloader/grub2/misc.ycp b/src/include/bootloader/grub2/misc.ycp
+index 11bff4a..f0ef9ad 100644
+--- a/src/include/bootloader/grub2/misc.ycp
++++ b/src/include/bootloader/grub2/misc.ycp
+@@ -22,8 +22,10 @@
+     import "StorageDevices";
+     import "Mode";
+     import "BootCommon";
++    import "BootStorage";
+     import "PackageSystem";
+     import "Map";
++    import "Stage";
+ 
+ 
+ // --------------------------------------------------------------
+diff --git a/src/include/bootloader/routines/common_options.ycp b/src/include/bootloader/routines/common_options.ycp
+index f8f9d16..c83c68d 100644
+--- a/src/include/bootloader/routines/common_options.ycp
++++ b/src/include/bootloader/routines/common_options.ycp
+@@ -19,6 +19,9 @@
+ 
+ textdomain "bootloader";
+ 
++import "BootCommon";
++import "Label";
++
+ include "bootloader/routines/common_helps.ycp";
+ 
+ /**
+diff --git a/src/include/bootloader/routines/global_widgets.ycp b/src/include/bootloader/routines/global_widgets.ycp
+index 078ae3c..25d5cc0 100644
+--- a/src/include/bootloader/routines/global_widgets.ycp
++++ b/src/include/bootloader/routines/global_widgets.ycp
+@@ -28,14 +28,17 @@ import "Mode";
+ import "Storage";
+ import "StorageDevices";
+ import "Bootloader";
++import "BootStorage";
+ import "Progress";
+ import "PackageSystem";
+ import "Package";
+ import "Message";
+-
++import "Popup";
++import "Stage";
+ 
+ 
+ include "bootloader/routines/helps.ycp";
++include "bootloader/routines/popups.ycp";
+ 
+ /**
+  * Init function of widget
+diff --git a/src/include/bootloader/routines/helps.ycp b/src/include/bootloader/routines/helps.ycp
+index cf856da..e93908c 100644
+--- a/src/include/bootloader/routines/helps.ycp
++++ b/src/include/bootloader/routines/helps.ycp
+@@ -19,6 +19,7 @@
+ {
+     textdomain "bootloader";
+ 
++    import "BootCommon";
+     import "StorageDevices";
+     import "Arch";
+ 
+diff --git a/src/include/bootloader/routines/i386.ycp b/src/include/bootloader/routines/i386.ycp
+index f263957..45f728c 100644
+--- a/src/include/bootloader/routines/i386.ycp
++++ b/src/include/bootloader/routines/i386.ycp
+@@ -54,6 +54,10 @@ boolean _keep_mbr = nil;
+  */
+ string thinkpad_seq = "50e46124108ae0e461241038e074f8e2f458c332edb80103ba8000cd13c3be05068a04240cc0e802c3";
+ 
++global list<string> Summary ();
++global string DiskOrderSummary ();
++
++
+ /**
+  * Get the contents of the MBR of a disk
+  * @param disk string the disk to be checked
+@@ -151,7 +155,7 @@ global list<string> i386Summary () {
+  * Propose the boot loader location for i386 (and similar) platform
+  */
+ global void i386LocationProposal () {
+-    if (! was_proposed)
++    if (!BootCommon::was_proposed)
+     {
+ 	DetectDisks ();
+ 	del_parts = BootStorage::getPartitionList (`deleted, getLoaderType(false));
+diff --git a/src/include/bootloader/routines/lib_iface.ycp b/src/include/bootloader/routines/lib_iface.ycp
+index 31b46a4..5659ccb 100644
+--- a/src/include/bootloader/routines/lib_iface.ycp
++++ b/src/include/bootloader/routines/lib_iface.ycp
+@@ -25,9 +25,14 @@
+ textdomain "bootloader";
+ 
+ import "System::Bootloader_API";
++import "BootArch";
++import "BootStorage";
+ import "Storage";
+ import "Mode";
+ 
++include "bootloader/routines/popups.ycp";
++
++
+ /**
+  * Loader the library has been initialized to use
+  */
+diff --git a/src/include/bootloader/routines/lilolike.ycp b/src/include/bootloader/routines/lilolike.ycp
+index 1389e28..704b912 100644
+--- a/src/include/bootloader/routines/lilolike.ycp
++++ b/src/include/bootloader/routines/lilolike.ycp
+@@ -25,6 +25,8 @@ import "Storage";
+ import "StorageDevices";
+ import "BootArch";
+ import "Map";
++import "BootStorage";
++import "BootCommon";
+ 
+ global string DiskOrderSummary ();
+ global void DetectDisks ();
+diff --git a/src/include/bootloader/routines/misc.ycp b/src/include/bootloader/routines/misc.ycp
+index b3a4322..9a50327 100644
+--- a/src/include/bootloader/routines/misc.ycp
++++ b/src/include/bootloader/routines/misc.ycp
+@@ -39,6 +39,8 @@
+     import "FileUtils";
+     import "String";
+     import "FileUtils";
++    import "Arch";
++    import "BootStorage";
+ 
+ // bootloader attributes handling functions
+ 
+@@ -76,7 +78,7 @@
+ 	    // combo box item
+ 	    : _("Boot Loader");
+ 	// fallback bootloader name, keep short
+-	return bootloader_attribs[bootloader, "loader_name"]:fallback_name;
++	return BootCommon::bootloader_attribs[bootloader, "loader_name"]:fallback_name;
+     }
+ 
+     /**
+diff --git a/src/include/bootloader/routines/section_widgets.ycp b/src/include/bootloader/routines/section_widgets.ycp
+index 58c6dfa..77199af 100644
+--- a/src/include/bootloader/routines/section_widgets.ycp
++++ b/src/include/bootloader/routines/section_widgets.ycp
+@@ -32,10 +32,12 @@ import "Bootloader";
+ import "BootStorage";
+ import "Popup";
+ import "FileUtils";
++import "Report";
+ 
+ 
+ include "bootloader/routines/helps.ycp";
+ include "bootloader/routines/section_helps.ycp";
++include "bootloader/routines/popups.ycp";
+ 
+ boolean validate_image(string widget, map event){
+   string value = (string) UI::QueryWidget(`id(widget),`Value);
