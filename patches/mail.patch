@@ -1,0 +1,23 @@
+diff --git a/src/include/mail/mail-server_dialogs.ycp b/src/include/mail/mail-server_dialogs.ycp
+index 1aa3e3b..05d8c27 100644
+--- a/src/include/mail/mail-server_dialogs.ycp
++++ b/src/include/mail/mail-server_dialogs.ycp
+@@ -13,13 +13,17 @@ textdomain "mail";
+ 
+ import "Label";
+ import "Ldap";
+-import "Wizard";
++import "MailServer";
++import "Popup";
++import "Progress";
+ import "Report";
+ import "Service";
+ import "Users";
++import "Wizard";
+ import "YaPI::MailServer";
+ 
+ include "mail/helps.ycp";
++include "mail/mail-server_helps.ycp";
+ 
+ boolean ReallyAbort() {
+     return !MailServer::Modified() || Popup::ReallyAbort(true);
