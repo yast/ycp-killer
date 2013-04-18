@@ -1,11 +1,13 @@
 diff --git a/src/clients/inst_netprobe.ycp b/src/clients/inst_netprobe.ycp
-index b0609ea..fcb2c5a 100644
+index b0609ea..fd22cff 100644
 --- a/src/clients/inst_netprobe.ycp
 +++ b/src/clients/inst_netprobe.ycp
-@@ -33,6 +33,8 @@ textdomain "network";
+@@ -33,6 +33,10 @@ textdomain "network";
  
  import "NetHwDetection";
  
++// y2r: bug in upstream,
++// https://github.com/yast/yast-network/pull/75#issuecomment-16511001
 +include "network/routines.ycp";
 +
  y2milestone("----------------------------------------");
