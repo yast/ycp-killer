@@ -76,7 +76,11 @@ class YastModule
   end
 
   def transitive_deps
-    (deps.map { |d| $yast_modules[d].transitive_deps }.reduce([], :+) + deps).uniq
+    deps_of_deps = deps.map { |d| $yast_modules[d].transitive_deps }
+    depth_first_deps = deps_of_deps.reduce([], :+) + deps
+    # Note that they come out topologically sorted
+    # because uniq takes the first object.
+    depth_first_deps.uniq
   end
 
   # can only be called once all $yast_modules have been initialized
