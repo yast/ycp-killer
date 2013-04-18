@@ -1,4 +1,4 @@
-deps:
+ybc_deps:
   - testsuite
 exports:
   - library/types/src
