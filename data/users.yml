@@ -1,6 +1,8 @@
 deps:
   - yast2
   - testsuite
+  - ldap-client
+  - security
 
 moves:
   - from: agents/etc_default_useradd.scr
