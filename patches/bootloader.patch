@@ -163,16 +163,16 @@ index f263957..45f728c 100644
  	DetectDisks ();
  	del_parts = BootStorage::getPartitionList (`deleted, getLoaderType(false));
 diff --git a/src/include/bootloader/routines/lib_iface.ycp b/src/include/bootloader/routines/lib_iface.ycp
-index 31b46a4..5659ccb 100644
+index 31b46a4..f54304e 100644
 --- a/src/include/bootloader/routines/lib_iface.ycp
 +++ b/src/include/bootloader/routines/lib_iface.ycp
-@@ -25,9 +25,14 @@
+@@ -25,9 +25,13 @@
  textdomain "bootloader";
  
  import "System::Bootloader_API";
+-import "Storage";
 +import "BootArch";
 +import "BootStorage";
- import "Storage";
  import "Mode";
  
 +include "bootloader/routines/popups.ycp";
@@ -182,13 +182,16 @@ index 31b46a4..5659ccb 100644
   * Loader the library has been initialized to use
   */
 diff --git a/src/include/bootloader/routines/lilolike.ycp b/src/include/bootloader/routines/lilolike.ycp
-index 1389e28..704b912 100644
+index 1389e28..dc9ec3b 100644
 --- a/src/include/bootloader/routines/lilolike.ycp
 +++ b/src/include/bootloader/routines/lilolike.ycp
-@@ -25,6 +25,8 @@ import "Storage";
- import "StorageDevices";
- import "BootArch";
- import "Map";
+@@ -22,9 +22,8 @@ textdomain "bootloader";
+ import "Arch";
+ import "Mode";
+ import "Storage";
+-import "StorageDevices";
+-import "BootArch";
+-import "Map";
 +import "BootStorage";
 +import "BootCommon";
  
@@ -216,6 +219,18 @@ index b3a4322..9a50327 100644
      }
  
      /**
+diff --git a/src/include/bootloader/routines/popups.ycp b/src/include/bootloader/routines/popups.ycp
+index c3e8bd3..ad8627f 100644
+--- a/src/include/bootloader/routines/popups.ycp
++++ b/src/include/bootloader/routines/popups.ycp
+@@ -28,6 +28,7 @@
+     import "Popup";
+     import "Report";
+     import "String";
++    import "BootCommon";
+ 
+ /**
+  * Inform about not available functionality when no loader selected
 diff --git a/src/include/bootloader/routines/section_widgets.ycp b/src/include/bootloader/routines/section_widgets.ycp
 index 58c6dfa..77199af 100644
 --- a/src/include/bootloader/routines/section_widgets.ycp
@@ -233,3 +248,15 @@ index 58c6dfa..77199af 100644
  
  boolean validate_image(string widget, map event){
    string value = (string) UI::QueryWidget(`id(widget),`Value);
+diff --git a/src/modules/BootCommon.ycp b/src/modules/BootCommon.ycp
+index f756b6c..5659a4f 100644
+--- a/src/modules/BootCommon.ycp
++++ b/src/modules/BootCommon.ycp
+@@ -36,6 +36,7 @@ import "Popup";
+ import "Package";
+ import "PackagesProposal";
+ import "BootStorage";
++import "BootArch";
+ 
+ import "Linuxrc";
+ 
