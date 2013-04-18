@@ -1,0 +1,12 @@
+diff --git a/src/clients/sshd_auto.ycp b/src/clients/sshd_auto.ycp
+index 28e831e..92fe413 100644
+--- a/src/clients/sshd_auto.ycp
++++ b/src/clients/sshd_auto.ycp
+@@ -116,6 +116,7 @@ switch (func) {
+ 	Progress::set (orig2);
+ 	break;
+     
++    default:
+     y2error("Unknown function: %1, Params %2", func, param);
+ }
+ 
