@@ -28,15 +28,6 @@ moves:
 
 excluded:
 
-  # exclude some includes which do not compile yet
-  - src/include/bootloader/routines/lilolike.ycp
-  - src/include/bootloader/routines/popups.ycp
-  - src/include/bootloader/routines/i386.ycp
-  - src/include/bootloader/routines/lib_iface.ycp
-  - src/include/bootloader/routines/misc.ycp
-  - src/include/bootloader/ppc/dialogs.ycp
-  - src/include/bootloader/ppc/options.ycp
-
   # the testsuite seems to be completely broken and not maintained :-(
 
   # imports "BootS390" which does not exist
