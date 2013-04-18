@@ -30,8 +30,10 @@ moves:
     to: .
 
 excluded:
-  # TODO: These files use the version of LibStorage::initDefaultLogger without
-  #       parameters, which ycpc doesn't like. This should be fixed either
-  #       upstream or in our stubs.
+  # TODO: These are the only files using LibStorage::initDefaultLogger which is
+  #       an overloaded function. pluglib-bindings (the YCP addition over SWIG)
+  #       don't handle the overloading, letting YCP see only one variant at
+  #       random. If there are real uses of overloaded functions, this should
+  #       be fixed either upstream or in our stubs.
   - bindings/ycp/callback.ycp
   - bindings/ycp/example.ycp
