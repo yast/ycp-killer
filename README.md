@@ -65,7 +65,9 @@ things get gemified, packaged, etc.
 
   6. **Clone the YCP Killer repository and install YCP Killer's dependencies**
 
-         $ sudo zypper in perl-JSON cracklib-devel # perl-JSON is needed to load the Json.pm YCP module and cracklib-devel is dependency of users module
+         $ sudo zypper in perl-JSON      # Needed to load the Json.pm YCP module
+         $ sudo zypper in suseRegister   # Needed to load the YSR.pm YCP module
+         $ sudo zypper in cracklib-devel # Dependency of the dependency of users YaST module
          $ git clone git://github.com/yast/ycp-killer.git
          $ cd ycp-killer
          $ bundle install
