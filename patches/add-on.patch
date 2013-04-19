@@ -1,0 +1,34 @@
+diff --git a/doc/Makefile.am b/doc/Makefile.am
+index f92f253..5aee244 100644
+--- a/doc/Makefile.am
++++ b/doc/Makefile.am
+@@ -1,6 +1,7 @@
+ # Makefile.am for add-on/doc
+ 
+-SUBDIRS = autodocs
++# TODO: no autodocs support for ruby
++#SUBDIRS = autodocs
+ 
+ htmldir = $(docdir)
+ 
+diff --git a/yast2-add-on.spec.in b/yast2-add-on.spec.in
+index ef8280b..21f7eaa 100644
+--- a/yast2-add-on.spec.in
++++ b/yast2-add-on.spec.in
+@@ -46,11 +46,11 @@ This package contains YaST Add-On media installation code.
+ %defattr(-,root,root)
+ %dir @yncludedir@/add-on
+ @yncludedir@/add-on/*
+-@clientdir@/add-on.ycp
+-@clientdir@/add-on_*.ycp
+-@clientdir@/inst_add-on*.ycp
+-@clientdir@/inst_*_add-on*.ycp
+-@clientdir@/vendor.ycp
++@clientdir@/add-on.rb
++@clientdir@/add-on_*.rb
++@clientdir@/inst_add-on*.rb
++@clientdir@/inst_*_add-on*.rb
++@clientdir@/vendor.rb
+ #@moduledir@/*.ycp
+ #@moduledir@/*.ybc
+ @desktopdir@/*.desktop
