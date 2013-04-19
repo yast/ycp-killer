@@ -1,0 +1,123 @@
+diff --git a/src/include/printer/connectionwizard.ycp b/src/include/printer/connectionwizard.ycp
+index 253eff4..dc1bfd2 100644
+--- a/src/include/printer/connectionwizard.ycp
++++ b/src/include/printer/connectionwizard.ycp
+@@ -590,9 +590,9 @@ void changeSettingsDialog( symbol selected )
+                           ( _("The RPM package hplip is not installed.") )
+                         )
+                       );
+-            break;
+           }
+-          content = getContentFromBackend("hp");
++          else
++          { content = getContentFromBackend("hp"); }
+           break;
+     case(`serial):
+           current_device_uri = getCurrentDeviceURI();
+@@ -986,9 +986,10 @@ void changeSettingsDialog( symbol selected )
+                             ( _("The RPM package bluez-cups is not installed.") )
+                           )
+                         );
+-              break;
+             }
+           }
++          else
++          {
+           // Fallback message what the user may run manually when it fails
+           // to generate a valid list of bluetooth device IDs:
+           string  bluetooth_device_list = _("It seems there are no bluetooth device IDs.\nRun 'hcitool scan' to get the bluetooth device IDs.\nEnter the ID without colons like '1A2B3C4D5E6F'.");
+@@ -1098,6 +1099,7 @@ void changeSettingsDialog( symbol selected )
+                       ),
+                       model_content
+                     );
++          }
+           break;
+     // Access network printer or printserver box via
+     case(`tcp):
+@@ -1264,9 +1266,10 @@ void changeSettingsDialog( symbol selected )
+                             ( _("The RPM package samba-client is not installed.") )
+                           )
+                         );
+-              break;
+             }
+           }
++          else
++          {
+           hostname = "";
+           domain = "";
+           printer = "";
+@@ -1433,6 +1436,7 @@ void changeSettingsDialog( symbol selected )
+                       ),
+                       model_content
+                     );
++          }
+           break;
+     case(`lpr):
+           hostname = "";
+@@ -1616,9 +1620,10 @@ void changeSettingsDialog( symbol selected )
+                             ( _("The RPM package ncpfs is not installed.") )
+                           )
+                         );
+-              break;
+             }
+           }
++          else
++          {
+           hostname = "";
+           queue = "";
+           user = "";
+@@ -1702,6 +1707,7 @@ void changeSettingsDialog( symbol selected )
+                       ),
+                       model_content
+                     );
++          }
+           break;
+     // Special
+     case(`uri):
+@@ -1783,9 +1789,10 @@ void changeSettingsDialog( symbol selected )
+                             ( _("The RPM package cups-backends is not installed.") )
+                           )
+                         );
+-              break;
+             }
+           }
++          else
++          {
+           uri = "";
+           current_device_uri = getCurrentDeviceURI();
+           if( "pipe:/" == substring( current_device_uri, 0, size( "pipe:/" ) ) )
+@@ -1809,6 +1816,7 @@ void changeSettingsDialog( symbol selected )
+                       ),
+                       model_content
+                     );
++          }
+           break;
+     case(`beh):
+           uri = "";
+@@ -2166,22 +2174,22 @@ boolean validateAndMakeURI( symbol selected )
+                                // because there is no connection available to be selected:
+                                _("If no connection is shown here, it is not possible\nto access the device via this type of connection.\nWas the printer connected and switched on all the time?")
+                              );
+-            break;
+-          }
+-          if( selected_connection_index < 0 )
++          } else if ( selected_connection_index < 0 )
+           { Popup::AnyMessage( // Header of a Popup::AnyMessage when an invalid connection was selected:
+                                _("Select a valid connection"),
+                                // Body of a Popup::AnyMessage when an invalid connection was selected
+                                // because the current connection is no longer valid:
+                                _("When the current connection is no longer valid,\nit does no longer work to access the device via this connection.\nIs the printer still connected and switched on?")
+                              );
+-            break;
+           }
++          else
++          {
+           connection_uri = Printer::connections[selected_connection_index,"uri"]:"";
+           connection_model = Printer::connections[selected_connection_index,"model"]:"Unknown";
+           if( "" != connection_uri )
+           { valid = true;
+           }
++          }
+           break;
+     case(`serial):
+           string serial_device_node = (string)UI::QueryWidget( `serial_device_node, `Value );
