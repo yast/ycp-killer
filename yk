@@ -727,7 +727,7 @@ class BuildOrder
       # Discard all dependencies leading from the module.
       mod = modules.first
       mod.includes.each do |i|
-        puts "Broke a cyclic dependencies between #{mod.name} and #{i}."
+        puts "Broke a cyclic dependency between #{mod.name} and #{i}."
       end
       mod.includes.clear
     end
