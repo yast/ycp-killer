@@ -1,0 +1,12 @@
+diff --git a/src/include/inetd/default_conf_xinetd.ycp b/src/include/inetd/default_conf_xinetd.ycp
+index 8e1465e..33cc885 100644
+--- a/src/include/inetd/default_conf_xinetd.ycp
++++ b/src/include/inetd/default_conf_xinetd.ycp
+@@ -38,6 +38,7 @@ string GetBinPath () {
+ 
+ string x_bin_path = GetBinPath();
+ 
++typedef list<map <string, any> > services_t;
+ 
+ global services_t default_conf =
+ [
