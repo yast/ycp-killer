@@ -24,8 +24,6 @@ moves:
     to: src/include/network/installation
   - from: src/installation/*.ycp
     to: src/clients
-  - from: src/installation/dialogs.ycp
-    to: src/include/network/installation
   - from: src/isdn/*.ycp
     to: src/include/network/isdn
   - from: src/lan/*.ycp
