@@ -13,14 +13,3 @@ moves:
     to:   src/modules
   - from: src/printer.desktop
     to:   src/desktop
-
-# TODO
-excluded:
-  # need to fix the crazy switch with break statements
-  - src/include/printer/connectionwizard.ycp
-  # need to fix the connectionwizard.ycp
-  - src/include/printer/wizards.ycp
-  # need to fix the connectionwizard.ycp
-  - src/clients/printer.ycp
-  # need to fix the connectionwizard.ycp
-  - src/clients/printer_auto.ycp
