@@ -12,5 +12,5 @@ moves:
     to:   src/include/iscsi-client
   - from: src/*.desktop
     to:   src/desktop
-  - from: src/*.rcn
+  - from: src/*.rnc
     to:   src/autoyast-rnc
