@@ -5,6 +5,7 @@ deps:
   - autoinstallation
   - country
   - network
+  - proxy
 
 moves:
   - from: "agents/*.scr"
