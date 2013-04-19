@@ -1,4 +1,4 @@
-deps:
+ybc_deps:
   - yast2
 moves:
   - from: "src/SLP.ycp"

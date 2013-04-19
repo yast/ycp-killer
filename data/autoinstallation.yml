@@ -1,4 +1,4 @@
-deps:
+ybc_deps:
   - mouse
   - yast2
   - packager

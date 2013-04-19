@@ -56,7 +56,8 @@ class YastModule
     :work_dir,
     :result_dir,
     :obs_dir,
-    :deps,
+    :ybc_deps,
+    :ruby_deps,
     :exports,
     :excluded,
     :moves
@@ -68,7 +69,8 @@ class YastModule
     @result_dir = "#{@config["yast_dir"]}/#{RESULT_DIR}/#@name"
     # Not suffixed with @name as it does not match (usuall yast2-#{name} )
     @obs_dir    = "#{@config["yast_dir"]}/#{OBS_DIR}"
-    @deps       = data.delete("deps") || []
+    @ybc_deps   = data.delete("ybc_deps") || []
+    @ruby_deps  = data.delete("ruby_deps") || []
     @exports    = data.delete("exports") || ["src"]
     @excluded   = data.delete("excluded") || []
     @moves      = data.delete("moves") || []
@@ -79,8 +81,8 @@ class YastModule
   end
 
   def transitive_deps
-    deps_of_deps = deps.map { |d| $yast_modules[d].transitive_deps }
-    depth_first_deps = deps_of_deps.reduce([], :+) + deps
+    deps_of_deps = ybc_deps.map { |d| $yast_modules[d].transitive_deps }
+    depth_first_deps = deps_of_deps.reduce([], :+) + ybc_deps
     # Note that they come out topologically sorted
     # because uniq takes the first object.
     depth_first_deps.uniq
@@ -97,7 +99,7 @@ class YastModule
   end
 
   def convert
-    check_missing_work(deps)
+    check_missing_work(ybc_deps + ruby_deps)
     File.exists?(work_dir) ? update : clone
     restructure
     patch
@@ -480,28 +482,30 @@ EOS
     end
   end
 
-  def module_paths
+  def ybc_module_paths
     # The lazy loading is needed because the dependencies may not be fully
     # initialized when "initialize" is called on this module.
-    unless @module_paths 
-      @module_paths = [STUBS_DIR] + exported_module_paths
+    unless @ybc_module_paths 
+      @ybc_module_paths = [STUBS_DIR] + exported_module_paths
       transitive_deps.each do |dependency|
-        @module_paths.concat $yast_modules[dependency].exported_module_paths
+        @ybc_module_paths.concat $yast_modules[dependency].exported_module_paths
       end
     end
-    @module_paths
+
+    @ybc_module_paths
   end
 
-  def include_paths
+  def ybc_include_paths
     # The lazy loading is needed because the dependencies may not be fully
     # initialized when "initialize" is called on this module.
-    unless @include_paths
-      @include_paths = [STUBS_DIR] + exported_include_paths
+    unless @ybc_include_paths
+      @ybc_include_paths = [STUBS_DIR] + exported_include_paths
       transitive_deps.each do |dependency|
-        @include_paths.concat $yast_modules[dependency].exported_include_paths
+        @ybc_include_paths.concat $yast_modules[dependency].exported_include_paths
       end
     end
-    @include_paths
+
+    @ybc_include_paths
   end
 
   def handle_exception(e, phase, file)
@@ -529,10 +533,10 @@ EOS
 
   def create_ybc(file)
     cmd = [@config["ycpc"], "--no-std-includes", "--no-std-modules"]
-    module_paths.each do |module_path|
+    ybc_module_paths.each do |module_path|
       cmd << "--module-path" << module_path
     end
-    include_paths.each do |include_path|
+    ybc_include_paths.each do |include_path|
       cmd << "--include-path" << include_path
     end
     cmd << "-c" << file
@@ -540,17 +544,37 @@ EOS
     Cheetah.run cmd
   end
 
+  def ruby_module_paths file
+    # Do not use transitive deps as there is risk to face circle, because
+    # clients dependencies uses only modules and clients from dependency could
+    # use modules from converted module
+    ret = ruby_deps.reduce([]) do |acc, mod|
+      acc + $yast_modules[mod].exported_module_paths
+    end
+
+    (ret + ybc_module_paths + [ File.dirname(file) ]).uniq
+  end
+
+  def ruby_include_paths file
+    ret = ruby_deps.reduce([]) do |acc, mod|
+      acc + $yast_modules[mod].exported_include_paths
+    end
+
+    (ret + ybc_include_paths + [ File.dirname(file) ]).uniq
+  end
+
   def create_rb(file, output_file)
     cmd = [@config["y2r"]]
     cmd << "--ycpc" << @config["ycpc"]
-    module_paths.each do |module_path|
+
+    ruby_module_paths(file).each do |module_path|
       cmd << "--module-path" << module_path
     end
-    cmd << "--module-path" << File.dirname(file)
-    include_paths.each do |include_path|
+
+    ruby_include_paths(file).each do |include_path|
       cmd << "--include-path" << include_path
     end
-    cmd << "--include-path" << File.dirname(file)
+
     cmd << file
     cmd << output_file
 
