@@ -1,0 +1,62 @@
+diff --git a/doc/Makefile.am b/doc/Makefile.am
+index 2458fd5..a256a9b 100644
+--- a/doc/Makefile.am
++++ b/doc/Makefile.am
+@@ -1,6 +1,7 @@
+ # Makefile.am for ca-management/doc
+ 
+-SUBDIRS = autodocs
++# ruby is not supported by autodocs
++#SUBDIRS = autodocs
+ 
+ htmldir = $(docdir)
+ 
+diff --git a/scripts/Makefile.am b/scripts/Makefile.am
+index b8f6b79..175c949 100644
+--- a/scripts/Makefile.am
++++ b/scripts/Makefile.am
+@@ -2,14 +2,14 @@
+ # Makefile.am for installation/scripts
+ #
+ #
+-bindir = ${exec_prefix}/bin
+ sysconfdir = /etc
+ 
+-bin_SCRIPTS = generateCRL.pl exportCRL.pl
++# moved
++#bin_SCRIPTS = generateCRL.pl exportCRL.pl
+ 
+ sysconf_DATA = generateCRL.conf
+ 
+-EXTRA_DIST =  $(bin_SCRIPTS) $(sysconf_DATA)
++EXTRA_DIST =  $(sysconf_DATA)
+ 
+ install-data-local:
+ 	chmod 600 $(DESTDIR)/$(sysconfdir)/generateCRL.conf
+diff --git a/yast2-ca-management.spec.in b/yast2-ca-management.spec.in
+index 05afd3f..4c8d80b 100644
+--- a/yast2-ca-management.spec.in
++++ b/yast2-ca-management.spec.in
+@@ -45,14 +45,14 @@ Managing CAs, Certificates and Requests in an understanding way.
+ %dir @moduledir@/YaPI
+ %dir @moduledir@/YaST
+ @yncludedir@/ca-management/*
+-@clientdir@/ca-mgm.ycp
+-@clientdir@/ca_mgm.ycp
+-@clientdir@/ca_mgm_proposal.ycp
+-@clientdir@/ca_select_proposal.ycp
+-@clientdir@/common-cert.ycp
+-@clientdir@/common_cert.ycp
+-@clientdir@/ca_mgm_auto.ycp
+-@moduledir@/CaMgm.y*
++@clientdir@/ca-mgm.rb
++@clientdir@/ca_mgm.rb
++@clientdir@/ca_mgm_proposal.rb
++@clientdir@/ca_select_proposal.rb
++@clientdir@/common-cert.rb
++@clientdir@/common_cert.rb
++@clientdir@/ca_mgm_auto.rb
++@moduledir@/CaMgm.rb
+ @moduledir@/YaPI/CaManagement.pm
+ @moduledir@/YaST/caUtils.pm
+ @desktopdir@/ca_mgm.desktop
