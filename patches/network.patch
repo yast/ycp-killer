@@ -1,18 +1,3 @@
-diff --git a/src/clients/inst_netprobe.ycp b/src/clients/inst_netprobe.ycp
-index b0609ea..fd22cff 100644
---- a/src/clients/inst_netprobe.ycp
-+++ b/src/clients/inst_netprobe.ycp
-@@ -33,6 +33,10 @@ textdomain "network";
- 
- import "NetHwDetection";
- 
-+// y2r: bug in upstream,
-+// https://github.com/yast/yast-network/pull/75#issuecomment-16511001
-+include "network/routines.ycp";
-+
- y2milestone("----------------------------------------");
- y2milestone("Lan netprobe module started");
- y2milestone("Args: %1", WFM::Args());
 diff --git a/src/include/network/lan/bridge.ycp b/src/include/network/lan/bridge.ycp
 index e597956..ec028b3 100644
 --- a/src/include/network/lan/bridge.ycp
