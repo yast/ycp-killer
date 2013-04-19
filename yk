@@ -40,7 +40,10 @@ module Messages
 end
 
 # Hash: String -> YastModule
-$yast_modules = {}
+$yast_modules = Hash.new do |hash, missing_key|
+  #report misspelled modules instead of producing nil
+  raise "Unknown yast module #{missing_key}"
+end
 
 class YastModule
 
@@ -60,23 +63,41 @@ class YastModule
 
   def initialize(name, data, config)
     @name       = name
-    @data       = data
     @config     = config
     @work_dir   = "#{@config["yast_dir"]}/#{WORK_DIR}/#@name"
     @result_dir = "#{@config["yast_dir"]}/#{RESULT_DIR}/#@name"
     # Not suffixed with @name as it does not match (usuall yast2-#{name} )
     @obs_dir    = "#{@config["yast_dir"]}/#{OBS_DIR}"
-    @deps       = @data["deps"] || []
-    @exports    = @data["exports"] || ["src"]
-    @excluded   = @data["excluded"] || []
-    @moves      = @data["moves"] || []
+    @deps       = data.delete("deps") || []
+    @exports    = data.delete("exports") || ["src"]
+    @excluded   = data.delete("excluded") || []
+    @moves      = data.delete("moves") || []
+
+    if !data.empty?
+      puts "WARNING: Unknown keys in #{name}.yml: #{data.keys.join(", ")}."
+    end
   end
 
   def transitive_deps
-    (deps.map { |d| $yast_modules[d].transitive_deps }.reduce([], :+) + deps).uniq
+    deps_of_deps = deps.map { |d| $yast_modules[d].transitive_deps }
+    depth_first_deps = deps_of_deps.reduce([], :+) + deps
+    # Note that they come out topologically sorted
+    # because uniq takes the first object.
+    depth_first_deps.uniq
+  end
+
+  # can only be called once all $yast_modules have been initialized
+  def check_missing_work(yast_module_names)
+    missing = yast_module_names.reject do |d|
+      File.exists?($yast_modules[d].work_dir)
+    end
+    if ! missing.empty?
+      raise "These dependencies do not have a working directory; convert them first: #{missing.join(", ")}"
+    end
   end
 
   def convert
+    check_missing_work(deps)
     File.exists?(work_dir) ? update : clone
     restructure
     patch
@@ -182,6 +203,7 @@ class YastModule
   end
 
   def restructure
+    puts "WARNING: No 'moves' section found in #{name}.yml" if moves.empty?
     Dir.chdir work_dir do
       moves.each do |move|
         FileUtils.mkdir_p move["to"]
