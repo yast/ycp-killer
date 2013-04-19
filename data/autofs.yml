@@ -1,9 +1,16 @@
-#files:
-#  - src/AutofsUI.ycp
-#  - src/autofs.ycp
-#  - src/autofs_auto.ycp
-#  - src/autofs_proposal.ycp
-#  - src/complex.ycp
-#  - src/dialogs.ycp
-#  - src/helps.ycp
-#  - src/wizards.ycp
+deps:
+  - yast2
+
+moves:
+  - from: "src/Autofs*.{pm,ycp}"
+    to:   src/modules
+  - from: "src/autofs*.ycp"
+    to:   src/clients
+  - from: "src/{complex,dialogs,helps,wizards}.ycp"
+    to:   src/include/autofs
+  - from: "src/autofs.desktop"
+    to:   src/desktop
+
+excluded:
+  # TODO: Include file, can't be compiled for now.
+  - src/include/autofs/dialogs.ycp
