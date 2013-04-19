@@ -1,12 +1,46 @@
+diff --git a/doc/Makefile.am b/doc/Makefile.am
+index f85d6ff..f30ecf6 100644
+--- a/doc/Makefile.am
++++ b/doc/Makefile.am
+@@ -1,6 +1,7 @@
+ # Makefile.am for sshd/doc
+ 
+-SUBDIRS = autodocs
++# TODO not supported ruby yet
++#SUBDIRS = autodocs
+ 
+ htmldir = $(docdir)
+ 
 diff --git a/src/clients/sshd_auto.ycp b/src/clients/sshd_auto.ycp
-index 28e831e..92fe413 100644
+index 28e831e..af311ca 100644
 --- a/src/clients/sshd_auto.ycp
 +++ b/src/clients/sshd_auto.ycp
-@@ -116,6 +116,7 @@ switch (func) {
+@@ -115,8 +115,8 @@ switch (func) {
+ 	ret = Sshd::Write();
  	Progress::set (orig2);
  	break;
-     
-+    default:
-     y2error("Unknown function: %1, Params %2", func, param);
+-    
+-    y2error("Unknown function: %1, Params %2", func, param);
++    default:  
++        y2error("Unknown function: %1, Params %2", func, param);
  }
  
+ /* Finish */
+diff --git a/yast2-sshd.spec.in b/yast2-sshd.spec.in
+index 3cd820b..7c48733 100644
+--- a/yast2-sshd.spec.in
++++ b/yast2-sshd.spec.in
+@@ -26,10 +26,9 @@ This package contains the YaST2 component for SSH server configuration.
+ %defattr(-,root,root)
+ %dir @yncludedir@/sshd
+ @yncludedir@/sshd/*
+-@clientdir@/sshd.ycp
+-@clientdir@/sshd_auto.ycp
+-@moduledir@/*.ybc
+-@moduledir@/*.ycp
++@clientdir@/sshd.rb
++@clientdir@/sshd_auto.rb
++@moduledir@/*.rb
+ @desktopdir@/sshd.desktop
+ @schemadir@/autoyast/rnc/sshd_config.rnc
+ %doc @docdir@
