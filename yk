@@ -101,19 +101,17 @@ class YastModule
     File.exists?(work_dir) ? update : clone
     restructure
     patch
-    res = compile
+    compile_modules
     # in case of error do not continue with submit
-    if !res[:error_ybc].zero? ||
-        !res[:error_y2r].zero? ||
-        !res[:error_ruby].zero? ||
-        !res[:error_other].zero?
-      return res
-    end
+    return @counts if result_failed?
+
+    convert_to_ruby
+    return @counts if result_failed?
 
     generate_makefiles
     package
 
-    res
+    @counts
   end
 
   def clone
@@ -158,22 +156,64 @@ class YastModule
     end
   end
 
-  def compile
+  def compile_modules
     clean_previous_compilation
-    prepare_result_dir
-
-    @counts = {
-      :ok          => 0,
-      :excluded    => excluded.size,
-      :error_ybc   => 0,
-      :error_y2r   => 0,
-      :error_ruby  => 0,
-      :error_other => 0
-    }
+    reset_counts
 
     Dir.chdir work_dir do
-      failed_files = compile_modules
-      convert_ycp failed_files
+      # list of full paths
+      ordered_modules = BuildOrder.new(exports).ordered_modules
+
+      ordered_modules.each do |file|
+        begin
+          Messages.start "  . #{file}"
+          create_ybc file
+          Messages.finish "OK"
+          @counts[:ok] += 1
+        rescue Exception => e
+          handle_exception(e, :ybc, file)
+        end
+      end
+    end
+
+    @counts
+  end
+
+  def convert_to_ruby
+    prepare_result_dir
+    reset_counts
+
+    Dir.chdir work_dir do
+      Dir["**/*.y{cp,h}"].each do |file|
+        next if excluded.include?(file)
+
+        Messages.start "  * #{file}"
+
+        work_file = "#{work_dir}/#{file}"
+        FileUtils.rm "#{result_dir}/#{file}"
+        result_file = "#{result_dir}/#{file}".sub(/\.y(cp|h)$/, ".rb")
+
+        begin
+          # This makes private symbols in modules visible. Needed by some
+          # testsuites.
+          ENV["Y2ALLGLOBAL"] = "1"
+
+          create_rb  work_file, result_file
+        rescue Exception => e
+          handle_exception(e, :y2r, work_file)
+          next
+        end
+
+        begin
+          check_rb result_file
+        rescue Exception => e
+          handle_exception(e, :ruby, work_file)
+          next
+        end
+
+        Messages.finish "OK"
+        @counts[:ok] += 1
+      end
     end
 
     @counts
@@ -283,6 +323,27 @@ class YastModule
   end
 
   private
+
+  def result_failed?
+    if !@counts[:error_ybc].zero? ||
+        !@counts[:error_y2r].zero? ||
+        !@counts[:error_ruby].zero? ||
+        !@counts[:error_other].zero?
+      return true
+    end
+    return false
+  end
+
+  def reset_counts
+    @counts = {
+      :ok          => 0,
+      :excluded    => excluded.size,
+      :error_ybc   => 0,
+      :error_y2r   => 0,
+      :error_ruby  => 0,
+      :error_other => 0
+    }
+  end
 
   # cwd must be obs_dir
   def create_obs_package_dir!(package_name)
@@ -452,59 +513,6 @@ EOS
     Messages.finish "ERROR(#{phase})"
     @counts["error_#{phase}".to_sym] += 1
     log_error(file, e)
-  end
-
-  def compile_modules
-    failed_files = []
-    # list of full paths
-    ordered_modules = BuildOrder.new(exports).ordered_modules
-
-    ordered_modules.each do |file|
-      begin
-        Messages.start "  . #{file}"
-        create_ybc file
-        Messages.finish "OK"
-      rescue Exception => e
-        handle_exception(e, :ybc, file)
-        failed_files << file
-      end
-    end
-
-    failed_files
-  end
-
-  def convert_ycp failed_files
-    Dir["**/*.y{cp,h}"].each do |file|
-      next if excluded.include?(file)
-      next if failed_files.include?(file)
-
-      Messages.start "  * #{file}"
-
-      work_file = "#{work_dir}/#{file}"
-      FileUtils.rm "#{result_dir}/#{file}"
-      result_file = "#{result_dir}/#{file}".sub(/\.y(cp|h)$/, ".rb")
-
-      begin
-        # This makes private symbols in modules visible. Needed by some
-        # testsuites.
-        ENV["Y2ALLGLOBAL"] = "1"
-
-        create_rb  work_file, result_file
-      rescue Exception => e
-        handle_exception(e, :y2r, work_file)
-        next
-      end
-
-      begin
-        check_rb result_file
-      rescue Exception => e
-        handle_exception(e, :ruby, work_file)
-        next
-      end
-
-      Messages.finish "OK"
-      @counts[:ok] += 1
-    end
   end
 
   def clean_previous_compilation
@@ -799,12 +807,20 @@ class CLI < Thor
     end
   end
 
-  desc "compile <module>...", "Compile module(s)"
-  def compile(*module_names)
+  desc "ybc <module>...", "Compile module(s) to ybc"
+  def ybc(*module_names)
     report_results(module_names) do |mod|
-      mod.compile
+      mod.compile_modules
     end
   end
+
+  desc "ruby <module>...", "Convert module(s) to Ruby"
+  def ruby(*module_names)
+    report_results(module_names) do |mod|
+      mod.convert_to_ruby
+    end
+  end
+
 
   desc "makefile <module>...", "Generates Makefile.am for exported dirs of module(s)"
   def makefile(*module_names)
