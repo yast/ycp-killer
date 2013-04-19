@@ -1,4 +1,4 @@
-deps:
+ybc_deps:
   - country
   - network
   - nis-client
