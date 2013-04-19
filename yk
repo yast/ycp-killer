@@ -520,7 +520,6 @@ EOS
   end
 
   def clean_previous_compilation
-    FileUtils.rm_rf result_dir
     Dir["#{work_dir}/**/*.ybc"].each do |file|
       FileUtils.rm file
     end
@@ -528,7 +527,13 @@ EOS
 
   def prepare_result_dir
     FileUtils.mkdir_p File.dirname(result_dir)
+    FileUtils.rm_rf result_dir
     FileUtils.copy_entry(work_dir, result_dir)
+
+    #clean all compiled ybc files created by ybc step
+    Dir["#{result_dir}/**/*.ybc"].each do |file|
+      FileUtils.rm file
+    end
   end
 
   def create_ybc(file)
