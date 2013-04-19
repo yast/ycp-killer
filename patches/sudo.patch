@@ -1,0 +1,40 @@
+diff --git a/agents/Makefile.am b/agents/Makefile.am
+index 28b8611..31180cb 100644
+--- a/agents/Makefile.am
++++ b/agents/Makefile.am
+@@ -1,7 +1,7 @@
+ # Makefile.am for sudo/agents
+ 
+-agent_SCRIPTS = ag_etc_sudoers
++agent_SCRIPTS =
+ 
+-scrconf_DATA = sudo.scr
++scrconf_DATA =
+ 
+ EXTRA_DIST = $(agent_SCRIPTS) $(scrconf_DATA)
+diff --git a/doc/Makefile.am b/doc/Makefile.am
+index 2a519b9..4668e9b 100644
+--- a/doc/Makefile.am
++++ b/doc/Makefile.am
+@@ -1,6 +1,7 @@
+ # Makefile.am for sudo/doc
+ 
+-SUBDIRS = autodocs
++# TODO autodocs not yet support ruby
++# SUBDIRS = autodocs
+ 
+ htmldir = $(docdir)
+ 
+diff --git a/yast2-sudo.spec.in b/yast2-sudo.spec.in
+index 26b8cd0..5a28b96 100644
+--- a/yast2-sudo.spec.in
++++ b/yast2-sudo.spec.in
+@@ -32,7 +32,7 @@ of users to run commands as root or other user.
+ %defattr(-,root,root)
+ %dir @yncludedir@/sudo
+ @yncludedir@/sudo/*
+-@clientdir@/sudo.ycp
++@clientdir@/sudo.rb
+ @moduledir@/Sudo.*
+ @desktopdir@/sudo.desktop
+ @scrconfdir@/sudo.scr
