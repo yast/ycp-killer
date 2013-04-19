@@ -11,7 +11,7 @@ index 592e527..fe65d56 100644
  import "Wizard";
  import "Report";
 diff --git a/src/include/ftp-server/write_load.ycp b/src/include/ftp-server/write_load.ycp
-index 8fc5f60..16d0935 100644
+index 8fc5f60..540d97a 100644
 --- a/src/include/ftp-server/write_load.ycp
 +++ b/src/include/ftp-server/write_load.ycp
 @@ -11,6 +11,7 @@
@@ -22,3 +22,199 @@ index 8fc5f60..16d0935 100644
  import "Service";
  import "Popup";
  import "Inetd";
+@@ -40,7 +41,7 @@ boolean IdFTPXinetd () {
+         string server_args = (string) Inetd::netd_conf[FtpServer::pureftpd_xined_id,"server_args"]:nil;
+ 	FtpServer::pure_ftpd_xinet_conf = splitstring(server_args, " ");
+         y2milestone("-------------PURE_SETTINGS_XINETD-------------------");  
+-        y2milestone("pure-ftpd configuration has been read from xinetd: %1", pure_ftpd_xinet_conf);
++        y2milestone("pure-ftpd configuration has been read from xinetd: %1", FtpServer::pure_ftpd_xinet_conf);
+         y2milestone("----------------------------------------------------");        
+      }
+      return true;
+@@ -60,42 +61,42 @@ boolean SettingsXinetdPure (list <string> server_args) {
+   //settings for pure-ftpd.
+ 
+ 
+-  if ((FtpServer::vsftpd_edit) || (size(pure_ftpd_xinet_conf) == 0))
++  if ((FtpServer::vsftpd_edit) || (size(FtpServer::pure_ftpd_xinet_conf) == 0))
+   {
+      y2milestone("skip SettingsXinetdPure() -> vsftpd is used or pure_ftpd_xinet_conf is empty");
+      return true;
+   }
+ 
+   //ChrootEnable
+-  option = find(string opt, pure_ftpd_xinet_conf, ``(opt == "-A"));
++  option = find(string opt, FtpServer::pure_ftpd_xinet_conf, ``(opt == "-A"));
+   if (option != nil)
+      FtpServer::EDIT_SETTINGS["ChrootEnable"] = (("-A" == option)? "YES": "NO");
+   else
+      FtpServer::EDIT_SETTINGS["ChrootEnable"] = "NO";
+ 
+   //VerboseLogging
+-  option = find(string opt, pure_ftpd_xinet_conf, ``(opt == "-d"));
++  option = find(string opt, FtpServer::pure_ftpd_xinet_conf, ``(opt == "-d"));
+   if (option != nil)
+      FtpServer::EDIT_SETTINGS["VerboseLogging"] = (("-d" == option)? "YES": "NO");
+   else
+      FtpServer::EDIT_SETTINGS["VerboseLogging"] = "NO";
+ 
+   //AnonReadOnly
+-  option = find(string opt, pure_ftpd_xinet_conf, ``(opt == "-i"));
++  option = find(string opt, FtpServer::pure_ftpd_xinet_conf, ``(opt == "-i"));
+   if (option != nil)
+      FtpServer::EDIT_SETTINGS["AnonReadOnly"] = (("-i" == option)? "YES": "NO");
+   else
+     FtpServer::EDIT_SETTINGS["AnonReadOnly"] = "YES"; 
+ 
+   //AnonCreatDirs
+-  option = find(string opt, pure_ftpd_xinet_conf, ``(opt == "-M"));
++  option = find(string opt, FtpServer::pure_ftpd_xinet_conf, ``(opt == "-M"));
+   if (option != nil)
+      FtpServer::EDIT_SETTINGS["AnonCreatDirs"] = (("-M" == option)? "YES": "NO");
+   else
+      FtpServer::EDIT_SETTINGS["AnonCreatDirs"] = "NO";
+ 
+   //AntiWarez
+-  option = find(string opt, pure_ftpd_xinet_conf, ``(opt == "-s"));
++  option = find(string opt, FtpServer::pure_ftpd_xinet_conf, ``(opt == "-s"));
+   if (option != nil)
+      FtpServer::EDIT_SETTINGS["AntiWarez"] = (("-s" == option)? "YES": "NO");
+   else
+@@ -103,13 +104,13 @@ boolean SettingsXinetdPure (list <string> server_args) {
+   //AnonAuthen
+   string yes_no ="";
+   integer authen = 0;  
+-  yes_no = (((nil != find(string opt, pure_ftpd_xinet_conf, ``(opt == "-e"))))? "YES": "NO");
++  yes_no = (((nil != find(string opt, FtpServer::pure_ftpd_xinet_conf, ``(opt == "-e"))))? "YES": "NO");
+   if (yes_no == "YES")
+      authen = 0;
+   else
+      authen = 1;
+   yes_no = "";  
+-  yes_no = (((nil != find(string opt, pure_ftpd_xinet_conf, ``(opt == "-E"))))? "YES": "NO");
++  yes_no = (((nil != find(string opt, FtpServer::pure_ftpd_xinet_conf, ``(opt == "-E"))))? "YES": "NO");
+   if (yes_no == "YES")
+      authen = authen + 2;
+   if (authen == 0)
+@@ -120,50 +121,50 @@ boolean SettingsXinetdPure (list <string> server_args) {
+   
+   
+   //Umask
+-  option = find(string opt, pure_ftpd_xinet_conf, ``(issubstring(opt,"-U")));
++  option = find(string opt, FtpServer::pure_ftpd_xinet_conf, ``(issubstring(opt,"-U")));
+   if (option != nil)
+      option = substring(tostring(option),2);
+   FtpServer::EDIT_SETTINGS["Umask"] = ((option != nil) ? option:"");
+      
+   //SSL
+   
+-  option = find(string opt, pure_ftpd_xinet_conf, ``(issubstring(opt,"-Y")));
++  option = find(string opt, FtpServer::pure_ftpd_xinet_conf, ``(issubstring(opt,"-Y")));
+   if (option != nil)
+      option = substring(tostring(option),2);
+   FtpServer::EDIT_SETTINGS["SSL"] = ((option != nil) ? option:"1");
+     
+   //AnonMaxRate
+-  option = find(string opt, pure_ftpd_xinet_conf, ``(issubstring(opt,"-t")));
++  option = find(string opt, FtpServer::pure_ftpd_xinet_conf, ``(issubstring(opt,"-t")));
+   if (option != nil)
+      option = substring(tostring(option),2);
+   FtpServer::EDIT_SETTINGS["AnonMaxRate"] = ((option != nil) ? option:"0");
+     
+   //LocalMaxRate
+-  option = find(string opt, pure_ftpd_xinet_conf, ``(issubstring(opt,"-T")));
++  option = find(string opt, FtpServer::pure_ftpd_xinet_conf, ``(issubstring(opt,"-T")));
+   if (option != nil)
+      option = substring(tostring(option),2);
+   FtpServer::EDIT_SETTINGS["LocalMaxRate"] = ((option != nil) ? option:"0");
+     
+   //MaxClientsNumber
+-  option = find(string opt, pure_ftpd_xinet_conf, ``(issubstring(opt,"-c")));
++  option = find(string opt, FtpServer::pure_ftpd_xinet_conf, ``(issubstring(opt,"-c")));
+   if (option != nil)
+      option = substring(tostring(option),2);
+   FtpServer::EDIT_SETTINGS["MaxClientsNumber"] = ((option != nil) ? option:"10");
+ 
+   //MaxClientsPerIP
+-  option = find(string opt, pure_ftpd_xinet_conf, ``(issubstring(opt,"-C")));
++  option = find(string opt, FtpServer::pure_ftpd_xinet_conf, ``(issubstring(opt,"-C")));
+   if (option != nil)
+      option = substring(tostring(option),2);
+   FtpServer::EDIT_SETTINGS["MaxClientsPerIP"] = ((option != nil) ? option:"3");
+ 
+   //MaxIdleTime  
+-  option = find(string opt, pure_ftpd_xinet_conf, ``(issubstring(opt,"-I")));
++  option = find(string opt, FtpServer::pure_ftpd_xinet_conf, ``(issubstring(opt,"-I")));
+   if (option != nil)
+      option = substring(tostring(option),2);
+   FtpServer::EDIT_SETTINGS["MaxIdleTime"] = ((option != nil) ? option:"15");
+ 
+   //PasMinPort and PasMaxPort
+-  option = find(string opt, pure_ftpd_xinet_conf, ``(issubstring(opt,"-p")));
++  option = find(string opt, FtpServer::pure_ftpd_xinet_conf, ``(issubstring(opt,"-p")));
+   if (option != nil) {
+      option = substring(tostring(option),2);
+      option = filterchars(option,"0123456789:");
+@@ -185,7 +186,7 @@ boolean SettingsXinetdPure (list <string> server_args) {
+ 
+   
+   //VirtualUser
+-  option = find(string opt, pure_ftpd_xinet_conf, ``(issubstring(opt,"-l")));
++  option = find(string opt, FtpServer::pure_ftpd_xinet_conf, ``(issubstring(opt,"-l")));
+   if (option != nil)
+      option = substring(tostring(option),2);
+   if (option != nil) {
+@@ -355,7 +356,7 @@ global boolean WriteStartViaXinetd (boolean startxinetd, boolean push_star_now)
+ define list<string> GetPassivePortRangeBoundaries()
+ {
+     // this function is specific for pure-ftpd config.
+-    if( vsftpd_edit)
++    if( FtpServer::vsftpd_edit)
+         return nil;
+ 
+     string port_range = regexpsub( FtpServer::PURE_SETTINGS["PassivePortRange"]:nil, "^([0-9]*)(\\s+|:)([0-9]*)$", "\\1:\\3");
+@@ -843,7 +844,7 @@ global string ValueUI (string key, boolean write) {
+ 	break;
+     
+      case("AnonCreatDirs"):
+-	if (vsftpd_edit) {
++	if (FtpServer::vsftpd_edit) {
+ 	   if (write) { 
+               FtpServer::VS_SETTINGS["anon_mkdir_write_enable"] = FtpServer::EDIT_SETTINGS["AnonCreatDirs"]:nil;	      	
+            } else {
+@@ -964,7 +965,7 @@ global string ValueUI (string key, boolean write) {
+    case("TLS"):
+ 	if (FtpServer::vsftpd_edit) {
+ 	   if (write) { 
+-              FtpServer::VS_SETTINGS["ssl_tlsv1"] = EDIT_SETTINGS["TLS"]:nil;
++              FtpServer::VS_SETTINGS["ssl_tlsv1"] = FtpServer::EDIT_SETTINGS["TLS"]:nil;
+            } else {
+ 	      return ((haskey(FtpServer::VS_SETTINGS, "ssl_tlsv1") ? 
+ 		     toupper(FtpServer::VS_SETTINGS["ssl_tlsv1"]:nil) : FtpServer::DEFAULT_CONFIG["TLS"]:nil));
+@@ -981,7 +982,7 @@ global string ValueUI (string key, boolean write) {
+    case("SSLv2"):
+ 	if (FtpServer::vsftpd_edit) {
+ 	   if (write) { 
+-              FtpServer::VS_SETTINGS["ssl_sslv2"] = EDIT_SETTINGS["SSLv2"]:nil;
++              FtpServer::VS_SETTINGS["ssl_sslv2"] = FtpServer::EDIT_SETTINGS["SSLv2"]:nil;
+            } else {
+ 	      return ((haskey(FtpServer::VS_SETTINGS, "ssl_sslv2") ? 
+ 		     toupper(FtpServer::VS_SETTINGS["ssl_sslv2"]:nil) : FtpServer::DEFAULT_CONFIG["SSLv2"]:nil));
+@@ -998,7 +999,7 @@ global string ValueUI (string key, boolean write) {
+    case("SSLv3"):
+ 	if (FtpServer::vsftpd_edit) {
+ 	   if (write) { 
+-              FtpServer::VS_SETTINGS["ssl_sslv3"] = EDIT_SETTINGS["SSLv3"]:nil;
++              FtpServer::VS_SETTINGS["ssl_sslv3"] = FtpServer::EDIT_SETTINGS["SSLv3"]:nil;
+            } else {
+ 	      return ((haskey(FtpServer::VS_SETTINGS, "ssl_sslv3") ? 
+ 		     toupper(FtpServer::VS_SETTINGS["ssl_sslv3"]:nil) : FtpServer::DEFAULT_CONFIG["SSLv3"]:nil));
+@@ -1108,7 +1109,7 @@ global string ValueUI (string key, boolean write) {
+ 	 if (write) {
+ 
+            if (FtpServer::EDIT_SETTINGS["StartDaemon"]:nil == "2") {
+-	      if (EDIT_SETTINGS["StartXinetd"]:nil == "YES") {
++	      if (FtpServer::EDIT_SETTINGS["StartXinetd"]:nil == "YES") {
+ 	         FtpServer::start_xinetd = true;
+                  if (Service::Enabled("vsftpd"))
+                     Service::Disable("vsftpd");

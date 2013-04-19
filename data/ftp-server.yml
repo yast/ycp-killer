@@ -17,8 +17,3 @@ moves:
   - from: src/ftp-server.desktop
     to:   src/desktop
 
-#TODO
-excluded:
-    # Undeclared identifiers 'pure_ftpd_xinet_conf', 'vsftpd_edit', 'EDIT_SETTINGS'
-  - src/include/ftp-server/write_load.ycp
-
