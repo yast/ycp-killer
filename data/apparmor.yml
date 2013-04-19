@@ -1,5 +1,8 @@
+ybc_deps:
+  - yast2
+
 moves:
-  - from: agents/ag*
+  - from: src/agents/ag*
     to: src/servers_non_y2
   - from: src/apparmor/*
     to: config
@@ -8,9 +11,3 @@ moves:
   - from: src/perl/*
     to: perl-lib
 
-excluded:
-  - src/include/apparmor/apparmor_ycp_utils.ycp
-  - src/include/apparmor/apparmor_profile_check.ycp
-  - src/include/apparmor/aa-config.ycp
-  - src/include/apparmor/apparmor_packages.ycp
-  - src/include/apparmor/config_complain.ycp
