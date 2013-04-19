@@ -1,5 +1,6 @@
 deps:
    - packager
+   - autoinstallation
 
 moves:
   - from: "src/{add-on-workflow,misc}.ycp"
