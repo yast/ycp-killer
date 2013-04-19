@@ -17,15 +17,6 @@ diff --git a/src/include/network/lan/complex.ycp b/src/include/network/lan/compl
 index e11a8a4..d1b12aa 100644
 --- a/src/include/network/lan/complex.ycp
 +++ b/src/include/network/lan/complex.ycp
-@@ -340,6 +340,8 @@ symbol handleOverview( string key, map event ) {
- 	LanItems::AddNew();
- 	Lan::Add();
- 	return `add;
-+        break;
-+
-    case `edit:
- 	if( LanItems::IsCurrentConfigured())
-         {
 @@ -355,7 +357,9 @@ If you edit the settings for this interface here,
  the interface will no longer be managed by NetworkManager.
  ")))
@@ -48,14 +39,6 @@ index e11a8a4..d1b12aa 100644
              }
  
              if( !DeviceReady( LanItems::getCurrentItem()[ "hwinfo", "dev_name"]:"") )
-@@ -377,6 +383,7 @@ the interface will no longer be managed by NetworkManager.
-         }
- 
-         return `edit;
-+        break;
- 
-    case `delete:
- 
 @@ -386,11 +393,20 @@ will be deleted as well.
  Really continue?
  "), LanItems::getCurrentItem()["ifcfg"]:"");
