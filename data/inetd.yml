@@ -20,7 +20,7 @@ moves:
 # TODO
 excluded:
   # hopefully replaced by something entirely different
-  - src/default_conf_create.ycp
-  # to be resolved; not known where to with these files:
+  # src/default_conf_create.ycp
+  # to be resolved; not known where-to with these files:
   #- src/all-services.sh
   #- src/all-services.conf
