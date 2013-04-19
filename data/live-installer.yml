@@ -1,16 +1,12 @@
-#files:
-#  - src/LiveInstaller.ycp
-#  - src/inst_live_add_base_repo.ycp
-#  - src/inst_live_cleanup.ycp
-#  - src/inst_live_doit.ycp
-#  - src/inst_live_full_proposal.ycp
-#  - src/inst_live_pre-proposal.ycp
-#  - src/inst_live_prepare_net_test.ycp
-#  - src/inst_live_simple_proposal.ycp
-#  - src/inst_live_sw_select.ycp
-#  - src/inst_live_welcome.ycp
-#  - src/live-installer.ycp
-#  - src/live_copy_files_finish.ycp
-#  - src/live_runme_at_boot_finish.ycp
-#  - src/live_save_config_finish.ycp
-#  - testsuite/tests/LiveInstaller.ycp
+deps:
+  - yast2
+  - installation
+  - bootloader
+
+moves:
+  - from: "src/LiveInstaller.ycp"
+    to:   src/modules
+  - from: "src/{live,inst}*.ycp"
+    to:   src/clients
+  - from: "src/live-installer.desktop"
+    to:   src/desktop
