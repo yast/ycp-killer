@@ -26,3 +26,43 @@ moves:
   - from: "agents/ag_bootloader"
     to: src/servers_non_y2
 
+excluded:
+
+  # the testsuite seems to be completely broken and not maintained :-(
+
+  # imports "BootS390" which does not exist
+  - testsuite/tests/s390.ycp
+
+  # sets BootGRUB::device_map which is not defined
+  - testsuite/tests/confconv.ycp
+
+  # includes "bootloader/routines/routines.ycp" which does not exist
+  - testsuite/tests/autoinst_convert.ycp
+
+  # uses BootCommon::ui2mod which is not defined
+  - testsuite/tests/ui2mod.ycp
+
+  # uses BootCommon::BootPartitionDevice which is not defined
+  - testsuite/tests/update.ycp
+
+  # uses BootCommon::strip which is not defined
+  - testsuite/tests/strip.ycp
+
+  # uses BootCommon::mod2ui which is not defined
+  - testsuite/tests/mod2ui.ycp
+
+  # sets BootGRUB::device_map which is not defined
+  - testsuite/tests/grub2unix.ycp
+
+  # sets BootGRUB::device_map which is not defined
+  - testsuite/tests/unix2grub.ycp
+
+  # uses BootCommon::Linux2Previous which is not defined
+  - testsuite/tests/previous.ycp
+
+  # uses BootCommon::list2path which is not defined
+  - testsuite/tests/misc.ycp
+
+  # sets BootGRUB::device_map which is not defined
+  - testsuite/tests/grub.ycp
+
