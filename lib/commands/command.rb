@@ -20,5 +20,42 @@ module Commands
 
       Messages.finish "OK"
     end
+
+    def reset_counts(mod)
+      @counts = {
+        :ok          => 0,
+        :excluded    => mod.excluded.size,
+        :error_ybc   => 0,
+        :error_y2r   => 0,
+        :error_ruby  => 0,
+        :error_other => 0
+      }
+    end
+
+    def handle_exception(e, phase, file)
+      raise if e.is_a? Interrupt
+
+      if ! e.is_a? Cheetah::ExecutionFailed
+        phase = :other
+      end
+      Messages.finish "ERROR(#{phase})"
+      @counts["error_#{phase}".to_sym] += 1
+      log_error(file, e)
+    end
+
+    def log_error(file, e)
+      File.open(ERROR_FILE, "a") do |f|
+        f.puts file
+        f.puts "-" * file.size
+        f.puts
+        if e.is_a?(Cheetah::ExecutionFailed)
+          f.puts e.stderr
+        else
+          f.puts e.message
+          e.backtrace.each { |l| f.puts l }
+        end
+        f.puts
+      end
+    end
   end
 end

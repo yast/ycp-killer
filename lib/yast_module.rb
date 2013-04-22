@@ -83,29 +83,6 @@ class YastModule
     end
   end
 
-  def compile_modules
-    clean_previous_compilation
-    reset_counts
-
-    Dir.chdir work_dir do
-      # list of full paths
-      ordered_modules = BuildOrder.new(exports).ordered_modules
-
-      ordered_modules.each do |file|
-        begin
-          Messages.start "  * Compiling #{file}..."
-          create_ybc file
-          Messages.finish "OK"
-          @counts[:ok] += 1
-        rescue Exception => e
-          handle_exception(e, :ybc, file)
-        end
-      end
-    end
-
-    @counts
-  end
-
   def convert_to_ruby
     prepare_result_dir
     reset_counts
@@ -217,6 +194,32 @@ class YastModule
         end
       end
     end
+  end
+
+  def ybc_module_paths
+    # The lazy loading is needed because the dependencies may not be fully
+    # initialized when "initialize" is called on this module.
+    unless @ybc_module_paths
+      @ybc_module_paths = [STUBS_DIR] + exported_module_paths
+      transitive_deps.each do |dependency|
+        @ybc_module_paths.concat $yast_modules[dependency].exported_module_paths
+      end
+    end
+
+    @ybc_module_paths
+  end
+
+  def ybc_include_paths
+    # The lazy loading is needed because the dependencies may not be fully
+    # initialized when "initialize" is called on this module.
+    unless @ybc_include_paths
+      @ybc_include_paths = [STUBS_DIR] + exported_include_paths
+      transitive_deps.each do |dependency|
+        @ybc_include_paths.concat $yast_modules[dependency].exported_include_paths
+      end
+    end
+
+    @ybc_include_paths
   end
 
   private
@@ -377,32 +380,6 @@ EOS
     end
   end
 
-  def ybc_module_paths
-    # The lazy loading is needed because the dependencies may not be fully
-    # initialized when "initialize" is called on this module.
-    unless @ybc_module_paths
-      @ybc_module_paths = [STUBS_DIR] + exported_module_paths
-      transitive_deps.each do |dependency|
-        @ybc_module_paths.concat $yast_modules[dependency].exported_module_paths
-      end
-    end
-
-    @ybc_module_paths
-  end
-
-  def ybc_include_paths
-    # The lazy loading is needed because the dependencies may not be fully
-    # initialized when "initialize" is called on this module.
-    unless @ybc_include_paths
-      @ybc_include_paths = [STUBS_DIR] + exported_include_paths
-      transitive_deps.each do |dependency|
-        @ybc_include_paths.concat $yast_modules[dependency].exported_include_paths
-      end
-    end
-
-    @ybc_include_paths
-  end
-
   def handle_exception(e, phase, file)
     raise if e.is_a? Interrupt
 
@@ -414,12 +391,6 @@ EOS
     log_error(file, e)
   end
 
-  def clean_previous_compilation
-    Dir["#{work_dir}/**/*.ybc"].each do |file|
-      FileUtils.rm file
-    end
-  end
-
   def prepare_result_dir
     FileUtils.mkdir_p File.dirname(result_dir)
     FileUtils.rm_rf result_dir
@@ -429,19 +400,6 @@ EOS
     Dir["#{result_dir}/**/*.ybc"].each do |file|
       FileUtils.rm file
     end
-  end
-
-  def create_ybc(file)
-    cmd = [@config["ycpc"], "--no-std-includes", "--no-std-modules"]
-    ybc_module_paths.each do |module_path|
-      cmd << "--module-path" << module_path
-    end
-    ybc_include_paths.each do |include_path|
-      cmd << "--include-path" << include_path
-    end
-    cmd << "-c" << file
-
-    Cheetah.run cmd
   end
 
   def ruby_module_paths file

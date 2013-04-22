@@ -25,6 +25,7 @@ require_relative "lib/commands/genpatch_command"
 require_relative "lib/commands/patch_command"
 require_relative "lib/commands/reset_command"
 require_relative "lib/commands/restructure_command"
+require_relative "lib/commands/ybc_command"
 
 class CLI < Thor
 
@@ -92,7 +93,7 @@ class CLI < Thor
   desc "ybc <module>...", "Compile module(s) to ybc"
   def ybc(*module_names)
     report_results(module_names) do |mod|
-      mod.compile_modules
+      Commands::YbcCommand.new(@config).apply(mod)
     end
   end
 
