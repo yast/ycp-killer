@@ -1,12 +1,19 @@
-#files:
-#  - src/IscsiLioData.ycp
-#  - src/IscsiLioServer.ycp
-#  - src/complex.ycp
-#  - src/dialogs.ycp
-#  - src/helps.ycp
-#  - src/iscsi-lio-server.ycp
-#  - src/iscsi-lio-server_auto.ycp
-#  - src/iscsi-lio-server_proposal.ycp
-#  - src/widgets.ycp
-#  - src/wizards.ycp
-#  - testsuite/tests/IscsiServer.ycp
+ybc_deps:
+  - yast2
+
+moves:
+  - from: "src/IscsiLio*.ycp"
+    to:   src/modules
+  - from: "src/iscsi-lio-server*.ycp"
+    to:   src/clients
+  - from: "src/{complex,dialogs,helps,widgets,wizards}.ycp"
+    to:   src/include/iscsi-lio-server
+  - from: "src/iscsi-lio-server.desktop"
+    to:   src/iscsi-lio-server
+  - from: "agents/ietd.scr"
+    to:   src/scrconf
+
+excluded:
+  # TODO: Include files, can't be compiled for now.
+  - src/include/iscsi-lio-server/widgets.ycp
+  - src/include/iscsi-lio-server/dialogs.ycp
