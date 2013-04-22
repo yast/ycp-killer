@@ -1,0 +1,107 @@
+diff --git a/libycp/testsuite/tests/builtin/Builtin7.ycp b/libycp/testsuite/tests/builtin/Builtin7.ycp
+deleted file mode 100644
+index 8706247..0000000
+--- a/libycp/testsuite/tests/builtin/Builtin7.ycp
++++ /dev/null
+@@ -1,12 +0,0 @@
+-
+-# ---------------------------------------------------------
+-#
+-#  Filename:    Builtin7.ycp
+-#
+-#  Purpose:     test cases for YCP test
+-#
+-#  Creator:     jd@suse.de
+-#
+-#  Maintainer:  jd@suse.de
+-#
+-# ---------------------------------------------------------
+diff --git a/libycp/testsuite/tests/includes/include.ycp b/libycp/testsuite/tests/includes/include.ycp
+index 3c126e2..78fa5f5 100644
+--- a/libycp/testsuite/tests/includes/include.ycp
++++ b/libycp/testsuite/tests/includes/include.ycp
+@@ -1,5 +1,5 @@
+ {
+-    include "tests/include.inc";
++    include "include.inc";
+ 
+     return inc ();
+ }
+diff --git a/libycp/testsuite/tests/modules/CircularM1.ycp b/libycp/testsuite/tests/modules/CircularM1.ycp
+deleted file mode 100644
+index 1543620..0000000
+--- a/libycp/testsuite/tests/modules/CircularM1.ycp
++++ /dev/null
+@@ -1,20 +0,0 @@
+-{
+-    module "CircularM1";
+-
+-    global integer x = nil;
+-
+-    global void CircularM1 ()
+-    {
+-	y2error ("constructing CircularM1");
+-	x = 5;//CircularM2::y;
+-	y2error ("Got %1", x);
+-    }
+-
+-    global void f1 ()
+-    {
+-	import "CircularM2";
+-        y2error ("f1");
+-        x = CircularM2::y;
+-        y2error ("Got %1", x);
+-    }
+-}
+diff --git a/libycp/testsuite/tests/modules/CircularM2.ycp b/libycp/testsuite/tests/modules/CircularM2.ycp
+deleted file mode 100644
+index 42c8b79..0000000
+--- a/libycp/testsuite/tests/modules/CircularM2.ycp
++++ /dev/null
+@@ -1,13 +0,0 @@
+-{
+-    module "CircularM2";
+-    import "CircularM1";
+-
+-    global integer y = nil;
+-
+-    global CircularM2 ()
+-    {
+-	y2error ("Constructing CircularM2");
+-	y = CircularM1::x;
+-	y2error ("Got %1", y);
+-    }
+-}
+diff --git a/libycp/testsuite/tests/modules/ErrModule.ycp b/libycp/testsuite/tests/modules/ErrModule.ycp
+deleted file mode 100644
+index 7aae5a4..0000000
+--- a/libycp/testsuite/tests/modules/ErrModule.ycp
++++ /dev/null
+@@ -1,14 +0,0 @@
+-{
+-   module "ErrModule";
+-
+-   integer a = 1;
+-
+-   // syntax error, only declarations allowed inside a "module" block
+-   if (true)
+-   {
+-      integer b = 1;
+-   }
+-
+-   return a + B::b;            // error B:: undefined
+-}
+-
+diff --git a/wfm/testsuite/tests/IncludeLog.ycp b/wfm/testsuite/tests/IncludeLog.ycp
+index 0336433..09184bd 100644
+--- a/wfm/testsuite/tests/IncludeLog.ycp
++++ b/wfm/testsuite/tests/IncludeLog.ycp
+@@ -3,7 +3,7 @@
+  * included file have correct filename/linenumber.
+  */
+ {
+-    include "./tests/empty.ycp";
++    include "empty.ycp";
+     y2milestone ("back in IncludeLog.ycp");
+ 
+     do_log ();
