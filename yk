@@ -439,7 +439,7 @@ EOS
     #
     #   [ "modules/Language.rb", "modules/YAPI/LANGUAGE/pl"]
     #
-    # ends up as 
+    # ends up as
     #
     #   {
     #     [] => ["modules/Language.rb"]
@@ -484,7 +484,7 @@ EOS
   def ybc_module_paths
     # The lazy loading is needed because the dependencies may not be fully
     # initialized when "initialize" is called on this module.
-    unless @ybc_module_paths 
+    unless @ybc_module_paths
       @ybc_module_paths = [STUBS_DIR] + exported_module_paths
       transitive_deps.each do |dependency|
         @ybc_module_paths.concat $yast_modules[dependency].exported_module_paths
