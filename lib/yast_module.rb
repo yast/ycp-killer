@@ -72,14 +72,6 @@ class YastModule
     @counts
   end
 
-  def clone
-    action "Cloning" do
-      FileUtils.rm_rf(work_dir)
-
-      Cheetah.run "git", "clone", "git://github.com/yast/yast-#@name.git", work_dir
-    end
-  end
-
   def update
     reset
     pull

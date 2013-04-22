@@ -20,6 +20,7 @@ $yast_modules = Hash.new do |hash, missing_key|
 end
 
 require_relative "lib/yast_module"
+require_relative "lib/commands/clone_command"
 
 class CLI < Thor
 
@@ -41,7 +42,7 @@ class CLI < Thor
   def clone(*module_names)
     modules = modules_from_names(module_names)
     with_modules modules do |mod|
-      mod.clone
+      Commands::CloneCommand.new(@config).apply(mod)
     end
   end
 
