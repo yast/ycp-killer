@@ -152,7 +152,8 @@ specified by the `yast_dir` setting in `config.yml`.
 
 ```
 $ ./yk clone testsuite
-[1/1] Cloning testsuite...                                            OK
+[1/1] Processing testsuite:
+  * Cloning...                                                        OK
 ```
 
 #### yk reset
@@ -164,7 +165,8 @@ Use `yk genpatch` beforehand to save them.
 
 ```
 $ ./yk reset testsuite
-[1/1] Resetting testsuite...                                          OK
+[1/1] Processing testsuite:
+  * Resetting...                                                      OK
 ```
 
 #### yk restructure
@@ -180,7 +182,8 @@ to ensure that `yk genpatch` diffs properly against the new structure.
 
 ```
 $ ./yk restructure testsuite
-[1/1] Restructuring testsuite...                                      OK
+[1/1] Processing testsuite:
+  * Restructuring...                                                  OK
 ```
 
 #### yk patch
@@ -190,7 +193,8 @@ checkouts. If a module doesn't have a patch, this command does not do anything.
 
 ```
 $ ./yk patch testsuite
-[1/1] Patching testsuite...                                           OK
+[1/1] Processing testsuite:
+  * Patching...                                                       OK
 ```
 
 #### yk compile
@@ -251,8 +255,8 @@ into a patch in the `patches` directory.
 **Any existing patch for the module is removed**.
 
 ```
-$ ./yk genpatch testsuite
-[1/1] Generating patch testsuite...                                   OK
+[1/1] Processing testsuite:
+  * Generating patch...                                               OK
 ```
 
 #### yk makefile
