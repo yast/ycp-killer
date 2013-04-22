@@ -1,21 +1,21 @@
 diff --git a/doc/Makefile.am b/doc/Makefile.am
-index 2458fd5..a256a9b 100644
+index 2458fd5..7eac0e6 100644
 --- a/doc/Makefile.am
 +++ b/doc/Makefile.am
 @@ -1,6 +1,7 @@
  # Makefile.am for ca-management/doc
  
 -SUBDIRS = autodocs
-+# ruby is not supported by autodocs
++# TODO ruby is not supported by autodocs
 +#SUBDIRS = autodocs
  
  htmldir = $(docdir)
  
 diff --git a/scripts/Makefile.am b/scripts/Makefile.am
-index b8f6b79..175c949 100644
+index b8f6b79..ee19500 100644
 --- a/scripts/Makefile.am
 +++ b/scripts/Makefile.am
-@@ -2,14 +2,14 @@
+@@ -2,14 +2,11 @@
  # Makefile.am for installation/scripts
  #
  #
@@ -23,9 +23,7 @@ index b8f6b79..175c949 100644
  sysconfdir = /etc
  
 -bin_SCRIPTS = generateCRL.pl exportCRL.pl
-+# moved
-+#bin_SCRIPTS = generateCRL.pl exportCRL.pl
- 
+-
  sysconf_DATA = generateCRL.conf
  
 -EXTRA_DIST =  $(bin_SCRIPTS) $(sysconf_DATA)
