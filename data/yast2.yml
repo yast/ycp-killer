@@ -30,7 +30,7 @@ moves:
   - from: "library/sequencer/src/Sequencer.ycp"
     to: library/sequencer/src/modules
   - from: "library/sequencer/src/sequencer.ycp"
-    to: library/sequencer/src/include
+    to: library/sequencer/src/include/wizard
   - from: "library/xml/src/*.ycp"
     to: library/xml/src/modules
   - from: "library/commandline/src/*.ycp"
