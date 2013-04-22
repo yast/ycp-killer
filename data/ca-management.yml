@@ -1,6 +1,11 @@
 ybc_deps:
   - yast2
 
+ruby_deps:
+  - users
+  - country
+  - network
+
 moves:
   - from: "scripts/{generateCRL.pl,exportCRL.pl}"
     to: src/bin
@@ -8,6 +13,8 @@ moves:
     to: src/modules
   - from: src/YaPI
     to: src/modules
+  - from: src/modules/YaPI/caUtils.pm
+    to: src/modules/YaST
   - from: "src/ca[_-]*.ycp"
     to: src/clients
   - from: "src/common[_-]*.ycp"
@@ -40,10 +47,3 @@ excluded:
   - src/include/ca-management/util.ycp
   - src/include/ca-management/new_cert_callbacks.ycp
   - src/include/ca-management/signRequest.ycp
-  # TODO missing perl libraries
-  - src/clients/ca_mgm.ycp
-  - src/clients/ca_mgm_auto.ycp
-  - src/clients/ca_mgm_proposal.ycp
-  - src/clients/ca_select_proposal.ycp
-  - src/clients/common_cert.ycp
-  - testsuite/caTest.ycp
