@@ -1,3 +1,6 @@
+require_relative "build_order"
+require_relative "messages"
+
 class YastModule
 
   WORK_DIR   = "work"

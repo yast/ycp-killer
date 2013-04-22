@@ -19,9 +19,7 @@ $yast_modules = Hash.new do |hash, missing_key|
   raise "Unknown yast module #{missing_key}"
 end
 
-require_relative "lib/messages"
 require_relative "lib/yast_module"
-require_relative "lib/build_order"
 
 class CLI < Thor
 
