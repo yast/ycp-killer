@@ -1,15 +1,23 @@
-# TODO: Process.
+ybc_deps:
+  - ldap-client
+  - users
 
-files:
-  - src/LdapDatabase.ycp
-  - src/complex.ycp
-  - src/dialogs.ycp
-  - src/helps.ycp
-  - src/ldap-server.ycp
-  - src/ldap-server_auto.ycp
-  - src/ldap-server_proposal.ycp
-  - src/mirrormode-wizard.ycp
-  - src/openldap-mirrormode.ycp
-  - src/tree_structure.ycp
-  - src/widgets.ycp
-  - src/wizards.ycp
+moves:
+  - from: src/{LdapDatabase.ycp,LdapServer.pm}
+    to:   src/modules
+  # yes, LdapServer *and* YaPI::LdapServer
+  - from: src/YaPI/LdapServer.pm
+    to:   src/modules/YaPI
+  - from: src/{ldap*,openldap-mirrormode}.ycp
+    to:   src/clients
+  - from: src/*.ycp
+    to:   src/include/ldap-server
+  - from: src/*.desktop
+    to:   src/desktop
+  - from: src/config/*.rnc
+    to:   src/autoyast-rnc
+  - from: agents/*.scr
+    to:   src/scrconf
+  # a C program for bindir
+  - from: src/{tools,agent,lib}
+    to:   .

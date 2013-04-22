@@ -1,4 +1,4 @@
-deps:
+ybc_deps:
   - yast2
 
 moves:
@@ -19,7 +19,7 @@ moves:
   - from: "src/*.rnc"
     to: src/autoyast-rnc
 
-exclude:
+excluded:
   # include files we cannot translate now
   - src/include/ca-management/crlExport.ycp
   - src/include/ca-management/request.ycp

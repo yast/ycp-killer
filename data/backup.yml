@@ -1,28 +1,21 @@
-# TODO: Process.
+ybc_deps:
+  - yast2
+  - testsuite
+  - nfs-client
+  - autoinstallation
 
-files:
-  - src/Backup.ycp
-  - src/backup.ycp
-  - src/backup_available_packages.ycp
-  - src/backup_get_packages.ycp
-  - src/backup_save_profile.ycp
-  - src/functions.ycp
-  - src/help_texts.ycp
-  - src/ui.ycp
-  - testsuite/tests/AddId.ycp
-  - testsuite/tests/AddIdBool.ycp
-  - testsuite/tests/AddIdExt2.ycp
-  - testsuite/tests/AddMissingExtension.ycp
-  - testsuite/tests/ExcludeNodevFS.ycp
-  - testsuite/tests/Ext2Filesystems.ycp
-  - testsuite/tests/Ext2MountPoint.ycp
-  - testsuite/tests/GetBaseName.ycp
-  - testsuite/tests/GetCapacity.ycp
-  - testsuite/tests/GetListWithFlags.ycp
-  - testsuite/tests/GetMountedFilesystems.ycp
-  - testsuite/tests/MapFilesToString.ycp
-  - testsuite/tests/MediaList2UIList.ycp
-  - testsuite/tests/ReadBackupProfiles.ycp
-  - testsuite/tests/RestoreBackupProfile.ycp
-  - testsuite/tests/RestoreBackupSettings.ycp
-  - testsuite/tests/WriteBackupProfiles.ycp
+moves:
+  - from: "src/[A-Z]*.ycp"
+    to: src/modules
+  - from: "src/backup*.ycp"
+    to: src/clients
+  - from: "src/*.ycp"
+    to: src/include/backup
+  - from: "src/*.desktop"
+    to: src/desktop
+  - from: src/scripts/*
+    to: src/bin
+  - from: scrconf
+    to: src
+  - from: agents/ag_file_append
+    to: src/servers_non_y2

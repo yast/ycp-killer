@@ -1,8 +1,0 @@
-# TODO: Process.
-
-files:
-  - src/SystemUpdate.ycp
-  - src/inst_system_update_prepare_system.ycp
-  - src/inst_system_update_repo_select.ycp
-  - src/system-update.ycp
-  - testsuite/tests/SystemUpdate.ycp

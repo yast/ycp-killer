@@ -1,6 +1,5 @@
-# TODO: Process.
-
-files:
-  - src/Autologin.ycp
-  - src/Nsswitch.ycp
-  - src/Pam.ycp
+ybc_deps:
+  - yast2
+moves:
+  - from: "src/[A-Z]*.ycp"
+    to: src/modules

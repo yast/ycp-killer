@@ -1,48 +1,32 @@
-# TODO: Process.
+ybc_deps:
+  - yast2
+  - testsuite
+  - ldap-client
+  - security
 
-files:
-  - src/UsersUI.ycp
-  - src/cmdline.ycp
-  - src/complex.ycp
-  - src/dialogs.ycp
-  - src/groups.ycp
-  - src/helps.ycp
-  - src/inst_auth.ycp
-  - src/inst_root.ycp
-  - src/inst_root_first.ycp
-  - src/inst_user.ycp
-  - src/inst_user_first.ycp
-  - src/ldap_dialogs.ycp
-  - src/routines.ycp
-  - src/users.ycp
-  - src/users_auto.ycp
-  - src/users_finish.ycp
-  - src/users_plugin_ldap_all.ycp
-  - src/users_plugin_ldap_passwordpolicy.ycp
-  - src/users_plugin_ldap_shadowaccount.ycp
-  - src/users_plugin_quota.ycp
-  - src/users_proposal.ycp
-  - src/widgets.ycp
-  - src/wizards.ycp
-  - testsuite/tests/AddGroup.ycp
-  - testsuite/tests/AddUser.ycp
-  - testsuite/tests/BuildAdditional.ycp
-  - testsuite/tests/CheckPassword.ycp
-  - testsuite/tests/ConvertMap.ycp
-  - testsuite/tests/CryptedDirTests.ycp
-  - testsuite/tests/DeleteUser.ycp
-  - testsuite/tests/DeleteUserCryptedDir.ycp
-  - testsuite/tests/EditUser.ycp
-  - testsuite/tests/EditUserCryptedDirCreate.ycp
-  - testsuite/tests/EditUserCryptedDirEnlarge.ycp
-  - testsuite/tests/EditUserCryptedDirRemove.ycp
-  - testsuite/tests/EditUsersGroups.ycp
-  - testsuite/tests/Import.ycp
-  - testsuite/tests/ImportExportUser.ycp
-  - testsuite/tests/LastUID.ycp
-  - testsuite/tests/Read.ycp
-  - testsuite/tests/ReadLDAPAvailable.ycp
-  - testsuite/tests/ReadShells.ycp
-  - testsuite/tests/SelectUser.ycp
-  - testsuite/tests/SubstituteValues.ycp
-  - testsuite/tests/YaPIGroupAdd.ycp
+moves:
+  - from: agents/etc_default_useradd.scr
+    to: src/scrconf
+  - from: agent-*/*.scr
+    to: src/scrconf
+  # TODO handle agent-crack
+  - from: agent-*/ag_*
+    to: src/servers_non_y2
+  - from: src/[A-Z]*.{pm,ycp}
+    to: src/modules
+  - from: src/YaPI
+    to: src/modules
+  - from: src/{users,groups,inst}*.ycp
+    to: src/clients
+  - from: src/*.ycp
+    to: src/include/users
+  - from: src/*.desktop
+    to: src/desktop
+  - from: src/*.rnc
+    to: src/autoyast-rnc
+
+excluded:
+  # Included files that is not complete
+  - src/include/users/dialogs.ycp
+  - src/include/users/routines.ycp
+  - src/include/users/cmdline.ycp

@@ -1,14 +1,13 @@
-# TODO: Process.
+ybc_deps:
+  - installation
+  - yast2
 
-files:
-  - src/FcoeClient.ycp
-  - src/complex.ycp
-  - src/dialogs.ycp
-  - src/fcoe-client.ycp
-  - src/fcoe-client_auto.ycp
-  - src/fcoe-client_finish.ycp
-  - src/fcoe-client_proposal.ycp
-  - src/helps.ycp
-  - src/inst_fcoe-client.ycp
-  - src/wizards.ycp
-  - testsuite/tests/FcoeClient.ycp
+moves:
+  - from: src/FcoeClient.ycp
+    to: src/modules
+  - from: src/{inst-,}fcoe-client*.ycp
+    to: src/clients
+  - from: src/*.ycp
+    to: src/include/fcoe-client
+  - from: src/*.desktop
+    to: src/desktop

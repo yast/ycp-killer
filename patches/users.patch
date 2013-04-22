@@ -1,0 +1,70 @@
+diff --git a/agent-nis/Makefile.am b/agent-nis/Makefile.am
+index fab125c..0d39f54 100644
+--- a/agent-nis/Makefile.am
++++ b/agent-nis/Makefile.am
+@@ -1,10 +1,10 @@
+ #
+ # Makefile.am for users/agent-nis
+ #
++# moved
++# agentdir = @execcompdir@/servers_non_y2
+ 
+-agentdir = @execcompdir@/servers_non_y2
+-
+-agent_SCRIPTS = ag_nis
+-scrconf_DATA = nis.scr
++agent_SCRIPTS = # ag_nis
++scrconf_DATA = # nis.scr
+ 
+ EXTRA_DIST = $(agent_SCRIPTS) $(scrconf_DATA)
+diff --git a/agent-uid/Makefile.am b/agent-uid/Makefile.am
+index 78c0fff..ea980c5 100644
+--- a/agent-uid/Makefile.am
++++ b/agent-uid/Makefile.am
+@@ -1,10 +1,10 @@
+ #
+ # Makefile.am for users/agent-uid
+ #
++# moved
++# agentdir = @execcompdir@/servers_non_y2
+ 
+-agentdir = @execcompdir@/servers_non_y2
+-
+-agent_SCRIPTS = ag_uid
+-scrconf_DATA = uid.scr
++agent_SCRIPTS = #ag_uid
++scrconf_DATA = #uid.scr
+ 
+ EXTRA_DIST = $(agent_SCRIPTS) $(scrconf_DATA)
+diff --git a/doc/Makefile.am b/doc/Makefile.am
+index b6bc8cc..1412807 100644
+--- a/doc/Makefile.am
++++ b/doc/Makefile.am
+@@ -1,8 +1,8 @@
+ #
+ # Makefile.am for y2c_users/doc
+ #
+-
+-SUBDIRS = autodocs
++# TODO no autodocs for rb yet
++SUBDIRS = #autodocs
+ 
+ htmldir = @docdir@
+ 
+diff --git a/yast2-users.spec.in b/yast2-users.spec.in
+index dda3d5f..d6676a8 100644
+--- a/yast2-users.spec.in
++++ b/yast2-users.spec.in
+@@ -38,10 +38,10 @@ This package provides GUI for maintenance of linux users and groups.
+ %defattr(-,root,root)
+ %dir @yncludedir@/users
+ %dir @moduledir@/YaPI
+-@clientdir@/*.ycp
++@clientdir@/*.rb
+ @desktopdir@/*.desktop
+ @moduledir@/*.pm
+-@moduledir@/UsersUI.y*
++@moduledir@/UsersUI.rb
+ @moduledir@/YaPI/*.pm
+ @yncludedir@/users/*
+ @schemadir@/autoyast/rnc/users.rnc

@@ -1,0 +1,1062 @@
+diff --git a/src/include/bootloader/elilo/options.ycp b/src/include/bootloader/elilo/options.ycp
+index 1584c1e..2a1b431 100644
+--- a/src/include/bootloader/elilo/options.ycp
++++ b/src/include/bootloader/elilo/options.ycp
+@@ -21,7 +21,7 @@ import "Label";
+ import "BootCommon";
+ 
+ include "bootloader/elilo/helps.ycp";
+-
++include "bootloader/routines/common_options.ycp";
+ 
+ /**
+  * Common widgets of global settings for ELILO
+@@ -60,4 +60,4 @@ map<string,map<string,any> > EliloOptions()
+ 
+ 
+ 
+-}
+\ No newline at end of file
++}
+diff --git a/src/include/bootloader/elilo/widgets.ycp b/src/include/bootloader/elilo/widgets.ycp
+index f5ce18c..187ae4d 100644
+--- a/src/include/bootloader/elilo/widgets.ycp
++++ b/src/include/bootloader/elilo/widgets.ycp
+@@ -23,6 +23,7 @@
+     import "Label";
+     import "Mode";
+     import "BootCommon";
++    import "BootELILO";
+     include "bootloader/routines/popups.ycp";
+ 
+ 
+@@ -34,7 +35,7 @@
+       * @return widget term
+       */
+     global define term getTargetWidget () ``{
+-	boolean have_old = (old_efi_entry != nil && old_efi_entry != "");
++	boolean have_old = (BootELILO::old_efi_entry != nil && BootELILO::old_efi_entry != "");
+ 
+ 	term widget = `VBox (`Frame ( _("EFI Label"), `HBox(`HSpacing(1),`VBox(
+ 	    `VSpacing (1),
+@@ -55,9 +56,9 @@
+       * @param opt_key any option key
+       */
+     global define void targetInit (string widget) ``{
+-	UI::ChangeWidget (`id (`create_entry), `Value, create_efi_entry);
++	UI::ChangeWidget (`id (`create_entry), `Value, BootELILO::create_efi_entry);
+ 	UI::ChangeWidget (`id (`location), `Value, BootCommon::globals["boot_efilabel"]:"");
+-	UI::ChangeWidget (`id (`location), `Enabled, create_efi_entry);
++	UI::ChangeWidget (`id (`location), `Enabled, BootELILO::create_efi_entry);
+     }
+ 
+     /**
+@@ -81,7 +82,7 @@
+ 	BootCommon::globals["boot_efilabel"] = (string)
+ 	    UI::QueryWidget (`id (`location), `Value);
+ 	BootCommon::location_changed = true;
+-	create_efi_entry = (boolean)
++	BootELILO::create_efi_entry = (boolean)
+ 	    UI::QueryWidget (`id (`create_entry), `Value);
+     }
+ 
+diff --git a/src/include/bootloader/grub/misc.ycp b/src/include/bootloader/grub/misc.ycp
+index 7a50307..5fd7869 100644
+--- a/src/include/bootloader/grub/misc.ycp
++++ b/src/include/bootloader/grub/misc.ycp
+@@ -21,7 +21,9 @@
+     import "Storage";
+     import "StorageDevices";
+     import "Mode";
++    import "Stage";
+     import "BootCommon";
++    import "BootStorage";
+     import "PackageSystem";
+     import "Map";
+ 
+diff --git a/src/include/bootloader/grub2/misc.ycp b/src/include/bootloader/grub2/misc.ycp
+index 11bff4a..f0ef9ad 100644
+--- a/src/include/bootloader/grub2/misc.ycp
++++ b/src/include/bootloader/grub2/misc.ycp
+@@ -22,8 +22,10 @@
+     import "StorageDevices";
+     import "Mode";
+     import "BootCommon";
++    import "BootStorage";
+     import "PackageSystem";
+     import "Map";
++    import "Stage";
+ 
+ 
+ // --------------------------------------------------------------
+diff --git a/src/include/bootloader/ppc/dialogs.ycp b/src/include/bootloader/ppc/dialogs.ycp
+index 67ab9f3..bcbe6be 100644
+--- a/src/include/bootloader/ppc/dialogs.ycp
++++ b/src/include/bootloader/ppc/dialogs.ycp
+@@ -20,6 +20,7 @@ import "Label";
+ import "Wizard";
+ import "CWM";
+ import "BootCommon";
++import "BootPOWERLILO";
+ import "Stage";
+ import "Arch";
+ 
+@@ -33,7 +34,7 @@ term arch_term = `Empty();
+ 
+ void PPCArchDep()
+ {
+-   string board_type = getBoardType ();
++   string board_type = BootPOWERLILO::getBoardType ();
+    board_type = "prep";
+    switch(board_type) {
+ 	case ("prep"):
+@@ -109,7 +110,7 @@ symbol PPCDetailsDialog () {
+ map<string,any> ppcBootLoaderLocationWidget ()
+ {
+ 
+-   string board_type = getBoardType ();
++   string board_type = BootPOWERLILO::getBoardType ();
+ board_type = "prep";
+    switch(board_type) {
+ 	case ("prep"):
+@@ -153,4 +154,4 @@ global map<string,map<string,any> > ppcWidgets () {
+ }
+ 
+ 
+-}
+\ No newline at end of file
++}
+diff --git a/src/include/bootloader/ppc/options.ycp b/src/include/bootloader/ppc/options.ycp
+index e271be4..c171fdb 100644
+--- a/src/include/bootloader/ppc/options.ycp
++++ b/src/include/bootloader/ppc/options.ycp
+@@ -19,13 +19,15 @@ textdomain "bootloader";
+ 
+ import "Label";
+ import "BootCommon";
++import "BootPOWERLILO";
+ import "Arch";
+ 
+ include "bootloader/ppc/helps.ycp";
++include "bootloader/routines/common_options.ycp";
+ 
+ 
+ void InitDuplicatePartition(string widget) {
+-    list <string> devices = prep_boot_partitions;
++    list <string> devices = BootPOWERLILO::prep_boot_partitions;
+     if (size(devices) != 0)
+     {
+ 	UI::ChangeWidget (`id ("clone"), `Items, devices);
+@@ -54,7 +56,7 @@ map<string,any> DuplicatePartition(){
+ }
+ 
+ void InitBootPMAC(string widget) {
+-    list <string> devices = pmac_boot_partitions;
++    list <string> devices = BootPOWERLILO::pmac_boot_partitions;
+     if (size(devices) != 0)
+     {
+ 	UI::ChangeWidget (`id ("boot_pmac_custom"), `Items, devices);
+@@ -87,7 +89,7 @@ map<string,any> BootPMAC(){
+ 
+ 
+ void InitBootCHRP(string widget) {
+-    list <string> devices = prep_boot_partitions;
++    list <string> devices = BootPOWERLILO::prep_boot_partitions;
+     if (size(devices) != 0)
+     {
+ 	UI::ChangeWidget (`id ("boot_chrp_custom"), `Items, devices);
+@@ -122,7 +124,7 @@ map<string,any> BootCHRP(){
+ 
+ 
+ void InitBootPReP(string widget) {
+-    list <string> devices = prep_boot_partitions;
++    list <string> devices = BootPOWERLILO::prep_boot_partitions;
+     if (size(devices) != 0)
+     {
+ 	UI::ChangeWidget (`id ("boot_prep_custom"), `Items, devices);
+@@ -156,7 +158,7 @@ map<string,any> BootPReP(){
+ 
+ 
+ void InitBootISeries(string widget) {
+-    list <string> devices = prep_boot_partitions;
++    list <string> devices = BootPOWERLILO::prep_boot_partitions;
+     if (size(devices) != 0)
+     {
+ 	UI::ChangeWidget (`id ("boot_iseries_custom"), `Items, devices);
+diff --git a/src/include/bootloader/routines/common_options.ycp b/src/include/bootloader/routines/common_options.ycp
+index f8f9d16..c83c68d 100644
+--- a/src/include/bootloader/routines/common_options.ycp
++++ b/src/include/bootloader/routines/common_options.ycp
+@@ -19,6 +19,9 @@
+ 
+ textdomain "bootloader";
+ 
++import "BootCommon";
++import "Label";
++
+ include "bootloader/routines/common_helps.ycp";
+ 
+ /**
+diff --git a/src/include/bootloader/routines/global_widgets.ycp b/src/include/bootloader/routines/global_widgets.ycp
+index 078ae3c..25d5cc0 100644
+--- a/src/include/bootloader/routines/global_widgets.ycp
++++ b/src/include/bootloader/routines/global_widgets.ycp
+@@ -28,14 +28,17 @@ import "Mode";
+ import "Storage";
+ import "StorageDevices";
+ import "Bootloader";
++import "BootStorage";
+ import "Progress";
+ import "PackageSystem";
+ import "Package";
+ import "Message";
+-
++import "Popup";
++import "Stage";
+ 
+ 
+ include "bootloader/routines/helps.ycp";
++include "bootloader/routines/popups.ycp";
+ 
+ /**
+  * Init function of widget
+diff --git a/src/include/bootloader/routines/helps.ycp b/src/include/bootloader/routines/helps.ycp
+index cf856da..e93908c 100644
+--- a/src/include/bootloader/routines/helps.ycp
++++ b/src/include/bootloader/routines/helps.ycp
+@@ -19,6 +19,7 @@
+ {
+     textdomain "bootloader";
+ 
++    import "BootCommon";
+     import "StorageDevices";
+     import "Arch";
+ 
+diff --git a/src/include/bootloader/routines/i386.ycp b/src/include/bootloader/routines/i386.ycp
+index f263957..c2cc1c7 100644
+--- a/src/include/bootloader/routines/i386.ycp
++++ b/src/include/bootloader/routines/i386.ycp
+@@ -18,6 +18,14 @@
+ 
+ textdomain "bootloader";
+ 
++import "BootStorage";
++
++include "bootloader/routines/popups.ycp";
++
++global void DetectDisks ();
++global boolean DisksChanged ();
++
++
+ // general MBR reading cache
+ 
+ /**
+@@ -54,6 +62,10 @@ boolean _keep_mbr = nil;
+  */
+ string thinkpad_seq = "50e46124108ae0e461241038e074f8e2f458c332edb80103ba8000cd13c3be05068a04240cc0e802c3";
+ 
++global list<string> Summary ();
++global string DiskOrderSummary ();
++
++
+ /**
+  * Get the contents of the MBR of a disk
+  * @param disk string the disk to be checked
+@@ -151,10 +163,10 @@ global list<string> i386Summary () {
+  * Propose the boot loader location for i386 (and similar) platform
+  */
+ global void i386LocationProposal () {
+-    if (! was_proposed)
++    if (!BootCommon::was_proposed)
+     {
+ 	DetectDisks ();
+-	del_parts = BootStorage::getPartitionList (`deleted, getLoaderType(false));
++	BootCommon::del_parts = BootStorage::getPartitionList (`deleted, BootCommon::getLoaderType(false));
+ 	// check whether edd is loaded; if not: load it
+ 	string lsmod_command = "lsmod | grep edd";
+ 	y2milestone ("Running command %1", lsmod_command);
+@@ -173,15 +185,15 @@ global void i386LocationProposal () {
+     // refresh device map
+     if ((BootStorage::device_mapping == nil
+ 	|| size (BootStorage::device_mapping) == 0)
+-	&& (getLoaderType(false) == "grub"))
++	&& (BootCommon::getLoaderType(false) == "grub"))
+     {
+ 	BootStorage::ProposeDeviceMap ();
+     }
+ 
+     if (DisksChanged () && ! Mode::autoinst ()) {
+-        if (askLocationResetPopup (loader_device)) {
+-	    selected_location = nil;
+-	    loader_device = nil;
++        if (askLocationResetPopup (BootCommon::loader_device)) {
++	    BootCommon::selected_location = nil;
++	    BootCommon::loader_device = nil;
+ 	    y2milestone ("Reconfiguring locations");
+ 	    DetectDisks ();
+ 	}
+@@ -195,12 +207,12 @@ global void i386LocationProposal () {
+  */
+ global boolean PostUpdateMBR () {
+     boolean ret = true;
+-    if (ThinkPadMBR (mbrDisk))
++    if (ThinkPadMBR (BootCommon::mbrDisk))
+     {
+-	if (loader_device != mbrDisk)
++	if (BootCommon::loader_device != BootCommon::mbrDisk)
+ 	{
+ 	    string command = sformat
+-		("/usr/lib/YaST2/bin/tp_mbr %1", mbrDisk);
++		("/usr/lib/YaST2/bin/tp_mbr %1", BootCommon::mbrDisk);
+ 	    y2milestone ("Running command %1", command);
+ 	    map out = (map)SCR::Execute (.target.bash_output, command);
+ 	    integer exit = out["exit"]:0;
+diff --git a/src/include/bootloader/routines/lib_iface.ycp b/src/include/bootloader/routines/lib_iface.ycp
+index 31b46a4..f54304e 100644
+--- a/src/include/bootloader/routines/lib_iface.ycp
++++ b/src/include/bootloader/routines/lib_iface.ycp
+@@ -25,9 +25,13 @@
+ textdomain "bootloader";
+ 
+ import "System::Bootloader_API";
+-import "Storage";
++import "BootArch";
++import "BootStorage";
+ import "Mode";
+ 
++include "bootloader/routines/popups.ycp";
++
++
+ /**
+  * Loader the library has been initialized to use
+  */
+diff --git a/src/include/bootloader/routines/lilolike.ycp b/src/include/bootloader/routines/lilolike.ycp
+index 1389e28..1a19f1f 100644
+--- a/src/include/bootloader/routines/lilolike.ycp
++++ b/src/include/bootloader/routines/lilolike.ycp
+@@ -22,15 +22,17 @@ textdomain "bootloader";
+ import "Arch";
+ import "Mode";
+ import "Storage";
+-import "StorageDevices";
+-import "BootArch";
+-import "Map";
++import "BootStorage";
++import "BootCommon";
+ 
+ global string DiskOrderSummary ();
+ global void DetectDisks ();
+ global boolean DisksChanged ();
++global map<string, integer> Md2Partitions (string md_device);
+ 
+ include "bootloader/routines/i386.ycp";
++include "bootloader/routines/lib_iface.ycp";
++include "bootloader/routines/misc.ycp";
+ 
+ /**
+  * Check whether disk settings were changed since last checking
+@@ -47,14 +49,14 @@ global boolean DisksChanged () {
+     // and location is "floppy", "mbr" or "boot"
+     if (actual_boot == BootStorage::BootPartitionDevice
+ 	&& actual_root == BootStorage::RootPartitionDevice
+-            && selected_location != "custom"
+-            && selected_location != ""
+-	    && selected_location != nil)
++            && BootCommon::selected_location != "custom"
++            && BootCommon::selected_location != ""
++	    && BootCommon::selected_location != nil)
+     {
+ 	return false;
+     }
+ 
+-    list all_partitions = BootStorage::getPartitionList(`boot, getLoaderType(false));
++    list all_partitions = BootStorage::getPartitionList(`boot, BootCommon::getLoaderType(false));
+ 
+     if (!contains(all_partitions, BootCommon::loader_device))
+     {
+@@ -134,15 +136,15 @@ define string soft_MDraid_boot_disk(list<map> partitions)
+      // FIXME: replace with grub_ConfigureLocation() when lilo et al. have
+      // changed to stop using selected_location and loader_device.
+     string ConfigureLocation() {
+-        selected_location = "mbr";             // default to mbr
+-        loader_device   = BootCommon::mbrDisk;
++        BootCommon::selected_location = "mbr";             // default to mbr
++        BootCommon::loader_device   = BootCommon::mbrDisk;
+ 	// check whether the /boot partition
+ 	//  - is primary:			    is_logical	-> false
+ 	//  - is on the first disk (with the MBR):  disk_is_mbr -> true
+ 	map<string,any> tm = Storage::GetTargetMap ();
+ 	map dp = Storage::GetDiskPartition (BootStorage::BootPartitionDevice);
+ 	string disk = dp["disk"]:"";
+-	boolean disk_is_mbr = disk == mbrDisk;
++	boolean disk_is_mbr = disk == BootCommon::mbrDisk;
+ 	map dm = tm[disk]:$[];
+ 	list<map> partitions = dm["partitions"]:[];
+ 	boolean is_logical = false;
+@@ -155,7 +157,7 @@ define string soft_MDraid_boot_disk(list<map> partitions)
+ 	    needed_devices = maplist (string d, integer b, md_info, {
+ 		map pdp = Storage::GetDiskPartition (d);
+ 		string p_disk = pdp["disk"]:"";
+-		if (p_disk == mbrDisk)
++		if (p_disk == BootCommon::mbrDisk)
+ 		    disk_is_mbr = true;
+ 		return d;
+ 	    });
+@@ -179,16 +181,16 @@ define string soft_MDraid_boot_disk(list<map> partitions)
+ 	// keep_mbr, if the MBR contains special code that needs to be kept,
+ 	//           like Thinkpad boot code (and ATM only Thinkpad boot code
+ 	//           is recognized)
+-	boolean keep_mbr = KeepMBR (loader_device);
++	boolean keep_mbr = KeepMBR (BootCommon::loader_device);
+ 
+ 	integer exit = 0;
+ 	// if is primary, store bootloader there
+ 	if (disk_is_mbr && ! is_logical)
+ 	{
+-	    selected_location = "boot";
+-	    loader_device = BootStorage::BootPartitionDevice;
+-	    activate = true;
+-	    activate_changed = true;
++	    BootCommon::selected_location = "boot";
++	    BootCommon::loader_device = BootStorage::BootPartitionDevice;
++	    BootCommon::activate = true;
++	    BootCommon::activate_changed = true;
+ 
+             // check if there is raid and if it soft-raid select correct device for analyse MBR
+             // bnc #398356
+@@ -198,47 +200,47 @@ define string soft_MDraid_boot_disk(list<map> partitions)
+ 	       disk = dp["disk"]:"";
+ 	    string out = examineMBR(disk);
+ 
+-	    repl_mbr = (out != "vista") && (! keep_mbr);
++	    BootCommon::repl_mbr = (out != "vista") && (! keep_mbr);
+ 
+ 	}
+ 	else if (size (needed_devices) > 1)
+ 	{
+-	    loader_device = "mbr_md";
+-	    selected_location = "mbr_md";
++	    BootCommon::loader_device = "mbr_md";
++	    BootCommon::selected_location = "mbr_md";
+ 	}
+ 
+ 	if (keep_mbr)
+ 	{
+ 	    if (is_logical && extended != nil)
+-		loader_device = extended;
++		BootCommon::loader_device = extended;
+ 	    else
+-		loader_device = BootStorage::BootPartitionDevice;
+-	    selected_location = "boot";
++		BootCommon::loader_device = BootStorage::BootPartitionDevice;
++	    BootCommon::selected_location = "boot";
+ 	}
+-	if (! contains (BootStorage::getPartitionList (`boot, getLoaderType(false)), loader_device))
++	if (! contains (BootStorage::getPartitionList (`boot, BootCommon::getLoaderType(false)), BootCommon::loader_device))
+ 	{
+-	    selected_location = "mbr";             // default to mbr
+-	    loader_device   = BootCommon::mbrDisk;
++	    BootCommon::selected_location = "mbr";             // default to mbr
++	    BootCommon::loader_device   = BootCommon::mbrDisk;
+ 	}
+ 
+         y2milestone ("ConfigureLocation (%1 on %2)",
+-	    selected_location, loader_device);
++	    BootCommon::selected_location, BootCommon::loader_device);
+ 
+ 	// set active flag
+-	if (selected_location == "mbr")
++	if (BootCommon::selected_location == "mbr")
+ 	{
+ 	    // we are installing into MBR:
+ 	    // if there is an active partition, then we do not need to activate
+ 	    // one (otherwise we do)
+-            activate = size (Storage::GetBootPartition (mbrDisk)) == 0;
++            BootCommon::activate = size (Storage::GetBootPartition (BootCommon::mbrDisk)) == 0;
+ 	}
+ 	else
+ 	{
+ 	    // if not installing to MBR, always activate
+-	    activate = true;
++	    BootCommon::activate = true;
+ 	}
+ 
+-        return selected_location;
++        return BootCommon::selected_location;
+     }
+ 
+     /**
+@@ -283,8 +285,8 @@ define string soft_MDraid_boot_disk(list<map> partitions)
+ 	    BootCommon::mbrDisk = FindMBRDisk();
+ 	}
+ 
+-	if (loader_device == nil || loader_device == ""
+-	    || ! contains (BootStorage::getPartitionList (`boot, getLoaderType(false)), loader_device))
++	if (BootCommon::loader_device == nil || BootCommon::loader_device == ""
++	    || ! contains (BootStorage::getPartitionList (`boot, BootCommon::getLoaderType(false)), BootCommon::loader_device))
+             ConfigureLocation ();
+ 
+     }
+@@ -397,7 +399,7 @@ list<string> generic_fallback_flavors = [
+  *  - Otherwise, simply use the first section as the default section.
+  */
+ global void FixGlobals () {
+-    string defaultv = globals["default"]:"";
++    string defaultv = BootCommon::globals["default"]:"";
+     string first = "";
+ 
+     y2milestone ("fixing default section");
+@@ -408,7 +410,7 @@ global void FixGlobals () {
+ 
+     // does default section exist?
+     boolean exists = false;
+-    foreach (map<string,any> s, sections, {
++    foreach (map<string,any> s, BootCommon::sections, {
+ 	string label = s["name"]:"";
+ 	if (label == defaultv)
+ 	    exists = true;
+@@ -417,7 +419,7 @@ global void FixGlobals () {
+     });
+ 
+     if (exists &&
+-	(! Mode::update() || globals["former_default_image_flavor"]:nil == nil))
++	(! Mode::update() || BootCommon::globals["former_default_image_flavor"]:nil == nil))
+ 	return;
+ 
+     // need to fix "default"
+@@ -425,11 +427,11 @@ global void FixGlobals () {
+     string found_name = "";
+     list<string> fallback_flavors = generic_fallback_flavors;
+ 
+-    if (Mode::update() && globals["former_default_image_flavor"]:nil != nil) {
+-	fallback_flavors = prepend(fallback_flavors, globals["former_default_image_flavor"]:"");
++    if (Mode::update() && BootCommon::globals["former_default_image_flavor"]:nil != nil) {
++	fallback_flavors = prepend(fallback_flavors, BootCommon::globals["former_default_image_flavor"]:"");
+ 
+ 	// former_default_image_flavor is removed at the end of the update
+-	globals = remove (globals, "former_default_image_flavor");
++	BootCommon::globals = remove (BootCommon::globals, "former_default_image_flavor");
+     }
+ 
+     y2milestone ("looking for image flavors %1", fallback_flavors);
+@@ -437,7 +439,7 @@ global void FixGlobals () {
+ 	if (found_name != "")
+ 	    return;
+ 
+-	foreach (map<string,any> s, sections, {
++	foreach (map<string,any> s, BootCommon::sections, {
+ 	    string label = s["name"]:"";
+ 	    if (regexpmatch (s["original_name"]:"", "^linux(-.*)?$") ||
+ 		regexpmatch (s["image"]:"", "^.*-" + flavor + "$")) {
+@@ -457,11 +459,11 @@ global void FixGlobals () {
+     });
+ 
+     if (found_name != "")
+-	globals["default"] = found_name;
++	BootCommon::globals["default"] = found_name;
+     else
+-	globals["default"] = first;
++	BootCommon::globals["default"] = first;
+ 
+-    y2milestone ("setting new default section to: %1", globals["default"]:nil);
++    y2milestone ("setting new default section to: %1", BootCommon::globals["default"]:nil);
+ }
+ 
+ 
+@@ -480,26 +482,26 @@ string getLargestSwapPartition () {
+  * Fix section of lilo-like bootloader
+  */
+ global void FixSections (void() create_sections) {
+-    list<string> parts = BootStorage::getPartitionList(`parts_old, getLoaderType(false));
+-    if (partitioning_last_change
++    list<string> parts = BootStorage::getPartitionList(`parts_old, BootCommon::getLoaderType(false));
++    if (BootCommon::partitioning_last_change
+ 	    != Storage::GetTargetChangeTime()
+ 	&& BootCommon::files_edited)
+     {
+ 	displayFilesEditedPopup ();
+-	files_edited_warned = true;
++	BootCommon::files_edited_warned = true;
+ 	return;
+     }
+ 
+     // save old sections and propose new ones in global "sections"
+     // (the updated list of old sections will become the new section list in
+     // the end)
+-    list<map<string,any> > old_sect_list = sections;
++    list<map<string,any> > old_sect_list = BootCommon::sections;
+ 
+     create_sections ();
+ 
+     // new_sect is a map with elements containing: "type" -> section
+     map<string,map<string,any> > new_sect = listmap (map<string,any> s,
+-	sections,
++	BootCommon::sections,
+     {
+ 	string label = s["name"]:"";
+ 	string type = s["original_name"]:label;
+@@ -595,7 +597,7 @@ global void FixSections (void() create_sections) {
+     // in newly created sections, fix "resume" parameter in append line if
+     // necessary
+     y2milestone ("Checking for sections using the resume parameter");
+-    sections = maplist (map<string,any> s, BootCommon::sections, ``{
++    BootCommon::sections = maplist (map<string,any> s, BootCommon::sections, ``{
+ 	string append = s["append"]:"";
+ 	string resume = getKernelParamFromLine (append, "resume");
+ 	if (resume != "" && resume != nil
+@@ -614,11 +616,11 @@ global void FixSections (void() create_sections) {
+ 
+     // now add sections from newly created ones that were unknown before in the
+     // old section list, if not already removed by the user (#170469)
+-    foreach (map<string,any> s, sections, {
++    foreach (map<string,any> s, BootCommon::sections, {
+ 	string label = s["name"]:"";
+ 	string type = s["original_name"]:label;
+ 	if (! contains (old_section_types, type) &&
+-	    ! contains (removed_sections, type))
++	    ! contains (BootCommon::removed_sections, type))
+ 	{
+ 	    y2milestone ("Adding new section \"%1\": %2",
+ 		label, s);
+@@ -631,15 +633,15 @@ global void FixSections (void() create_sections) {
+     // if a newly created section uses one or more deleted devices, and a
+     // section of that type does not exist anymore in the old section list, add
+     // it to the old section list
+-    y2milestone ("Checking for sections needing some of %1", del_parts);
++    y2milestone ("Checking for sections needing some of %1", BootCommon::del_parts);
+     list<string> to_remove = [];
+-    foreach (map<string,any> s, sections, {
++    foreach (map<string,any> s, BootCommon::sections, {
+ 	list<string> devs = s["__devs"]:[];
+ 	string label = s["name"]:"";
+ 	y2milestone ("Section %1 needs %2", label, devs);
+ 	boolean to_add = false;
+ 	foreach (string d, devs, {
+-	   if (contains (del_parts, d))
++	   if (contains (BootCommon::del_parts, d))
+ 	    {
+ 		to_add = true;
+ 	    }
+@@ -661,7 +663,7 @@ global void FixSections (void() create_sections) {
+ 
+     // FIXME: BUG: looks like a bug to remove a list of labels from the list of
+     // deleted devices
+-    del_parts = (list<string>)difflist (del_parts, to_remove);
++    BootCommon::del_parts = (list<string>)difflist (BootCommon::del_parts, to_remove);
+ 
+     // cleanup: throw away empty sections
+     old_sect_list = filter (map<string,any> s, old_sect_list, {
+@@ -669,7 +671,7 @@ global void FixSections (void() create_sections) {
+     });
+ 
+     // save old, updated section list as proposed section list
+-    sections = old_sect_list;
++    BootCommon::sections = old_sect_list;
+ }
+ 
+ /**
+@@ -730,7 +732,7 @@ global void UpdateSections ()
+     string default_name = default_sect["name"]:"";
+ 
+     list<string> sections_to_recreate = ["linux", "failsafe", "memtest86"];
+-    if (getLoaderType (false) == "grub")
++    if (BootCommon::getLoaderType (false) == "grub")
+     {
+ 	sections_to_recreate = add (sections_to_recreate, "xen");
+     }
+@@ -807,7 +809,7 @@ global void UpdateSections ()
+     //  => if bootable, convert to "chainloader"
+     //       otherwise, convert to "configfile" and hope for the best
+     //
+-    if (getLoaderType (false) == "grub" && replace)
++    if (BootCommon::getLoaderType (false) == "grub" && replace)
+     {
+ 	y2milestone ("Converting sections for other installation to use chainloader/configfile entries...");
+ 	out = maplist (map<string,any> s, out, {
+@@ -968,7 +970,7 @@ global void UpdateSections ()
+ 	}
+ 	return s;
+     });
+-    sections = out;
++    BootCommon::sections = out;
+ }*/
+ 
+ /**
+@@ -996,7 +998,7 @@ global void UpdateGlobals () {
+     // LILO and GRUB (although the latter only needs it to correctly transform
+     // back to the section number)
+     // FIXME: is this needed/wanted for ELILO as well?
+-    if ( contains (["lilo", "grub"], getLoaderType (false)))
++    if ( contains (["lilo", "grub"], BootCommon::getLoaderType (false)))
+ 	FixGlobals ();
+ }
+ 
+@@ -1023,7 +1025,7 @@ global void UpdateDeviceMap () {
+ global void RemoveUnexistentSections (string path_prefix,
+     string relative_path_prefix)
+ {
+-    string defaultv = globals["default"]:"";
++    string defaultv = BootCommon::globals["default"]:"";
+     string first = nil;
+     BootCommon::sections = filter (map<string,any> s, BootCommon::sections, {
+ 	string label = s["name"]:"";
+@@ -1074,14 +1076,14 @@ global void RemoveUnexistentSections (string path_prefix,
+     });
+     if (defaultv == nil)
+ 	defaultv = first;
+-    globals["default"] = defaultv;
++    BootCommon::globals["default"] = defaultv;
+ }
+ 
+ /**
+   * Update append option if some parameters were changed
+   */
+ global void UpdateAppend () {
+-    sections = maplist (map<string,any> s, sections, {
++    BootCommon::sections = maplist (map<string,any> s, BootCommon::sections, {
+ 	string type = s["original_name"]:"";
+         if ((type == "linux" || type == "global")
+ 	    && s["append"]:nil != nil
+@@ -1091,9 +1093,9 @@ global void UpdateAppend () {
+ 	}
+         return s;
+     });
+-    if (haskey (globals, "append"))
++    if (haskey (BootCommon::globals, "append"))
+     {
+-	globals["append"] = UpdateKernelParams (globals["append"]:"");
++	BootCommon::globals["append"] = UpdateKernelParams (BootCommon::globals["append"]:"");
+     }
+ }
+ 
+@@ -1101,12 +1103,12 @@ global void UpdateAppend () {
+  * Update the gfxboot/message/... line if exists
+  */
+ global void UpdateGfxMenu () {
+-    string message = globals["gfxmenu"]:"";
++    string message = BootCommon::globals["gfxmenu"]:"";
+     if ((message != "") && (search(message, "(") == nil))
+     {
+ 	if (-1 == SCR::Read (.target.size, message))
+ 	{
+-	    globals = remove (globals, "gfxmenu");
++	    BootCommon::globals = remove (BootCommon::globals, "gfxmenu");
+ 	}
+     }
+ 
+diff --git a/src/include/bootloader/routines/misc.ycp b/src/include/bootloader/routines/misc.ycp
+index b3a4322..2b2fe30 100644
+--- a/src/include/bootloader/routines/misc.ycp
++++ b/src/include/bootloader/routines/misc.ycp
+@@ -39,6 +39,11 @@
+     import "FileUtils";
+     import "String";
+     import "FileUtils";
++    import "Arch";
++    import "BootStorage";
++    import "BootCommon";
++    import "PackageSystem";
++    import "GfxMenu";
+ 
+ // bootloader attributes handling functions
+ 
+@@ -76,7 +81,7 @@
+ 	    // combo box item
+ 	    : _("Boot Loader");
+ 	// fallback bootloader name, keep short
+-	return bootloader_attribs[bootloader, "loader_name"]:fallback_name;
++	return BootCommon::bootloader_attribs[bootloader, "loader_name"]:fallback_name;
+     }
+ 
+     /**
+@@ -85,7 +90,7 @@
+       * @return boolean value of attribute
+       */
+     global define boolean getBooleanAttrib (string attrib) ``{
+-	return current_bootloader_attribs[attrib]:false;
++	return BootCommon::current_bootloader_attribs[attrib]:false;
+     }
+ 
+     /**
+@@ -95,7 +100,7 @@
+       * @return any value of attribute
+       */
+     global define any getAnyTypeAttrib (string attrib, any defaultv) ``{
+-        return current_bootloader_attribs[attrib]:defaultv;
++        return BootCommon::current_bootloader_attribs[attrib]:defaultv;
+     }
+ 
+ // other misc functions
+@@ -260,7 +265,7 @@ global list<map<string,any> > remapSections(list<map<string,any> >sec)
+ 	list<map<string,any> >temp_sec = [];
+ 	
+ 	// convert root and resume device names in sections to kernel device names
+-	temp_sec = maplist (map<string,any> s, sections, 
++	temp_sec = maplist (map<string,any> s, BootCommon::sections, 
+ 	{
+ 		
+ 		if (s["root"]:"" != "")
+@@ -412,7 +417,7 @@ global boolean IsPartitionBootable (string device) {
+     // use examineMBR to analyze PBR (partition boot record):
+     // examineMBR returns "* stage1" when it finds the signature
+     // of some stage1 bootloader
+-    string result = examineMBR(device);
++    string result = BootCommon::examineMBR(device);
+     if ((result == "grub") || (result == "lilo"))
+     	return true;
+     else
+@@ -427,15 +432,15 @@ global boolean IsPartitionBootable (string device) {
+ global boolean InstallingToFloppy () {
+     boolean ret = false;
+     // Bug 539774 - bootloader module wants to write to floppy disk although there is none
+-    if ((loader_device == nil) || (loader_device == ""))
++    if ((BootCommon::loader_device == nil) || (BootCommon::loader_device == ""))
+ 	return ret; // bug #333459 - boot loader editor: propose new configuration 
+ 		    // -- BLE tries to write something on the floppy disk
+     // bnc #180784 don't install to bootloader to floppy if ppc
+-    if (getLoaderType (false) == "ppc")
++    if (BootCommon::getLoaderType (false) == "ppc")
+ 	ret = false;
+-    else if (loader_device == StorageDevices::FloppyDevice())
++    else if (BootCommon::loader_device == StorageDevices::FloppyDevice())
+ 	ret = true;
+-    else if (contains (BootStorage::getFloppyDevices (), loader_device))
++    else if (contains (BootStorage::getFloppyDevices (), BootCommon::loader_device))
+ 	ret = true;
+     y2milestone ("Installing to floppy: %1", ret);
+     return ret;
+@@ -712,7 +717,7 @@ list<string> ListKernelParamsInLine (string line) {
+ 	list<string> mbrs = maplist (string d, integer b, md, {
+ 	    d = getPartitionToActivate (
+ 		BootStorage::BootPartitionDevice, d
+-	    )["mbr"]:mbrDisk;
++	    )["mbr"]:BootCommon::mbrDisk;
+ 	    return d;
+ 	});
+ 	if (contains (mbrs, BootCommon::mbrDisk))
+@@ -779,7 +784,7 @@ list<string> ListKernelParamsInLine (string line) {
+ 	SCR::Execute (.target.bash, sformat (
+ 	    "/bin/dd if=%1 of=%2 bs=512 count=1 2>&1",
+ 	    device, device_file_path_to_logs));
+-	if (device == mbrDisk)
++	if (device == BootCommon::mbrDisk)
+ 	{
+ 	    SCR::Execute (.target.bash, sformat (
+ 		"/bin/dd if=%1 of=%2 bs=512 count=1 2>&1",
+@@ -804,13 +809,13 @@ list<string> ListKernelParamsInLine (string line) {
+       */
+     global define boolean updateMBR () ``{
+       	// FIXME: do the real thing in perl_Bootloader
+-      	if (getLoaderType (false) == "grub") {  
+-      	    activate = ( globals["activate"]:"false" == "true" );
+-      	    repl_mbr = ( globals["generic_mbr"]:"false" == "true" );
++      	if (BootCommon::getLoaderType (false) == "grub") {  
++      	    BootCommon::activate = ( BootCommon::globals["activate"]:"false" == "true" );
++      	    BootCommon::repl_mbr = ( BootCommon::globals["generic_mbr"]:"false" == "true" );
+       	}
+ 
+-	y2milestone ("Updating disk system area, activate partition: %1, replace MBR: %2", activate, repl_mbr);
+-	if (backup_mbr)
++	y2milestone ("Updating disk system area, activate partition: %1, replace MBR: %2", BootCommon::activate, BootCommon::repl_mbr);
++	if (BootCommon::backup_mbr)
+ 	{
+ 	    y2milestone ("Doing MBR backup: MBR Disk: %1, loader device: %2",
+ 		BootCommon::mbrDisk, BootCommon::loader_device);
+@@ -828,7 +833,7 @@ list<string> ListKernelParamsInLine (string line) {
+ 	// ConfigureLocation() asked us to replace some problematic existing
+ 	// MBR, then overwrite the boot code (only, not the partition list!) in
+ 	// the MBR with a generic (currently DOS?) bootloader
+-	if (repl_mbr && BootCommon::loader_device != mbrDisk)
++	if (BootCommon::repl_mbr && BootCommon::loader_device != BootCommon::mbrDisk)
+ 	{
+ 	    if (! Stage::initial ())
+ 	    {
+@@ -852,7 +857,7 @@ list<string> ListKernelParamsInLine (string line) {
+ 	    });
+ 	}
+ 
+-	if (activate)
++	if (BootCommon::activate)
+ 	{
+ 	  foreach (map m_activate, getPartitionsToActivate (), {
+ 	    any num = m_activate["num"]:0;
+@@ -987,7 +992,7 @@ list<string> ListKernelParamsInLine (string line) {
+       */
+     global define string translateSectionTitle (string orig) ``{
+ 	return GfxMenu::translateSectionTitle(orig,
+-					      getLoaderType(false));
++					      BootCommon::getLoaderType(false));
+     }
+ 
+     /**
+@@ -1051,7 +1056,7 @@ list<string> ListKernelParamsInLine (string line) {
+     global define string GetAdditionalFailsafeParams () ``{
+ 	if (Stage::initial ())
+ 	{
+-	    additional_failsafe_params =
++	    BootCommon::additional_failsafe_params =
+ 		SCR::Read (.etc.install_inf.NoPCMCIA) == "1"
+ 		    ? " NOPCMCIA "
+ 		    : "";
+@@ -1060,10 +1065,10 @@ list<string> ListKernelParamsInLine (string line) {
+ 	{
+ 	    map<string,any> saved_params = (map<string,any>)SCR::Read (
+ 		.target.ycp, "/var/lib/YaST2/bootloader.ycp");
+-	    additional_failsafe_params
++	    BootCommon::additional_failsafe_params
+ 		= saved_params["additional_failsafe_params"]:"";
+ 	}
+-	return additional_failsafe_params;
++	return BootCommon::additional_failsafe_params;
+     }
+ 
+ /**
+@@ -1090,7 +1095,7 @@ global list<string> ListAdditionalKernelParams () {
+  * @return boolean true on success
+  */
+ global define boolean UpdateGfxMenuContents () {
+-    return GfxMenu::UpdateGfxMenuContents(getLoaderType(false));
++    return GfxMenu::UpdateGfxMenuContents(BootCommon::getLoaderType(false));
+ }
+ 
+ 
+@@ -1125,8 +1130,8 @@ global string UpdateDevice (string device) {
+     else
+     {
+ 	list<string> devices = Storage::GetTranslatedDevices (
+-	    installed_version,
+-	    update_version,
++	    BootCommon::installed_version,
++	    BootCommon::update_version,
+ 	    [ device ]);
+ 	device = devices[0]:device;
+     }
+@@ -1138,7 +1143,7 @@ global string UpdateDevice (string device) {
+  * @return boolean true if memtest86 section is to be proposed
+  */
+ global boolean MemtestPresent () {
+-    return (! contains (removed_sections, "memtest"))
++    return (! contains (BootCommon::removed_sections, "memtest"))
+ 	&& (Mode::test ()
+ 	    || (Mode::normal () && Pkg::IsProvided ("memtest86+"))
+ 	    || (! Mode::normal () && Pkg::IsSelected ("memtest86+")));
+@@ -1180,7 +1185,7 @@ global boolean BootloaderInstallable () {
+ 	    }
+ 
+ 	    // (bnc 357897) - lilo reports inconsistent raid version when trying to install on raid1
+-	    if (getLoaderType (false) == "lilo")
++	    if (BootCommon::getLoaderType (false) == "lilo")
+ 	    {
+ 		string raid_ver = info["sb_ver"]:"";    //"00.90.03"
+ 		if (substring(raid_ver,0,2) == "01")
+@@ -1937,9 +1942,9 @@ define string getKeyValue(string key)
+ define string getConsoleValue()
+ {
+ 	string ret = "";
+-	if ((globals["serial"]:"" != "") && (globals["terminal"]:"" != ""))
++	if ((BootCommon::globals["serial"]:"" != "") && (BootCommon::globals["terminal"]:"" != ""))
+ 	{
+-		list <string>  list_serial = splitstring (globals["serial"]:"", " ");
++		list <string>  list_serial = splitstring (BootCommon::globals["serial"]:"", " ");
+ 		y2milestone("list of serial args: %1", list_serial);
+ 		string unit = "";
+ 		string speed = "";
+@@ -1980,7 +1985,7 @@ global define void HandleConsole()
+ 	list < integer > list_index =[];
+ 	// counter 
+ 	integer index = -1;
+-	foreach(map<string,any> section, sections,
++	foreach(map<string,any> section, BootCommon::sections,
+ 	{
+ 		index = index +1;
+ 		if ((section["type"]:"" == "image") || (search(section["type"]:"", "xen") != nil))
+@@ -1992,21 +1997,21 @@ global define void HandleConsole()
+ 	{
+ 		foreach (integer idx, list_index,
+ 		{
+-			sections[idx, "__changed"] = true;
+-			if (sections[idx, "append"]:nil != nil)
++			BootCommon::sections[idx, "__changed"] = true;
++			if (BootCommon::sections[idx, "append"]:nil != nil)
+ 			{
+ 				string updated_append = "";
+ 				if ((console_value != "") || (console_value != nil))
+-					updated_append = BootCommon::UpdateSerialConsole(sections[idx,"append"]:"",
++					updated_append = BootCommon::UpdateSerialConsole(BootCommon::sections[idx,"append"]:"",
+ 						 console_value);
+ 				else
+-					updated_append = BootCommon::UpdateSerialConsole(sections[idx,"append"]:"", "");
++					updated_append = BootCommon::UpdateSerialConsole(BootCommon::sections[idx,"append"]:"", "");
+ 				if (updated_append != nil)
+ 				{
+-					sections[idx,"append"]=updated_append;
++					BootCommon::sections[idx,"append"]=updated_append;
+ 				}
+ 			}
+-			y2debug("Added/Removed console for section: %1", sections[idx]:$[]);
++			y2debug("Added/Removed console for section: %1", BootCommon::sections[idx]:$[]);
+ 		});
+ 	}
+ }
+@@ -2021,16 +2026,16 @@ global define void HandleConsole2()
+ {
+     string console_value = getConsoleValue();
+ 
+-    if (globals["append"]:nil != nil)
++    if (BootCommon::globals["append"]:nil != nil)
+     {
+         string updated_append = "";
+         if ((console_value != "") || (console_value != nil))
+-            updated_append = BootCommon::UpdateSerialConsole(globals["append"]:"", console_value);
++            updated_append = BootCommon::UpdateSerialConsole(BootCommon::globals["append"]:"", console_value);
+         else
+-            updated_append = BootCommon::UpdateSerialConsole(globals["append"]:"", "");
++            updated_append = BootCommon::UpdateSerialConsole(BootCommon::globals["append"]:"", "");
+         if (updated_append != nil)
+         {
+-            globals["append"]=updated_append;
++            BootCommon::globals["append"]=updated_append;
+         }
+     }
+ }
+diff --git a/src/include/bootloader/routines/popups.ycp b/src/include/bootloader/routines/popups.ycp
+index c3e8bd3..ad8627f 100644
+--- a/src/include/bootloader/routines/popups.ycp
++++ b/src/include/bootloader/routines/popups.ycp
+@@ -28,6 +28,7 @@
+     import "Popup";
+     import "Report";
+     import "String";
++    import "BootCommon";
+ 
+ /**
+  * Inform about not available functionality when no loader selected
+diff --git a/src/include/bootloader/routines/section_widgets.ycp b/src/include/bootloader/routines/section_widgets.ycp
+index 58c6dfa..77199af 100644
+--- a/src/include/bootloader/routines/section_widgets.ycp
++++ b/src/include/bootloader/routines/section_widgets.ycp
+@@ -32,10 +32,12 @@ import "Bootloader";
+ import "BootStorage";
+ import "Popup";
+ import "FileUtils";
++import "Report";
+ 
+ 
+ include "bootloader/routines/helps.ycp";
+ include "bootloader/routines/section_helps.ycp";
++include "bootloader/routines/popups.ycp";
+ 
+ boolean validate_image(string widget, map event){
+   string value = (string) UI::QueryWidget(`id(widget),`Value);
+diff --git a/src/modules/BootCommon.ycp b/src/modules/BootCommon.ycp
+index f756b6c..5659a4f 100644
+--- a/src/modules/BootCommon.ycp
++++ b/src/modules/BootCommon.ycp
+@@ -36,6 +36,7 @@ import "Popup";
+ import "Package";
+ import "PackagesProposal";
+ import "BootStorage";
++import "BootArch";
+ 
+ import "Linuxrc";
+ 

@@ -1,16 +1,16 @@
-# TODO: Process.
+ybc_deps:
+  - packager
+  # for clients/iscsi-client_finish.ycp
+  - installation
 
-files:
-  - src/IscsiClient.ycp
-  - src/IscsiClientLib.ycp
-  - src/complex.ycp
-  - src/dialogs.ycp
-  - src/helps.ycp
-  - src/inst_iscsi-client.ycp
-  - src/iscsi-client.ycp
-  - src/iscsi-client_auto.ycp
-  - src/iscsi-client_finish.ycp
-  - src/iscsi-client_proposal.ycp
-  - src/widgets.ycp
-  - src/wizards.ycp
-  - testsuite/tests/SaveConfig.ycp
+moves:
+  - from: src/*iscsi-client*.ycp
+    to:   src/clients
+  - from: src/IscsiClient*.ycp
+    to:   src/modules
+  - from: src/*.ycp
+    to:   src/include/iscsi-client
+  - from: src/*.desktop
+    to:   src/desktop
+  - from: src/*.rnc
+    to:   src/autoyast-rnc

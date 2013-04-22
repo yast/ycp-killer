@@ -39,28 +39,13 @@ things get gemified, packaged, etc.
 
   2. **Update `ycpc` (yast-core package)**
 
-   - **Clone the yast-core repository and compile your own `ycpc`**
+     Updated `ycpc` is needed because Y2R relies on some features that
+     are not present in `ycpc` bundled with openSUSE 12.3.
 
-     Custom-compiled `ycpc` is needed because Y2R relies on some features that
-     are not present in `ycpc` bundled with openSUSE 12.3. These fatures are
-     implemented in the `y2r_fixes` branch.
+     Install prebuilt RPM packages from **YaST:Head:ruby** OBS repository.
 
-           $ sudo zypper in make yast2-devtools libtool gcc-c++ bison \
-             docbook-xsl-stylesheets expect dejagnu flex boost-devel doxygen
-           $ git clone git://github.com/yast/yast-core.git -b y2r_fixes
-           $ cd yast-core
-           $ make -f Makefile.cvs
-           $ make
-           $ cd ..
-
-   - **Use packages from YaST:Head:ruby repository**
-
-       Alternatively you can use prebuilt RPM packages from **YaST:Head:ruby**
-       OBS repository.
-
-           $ sudo zypper ar -f http://download.opensuse.org/repositories/YaST:/Head:/ruby/openSUSE_12.3/ yast_ruby
-           $ sudo zypper in -f -r yast_ruby yast2-core
-
+         $ sudo zypper ar -f http://download.opensuse.org/repositories/YaST:/Head:/ruby/openSUSE_12.3/ YaST:Head:ruby
+         $ sudo zypper in -f -r YaST:Head:ruby yast2-core
 
   3. **Install basic Ruby environment**
 
@@ -80,6 +65,9 @@ things get gemified, packaged, etc.
 
   6. **Clone the YCP Killer repository and install YCP Killer's dependencies**
 
+         $ sudo zypper in perl-JSON      # Needed to load the Json.pm YCP module
+         $ sudo zypper in suseRegister   # Needed to load the YSR.pm YCP module
+         $ sudo zypper in cracklib-devel # Dependency of the dependency of users YaST module
          $ git clone git://github.com/yast/ycp-killer.git
          $ cd ycp-killer
          $ bundle install
@@ -106,15 +94,17 @@ The following tree shows what gets installed where:
 ```
 tictactoe-server
 └── src
-    ├── bin           ->  /usr/lib/YaST2/bin
-    ├── clients       ->  /usr/share/YaST2/clients
-    ├── data          ->  /usr/share/YaST2/data
-    ├── include       ->  /usr/share/YaST2/include
-    ├── modules       ->  /usr/share/YaST2/modules
-    ├── scrconf       ->  /usr/share/YaST2/scrconf
-    ├── autoyast-rnc  ->  /usr/share/YaST2/schema/autoyast/rnc
-    ├── control-rnc   ->  /usr/share/YaST2/schema/control/rnc
-    └── desktop       ->  /usr/share/applications/YaST2
+    ├── bin            ->  /usr/lib/YaST2/bin       (lib, even if lib64 exists)
+    ├── servers_non_y2 ->  /usr/lib/YaST2/servers_non_y2
+    ├── clients        ->  /usr/share/YaST2/clients
+    ├── data           ->  /usr/share/YaST2/data
+    ├── include        ->  /usr/share/YaST2/include
+    ├── modules        ->  /usr/share/YaST2/modules
+    ├── scrconf        ->  /usr/share/YaST2/scrconf
+    ├── autoyast-rnc   ->  /usr/share/YaST2/schema/autoyast/rnc
+    ├── control-rnc    ->  /usr/share/YaST2/schema/control/rnc
+    ├── desktop        ->  /usr/share/applications/YaST2
+    └── fillup         ->  /var/adm/fillup-templates
 ```
 
 Other directories, like `doc` and `testsuite`, are not restructured now
@@ -146,9 +136,12 @@ Tasks:
 The commands operate on two distinct directory trees: the *working* tree and
 the *result* tree.
 
+The module name can be omitted if it is the current working directory in the
+*working* tree.
+
 #### yk convert
 
-Does everything at once: `clone`, `restructure`, `patch`, `compile`.
+Does everything at once: `clone`, `restructure`, `patch`, `compile`, `makefile`, `package`.
 
 #### yk clone
 
@@ -211,8 +204,10 @@ binaries specified by the `ycpc` and `y2r` setting in `config.xml`.
 The compilation of each file may finish in one the following states:
 
   * **OK** – the compilation was successful
-  * **ERROR(y2r)** – the compilation failed when running `ycpc` or `y2r` on the
-    module code
+  * **ERROR(ybc)** – the compilation failed when running `ycpc`
+    on the module code
+  * **ERROR(y2r)** – the compilation failed when running `y2r`
+    on the module code
   * **ERROR(ruby)** – the compilation failed because it produced a result which
     was invalid Ruby (as determined by `ruby -c`)
   * **ERROR(other)** – the compilation failed for some other reason
@@ -242,6 +237,7 @@ $ ./yk compile testsuite
 
 Total OK:           3
 Total EXCLUDED:     0
+Total ERROR(ybc):   0
 Total ERROR(y2r):   6
 Total ERROR(ruby):  0
 Total ERROR(other): 0
@@ -259,6 +255,15 @@ $ ./yk genpatch testsuite
 [1/1] Generating patch testsuite...                                   OK
 ```
 
+#### yk makefile
+
+Generates Makefile.am for exported directories of module(s)
+
+#### yk package
+
+Creates packages for module(s) in the build service directory, which is a
+third tree alongside the *working* and *result* ones.
+
 ### Module Metadata
 
 Modules have metadata files placed in `data/foo.yml`, in the [YAML][yaml]
@@ -267,7 +272,9 @@ format.
 [yaml]: http://en.wikipedia.org/wiki/YAML
 
 ```
-# A list of modules this one depends on to compile.
+# A list of modules this one depends on to compile. Only direct dependencies
+# need to be stated here (the indirect ones are computed automatically when
+# needed).
 # Default: []
 deps:
   - yast2

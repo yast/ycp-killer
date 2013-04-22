@@ -1,23 +1,15 @@
-# TODO: Process.
+---
+ybc_deps:
+  - yast2
 
-files:
-  - src/Printer.ycp
-  - src/Printerlib.ycp
-  - src/autoconfig.ycp
-  - src/basicadd.ycp
-  - src/basicmodify.ycp
-  - src/connectionwizard.ycp
-  - src/dialogs.ycp
-  - src/driveradd.ycp
-  - src/driveroptions.ycp
-  - src/helps.ycp
-  - src/overview.ycp
-  - src/policies.ycp
-  - src/printer.ycp
-  - src/printer_auto.ycp
-  - src/printer_proposal.ycp
-  - src/printingvianetwork.ycp
-  - src/readwrite.ycp
-  - src/sharing.ycp
-  - src/wizards.ycp
-  - testsuite/tests/Printer.ycp
+moves:
+  - from: src/printer.rnc
+    to:   src/autoyast-rnc
+  - from: src/{printer,printer_auto,printer_proposal}.ycp
+    to:   src/clients
+  - from: src/{helps,wizards,readwrite,overview,basicadd,basicmodify,connectionwizard,driveroptions,driveradd,printingvianetwork,sharing,policies,autoconfig,dialogs}.ycp
+    to:   src/include/printer
+  - from: src/{Printer,Printerlib}.ycp
+    to:   src/modules
+  - from: src/printer.desktop
+    to:   src/desktop

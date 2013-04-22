@@ -1,13 +1,14 @@
-# TODO: Process.
+ybc_deps:
+  - yast2
 
-files:
-  - src/Snapper.ycp
-  - src/dialogs.ycp
-  - src/helps.ycp
-  - src/snapper.ycp
-  - src/wizards.ycp
-  - testsuite/tests/GetFileMode.ycp
-  - testsuite/tests/GetFileModification.ycp
-  - testsuite/tests/GetSnapshotPath.ycp
-  - testsuite/tests/ReadConfigs.ycp
-  - testsuite/tests/ReadSnapshots.ycp
+moves:
+  - from: "src/Snapper.ycp"
+    to:   src/modules
+  - from: "src/snapper.ycp"
+    to:   src/clients
+  - from: "src/{dialogs,helps,wizards}.ycp"
+    to:   src/include/snapper
+  - from: "src/snapper.desktop"
+    to:   src/desktop
+  - from: "agent-snapper/conf/snapper.scr"
+    to:   src/scrconf

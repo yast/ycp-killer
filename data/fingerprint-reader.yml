@@ -1,9 +1,13 @@
-# TODO: Process.
+ybc_deps:
+  - yast2
+  - pam
 
-files:
-  - src/FingerprintReader.ycp
-  - src/dialogs.ycp
-  - src/fingerprint-reader.ycp
-  - src/helps.ycp
-  - src/users_plugin_fingerprint_reader.ycp
-  - src/wizards.ycp
+moves:
+  - from: "src/*FingerprintReader.{ycp,pm}"
+    to:   src/modules
+  - from: "src/{fingerprint-reader,users_plugin_fingerprint_reader}.ycp"
+    to:   src/clients
+  - from: "src/{dialogs,helps,wizards}.ycp"
+    to:   src/include/fingerprint-reader
+  - from: "src/fingerprint-reader.desktop"
+    to:   src/desktop

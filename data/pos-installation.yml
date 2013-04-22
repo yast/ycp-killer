@@ -1,17 +1,16 @@
-# TODO: Process.
+ybc_deps:
+  - yast2
 
-files:
+moves:
+  - from: "config/pos_migration_assistent.desktop"
+    to:   src/desktop
+
+excluded:
+  # TODO: The pos-installation directory looks like an old copy of the whole
+  #       module embedded in itself. It is probably a mistake and it should be
+  #       deleted in upstream.
   - pos-installation/src/clients/inst_slepos_detection.ycp
   - pos-installation/src/clients/inst_slepos_initialization.ycp
   - pos-installation/src/clients/inst_slepos_migration.ycp
   - pos-installation/src/clients/inst_slepos_server_selection.ycp
   - pos-installation/src/modules/POSInstallation.ycp
-  - src/clients/firstboot_slepos_initialization.ycp
-  - src/clients/firstboot_slepos_installation.ycp
-  - src/clients/firstboot_slepos_selection.ycp
-  - src/clients/firstboot_slepos_synchronization.ycp
-  - src/clients/inst_slepos_detection.ycp
-  - src/clients/inst_slepos_initialization.ycp
-  - src/clients/inst_slepos_migration.ycp
-  - src/clients/inst_slepos_server_selection.ycp
-  - src/modules/POSInstallation.ycp

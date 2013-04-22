@@ -1,0 +1,29 @@
+diff --git a/agents/Makefile.am b/agents/Makefile.am
+index e8c13b5..df8bfcb 100644
+--- a/agents/Makefile.am
++++ b/agents/Makefile.am
+@@ -1,10 +1 @@
+-# Makefile.am for cluster/agents
+-
+-agent_SCRIPTS = ag_openais
+-
+-scrconf_DATA = openais.scr \
+-	csync2_ha.scr \
+-	cfg_pacemaker.scr \
+-	cfg_openais.scr
+-
+-EXTRA_DIST = $(agent_SCRIPTS) $(scrconf_DATA)
++# no longer needed
+diff --git a/doc/Makefile.am b/doc/Makefile.am
+index 627c681..39cfe13 100644
+--- a/doc/Makefile.am
++++ b/doc/Makefile.am
+@@ -1,6 +1,7 @@
+ # Makefile.am for cluster/doc
+ 
+-SUBDIRS = autodocs
++# TODO autodocs work now only for ycp and perl
++#SUBDIRS = autodocs
+ 
+ htmldir = $(docdir)
+ 

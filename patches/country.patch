@@ -1,0 +1,435 @@
+diff --git a/console/Makefile.am b/console/Makefile.am
+index f494239..ac2f5d6 100644
+--- a/console/Makefile.am
++++ b/console/Makefile.am
+@@ -1,3 +1,3 @@
+ #
+ # Makefile.am for country/console
+-SUBDIRS = agents data src
++SUBDIRS = src
+diff --git a/keyboard/Makefile.am b/keyboard/Makefile.am
+index 4e2769f..f0f8114 100644
+--- a/keyboard/Makefile.am
++++ b/keyboard/Makefile.am
+@@ -1,4 +1,4 @@
+ #
+ # Makefile.am for country/keyboard
+-SUBDIRS = agents data doc src testsuite
++SUBDIRS = doc src testsuite
+ 
+diff --git a/keyboard/doc/autodocs/Makefile.am b/keyboard/doc/autodocs/Makefile.am
+index e7ddf79..78b57df 100644
+--- a/keyboard/doc/autodocs/Makefile.am
++++ b/keyboard/doc/autodocs/Makefile.am
+@@ -1,4 +1,4 @@
+ # Makefile.am for YCP module .../doc/autodocs
+ 
+-AUTODOCS_YCP=$(srcdir)/../../src/*.ycp
+-include $(top_srcdir)/autodocs-ycp.ami
++# AUTODOCS_YCP=$(srcdir)/../../src/*.ycp
++# include $(top_srcdir)/autodocs-ycp.ami
+diff --git a/keyboard/src/include/keyboard/dialogs.ycp b/keyboard/src/include/keyboard/dialogs.ycp
+index b28f038..dac9a4a 100644
+--- a/keyboard/src/include/keyboard/dialogs.ycp
++++ b/keyboard/src/include/keyboard/dialogs.ycp
+@@ -23,7 +23,7 @@
+  *	keyboard/dialogs.ycp
+  *
+  * Authors:
+- *	Klaus   Kämpf <kkaempf@suse.de>
++ *	Klaus   KÃ¤mpf <kkaempf@suse.de>
+  *	Michael Hager <mike@suse.de>
+  *	Stefan  Hundhammer <sh@suse.de>
+  *
+diff --git a/language/Makefile.am b/language/Makefile.am
+index d90959c..9903361 100644
+--- a/language/Makefile.am
++++ b/language/Makefile.am
+@@ -1,4 +1,4 @@
+ #
+ # Makefile.am for country/language
+-SUBDIRS = agents data doc src testsuite
++SUBDIRS = doc src testsuite
+ 
+diff --git a/language/doc/autodocs/Makefile.am b/language/doc/autodocs/Makefile.am
+index e7ddf79..78b57df 100644
+--- a/language/doc/autodocs/Makefile.am
++++ b/language/doc/autodocs/Makefile.am
+@@ -1,4 +1,4 @@
+ # Makefile.am for YCP module .../doc/autodocs
+ 
+-AUTODOCS_YCP=$(srcdir)/../../src/*.ycp
+-include $(top_srcdir)/autodocs-ycp.ami
++# AUTODOCS_YCP=$(srcdir)/../../src/*.ycp
++# include $(top_srcdir)/autodocs-ycp.ami
+diff --git a/language/src/clients/select_language.ycp b/language/src/clients/select_language.ycp
+index cd0c0c7..7194f02 100644
+--- a/language/src/clients/select_language.ycp
++++ b/language/src/clients/select_language.ycp
+@@ -27,7 +27,7 @@
+  *	yast2-country
+  *
+  * Authors:
+- *	Klaus   Kämpf <kkaempf@suse.de>
++ *	Klaus   KÃ¤mpf <kkaempf@suse.de>
+  *	Michael Hager <mike@suse.de>
+  *	Stefan  Hundhammer <sh@suse.de>
+  *	Thomas Roelz <tom@suse.de>
+@@ -561,7 +561,7 @@ In the selection box, specify additional languages to use on your system.
+ 		    // no yast translation for nn_NO, use nb_NO as a backup
+ 		    if (language == "nn_NO")
+ 		    {
+-			y2milestone ("Nynorsk not translated, using Bokmål");
++			y2milestone ("Nynorsk not translated, using BokmÃ¥l");
+ 			Language::WfmSetGivenLanguage ("nb_NO");
+ 		    }
+ 		    else
+diff --git a/timezone/Makefile.am b/timezone/Makefile.am
+index 53f3572..ce84dc6 100644
+--- a/timezone/Makefile.am
++++ b/timezone/Makefile.am
+@@ -1,4 +1,4 @@
+ #
+ # Makefile.am for country/timezone
+-SUBDIRS = agents data doc src testsuite
++SUBDIRS = doc src testsuite
+ 
+diff --git a/timezone/doc/autodocs/Makefile.am b/timezone/doc/autodocs/Makefile.am
+index e7ddf79..78b57df 100644
+--- a/timezone/doc/autodocs/Makefile.am
++++ b/timezone/doc/autodocs/Makefile.am
+@@ -1,4 +1,4 @@
+ # Makefile.am for YCP module .../doc/autodocs
+ 
+-AUTODOCS_YCP=$(srcdir)/../../src/*.ycp
+-include $(top_srcdir)/autodocs-ycp.ami
++# AUTODOCS_YCP=$(srcdir)/../../src/*.ycp
++# include $(top_srcdir)/autodocs-ycp.ami
+diff --git a/timezone/src/include/timezone/dialogs.ycp b/timezone/src/include/timezone/dialogs.ycp
+index 7cf268b..329d1e9 100644
+--- a/timezone/src/include/timezone/dialogs.ycp
++++ b/timezone/src/include/timezone/dialogs.ycp
+@@ -23,7 +23,7 @@
+  *	timezone/dialogs.ycp
+  *
+  * Authors:
+- *	Klaus   Kämpf <kkaempf@suse.de>
++ *	Klaus   KÃ¤mpf <kkaempf@suse.de>
+  *	Michael Hager <mike@suse.de>
+  *	Stefan  Hundhammer <sh@suse.de>
+  *	Jiri Suchomel <jsuchome@suse.cz>
+@@ -124,20 +124,6 @@
+       return ret;
+   }
+ 
+-  /**
+-   * Dialog for setinge system date and time
+-   * @return true if user changed the time (dialog accepted)
+-   */
+-  define boolean SetTimeDialog() {
+-
+-    string ntp_help_text = (string) ntp_call("ui_help_text", $[]);
+-    // help text for set time dialog
+-    string htext = _("<p>The current system time and date are displayed. If required, change them to the correct values manually or use Network Time Protocol (NTP).</p>") +
+-	// help text, cont.
+-	_("<p>Press <b>Accept</b> to save your changes.</p>") +
+-
+-	ntp_help_text;
+-
+     boolean dt_widgets = false;
+ 
+     string hour		= "";
+@@ -150,54 +136,69 @@
+     // check current time and show it in the time widgets
+     void show_current_time () {
+ 
+-	map val = Timezone::GetDateTimeMap ();
+-	hour	= val["hour"]:"";
+-	minute	= val["minute"]:"";
+-	second	= val["second"]:"";
+-	day	= val["day"]:"";
+-	month	= val["month"]:"";
+-	year	= val["year"]:"";
+-
+-	if (dt_widgets)
+-	{
+-	    UI::ChangeWidget (`id (`date), `Value,
+-		sformat ("%1-%2-%3", year, month, day));
+-	    UI::ChangeWidget (`id (`time), `Value,
+-		sformat ("%1:%2:%3", hour, minute, second)
+-	    );
+-	}
+-	else
+-	{
+-	    UI::ChangeWidget (`id(`hour), `Value, hour);
+-	    UI::ChangeWidget (`id(`minute), `Value, minute);
+-	    UI::ChangeWidget (`id(`second), `Value, second);
+-	    UI::ChangeWidget (`id(`day), `Value, day);
+-	    UI::ChangeWidget (`id(`month), `Value, month);
+-	    UI::ChangeWidget (`id(`year), `Value, year);
+-	}
++        map val = Timezone::GetDateTimeMap ();
++        hour	= val["hour"]:"";
++        minute	= val["minute"]:"";
++        second	= val["second"]:"";
++        day	= val["day"]:"";
++        month	= val["month"]:"";
++        year	= val["year"]:"";
++
++        if (dt_widgets)
++        {
++            UI::ChangeWidget (`id (`date), `Value,
++                sformat ("%1-%2-%3", year, month, day));
++            UI::ChangeWidget (`id (`time), `Value,
++                sformat ("%1:%2:%3", hour, minute, second)
++            );
++        }
++        else
++        {
++            UI::ChangeWidget (`id(`hour), `Value, hour);
++            UI::ChangeWidget (`id(`minute), `Value, minute);
++            UI::ChangeWidget (`id(`second), `Value, second);
++            UI::ChangeWidget (`id(`day), `Value, day);
++            UI::ChangeWidget (`id(`month), `Value, month);
++            UI::ChangeWidget (`id(`year), `Value, year);
++        }
+     }
+ 
+     void enable_disable_time_widgets (boolean enable) {
+ 
+-	UI::ChangeWidget (`id (`change_now), `Enabled, enable);
++        UI::ChangeWidget (`id (`change_now), `Enabled, enable);
++
++        enable	= enable && (boolean) UI::QueryWidget (`id (`change_now), `Value);
++
++        if (dt_widgets)
++        {
++            UI::ChangeWidget (`id (`date), `Enabled, enable);
++            UI::ChangeWidget (`id (`time), `Enabled, enable);
++        }
++        else
++        {
++            UI::ChangeWidget (`id(`hour), `Enabled, enable);
++            UI::ChangeWidget (`id(`minute), `Enabled, enable);
++            UI::ChangeWidget (`id(`second), `Enabled, enable);
++            UI::ChangeWidget (`id(`day), `Enabled, enable);
++            UI::ChangeWidget (`id(`month), `Enabled, enable);
++            UI::ChangeWidget (`id(`year), `Enabled, enable);
++        }
++    }
+ 
+-	enable	= enable && (boolean) UI::QueryWidget (`id (`change_now), `Value);
++  /**
++   * Dialog for setinge system date and time
++   * @return true if user changed the time (dialog accepted)
++   */
++  define boolean SetTimeDialog() {
++
++    string ntp_help_text = (string) ntp_call("ui_help_text", $[]);
++    // help text for set time dialog
++    string htext = _("<p>The current system time and date are displayed. If required, change them to the correct values manually or use Network Time Protocol (NTP).</p>") +
++	// help text, cont.
++	_("<p>Press <b>Accept</b> to save your changes.</p>") +
++
++	ntp_help_text;
+ 
+-	if (dt_widgets)
+-	{
+-	    UI::ChangeWidget (`id (`date), `Enabled, enable);
+-	    UI::ChangeWidget (`id (`time), `Enabled, enable);
+-	}
+-	else
+-	{
+-	    UI::ChangeWidget (`id(`hour), `Enabled, enable);
+-	    UI::ChangeWidget (`id(`minute), `Enabled, enable);
+-	    UI::ChangeWidget (`id(`second), `Enabled, enable);
+-	    UI::ChangeWidget (`id(`day), `Enabled, enable);
+-	    UI::ChangeWidget (`id(`month), `Enabled, enable);
+-	    UI::ChangeWidget (`id(`year), `Enabled, enable);
+-	}
+-    }
+ 
+     term dateterm	= `VBox (
+ 	`HBox (
+@@ -433,6 +434,83 @@ Enter the correct date.
+     return (ret == `accept);
+   };
+ 
++    boolean timezone_selector	= false;
++    list<map> zonemap	= Timezone::get_zonemap ();
++    // cache the zonemap with the order sorted according to current locale
++    map sorted_zonemap  = $[];
++    // cache for lists with timezone items
++    map timezones_for_region	= $[];
++
++    list get_timezones_for_region (integer region, string zone) {
++
++	if (!haskey (sorted_zonemap, region))
++	{
++	    list reg_list =
++		maplist (string key, string name, zonemap[region,"entries"]:$[],
++	    ``([ name, key ]));
++
++	    reg_list = sort (list a, list b, (list<list>) reg_list, {
++		    // bnc#385172: must use < instead of <=, the following means:
++		    // strcoll(x) <= strcoll(y) && strcoll(x) != strcoll(y)
++		    list lsorted	= lsort ([a[0]:"", b[0]:""]);
++		    list lsorted_r	= lsort ([b[0]:"", a[0]:""]);
++		    return lsorted[0]:"" == a[0]:"" && lsorted == lsorted_r;
++	    });
++	    sorted_zonemap[region]      = reg_list;
++	}
++	return maplist (list entry, sorted_zonemap[region]:[],
++	{
++	    return `item (`id(entry[1]:""), entry[0]:"", entry[1]:"" == zone);
++	});
++    }
++    // region was seleced: show the correct list of timezones
++    void show_selected_region (integer sel, string zone) {
++
++	if (timezone_selector)
++	    UI::ChangeWidget (`id(`region), `Value, sel);
++	else
++	    UI::ChangeWidget (`id(`region), `CurrentItem, sel);
++
++	UI::ReplaceWidget (`id(`tzsel), timezone_selector ?
++	    `ComboBox (`id(`timezone), `opt(`notify),
++		// label text
++		_("Time &Zone"), get_timezones_for_region (sel, zone)
++	    ) :
++	    `SelectionBox ( `id(`timezone), `opt(`notify),
++		// label text
++		_("Time &Zone"), get_timezones_for_region (sel, zone)
++	    )
++	);
++    }
++    // which region is selected?
++    integer selected_region () {
++	return timezone_selector ?
++	    (integer)UI::QueryWidget (`id(`region), `Value) :
++	    (integer)UI::QueryWidget (`id(`region), `CurrentItem);
++    }
++    // which timezone is selected?
++    string selected_timezone () {
++	return timezone_selector ?
++	    (string) UI::QueryWidget(`id(`timezone), `Value) :
++	    (string) UI::QueryWidget(`id(`timezone), `CurrentItem);
++    }
++
++    // for given timezone (selected in map), find out to which region it belongs
++    integer get_region_for_timezone (integer current, string zone) {
++	// first check if it is not in current region
++	if (haskey (zonemap[current,"entries"]:$[], zone))
++	    return current;
++	integer reg	= 0;
++	foreach (map region, zonemap, {
++	    if (haskey (region["entries"]:$[], zone))
++	    {
++		break;
++	    }
++	    reg	= reg + 1;
++	});
++	return reg;
++    }
++
+   /**
+    * Main dialog for time zone configuration
+    * @param args arguments passwd from the called (back/next buttons etc.)
+@@ -483,19 +561,12 @@ Enter the correct date.
+ 
+     boolean textmode	= Language::GetTextMode ();
+ 
+-    boolean timezone_selector	= false;
+-
+-    list<map> zonemap	= Timezone::get_zonemap ();
+-
+     // map of zones conversions
+     map<string,string> yast2zonetab	= Timezone::yast2zonetab;
+ 
+     // map of timezone -> translated label to be passed to TimezoneSelector
+     map zones		= $[];
+ 
+-    // cache the zonemap with the order sorted according to current locale
+-    map sorted_zonemap  = $[];
+-
+     foreach (map region, zonemap, {
+ 	foreach (string key, string name, region["entries"]:$[], {
+ 	    if (!haskey (yast2zonetab, key))
+@@ -635,77 +706,6 @@ Enter the correct date.
+ 	    ))
+ 	)
+     );
+-    // cache for lists with timezone items
+-    map timezones_for_region	= $[];
+-    list get_timezones_for_region (integer region, string zone) {
+-
+-	if (!haskey (sorted_zonemap, region))
+-	{
+-	    list reg_list =
+-		maplist (string key, string name, zonemap[region,"entries"]:$[],
+-	    ``([ name, key ]));
+-
+-	    reg_list = sort (list a, list b, (list<list>) reg_list, {
+-		    // bnc#385172: must use < instead of <=, the following means:
+-		    // strcoll(x) <= strcoll(y) && strcoll(x) != strcoll(y)
+-		    list lsorted	= lsort ([a[0]:"", b[0]:""]);
+-		    list lsorted_r	= lsort ([b[0]:"", a[0]:""]);
+-		    return lsorted[0]:"" == a[0]:"" && lsorted == lsorted_r;
+-	    });
+-	    sorted_zonemap[region]      = reg_list;
+-	}
+-	return maplist (list entry, sorted_zonemap[region]:[],
+-	{
+-	    return `item (`id(entry[1]:""), entry[0]:"", entry[1]:"" == zone);
+-	});
+-    }
+-    // region was seleced: show the correct list of timezones
+-    void show_selected_region (integer sel, string zone) {
+-
+-	if (timezone_selector)
+-	    UI::ChangeWidget (`id(`region), `Value, sel);
+-	else
+-	    UI::ChangeWidget (`id(`region), `CurrentItem, sel);
+-
+-	UI::ReplaceWidget (`id(`tzsel), timezone_selector ?
+-	    `ComboBox (`id(`timezone), `opt(`notify),
+-		// label text
+-		_("Time &Zone"), get_timezones_for_region (sel, zone)
+-	    ) :
+-	    `SelectionBox ( `id(`timezone), `opt(`notify),
+-		// label text
+-		_("Time &Zone"), get_timezones_for_region (sel, zone)
+-	    )
+-	);
+-    }
+-    // which region is selected?
+-    integer selected_region () {
+-	return timezone_selector ?
+-	    (integer)UI::QueryWidget (`id(`region), `Value) :
+-	    (integer)UI::QueryWidget (`id(`region), `CurrentItem);
+-    }
+-    // which timezone is selected?
+-    string selected_timezone () {
+-	return timezone_selector ?
+-	    (string) UI::QueryWidget(`id(`timezone), `Value) :
+-	    (string) UI::QueryWidget(`id(`timezone), `CurrentItem);
+-    }
+-
+-    // for given timezone (selected in map), find out to which region it belongs
+-    integer get_region_for_timezone (integer current, string zone) {
+-	// first check if it is not in current region
+-	if (haskey (zonemap[current,"entries"]:$[], zone))
+-	    return current;
+-	integer reg	= 0;
+-	foreach (map region, zonemap, {
+-	    if (haskey (region["entries"]:$[], zone))
+-	    {
+-		break;
+-	    }
+-	    reg	= reg + 1;
+-	});
+-	return reg;
+-    }
+ 
+     // help for timezone screen
+     string help_text = _("

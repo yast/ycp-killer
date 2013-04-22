@@ -1,68 +1,34 @@
-# TODO: Process.
+ybc_deps:
+  - mouse
+  - yast2
+  - packager
+  - update
+  - slp
+  - storage
+  - transfer
 
-files:
-  - src/clients/autoinst_scripts1_finish.ycp
-  - src/clients/autoinst_scripts2_finish.ycp
-  - src/clients/autoyast.ycp
-  - src/clients/ayast_probe.ycp
-  - src/clients/ayast_setup.ycp
-  - src/clients/classes_auto.ycp
-  - src/clients/clone_system.ycp
-  - src/clients/files_auto.ycp
-  - src/clients/general_auto.ycp
-  - src/clients/inst_autoconfigure.ycp
-  - src/clients/inst_autoimage.ycp
-  - src/clients/inst_autoinit.ycp
-  - src/clients/inst_autopost.ycp
-  - src/clients/inst_autosetup.ycp
-  - src/clients/inst_autosetup_upgrade.ycp
-  - src/clients/inst_store_upgrade_software.ycp
-  - src/clients/report_auto.ycp
-  - src/clients/scripts_auto.ycp
-  - src/clients/software_auto.ycp
-  - src/clients/storage_auto.ycp
-  - src/dialogs/AdvancedPartitionDialog.ycp
-  - src/dialogs/DriveDialog.ycp
-  - src/dialogs/PartitionDialog.ycp
-  - src/dialogs/StorageDialog.ycp
-  - src/dialogs/VolgroupDialog.ycp
-  - src/dialogs/ask.ycp
-  - src/dialogs/autoinst_dialogs.ycp
-  - src/dialogs/dialogs.ycp
-  - src/dialogs/general_dialogs.ycp
-  - src/dialogs/helps.ycp
-  - src/dialogs/partition_dialogs.ycp
-  - src/dialogs/script_dialogs.ycp
-  - src/include/autopart.ycp
-  - src/include/classes.ycp
-  - src/include/common.ycp
-  - src/include/conftree.ycp
-  - src/include/io.ycp
-  - src/include/tree.ycp
-  - src/include/types.ycp
-  - src/include/wizards.ycp
-  - src/include/xml.ycp
-  - src/modules/AutoInstall.ycp
-  - src/modules/AutoInstallRules.ycp
-  - src/modules/AutoinstClass.ycp
-  - src/modules/AutoinstClone.ycp
-  - src/modules/AutoinstCommon.ycp
-  - src/modules/AutoinstConfig.ycp
-  - src/modules/AutoinstDrive.ycp
-  - src/modules/AutoinstFile.ycp
-  - src/modules/AutoinstGeneral.ycp
-  - src/modules/AutoinstImage.ycp
-  - src/modules/AutoinstLVM.ycp
-  - src/modules/AutoinstPartPlan.ycp
-  - src/modules/AutoinstPartition.ycp
-  - src/modules/AutoinstRAID.ycp
-  - src/modules/AutoinstScripts.ycp
-  - src/modules/AutoinstSoftware.ycp
-  - src/modules/AutoinstStorage.ycp
-  - src/modules/Kickstart.ycp
-  - src/modules/Profile.ycp
-  - src/modules/ProfileLocation.ycp
-  - src/modules/Y2ModuleConfig.ycp
-  - src/tests/autoinst_test_clone.ycp
-  - src/tests/autoinst_test_stage.ycp
-  - testsuite/devel/autoinst_test.ycp
+moves:
+  - from: src/{dialogs,include}/*.ycp
+    to: src/include/autoinstall
+  - from: src/config/autoyast.desktop
+    to: src/desktop
+  # Autoyast specific desktop files
+  - from: src/config/*.desktop
+    to: modconfig
+  # Autoyast specific schemas
+  - from: src/schema/*.rnc
+    to: src/autoyast-rnc
+  - from: src/tests/*.ycp
+    to: src/clients
+  # Autoyast specific control xml
+  - from: src/tests/*
+    to: control
+  - from: agents/ag_*
+    to: src/servers_non_y2
+  - from: scripts/{fetch_image.sh,autoyast-initscripts.sh}
+    to: src/bin
+  - from: src/data/sysconfig.autoinstall
+    to: src/fillup
+  # Autoyast specific xml transformation files
+  - from: src/data/*
+    to: xslt

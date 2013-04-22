@@ -1,13 +1,20 @@
-# TODO: Process.
+ybc_deps:
+  - yast2
+  - installation
 
-files:
-  - src/IsnsServer.ycp
-  - src/complex.ycp
-  - src/dialogs.ycp
-  - src/helps.ycp
-  - src/isns.ycp
-  - src/isns_auto.ycp
-  - src/isns_finish.ycp
-  - src/isns_proposal.ycp
-  - src/widgets.ycp
-  - src/wizards.ycp
+moves:
+  - from: "src/IsnsServer.ycp"
+    to:   src/modules
+  - from: "src/isns*.ycp"
+    to:   src/clients
+  - from: "src/{complex,dialogs,helps,widgets,wizards}.ycp"
+    to:   src/include/isns
+  - from: "src/isns.desktop"
+    to:   src/desktop
+  - from: "agents/isnsd.scr"
+    to:   src/scrconf
+
+excluded:
+  # TODO: Include files, can't be compiled for now.
+  - src/include/isns/widgets.ycp
+  - src/include/isns/dialogs.ycp

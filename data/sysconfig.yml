@@ -1,4 +1,4 @@
-deps:
+ybc_deps:
   - testsuite
   - yast2
 moves:
@@ -8,3 +8,11 @@ moves:
     to: src/clients
   - from: "src/*.ycp"
     to: src/include/sysconfig
+  - from: "src/*.desktop"
+    to: src/desktop
+  - from: "src/{sysedit.agent,descriptions}"
+    to: src/data
+  - from: "src/parse_configs.pl"
+    to: src/bin
+  - from: "src/config/*.rnc"
+    to: "src/autoyast-rnc"

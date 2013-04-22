@@ -1,7 +1,15 @@
-# TODO: Process.
+ybc_deps:
+  - yast2
+  - storage
 
-files:
-  - src/Rear.ycp
-  - src/RearSystemCheck.ycp
-  - src/rear.ycp
-  - src/ui.ycp
+moves:
+  - from: "src/Rear*.ycp"
+    to:   src/modules
+  - from: "src/rear.ycp"
+    to:   src/clients
+  - from: "src/ui.ycp"
+    to:   src/include/rear
+  - from: "src/rear.desktop"
+    to:   src/desktop
+  - from: "agents/*"
+    to:   src/scrconf

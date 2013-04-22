@@ -1,8 +1,19 @@
-# TODO: Process.
+ybc_deps:
+  - yast2
+  - testsuite
 
-files:
-  - src/Irda.ycp
-  - src/irda.ycp
-  - src/ui.ycp
-  - testsuite/tests/Read.ycp
-  - testsuite/tests/Write.ycp
+moves:
+  - from: "src/Irda.ycp"
+    to:   src/modules
+  - from: "src/irda.ycp"
+    to:   src/clients
+  - from: "src/ui.ycp"
+    to:   src/include/irda
+  - from: "src/irda.desktop"
+    to:   src/desktop
+  - from: "agents/cfg_irda.scr"
+    to:   src/scrconf
+
+excluded:
+  # TODO: Include file, can't be compiled for now.
+  - src/include/irda/ui.ycp

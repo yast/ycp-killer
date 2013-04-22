@@ -1,0 +1,29 @@
+#!/usr/bin/env ruby
+
+# This script is used to fake libstorage api to provide empty methods.
+# Workflow is to copy to stubs recent Libstorage pm headers and run on it when
+# API of libstorage changed
+
+dir = File.dirname(__FILE__)
+
+Dir["#{dir}/LibStorage/*.pm"].each do |file|
+  lines = File.readlines file
+  func_defs = lines.grep(/"function"/)
+  func_names = func_defs.map do |line|
+    line.chomp.sub(/^\s*(\S+)\s=>.*$/,'\\1')
+  end
+
+  func_stubs_lines = func_names.map do |fn|
+    "sub #{fn} {}"
+  end.join("\n")
+
+  File.open(file, "w") do |f|
+    lines.each do |line|
+      if line == "1;\n"
+        f.puts func_stubs_lines
+      end
+
+      f.print line
+    end
+  end
+end

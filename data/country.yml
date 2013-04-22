@@ -1,114 +1,72 @@
-# TODO: Process.
+ybc_deps:
+  - testsuite
+  - yast2
 
-files:
-  - console/data/consolefonts.ycp
-  - console/src/Console.ycp
-  - keyboard/data/keyboard_raw.ycp
-  - keyboard/data/lang2keyboard.ycp
-  - keyboard/data/xkblayout2keyboard.ycp
-  - keyboard/src/Keyboard.ycp
-  - keyboard/src/dialogs.ycp
-  - keyboard/src/keyboard.ycp
-  - keyboard/src/keyboard_auto.ycp
-  - keyboard/src/keyboard_proposal.ycp
-  - keyboard/src/keyboard_simple_proposal.ycp
-  - keyboard/testsuite/tests/GetKeyboardForLanguage.ycp
-  - keyboard/testsuite/tests/ImportExport.ycp
-  - keyboard/testsuite/tests/Keyboard.ycp
-  - keyboard/testsuite/tests/MakeProposal.ycp
-  - keyboard/testsuite/tests/Probe.ycp
-  - keyboard/testsuite/tests/ReadExport.ycp
-  - language/data/language_af_ZA.ycp
-  - language/data/language_ar_EG.ycp
-  - language/data/language_ast_ES.ycp
-  - language/data/language_bg_BG.ycp
-  - language/data/language_bn_BD.ycp
-  - language/data/language_bs_BA.ycp
-  - language/data/language_ca_ES.ycp
-  - language/data/language_cs_CZ.ycp
-  - language/data/language_cy_GB.ycp
-  - language/data/language_da_DK.ycp
-  - language/data/language_de_DE.ycp
-  - language/data/language_el_GR.ycp
-  - language/data/language_en_GB.ycp
-  - language/data/language_en_US.ycp
-  - language/data/language_es_ES.ycp
-  - language/data/language_et_EE.ycp
-  - language/data/language_fi_FI.ycp
-  - language/data/language_fr_FR.ycp
-  - language/data/language_gl_ES.ycp
-  - language/data/language_gu_IN.ycp
-  - language/data/language_he_IL.ycp
-  - language/data/language_hi_IN.ycp
-  - language/data/language_hr_HR.ycp
-  - language/data/language_hu_HU.ycp
-  - language/data/language_id_ID.ycp
-  - language/data/language_it_IT.ycp
-  - language/data/language_ja_JP.ycp
-  - language/data/language_ka_GE.ycp
-  - language/data/language_km_KH.ycp
-  - language/data/language_ko_KR.ycp
-  - language/data/language_lt_LT.ycp
-  - language/data/language_mk_MK.ycp
-  - language/data/language_mr_IN.ycp
-  - language/data/language_nb_NO.ycp
-  - language/data/language_nl_NL.ycp
-  - language/data/language_nn_NO.ycp
-  - language/data/language_pa_IN.ycp
-  - language/data/language_pl_PL.ycp
-  - language/data/language_pt_BR.ycp
-  - language/data/language_pt_PT.ycp
-  - language/data/language_ro_RO.ycp
-  - language/data/language_ru_RU.ycp
-  - language/data/language_si_LK.ycp
-  - language/data/language_sk_SK.ycp
-  - language/data/language_sl_SI.ycp
-  - language/data/language_sr_RS.ycp
-  - language/data/language_sv_SE.ycp
-  - language/data/language_ta_IN.ycp
-  - language/data/language_tg_TJ.ycp
-  - language/data/language_th_TH.ycp
-  - language/data/language_tr_TR.ycp
-  - language/data/language_uk_UA.ycp
-  - language/data/language_vi_VN.ycp
-  - language/data/language_wa_BE.ycp
-  - language/data/language_xh_ZA.ycp
-  - language/data/language_zh_CN.ycp
-  - language/data/language_zh_TW.ycp
-  - language/data/language_zu_ZA.ycp
-  - language/data/languages.ycp
-  - language/src/Language.ycp
-  - language/src/country_simple_proposal.ycp
-  - language/src/inst_language.ycp
-  - language/src/language.ycp
-  - language/src/language_auto.ycp
-  - language/src/language_proposal.ycp
-  - language/src/language_simple_proposal.ycp
-  - language/src/select_language.ycp
-  - language/testsuite/tests/ImportExport.ycp
-  - language/testsuite/tests/IncompleteTranslation.ycp
-  - language/testsuite/tests/Language.ycp
-  - language/testsuite/tests/MakeProposal.ycp
-  - language/testsuite/tests/ReadExport.ycp
-  - language/testsuite/tests/Save.ycp
-  - language/testsuite/tests/Set.ycp
-  - timezone/data/lang2tz.ycp
-  - timezone/data/timezone_raw.ycp
-  - timezone/src/Timezone.ycp
-  - timezone/src/dialogs.ycp
-  - timezone/src/inst_timezone.ycp
-  - timezone/src/timezone.ycp
-  - timezone/src/timezone_auto.ycp
-  - timezone/src/timezone_proposal.ycp
-  - timezone/testsuite/tests/CheckDate.ycp
-  - timezone/testsuite/tests/CheckTime.ycp
-  - timezone/testsuite/tests/GetDateTime.ycp
-  - timezone/testsuite/tests/GetDateTimeMap.ycp
-  - timezone/testsuite/tests/GetTimezoneForLanguage.ycp
-  - timezone/testsuite/tests/ImportExport.ycp
-  - timezone/testsuite/tests/MakeProposal.ycp
-  - timezone/testsuite/tests/ReadExport.ycp
-  - timezone/testsuite/tests/Selection.ycp
-  - timezone/testsuite/tests/Timezone.ycp
-  - timezone/testsuite/tests/Timezone2.ycp
-  - timezone/testsuite/tests/UpdateTimezone.ycp
+exports:
+  - console/src
+  - keyboard/src
+  - language/src
+  - timezone/src
+
+moves:
+  - from: "console/data"
+    to: console/src
+  - from: "console/src/[A-Z]*.ycp"
+    to: console/src/modules
+  - from: "console/agents/*"
+    to: console/src/scrconf
+
+  - from: "keyboard/data"
+    to: keyboard/src
+  - from: "keyboard/src/[A-Z]*.ycp"
+    to: keyboard/src/modules
+  - from: "keyboard/src/*.desktop"
+    to: keyboard/src/desktop
+  - from: "keyboard/src/dialogs.ycp"
+    to: keyboard/src/include/keyboard
+  - from: "keyboard/src/*.ycp"
+    to: keyboard/src/clients
+  - from: "keyboard/src/*.rnc"
+    to: "keyboard/src/autoyast-rnc"
+  - from: "keyboard/agents/*"
+    to: keyboard/src/scrconf
+  
+  - from: "language/data"
+    to: language/src
+  - from: "language/src/[A-Z]*.ycp"
+    to: language/src/modules
+  - from: "language/src/YaPI"
+    to: language/src/modules
+  - from: "language/src/*.desktop"
+    to: language/src/desktop
+  - from: "language/src/*.ycp"
+    to: language/src/clients
+  - from: "language/src/*.rnc"
+    to: "language/src/autoyast-rnc"
+  - from: "language/agents/*"
+    to: language/src/scrconf
+
+  - from: "timezone/data"
+    to: timezone/src
+  - from: "timezone/src/[A-Z]*.ycp"
+    to: timezone/src/modules
+  - from: "timezone/src/YaPI"
+    to: timezone/src/modules
+  - from: "timezone/src/*.desktop"
+    to: timezone/src/desktop
+  - from: "timezone/src/dialogs.ycp"
+    to: timezone/src/include/timezone
+  - from: "timezone/src/*.ycp"
+    to: timezone/src/clients
+  - from: "timezone/src/*.rnc"
+    to: "timezone/src/autoyast-rnc"
+  - from: "timezone/agents/*"
+    to: timezone/src/scrconf
+
+excluded:
+  # TODO FIXME: hidden storage module dependency
+  - timezone/src/clients/timezone_proposal.ycp
+  - timezone/src/clients/inst_timezone.ycp
+
+  # TODO FIXME: packager module dependency
+  - language/src/clients/select_language.ycp

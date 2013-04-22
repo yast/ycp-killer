@@ -1,12 +1,20 @@
-# TODO: Process.
+ybc_deps:
+  - yast2
+  - bootloader
 
-files:
-  - src/RelocationServer.ycp
-  - src/VM_XEN.ycp
-  - src/complex.ycp
-  - src/dialogs.ycp
-  - src/helps.ycp
-  - src/relocation-server.ycp
-  - src/vm_finish.ycp
-  - src/wizards.ycp
-  - src/xen.ycp
+moves:
+  - from: "src/{VM_XEN,RelocationServer}.ycp"
+    to:   src/modules
+  - from: "src/{relocation-server,vm_finish,xen}*.ycp"
+    to:   src/clients
+  - from: "src/{complex,dialogs,helps,wizards}.ycp"
+    to:   src/include/relocation-server
+  - from: "src/*.desktop"
+    to:   src/desktop
+  - from: "agents/xend.scr"
+    to:   src/scrconf
+
+excluded:
+  # TODO: Include files, can't be compiled for now.
+  - src/include/relocation-server/wizards.ycp
+  - src/include/relocation-server/complex.ycp

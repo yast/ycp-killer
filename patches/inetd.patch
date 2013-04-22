@@ -1,0 +1,14 @@
+diff --git a/src/include/inetd/default_conf_xinetd.ycp b/src/include/inetd/default_conf_xinetd.ycp
+index 8e1465e..e9aa7f9 100644
+--- a/src/include/inetd/default_conf_xinetd.ycp
++++ b/src/include/inetd/default_conf_xinetd.ycp
+@@ -38,8 +38,7 @@ string GetBinPath () {
+ 
+ string x_bin_path = GetBinPath();
+ 
+-
+-global services_t default_conf =
++global list<map <string, any> > default_conf =
+ [
+   $[
+     "comment" : " admind: admin daemon for thin clients\n uses ident and host name lookups for authentication\n security: weak authentication, just enough for thin clients\n client: adminc.pl\n default config file: /etc/opt/SLES/POS/admind.conf\n",

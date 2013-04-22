@@ -1,8 +1,18 @@
-# TODO: Process.
+ybc_deps:
+  - yast2
+  - packager
 
-files:
-  - src/clients/inst_suse_register.ycp
-  - src/clients/suse_register_auto.ycp
-  - src/dialogs/texts.ycp
-  - src/modules/Register.ycp
+moves:
+  - from: "src/dialogs/texts.ycp"
+    to:   src/include/registration
+  - from: "src/config/*.desktop"
+    to:   src/desktop
+  - from: "src/config/registration.rnc"
+    to:   src/autoyast-rnc
+  - from: "agents/*"
+    to:   src/scrconfig
+
+excluded:
+  # TODO: The testsuite seems to be broken (it includes non-existing
+  #       "Registration" module). Fix it in upstream.
   - testsuite/tests/Registration.ycp

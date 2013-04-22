@@ -1,41 +1,21 @@
-# TODO: Process.
+ybc_deps:
+  - testsuite
+  - yast2
+  - sound
 
-files:
-  - data/tv_cards-lirc_gpio.ycp
-  - data/tv_dvbcards.ycp
-  - data/tv_dvbfirmware.ycp
-  - src/ModulesComments.ycp
-  - src/Tv.ycp
-  - src/helps.ycp
-  - src/irc.ycp
-  - src/irc_ui.ycp
-  - src/misc.ycp
-  - src/tv.ycp
-  - src/tv_auto.ycp
-  - src/tv_proposal.ycp
-  - src/tv_write.ycp
-  - src/ui.ycp
-  - testsuite/tests/CmpParameters.ycp
-  - testsuite/tests/ModulesCommentsExtractFromComment.ycp
-  - testsuite/tests/ModulesCommentsStoreToComment.ycp
-  - testsuite/tests/TvCardAddCurrent.ycp
-  - testsuite/tests/TvCardGet.ycp
-  - testsuite/tests/TvCardRemove.ycp
-  - testsuite/tests/TvCardReplaceWithCurrent.ycp
-  - testsuite/tests/TvCardsAsItems.ycp
-  - testsuite/tests/TvCardsDBVendorGetCards.ycp
-  - testsuite/tests/TvCardsDBVendorsAsItems.ycp
-  - testsuite/tests/TvCardsUniqueKeys.ycp
-  - testsuite/tests/TvDetect.ycp
-  - testsuite/tests/TvDetectedCardsAsItems.ycp
-  - testsuite/tests/TvGetMajor81Aliases.ycp
-  - testsuite/tests/TvModuleParametersAsItems.ycp
-  - testsuite/tests/TvModulesAsItems.ycp
-  - testsuite/tests/TvPropose.ycp
-  - testsuite/tests/TvReadCardsDatabase.ycp
-  - testsuite/tests/TvReadKernelModules.ycp
-  - testsuite/tests/TvReadModuleParameters.ycp
-  - testsuite/tests/TvReadTunersDatabase.ycp
-  - testsuite/tests/TvTunerDBAsItems.ycp
-  - testsuite/tests/TvTunersDBSelectTuner.ycp
-  - testsuite/tests/TvWriteModuleParameters.ycp
+moves:
+  - from: "src/[A-Z]*.ycp"
+    to: src/modules
+  - from: "src/tv*.ycp"
+    to: src/clients
+  - from: "src/irc.ycp"
+    to: src/clients
+  - from: "src/*.ycp"
+    to: src/include/tv
+  - from: data
+    to: src
+  - from: "agents/*"
+    to: src/scrconf
+  - from: "src/*.desktop"
+    to: src/desktop
+

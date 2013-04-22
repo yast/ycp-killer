@@ -1,8 +1,13 @@
-# TODO: Process.
+ybc_deps:
+  - yast2
+  - network
 
-files:
-  - src/RDP.ycp
-  - src/dialogs.ycp
-  - src/rdp.ycp
-  - src/rdp_proposal.ycp
-  - testsuite/tests/Rdp.ycp
+moves:
+  - from: "src/RDP.ycp"
+    to:   src/modules
+  - from: "src/rdp*.ycp"
+    to:   src/clients
+  - from: "src/dialogs.ycp"
+    to:   src/include/rdp
+  - from: "src/rdp.desktop"
+    to:   src/desktop

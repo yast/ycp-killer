@@ -1,14 +1,19 @@
-# TODO: Process.
+---
+ybc_deps:
+  - yast2
+  - inetd
 
-files:
-  - src/FtpServer.ycp
-  - src/complex.ycp
-  - src/dialogs.ycp
-  - src/ftp-server.ycp
-  - src/ftp-server_auto.ycp
-  - src/helps.ycp
-  - src/wid_functions.ycp
-  - src/wizards.ycp
-  - src/write_load.ycp
-  - testsuite/tests/FtpServer.ycp
-  - testsuite/tests/PassivePortRange.ycp
+moves:
+  - from: agents/*.scr
+    to:   src/scrconf
+  - from: config/*.rnc
+    to:   src/autoyast-rnc
+  - from: src/{ftp-server,ftp-server_auto}.ycp
+    to:   src/clients
+  - from: src/{helps,wizards,dialogs,complex,wid_functions,write_load}.ycp
+    to:   src/include/ftp-server
+  - from: src/FtpServer.ycp
+    to:   src/modules
+  - from: src/ftp-server.desktop
+    to:   src/desktop
+

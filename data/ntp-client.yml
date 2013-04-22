@@ -1,19 +1,23 @@
-# TODO: Process.
+ybc_deps:
+  - country
+  - packager
+  - slp
+  - testsuite
+  - yast2
 
-files:
-  - data/ntp_servers.ycp
-  - src/NtpClient.ycp
-  - src/clocktypes.ycp
-  - src/commandline.ycp
-  - src/dialogs.ycp
-  - src/helps.ycp
-  - src/misc.ycp
-  - src/ntp-client.ycp
-  - src/ntp-client_auto.ycp
-  - src/ntp-client_finish.ycp
-  - src/ntp-client_proposal.ycp
-  - src/widgets.ycp
-  - src/wizards.ycp
-  - testsuite/tests/Read.ycp
-  - testsuite/tests/Write.ycp
-  - testsuite/tests/selected_record.ycp
+moves:
+  - from: src/ntp-client*.ycp
+    to: src/clients
+  - from: src/NtpClient.ycp
+    to: src/modules
+  - from: src/*.ycp
+    to: src/include/ntp-client
+  - from: data/ntp_servers.ycp
+    to: src/data
+
+excluded:
+  # Y2R thinks they have Undeclared identifiers even though they don't !?
+  # strange, but clients work, so OK
+  - src/include/ntp-client/widgets.ycp    
+  - src/include/ntp-client/dialogs.ycp    
+  - src/include/ntp-client/commandline.ycp

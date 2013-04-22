@@ -1,19 +1,14 @@
-# TODO: Process.
+ybc_deps:
+  - yast2
+  - packager
+  - storage
 
-files:
-  - src/clients/backup_proposal.ycp
-  - src/clients/inst_backup.ycp
-  - src/clients/inst_rootpart.ycp
-  - src/clients/inst_update.ycp
-  - src/clients/inst_update_partition.ycp
-  - src/clients/inst_update_partition_auto.ycp
-  - src/clients/kernel-update.ycp
-  - src/clients/packages_proposal.ycp
-  - src/clients/rootpart_check_keyboard.ycp
-  - src/clients/rootpart_proposal.ycp
-  - src/clients/run_update.ycp
-  - src/clients/update.ycp
-  - src/clients/update_proposal.ycp
-  - src/include/rootpart.ycp
-  - src/modules/RootPart.ycp
-  - src/modules/Update.ycp
+moves:
+  - from: "src/include/*.ycp"
+    to:   src/include/update
+  - from: "src/scripts/*"
+    to:   src/bin
+  - from: "src/config/update.desktop"
+    to:   src/desktop
+  - from: "src/config/update.xml"
+    to:   control

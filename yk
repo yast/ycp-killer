@@ -2,6 +2,7 @@
 
 require "cheetah"
 require "thor"
+require "tsort"
 require "yaml"
 
 BASE_DIR = File.expand_path(File.dirname(__FILE__))
@@ -38,55 +39,98 @@ module Messages
   end
 end
 
+# Hash: String -> YastModule
+$yast_modules = Hash.new do |hash, missing_key|
+  #report misspelled modules instead of producing nil
+  raise "Unknown yast module #{missing_key}"
+end
+
 class YastModule
 
   WORK_DIR   = "work"
   RESULT_DIR = "result"
+  OBS_DIR = "build_service"
+  OBS_PROJECT = "YaST:Head:ruby"
 
   attr_reader :name,
     :work_dir,
     :result_dir,
-    :deps,
+    :obs_dir,
+    :ybc_deps,
+    :ruby_deps,
     :exports,
     :excluded,
     :moves
 
-
-  def initialize(name, data, modules, config)
+  def initialize(name, data, config)
     @name       = name
-    @data       = data
-    @modules    = modules
     @config     = config
     @work_dir   = "#{@config["yast_dir"]}/#{WORK_DIR}/#@name"
     @result_dir = "#{@config["yast_dir"]}/#{RESULT_DIR}/#@name"
-    @deps       = @data["deps"] || []
-    @exports    = @data["exports"] || ["src"]
-    @excluded   = @data["excluded"] || []
-    @moves      = @data["moves"] || []
+    # Not suffixed with @name as it does not match (usuall yast2-#{name} )
+    @obs_dir    = "#{@config["yast_dir"]}/#{OBS_DIR}"
+    @ybc_deps   = data.delete("ybc_deps") || []
+    @ruby_deps  = data.delete("ruby_deps") || []
+    @exports    = data.delete("exports") || ["src"]
+    @excluded   = data.delete("excluded") || []
+    @moves      = data.delete("moves") || []
+
+    if !data.empty?
+      puts "WARNING: Unknown keys in #{name}.yml: #{data.keys.join(", ")}."
+    end
+  end
+
+  def transitive_deps
+    deps_of_deps = ybc_deps.map { |d| $yast_modules[d].transitive_deps }
+    depth_first_deps = deps_of_deps.reduce([], :+) + ybc_deps
+    # Note that they come out topologically sorted
+    # because uniq takes the first object.
+    depth_first_deps.uniq
+  end
+
+  # can only be called once all $yast_modules have been initialized
+  def check_missing_work(yast_module_names)
+    missing = yast_module_names.reject do |d|
+      File.exists?($yast_modules[d].work_dir)
+    end
+    if ! missing.empty?
+      raise "These dependencies do not have a working directory; convert them first: #{missing.join(", ")}"
+    end
   end
 
   def convert
-    clone
+    check_missing_work(ybc_deps + ruby_deps)
+    File.exists?(work_dir) ? update : clone
     restructure
     patch
-    res = compile
+    compile_modules
     # in case of error do not continue with submit
-    if !res[:error_y2r].zero? ||
-        !res[:error_ruby].zero? ||
-        !res[:error_other].zero?
-      return res
-    end
+    return @counts if result_failed?
+
+    convert_to_ruby
+    return @counts if result_failed?
 
     generate_makefiles
-    submit
+    package
 
-    res
+    @counts
   end
 
   def clone
     FileUtils.rm_rf(work_dir)
 
     Cheetah.run "git", "clone", "git://github.com/yast/yast-#@name.git", work_dir
+  end
+
+  def update
+    reset
+    pull
+  end
+
+  def pull
+    Dir.chdir work_dir do
+      Cheetah.run "git", "pull"
+    end
   end
 
   def patch
@@ -114,24 +158,67 @@ class YastModule
     end
   end
 
-  def compile
+  def compile_modules
     clean_previous_compilation
-    prepare_result_dir
-
-    counts = {
-      :ok          => 0,
-      :excluded    => excluded.size,
-      :error_y2r   => 0,
-      :error_ruby  => 0,
-      :error_other => 0
-    }
+    reset_counts
 
     Dir.chdir work_dir do
-      failed_files = compile_modules counts
-      convert_ycp counts, failed_files
+      # list of full paths
+      ordered_modules = BuildOrder.new(exports).ordered_modules
+
+      ordered_modules.each do |file|
+        begin
+          Messages.start "  . #{file}"
+          create_ybc file
+          Messages.finish "OK"
+          @counts[:ok] += 1
+        rescue Exception => e
+          handle_exception(e, :ybc, file)
+        end
+      end
     end
 
-    counts
+    @counts
+  end
+
+  def convert_to_ruby
+    prepare_result_dir
+    reset_counts
+
+    Dir.chdir work_dir do
+      Dir["**/*.y{cp,h}"].each do |file|
+        next if excluded.include?(file)
+
+        Messages.start "  * #{file}"
+
+        work_file = "#{work_dir}/#{file}"
+        FileUtils.rm "#{result_dir}/#{file}"
+        result_file = "#{result_dir}/#{file}".sub(/\.y(cp|h)$/, ".rb")
+
+        begin
+          # This makes private symbols in modules visible. Needed by some
+          # testsuites.
+          ENV["Y2ALLGLOBAL"] = "1"
+
+          create_rb  work_file, result_file
+        rescue Exception => e
+          handle_exception(e, :y2r, work_file)
+          next
+        end
+
+        begin
+          check_rb result_file
+        rescue Exception => e
+          handle_exception(e, :ruby, work_file)
+          next
+        end
+
+        Messages.finish "OK"
+        @counts[:ok] += 1
+      end
+    end
+
+    @counts
   end
 
   def exported_module_paths
@@ -158,15 +245,18 @@ class YastModule
   end
 
   def restructure
+    puts "WARNING: No 'moves' section found in #{name}.yml" if moves.empty?
     Dir.chdir work_dir do
       moves.each do |move|
         FileUtils.mkdir_p move["to"]
 
-        Dir.glob("#{work_dir}/#{move["from"]}", File::FNM_DOTMATCH) do |file|
+        from_files = Dir.glob(move["from"])
+        puts "WARNING: typo? no matches for: #{from_glob}" if from_files.empty?
+        from_files.each do |file|
           # We want the moves stored in git index. This way the "genpatch"
           # command creates patch against state after restructuring, not
           # before it.
-          Cheetah.run "git", "mv", file, move["to"]
+          Cheetah.run "git", "mv", file, "#{move["to"]}/#{File.basename(file)}"
         end
       end
     end
@@ -185,15 +275,22 @@ class YastModule
 
         file.puts "# Sources for #{name}"
         Dir.chdir dir do
-          MAKEFILE_DESCRIPTION.each do |section|
-            values = Dir[section[:glob]]
-            next if values.empty?
+          sections = MAKEFILE_DESCRIPTION.map do |section|
+            result = section.dup
+            result[:files] = Dir[section[:glob]]
 
-            file.write makefile_entry(section[:key_line] || section[:key], values)
+            result
+          end
+
+          sections.reject! { |section| section[:files].empty? }
+
+          sections = sections.map { |section| split_section(section) }.reduce(&:+)
+
+          sections.each do |section|
+            file.write makefile_entry(section[:key_line] || section[:key], section[:values])
 
             dist_variables << section[:key]
           end
-
 
           dist_value = dist_variables.map { |v| "$(#{v})" }.join(" ")
           file.write "\nEXTRA_DIST = #{dist_value}\n\n"
@@ -203,18 +300,86 @@ class YastModule
     end
   end
 
-  def submit
+  def package
     Dir.chdir result_dir do
       Cheetah.run "make", "-f", "Makefile.cvs" # TODO will not work for cmake based ones
       Cheetah.run "make"
       Cheetah.run "make", "package-local", "CHECK_SYNTAX=false"
-      # osc can be interactive for creating new package
-      Cheetah.run "y2tool", "oscsubmit", "--devel-project", "YaST:Head:ruby"
-        "--ignore-unchanged-changelog"
+    end
+
+    package_name = File.read("#{result_dir}/RPMNAME").chomp
+
+    FileUtils.mkdir_p obs_dir
+    Dir.chdir obs_dir do
+      package_obs_dir = "#{obs_dir}/#{OBS_PROJECT}/#{package_name}"
+
+      create_obs_package_dir!(package_name) unless File.exists?(package_obs_dir)
+
+      Dir["#{result_dir}/package/*"].each do |file|
+        # for last three arguments keep defaults except last that we switch to
+        # overwrite file in destrination
+        FileUtils.copy_entry file, "#{package_obs_dir}/#{File.basename(file)}", false, false, true
+      end
     end
   end
 
   private
+
+  def result_failed?
+    if !@counts[:error_ybc].zero? ||
+        !@counts[:error_y2r].zero? ||
+        !@counts[:error_ruby].zero? ||
+        !@counts[:error_other].zero?
+      return true
+    end
+    return false
+  end
+
+  def reset_counts
+    @counts = {
+      :ok          => 0,
+      :excluded    => excluded.size,
+      :error_ybc   => 0,
+      :error_y2r   => 0,
+      :error_ruby  => 0,
+      :error_other => 0
+    }
+  end
+
+  # cwd must be obs_dir
+  def create_obs_package_dir!(package_name)
+    first = true
+    begin
+      Cheetah.run "osc", "co", OBS_PROJECT, package_name
+    rescue Cheetah::ExecutionFailed
+      # probably it is not created yet, so lets create it
+      if first
+        first = false
+        create_package_in_obs package_name
+        retry
+      end
+
+      raise
+    end
+  end
+
+  def create_package_in_obs(package_name)
+    ENV["EDITOR"] = "ed"
+    # just add description via ed as meta pkg invoke editor
+    ed_command = <<EOS
+      # enable error reporting
+      H
+      # title is required
+      # comma: all lines; s: substitute
+      ,s/<title>/<title>YaST module converted to ruby/
+      # write
+      w
+      # quit
+      q
+EOS
+
+    Cheetah.run "osc", "meta", "pkg", OBS_PROJECT, package_name, "-e", :stdin => StringIO.new(ed_command)
+  end
 
   def makefile_entry(key, values)
     "\n#{key} = \\\n  " + values.join(" \\\n  ") + "\n"
@@ -222,16 +387,18 @@ class YastModule
 
   MAKEFILE_DESCRIPTION = [
     {
-      :glob     => 'modules/**/*\.{ycp,ybc,rb,py,pl,sh}',
-      :key      => 'module_DATA'
+      :glob     => 'modules/**/*\.{ycp,ybc,rb,py,pl,pm,sh}',
+      :key      => 'module_DATA',
+      :dir_var  => '@moduledir@'
     },
     {
-      :glob     => 'clients/**/*\.{ycp,rb,py,pl,sh}',
+      :glob     => 'clients/**/*\.{ycp,rb,py,pl,sh,pm}',
       :key      => 'client_DATA'
     },
     {
       :glob     => 'include/**/*\.{ycp,rb,py}',
-      :key      => 'ynclude_DATA'
+      :key      => 'ynclude_DATA',
+      :dir_var  => '@yncludedir@'
     },
     {
       :glob     => "scrconf/*\.scr",
@@ -257,102 +424,101 @@ class YastModule
     {
       :glob     => "desktop/*",
       :key      => "desktop_DATA"
+    },
+    {
+      :glob     => "fillup/*",
+      :key      => "fillup_DATA"
     }
   ]
 
-  def module_paths
+  def split_section(section)
+    # Group section by subdirectories it includes.
+    # Note this means that we ignore the first directory in the path.
+    #
+    # Example:
+    #
+    #   [ "modules/Language.rb", "modules/YAPI/LANGUAGE/pl"]
+    #
+    # ends up as 
+    #
+    #   {
+    #     [] => ["modules/Language.rb"]
+    #     ["YAPI"] => ["modules/YAPI/LANGUAGE/pl"]
+    #   }
+    groups = section[:files].group_by { |f| f.split('/')[1..-2] }
+
+    i = 0
+    groups.map do |subdir, values|
+      # The key includes a name and its type separated by underscore,
+      # e.g. ynclude_DATA or ybin_SCRIPT. We construct unique group name and key
+      # from the name (not the type).
+      key_parts = section[:key].split('_')
+      key_type = key_parts.pop
+      key_name = key_parts.join("_")
+
+      key_name = key_name + i.to_s if i > 0
+
+      res = {
+        :values => values,
+        :key    => "#{key_name}_#{key_type}"
+      }
+
+      # For the schemafiles section we already have special key_line, so we use
+      # it. There should be no subdirs there, so it is not a problem.
+      res[:key_line] = section[:key_line] if section[:key_line]
+
+      # If it is not a subdir and the first element, then keep it as it was
+      # (common case).
+      if subdir.size > 0 || i > 0
+        raise "Unexpected subdir #{subdir.join("/")} for key #{key_name}" unless section[:dir_var]
+
+        res[:key_line] = "#{key_name}dir = #{section[:dir_var]}/#{subdir.join("/")}\n#{res[:key]}"
+      end
+
+      i += 1
+
+      res
+    end
+  end
+
+  def ybc_module_paths
     # The lazy loading is needed because the dependencies may not be fully
     # initialized when "initialize" is called on this module.
-    unless @module_paths 
-      @module_paths = [STUBS_DIR] + exported_module_paths
-      deps.each do |dependency| 
-        @module_paths.concat @modules[dependency].exported_module_paths
+    unless @ybc_module_paths 
+      @ybc_module_paths = [STUBS_DIR] + exported_module_paths
+      transitive_deps.each do |dependency|
+        @ybc_module_paths.concat $yast_modules[dependency].exported_module_paths
       end
     end
-    @module_paths
+
+    @ybc_module_paths
   end
 
-  def include_paths
+  def ybc_include_paths
     # The lazy loading is needed because the dependencies may not be fully
     # initialized when "initialize" is called on this module.
-    unless @include_paths
-      @include_paths = [STUBS_DIR] + exported_include_paths
-      deps.each do |dependency| 
-        @include_paths.concat @modules[dependency].exported_include_paths
+    unless @ybc_include_paths
+      @ybc_include_paths = [STUBS_DIR] + exported_include_paths
+      transitive_deps.each do |dependency|
+        @ybc_include_paths.concat $yast_modules[dependency].exported_include_paths
       end
     end
-    @include_paths
+
+    @ybc_include_paths
   end
 
-  def compile_modules counts
-    failed_files = []
-    ordered_modules = BuildOrder.ordered_modules exports
+  def handle_exception(e, phase, file)
+    raise if e.is_a? Interrupt
 
-    ordered_modules.each do |file|
-      begin
-        create_ybc file
-      rescue Exception => e
-        Messages.start " * #{file}"
-        Messages.finish "ERROR(other)"
-        log_error(file, e)
-        counts[:error_other] += 1
-        failed_files << file
-      end
+    if ! e.is_a? Cheetah::ExecutionFailed
+      phase = :other
     end
-
-    failed_files
-  end
-
-  def convert_ycp counts, failed_files
-    Dir["**/*.y{cp,h}"].each do |file|
-      next if excluded.include?(file)
-      next if failed_files.include?(file)
-
-      Messages.start "  * #{file}"
-
-      work_file = "#{work_dir}/#{file}"
-      FileUtils.rm "#{result_dir}/#{file}"
-      result_file = "#{result_dir}/#{file}".sub(/\.y(cp|h)$/, ".rb")
-
-      begin
-        # This makes private symbols in modules visible. Needed by some
-        # testsuites.
-        ENV["Y2ALLGLOBAL"] = "1"
-
-        create_rb  work_file, result_file
-      rescue Cheetah::ExecutionFailed => e
-        Messages.finish "ERROR(y2r)"
-        log_error(work_file, e)
-        counts[:error_y2r] += 1
-        next
-      rescue Exception => e
-        Messages.finish "ERROR(other)"
-        log_error(work_file, e)
-        counts[:error_other] += 1
-        next
-      end
-
-      begin
-        check_rb result_file
-      rescue Cheetah::ExecutionFailed => e
-        Messages.finish "ERROR(ruby)"
-        log_error(work_file, e)
-        counts[:error_ruby] += 1
-        next
-      rescue Exception => e
-        Messages.finish "ERROR(other)"
-        log_error(work_file, e)
-        counts[:error_other] += 1
-        next
-      end
-
-      Messages.finish "OK"
-      counts[:ok] += 1
-    end
+    Messages.finish "ERROR(#{phase})"
+    @counts["error_#{phase}".to_sym] += 1
+    log_error(file, e)
   end
 
   def clean_previous_compilation
-    FileUtils.rm_rf result_dir
     Dir["#{work_dir}/**/*.ybc"].each do |file|
       FileUtils.rm file
     end
@@ -360,15 +526,21 @@ class YastModule
 
   def prepare_result_dir
     FileUtils.mkdir_p File.dirname(result_dir)
+    FileUtils.rm_rf result_dir
     FileUtils.copy_entry(work_dir, result_dir)
+
+    #clean all compiled ybc files created by ybc step
+    Dir["#{result_dir}/**/*.ybc"].each do |file|
+      FileUtils.rm file
+    end
   end
 
   def create_ybc(file)
     cmd = [@config["ycpc"], "--no-std-includes", "--no-std-modules"]
-    module_paths.each do |module_path|
+    ybc_module_paths.each do |module_path|
       cmd << "--module-path" << module_path
     end
-    include_paths.each do |include_path|
+    ybc_include_paths.each do |include_path|
       cmd << "--include-path" << include_path
     end
     cmd << "-c" << file
@@ -376,17 +548,37 @@ class YastModule
     Cheetah.run cmd
   end
 
+  def ruby_module_paths file
+    # Do not use transitive deps as there is risk to face circle, because
+    # clients dependencies uses only modules and clients from dependency could
+    # use modules from converted module
+    ret = ruby_deps.reduce([]) do |acc, mod|
+      acc + $yast_modules[mod].exported_module_paths
+    end
+
+    (ret + ybc_module_paths + [ File.dirname(file) ]).uniq
+  end
+
+  def ruby_include_paths file
+    ret = ruby_deps.reduce([]) do |acc, mod|
+      acc + $yast_modules[mod].exported_include_paths
+    end
+
+    (ret + ybc_include_paths + [ File.dirname(file) ]).uniq
+  end
+
   def create_rb(file, output_file)
     cmd = [@config["y2r"]]
     cmd << "--ycpc" << @config["ycpc"]
-    module_paths.each do |module_path|
+
+    ruby_module_paths(file).each do |module_path|
       cmd << "--module-path" << module_path
     end
-    cmd << "--module-path" << File.dirname(file)
-    include_paths.each do |include_path|
+
+    ruby_include_paths(file).each do |include_path|
       cmd << "--include-path" << include_path
     end
-    cmd << "--include-path" << File.dirname(file)
+
     cmd << file
     cmd << output_file
 
@@ -415,20 +607,89 @@ class YastModule
 end
 
 # based on ycpmakedep script https://github.com/yast/yast-devtools/blob/master/devtools/bin/ycpmakedep
-module BuildOrder
-  def self.ordered_modules(source_dirs)
-    modules = find_modules source_dirs
-    includes = find_includes source_dirs
+class BuildOrder
 
-    fill_module_deps(modules, includes)
-    result = ordered_modules_by_deps(modules)
+  class Source
+    attr :name                    # name
+    attr :full_path               # string
+    attr :imports                 # list of names
+    attr :includes                # list of names
 
-    result.map { |name| modules[name][:full_path] }
+    # Parse the file.
+    # imports and includes still contain references outside this package,
+    # but there are no duplicates
+    def initialize(name, full_path)
+      @name = name
+      @full_path = full_path
+      lines = ::File.readlines @full_path
+      @imports =  direct_imports(lines).uniq
+      @includes = direct_includes(lines).uniq
+    rescue ArgumentError => e
+      if e.to_s =~ /invalid byte sequence/
+        raise e, e.message + "; offending file: #{@full_path}"
+      end
+      raise e
+    end
+
+    # Can be called once we know about all local modules and includes
+    def filter_outside_references(is_local_module_proc, is_local_include_proc)
+      imports.keep_if(&is_local_module_proc)
+      includes.keep_if(&is_local_include_proc)
+    end
+
+  private
+    # return ["Report", "Popup", "FIXME: Foo::Bar or Foo/Bar"]
+    def direct_imports(lines)
+      import_lines = lines.grep(/^\s*import[\s"\(]/)
+      import_lines.map do |line|
+        line.chomp!
+        line.sub!(/^\s*import[^"]*"([^"]+)".*$/, '\\1')
+        line.sub!(/\.ycp$/, "")
+        line
+      end
+    end
+
+    # return ["lan/dialogs", "lan/routines"]
+    def direct_includes(lines)
+      include_lines = lines.grep(/^\s*include[\s"\(]/)
+
+      include_lines.map do |line|
+        line.chomp!
+        line.sub!(/^\s*include[^"]*"([^"]+)".*$/, '\\1')
+        line.sub!(/\.y(cp|h)$/, "")
+        line
+      end
+    end
+  end
+
+  # Distinguish them because we only compile modules,
+  # and there are even cycles that are ok because they consist of
+  # a module-include pair
+  class Module < Source
+  end
+
+  class Include < Source
+  end
+
+  # @modules  Hash: name => Source
+  # @includes Hash: name => Source
+  def initialize(source_dirs)
+    @modules  = find_modules source_dirs
+    @includes = find_includes source_dirs
+    filter_outside_references
+  end
+
+  def ordered_modules
+    tsorted_modules = tsort_breaking_pair_cycles.select do |source|
+      source.is_a? Module
+    end
+
+    tsorted_modules.map { |source| source.full_path }
   end
 
   private
 
-  def self.find_modules(source_dirs)
+  def find_modules(source_dirs)
     modules = {}
 
     source_dirs.each do |dir|
@@ -436,14 +697,14 @@ module BuildOrder
         relative_path = file.sub(/#{Regexp.escape(dir)}\/modules\//, "")
         module_name = relative_path.sub(/\.ycp$/, "")
 
-        modules[module_name] = { :full_path => file }
+        modules[module_name] = Module.new(module_name, file)
       end
     end
 
     modules
   end
 
-  def self.find_includes(source_dirs)
+  def find_includes(source_dirs)
     includes = {}
 
     source_dirs.each do |dir|
@@ -451,74 +712,77 @@ module BuildOrder
         relative_path = file.sub(/#{Regexp.escape(dir)}\/include\//, "")
         include_name = relative_path.sub(/\.y(cp|h)$/, "")
 
-        includes[include_name] = { :full_path => file }
+        includes[include_name] = Include.new(include_name, file)
       end
     end
 
     includes
   end
 
-  def self.extract_imported_module_files(lines)
-    import_lines = lines.grep(/^\s*import[\s"\(]/)
-    import_lines.map do |line|
-      line.chomp!
-      line.sub!(/^\s*import[^"]*"([^"]+)".*$/, '\\1')
-      line.sub!(/\.ycp$/, "")
-      line
+  include TSort
+
+  def each_source(&block)
+    @modules.each_value(&block)
+    @includes.each_value(&block)
+  end
+  alias :tsort_each_node :each_source
+
+  def tsort_each_child(node, &block)
+    node.imports.each  { |name| block.call(@modules[name])  }
+    node.includes.each { |name| block.call(@includes[name]) }
+  end
+
+  # remove items from modules and includes that refer outside this package
+  def filter_outside_references
+    is_local_module  = lambda {|m| @modules.has_key?(m) }
+    is_local_include = lambda {|i| @includes.has_key?(i) }
+    each_source do |f|
+      f.filter_outside_references(is_local_module, is_local_include)
     end
   end
 
-  def self.included_files(lines)
-    include_lines = lines.grep(/^\s*include[\s"\(]/)
-
-    include_lines.map do |line|
-      line.chomp!
-      line.sub!(/^\s*include[^"]*"([^"]+)".*$/, '\\1')
-      line.sub!(/\.y(cp|h)$/, "")
-      line
-    end
-  end
-
-  def self.fill_module_deps(modules, includes)
-    modules.each do |name, mod|
-      lines = File.readlines mod[:full_path]
-      deps = extract_imported_module_files lines
-      included = included_files lines
-      included.each do
-        next unless includes[name]
-        includes[name][:deps] ||= extract_imported_module_files(File.readlines(includes[name][:full_path]))
-        deps.concated includes[name][:deps]
+  # There may be a dependency cycle which is harmless,
+  # because we only care that the subgraph over *modules* is acyclical.
+  # That is, cycles are only a problem if they contain
+  # more than one include or more than one module.
+  # Therefore, we will break cycles consisting of module-include pairs.
+  def tsort_breaking_pair_cycles
+    each_strongly_connected_component do |component|
+      next if component.size == 1
+      if component.all? {|source| source.is_a? Include}
+        # YCP parser breaks include cycles
+        component.last.includes.delete component.first.name
+        next
       end
-      deps = deps.select { |m| modules[m] }.uniq
-      mod[:deps] = deps
+      modules = component.find_all {|source| source.is_a? Module}
+      if modules.size > 1
+        raise TSort::Cyclic.new("Cycle involving 2 modules: #{component.inspect}")
+      end
+      # Now we have a component of one module and some includes,
+      # with possibly multiple cycles in it.
+      # Discard all dependencies leading from the module.
+      mod = modules.first
+      mod.includes.each do |i|
+        puts "Broke a cyclic dependency between #{mod.name} and #{i}."
+      end
+      mod.includes.clear
     end
-  end
-
-  def self.find_module_to_process(modules, unprocessed, already_processed)
-    unprocessed.find do |name|
-      modules[name][:deps].all? { |dep| already_processed.include? (dep) }
-    end
-  end
-
-  # It can use TSort from ruby, but its API is not much flexible.
-  def self.ordered_modules_by_deps(modules)
-    unprocessed = modules.keys
-    processed   = []
-
-    1.upto(unprocessed.size) do
-      mod = find_module_to_process(modules, unprocessed, processed)
-      raise "unresolved dependencies: #{unprocessed.inspect}" unless mod
-      processed << mod
-      unprocessed.delete mod
-    end
-
-    processed
+    # all harmless cycles are broken; run for real
+    tsort
   end
 end
 
 class CLI < Thor
+
+  class_option :debug, :type => :boolean, :desc => "verbosely log what commands are run"
+
   def initialize(*args)
     super *args
+
+    if options[:debug]
+      log = Logger.new(STDOUT)
+      Cheetah.default_options = { :logger => log }
+    end
 
     load_config
     load_module_data
@@ -571,12 +835,20 @@ class CLI < Thor
     end
   end
 
-  desc "compile <module>...", "Compile module(s)"
-  def compile(*module_names)
+  desc "ybc <module>...", "Compile module(s) to ybc"
+  def ybc(*module_names)
     report_results(module_names) do |mod|
-      mod.compile
+      mod.compile_modules
     end
   end
+
+  desc "ruby <module>...", "Convert module(s) to Ruby"
+  def ruby(*module_names)
+    report_results(module_names) do |mod|
+      mod.convert_to_ruby
+    end
+  end
+
 
   desc "makefile <module>...", "Generates Makefile.am for exported dirs of module(s)"
   def makefile(*module_names)
@@ -586,17 +858,17 @@ class CLI < Thor
     end
   end
 
-  desc "submit <module>...", "Submit module(s) to build service"
-  def submit(*module_names)
+  desc "package <module>...", "Create packages in build service directory for module(s)"
+  def package(*module_names)
     modules = modules_from_names(module_names)
-    with_modules modules, "Submitting", true do |mod|
-      mod.submit
+    with_modules modules, "Packaging", true do |mod|
+      mod.package
     end
   end
 
   private
 
-  def report_results(module_names)
+  def report_results(module_names) # :yields: mod
     compile_stubs
 
     FileUtils.rm_rf(ERROR_FILE)
@@ -604,6 +876,7 @@ class CLI < Thor
     counts = {
       :ok          => 0,
       :excluded    => 0,
+      :error_ybc   => 0,
       :error_y2r   => 0,
       :error_ruby  => 0,
       :error_other => 0
@@ -620,6 +893,7 @@ class CLI < Thor
     puts
     puts "Total OK:           #{counts[:ok]}"
     puts "Total EXCLUDED:     #{counts[:excluded]}"
+    puts "Total ERROR(ybc):   #{counts[:error_ybc]}"
     puts "Total ERROR(y2r):   #{counts[:error_y2r]}"
     puts "Total ERROR(ruby):  #{counts[:error_ruby]}"
     puts "Total ERROR(other): #{counts[:error_other]}"
@@ -637,27 +911,33 @@ class CLI < Thor
   end
 
   def load_module_data
-    @modules = {}
-
     Dir["#{DATA_DIR}/*.yml"].sort.each do |file|
       name = File.basename(file, ".yml")
 
-      @modules[name] = YastModule.new(
+      $yast_modules[name] = YastModule.new(
         name,
         YAML.load_file(file) || {},
-        @modules,
         @config
       )
     end
   end
 
-  def modules_from_names(module_names)
-    module_names = @modules.keys if module_names == ["all"]
-
-    @modules.values_at(*module_names)
+  def module_from_cwd
+    cwd = Dir.pwd
+    # .../work/foo
+    package = cwd[/\/#{Regexp.escape(YastModule::WORK_DIR)}\/([^\/]+)\Z/, 1]
+    raise "No modules specified and current directory is not a working directory" unless package
+    package
   end
 
-  def with_modules(modules, activity, print_status)
+  def modules_from_names(module_names)
+    module_names = [ module_from_cwd ] if module_names.empty?
+    module_names = $yast_modules.keys if module_names == ["all"]
+
+    $yast_modules.values_at(*module_names)
+  end
+
+  def with_modules(modules, activity, print_status) # :yields: mod
     max_counter_size = 3 + ((Math.log10(modules.size).to_i + 1) * 2)
 
     modules.each_index do |i|
@@ -691,7 +971,6 @@ rescue Cheetah::ExecutionFailed => e
   puts
   puts "Command #{e.commands[0][0]} failed:"
   puts e.stderr
-rescue Exception => e
-  puts
-  puts e.message
+rescue Interrupt
+  puts # ^C is printed already
 end

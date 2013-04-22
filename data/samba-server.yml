@@ -1,50 +1,80 @@
-# TODO: Process.
+ybc_deps:
+  - yast2
+  - ldap-client
+  - users
+  - samba-client
 
-files:
-  - src/add_machine.ycp
-  - src/complex.ycp
-  - src/dialogs-items.ycp
-  - src/dialogs.ycp
-  - src/helps.ycp
-  - src/ldap-widget.ycp
-  - src/samba-options-global.ycp
-  - src/samba-options-local.ycp
-  - src/samba-server.ycp
-  - src/samba-server_auto.ycp
-  - src/wizards.ycp
-  - testsuite/Modules/tests/SambaTrustDom.ycp
-  - testsuite/YaPI/tests/YaPI-AddSAM-2.ycp
-  - testsuite/YaPI/tests/YaPI-AddSAM.ycp
-  - testsuite/YaPI/tests/YaPI-AddShare.ycp
-  - testsuite/YaPI/tests/YaPI-DeleteSAM-2.ycp
-  - testsuite/YaPI/tests/YaPI-DeleteSAM-3.ycp
-  - testsuite/YaPI/tests/YaPI-DeleteSAM.ycp
-  - testsuite/YaPI/tests/YaPI-DeleteShare-2.ycp
-  - testsuite/YaPI/tests/YaPI-DeleteShare.ycp
-  - testsuite/YaPI/tests/YaPI-DetermineRole1.ycp
-  - testsuite/YaPI/tests/YaPI-DetermineRole2.ycp
-  - testsuite/YaPI/tests/YaPI-DetermineRole3.ycp
-  - testsuite/YaPI/tests/YaPI-EditDefaultSAM.ycp
-  - testsuite/YaPI/tests/YaPI-EditSAMConfiguration.ycp
-  - testsuite/YaPI/tests/YaPI-EditServerAsBDC.ycp
-  - testsuite/YaPI/tests/YaPI-EditServerAsPDC.ycp
-  - testsuite/YaPI/tests/YaPI-EditServerAsStandalone.ycp
-  - testsuite/YaPI/tests/YaPI-EditServerDescription.ycp
-  - testsuite/YaPI/tests/YaPI-EditService.ycp
-  - testsuite/YaPI/tests/YaPI-EditShare.ycp
-  - testsuite/YaPI/tests/YaPI-EnableHomes.ycp
-  - testsuite/YaPI/tests/YaPI-EnableNetlogon.ycp
-  - testsuite/YaPI/tests/YaPI-EnablePrinters.ycp
-  - testsuite/YaPI/tests/YaPI-EnableShare-2.ycp
-  - testsuite/YaPI/tests/YaPI-EnableShare.ycp
-  - testsuite/YaPI/tests/YaPI-GetAllDirectories.ycp
-  - testsuite/YaPI/tests/YaPI-GetAllPrinters.ycp
-  - testsuite/YaPI/tests/YaPI-GetSAMBackends.ycp
-  - testsuite/YaPI/tests/YaPI-GetSAMConfiguration.ycp
-  - testsuite/YaPI/tests/YaPI-GetServerDescription.ycp
-  - testsuite/YaPI/tests/YaPI-GetServiceStatus.ycp
-  - testsuite/YaPI/tests/YaPI-GetShare.ycp
-  - testsuite/YaPI/tests/YaPI-ShareEnabled.ycp
-  - testsuite/YaPI/tests/tests-common.yh
-  - users-plugin/users_plugin_samba.ycp
-  - users-plugin/users_plugin_samba_groups.ycp
+moves:
+  - from: "src/Samba*.pm"
+    to:   src/modules
+  - from: "src/YaPI/*.pm"
+    to:   src/modules/YaPI
+  - from: "users-plugin/UsersPluginSamba*.pm"
+    to:   src/modules
+  - from: "src/samba-server*.ycp"
+    to:   src/clients
+  - from: "users-plugin/users_plugin_samba*.ycp"
+    to:   src/clients
+  - from: "src/{complex,dialogs,dialogs-items,helps,ldap-widget,wizards}.ycp"
+    to:   src/include/samba-server
+  - from: "src/samba-options-*.ycp"
+    to:   src/include/samba-server
+  - from: "src/samba-server.desktop"
+    to:   src/desktop
+  - from: "src/add_machine.ycp"
+    to:   src/data
+  - from: "src/config/samba-server.rnc"
+    to:   src/autoyast-rnc
+
+excluded:
+  # TODO: Include file, can't be compiled for now.
+  - src/include/samba-server/samba-options-local.ycp
+
+#files:
+#  - src/add_machine.ycp
+#  - src/complex.ycp
+#  - src/dialogs-items.ycp
+#  - src/dialogs.ycp
+#  - src/helps.ycp
+#  - src/ldap-widget.ycp
+#  - src/samba-options-global.ycp
+#  - src/samba-options-local.ycp
+#  - src/samba-server.ycp
+#  - src/samba-server_auto.ycp
+#  - src/wizards.ycp
+#  - testsuite/Modules/tests/SambaTrustDom.ycp
+#  - testsuite/YaPI/tests/YaPI-AddSAM-2.ycp
+#  - testsuite/YaPI/tests/YaPI-AddSAM.ycp
+#  - testsuite/YaPI/tests/YaPI-AddShare.ycp
+#  - testsuite/YaPI/tests/YaPI-DeleteSAM-2.ycp
+#  - testsuite/YaPI/tests/YaPI-DeleteSAM-3.ycp
+#  - testsuite/YaPI/tests/YaPI-DeleteSAM.ycp
+#  - testsuite/YaPI/tests/YaPI-DeleteShare-2.ycp
+#  - testsuite/YaPI/tests/YaPI-DeleteShare.ycp
+#  - testsuite/YaPI/tests/YaPI-DetermineRole1.ycp
+#  - testsuite/YaPI/tests/YaPI-DetermineRole2.ycp
+#  - testsuite/YaPI/tests/YaPI-DetermineRole3.ycp
+#  - testsuite/YaPI/tests/YaPI-EditDefaultSAM.ycp
+#  - testsuite/YaPI/tests/YaPI-EditSAMConfiguration.ycp
+#  - testsuite/YaPI/tests/YaPI-EditServerAsBDC.ycp
+#  - testsuite/YaPI/tests/YaPI-EditServerAsPDC.ycp
+#  - testsuite/YaPI/tests/YaPI-EditServerAsStandalone.ycp
+#  - testsuite/YaPI/tests/YaPI-EditServerDescription.ycp
+#  - testsuite/YaPI/tests/YaPI-EditService.ycp
+#  - testsuite/YaPI/tests/YaPI-EditShare.ycp
+#  - testsuite/YaPI/tests/YaPI-EnableHomes.ycp
+#  - testsuite/YaPI/tests/YaPI-EnableNetlogon.ycp
+#  - testsuite/YaPI/tests/YaPI-EnablePrinters.ycp
+#  - testsuite/YaPI/tests/YaPI-EnableShare-2.ycp
+#  - testsuite/YaPI/tests/YaPI-EnableShare.ycp
+#  - testsuite/YaPI/tests/YaPI-GetAllDirectories.ycp
+#  - testsuite/YaPI/tests/YaPI-GetAllPrinters.ycp
+#  - testsuite/YaPI/tests/YaPI-GetSAMBackends.ycp
+#  - testsuite/YaPI/tests/YaPI-GetSAMConfiguration.ycp
+#  - testsuite/YaPI/tests/YaPI-GetServerDescription.ycp
+#  - testsuite/YaPI/tests/YaPI-GetServiceStatus.ycp
+#  - testsuite/YaPI/tests/YaPI-GetShare.ycp
+#  - testsuite/YaPI/tests/YaPI-ShareEnabled.ycp
+#  - testsuite/YaPI/tests/tests-common.yh
+#  - users-plugin/users_plugin_samba.ycp
+#  - users-plugin/users_plugin_samba_groups.ycp

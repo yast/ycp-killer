@@ -1,0 +1,81 @@
+diff --git a/src/include/apparmor/aa-config.ycp b/src/include/apparmor/aa-config.ycp
+index 1307c6e..c59c5c4 100644
+--- a/src/include/apparmor/aa-config.ycp
++++ b/src/include/apparmor/aa-config.ycp
+@@ -26,6 +26,8 @@ include "apparmor/apparmor_ycp_utils.ycp";
+ textdomain "yast2-apparmor";
+ 
+ import "Label";
++import "Popup";
++import "Wizard";
+ 
+ define boolean changeAppArmorState(boolean aaEnabled) {
+ 
+diff --git a/src/include/apparmor/apparmor_packages.ycp b/src/include/apparmor/apparmor_packages.ycp
+index 08b5d09..402a807 100644
+--- a/src/include/apparmor/apparmor_packages.ycp
++++ b/src/include/apparmor/apparmor_packages.ycp
+@@ -24,6 +24,8 @@ you may find current contact information at www.novell.com
+   * whether they want optional packages like apparmor-docs, libapparmor,
+   * apache2-mod-apparmor and * (eventually) pam-apparmor installed. */
+ 
++{
++
+ import "PackageSystem";
+ 
+ list<string> __needed_packages =
+@@ -32,3 +34,5 @@ list<string> __needed_packages =
+ define boolean installAppArmorPackages () {
+ 	return PackageSystem::CheckAndInstallPackagesInteractive (__needed_packages);
+ }
++
++}
+diff --git a/src/include/apparmor/apparmor_profile_check.ycp b/src/include/apparmor/apparmor_profile_check.ycp
+index b1601be..8ae526c 100644
+--- a/src/include/apparmor/apparmor_profile_check.ycp
++++ b/src/include/apparmor/apparmor_profile_check.ycp
+@@ -20,6 +20,7 @@ you may find current contact information at www.novell.com
+ 
+ ****************************************************************************/
+ 
++{
+ 
+ import "Popup";
+ textdomain "yast2-apparmor";
+@@ -50,3 +51,5 @@ started or the profile management tools can be used.</p> ")
+   }
+   return( syntax_ok );
+ }
++
++}
+diff --git a/src/include/apparmor/apparmor_ycp_utils.ycp b/src/include/apparmor/apparmor_ycp_utils.ycp
+index 09b147b..11815f3 100644
+--- a/src/include/apparmor/apparmor_ycp_utils.ycp
++++ b/src/include/apparmor/apparmor_ycp_utils.ycp
+@@ -20,6 +20,7 @@ you may find current contact information at www.novell.com
+ 
+ ****************************************************************************/
+ 
++{
+ 
+ import "Label";
+ import "Popup";
+@@ -685,3 +686,5 @@ define void UI_BusyFeedbackStop( ) {
+       AppArmorDialogs::busy_dialog = nil;
+     }
+ }
++
++}
+diff --git a/src/include/apparmor/config_complain.ycp b/src/include/apparmor/config_complain.ycp
+index 0d6a829..1796a59 100644
+--- a/src/include/apparmor/config_complain.ycp
++++ b/src/include/apparmor/config_complain.ycp
+@@ -23,6 +23,8 @@ you may find current contact information at www.novell.com
+ textdomain "yast2-apparmor";
+ 
+ import "Label";
++import "Popup";
++import "Wizard";
+ 
+ string modeHelp = _("<p><b>Profile Mode Configuration</b><br>This tool allows 
+ you to set AppArmor profiles to either complain or enforce mode.</p>") +

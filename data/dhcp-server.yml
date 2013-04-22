@@ -1,31 +1,32 @@
-# TODO: Process.
+ybc_deps:
+  - testsuite
+  - yast2
+  - dns-server
 
-files:
-  - src/DhcpServerUI.ycp
-  - src/commandline.ycp
-  - src/dhcp-server.ycp
-  - src/dhcp-server_auto.ycp
-  - src/dialogs.ycp
-  - src/dialogs2.ycp
-  - src/dns-helps.ycp
-  - src/dns-server-dialogs.ycp
-  - src/dns-server-management.ycp
-  - src/dns-server-wizard.ycp
-  - src/helps.ycp
-  - src/misc.ycp
-  - src/options.ycp
-  - src/routines.ycp
-  - src/widgets.ycp
-  - src/wizards.ycp
-  - testsuite/tests/Read.ycp
-  - testsuite/tests/Write.ycp
-  - testsuite/tests/YaPIAddDeclaration.ycp
-  - testsuite/tests/YaPIDeleteDeclartion.ycp
-  - testsuite/tests/YaPIGetDeclarationChildren.ycp
-  - testsuite/tests/YaPIGetDeclarationDirectives.ycp
-  - testsuite/tests/YaPIGetDeclarationOptions.ycp
-  - testsuite/tests/YaPIGetDeclarationParent.ycp
-  - testsuite/tests/YaPISetDeclarationDirectives.ycp
-  - testsuite/tests/YaPISetDeclarationOptions.ycp
-  - testsuite/tests/YaPISetDeclarationParent.ycp
-  - testsuite/tests/YaPIStartStopDhcpService.ycp
+moves:
+  - from: src/DHCPD.pm
+    to: src/modules/YaPI
+  - from: src/[A-Z]*.{pm,ycp}
+    to: src/modules
+  - from: src/dhcp-server*.ycp
+    to: src/clients
+  - from: src/*.ycp
+    to: src/include/dhcp-server
+  - from: src/*.desktop
+    to: src/desktop
+  - from: src/config/*.rnc
+    to: src/autoyast-rnc
+  - from: agents/*.scr
+    to: src/scrconf
+  - from: agents/ag*
+    to: src/servers_non_y2
+
+excluded:
+  # incomplete include files
+  - src/include/dhcp-server/options.ycp
+  - src/include/dhcp-server/widgets.ycp
+  - src/include/dhcp-server/dialogs.ycp
+  - src/include/dhcp-server/commandline.ycp
+  - src/include/dhcp-server/routines.ycp
+  - src/include/dhcp-server/wizards.ycp
+  - src/include/dhcp-server/dialogs2.ycp

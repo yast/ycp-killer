@@ -1,4 +1,4 @@
-deps:
+ybc_deps:
   - testsuite
 exports:
   - library/types/src
@@ -23,7 +23,7 @@ moves:
   # be more directories than expected
   - from: "library/modules"
     to: src
-  - from: "library/types/src/*.ycp"
+  - from: "library/types/src/*.{ycp,pm}"
     to: library/types/src/modules
   - from: "library/runlevel/src/*.ycp"
     to: library/runlevel/src/modules
@@ -47,8 +47,12 @@ moves:
     to: library/cwm/src/modules
   - from: "library/log/src/*.ycp"
     to: library/log/src/modules
-  - from: "library/system/src/*.ycp"
+  - from: "library/system/src/[A-Z]*.ycp"
     to: library/system/src/modules
+  - from: "library/system/src/classnames.ycp"
+    to: library/system/src/include/hwinfo
+  - from: "library/system/src/view_anymsg.ycp"
+    to: library/system/src/clients
   - from: "library/packages/src/common.ycp"
     to: library/packages/src/include/packages
     # order is important as common is only include
@@ -57,7 +61,7 @@ moves:
   - from: "library/cron/src/*.ycp"
     to: library/cron/src/modules
     # TODO there is strange source files in network, investigate!
-  - from: "library/network/src/[A-Z]*.ycp"
+  - from: "library/network/src/[A-Z]*.{ycp,pm}"
     to: library/network/src/modules
   - from: "library/gpg/src/*.ycp"
     to: library/gpg/src/modules

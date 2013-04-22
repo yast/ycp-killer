@@ -1,9 +1,18 @@
-# TODO: Process.
+ybc_deps:
+  - yast2
 
-files:
-  - src/Crowbar.ycp
-  - src/complex.ycp
-  - src/crowbar.ycp
-  - src/helps.ycp
-  - src/inst_crowbar.ycp
-  - src/wizards.ycp
+moves:
+  - from: "src/{Crowbar.ycp,JSON.rb,Json.pm}"
+    to:   src/modules
+  - from: "src/{crowbar,inst_crowbar}.ycp"
+    to:   src/clients
+  - from: "src/{complex,helps,wizards}.ycp"
+    to:   src/include/crowbar
+  - from: "src/crowbar.desktop"
+    to:   src/desktop
+
+excluded:
+  # TODO: Include files, can't be compiled for now.
+  - src/include/crowbar/complex.ycp
+  - src/include/crowbar/helps.ycp
+  - src/include/crowbar/wizards.ycp

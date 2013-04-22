@@ -1,12 +1,18 @@
-# TODO: Process.
+ybc_deps:
+  - testsuite
+  - yast2
 
-files:
-  - src/PowerManagement.ycp
-  - src/commandline.ycp
-  - src/dialogs.ycp
-  - src/helps.ycp
-  - src/power-management.ycp
-  - src/power-management_auto.ycp
-  - src/widgets.ycp
-  - src/wizards.ycp
-  - testsuite/tests/PowerManagement.ycp
+moves:
+  - from: "src/PowerManagement.ycp"
+    to: src/modules
+  - from: "src/power-management*.ycp"
+    to: src/clients
+  - from: "src/*.ycp"
+    to: "src/include/power-management"
+  - from: "src/*.desktop"
+    to: src/desktop
+  - from: "src/power-management.rnc"
+    to: src/autoyast-rnc
+  - from: "agents/*.scr"
+    to: src/scrconf
+

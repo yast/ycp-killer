@@ -1,0 +1,52 @@
+diff --git a/agents/Makefile.am b/agents/Makefile.am
+index cc3cb74..d223884 100644
+--- a/agents/Makefile.am
++++ b/agents/Makefile.am
+@@ -2,6 +2,6 @@
+ 
+ agent_SCRIPTS =
+ 
+-scrconf_DATA = supportconfig.scr
++scrconf_DATA =
+ 
+ EXTRA_DIST = $(agent_SCRIPTS) $(scrconf_DATA)
+diff --git a/doc/Makefile.am b/doc/Makefile.am
+index 942c239..7e40599 100644
+--- a/doc/Makefile.am
++++ b/doc/Makefile.am
+@@ -1,6 +1,7 @@
+ # Makefile.am for support/doc
+ 
+-SUBDIRS = autodocs
++# TODO autodocs is not yet supported for ruby
++SUBDIRS =# autodocs
+ 
+ htmldir = $(docdir)
+ 
+diff --git a/src/include/support/dialogs.ycp b/src/include/support/dialogs.ycp
+index 105e952..f651ee3 100644
+--- a/src/include/support/dialogs.ycp
++++ b/src/include/support/dialogs.ycp
+@@ -32,6 +32,7 @@
+ textdomain "support";
+ 
+ import "Label";
++import "Popup";
+ import "Report";
+ import "Wizard";
+ import "Support";
+diff --git a/yast2-support.spec.in b/yast2-support.spec.in
+index 41404e7..ca203a6 100644
+--- a/yast2-support.spec.in
++++ b/yast2-support.spec.in
+@@ -26,8 +26,8 @@ support in a standardized format.
+ %defattr(-,root,root)
+ %dir @yncludedir@/support
+ @yncludedir@/support/*
+-@clientdir@/support.ycp
+-@clientdir@/support_*.ycp
++@clientdir@/support.rb
++@clientdir@/support_*.rb
+ @moduledir@/Support.*
+ @desktopdir@/support.desktop
+ @scrconfdir@/*.scr
