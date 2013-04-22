@@ -83,17 +83,6 @@ class YastModule
     end
   end
 
-  def patch
-    action "Patching" do
-      patch_file = "#{PATCHES_DIR}/#{@name}.patch"
-      next unless File.exists?(patch_file)
-
-      Dir.chdir work_dir do
-        Cheetah.run "git", "apply", patch_file
-      end
-    end
-  end
-
   def compile_modules
     clean_previous_compilation
     reset_counts

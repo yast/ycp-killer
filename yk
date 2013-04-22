@@ -22,6 +22,7 @@ end
 require_relative "lib/yast_module"
 require_relative "lib/commands/clone_command"
 require_relative "lib/commands/genpatch_command"
+require_relative "lib/commands/patch_command"
 
 class CLI < Thor
 
@@ -66,7 +67,7 @@ class CLI < Thor
   def patch(*module_names)
     modules = modules_from_names(module_names)
     with_modules modules do |mod|
-      mod.patch
+      Commands::PatchCommand.new(@config).apply(mod)
     end
   end
 
