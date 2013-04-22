@@ -24,6 +24,7 @@ require_relative "lib/commands/clone_command"
 require_relative "lib/commands/genpatch_command"
 require_relative "lib/commands/patch_command"
 require_relative "lib/commands/reset_command"
+require_relative "lib/commands/restructure_command"
 
 class CLI < Thor
 
@@ -84,7 +85,7 @@ class CLI < Thor
   def restructure(*module_names)
     modules = modules_from_names(module_names)
     with_modules modules do |mod|
-      mod.restructure
+      Commands::RestructureCommand.new(@config).apply(mod)
     end
   end
 
