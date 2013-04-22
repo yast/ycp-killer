@@ -1,0 +1,12 @@
+diff --git a/src/include/iscsi-lio-server/complex.ycp b/src/include/iscsi-lio-server/complex.ycp
+index c7edcae..6e098d2 100644
+--- a/src/include/iscsi-lio-server/complex.ycp
++++ b/src/include/iscsi-lio-server/complex.ycp
+@@ -37,7 +37,6 @@ textdomain "iscsi-lio-server";
+ import "Label";
+ import "Popup";
+ import "Wizard";
+-import "Wizard_hw";
+ import "IscsiLioServer";
+ 
+ include "iscsi-lio-server/helps.ycp";
