@@ -154,23 +154,6 @@ class YastModule
     exports.map { |e| "#{work_dir}/#{e}/include" }
   end
 
-  def reset
-    action "Resetting" do
-      Dir.chdir work_dir do
-        Cheetah.run "git", "reset", "--hard", "HEAD"
-
-        output = Cheetah.run "git", "status", "--short", :stdout => :capture
-        output.split("\n").each do |line|
-          if line =~ /^\?\?\s+(.*)$/
-            FileUtils.rm_rf $1
-          else
-            raise "Unknown git file status: #{line}"
-          end
-        end
-      end
-    end
-  end
-
   def restructure
     action "Restructuring" do
       puts "WARNING: No 'moves' section found in #{name}.yml" if moves.empty?
