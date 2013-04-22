@@ -1,23 +1,19 @@
-#files:
-#  - doc/examples/doimport.ycp
-#  - doc/examples/example.ycp
-#  - doc/examples/foo.ycp
-#  - doc/examples/import.ycp
-#  - doc/examples/import2.ycp
-#  - doc/examples/intermediate.ycp
-#  - doc/useperl.ycp
-#  - pluglib-bindings/tests/OOP/Namespace/test.ycp
-#  - pluglib-bindings/tests/OOP/Simple/test.ycp
-#  - pluglib-bindings/tests/Reference/test.ycp
-#  - pluglib-bindings/tests/std/Hash/test.ycp
-#  - pluglib-bindings/tests/std/HashList/test.ycp
-#  - pluglib-bindings/tests/std/List/test.ycp
-#  - pluglib-bindings/tests/std/ListList/test.ycp
-#  - testsuite/tests.pl/Data.ycp
-#  - testsuite/tests/long.ycp
-#  - testsuite/tests/reference.ycp
-#  - testsuite/tests/simple1.ycp
-#  - testsuite/tests/testpfunc1.ycp
-#  - testsuite/tests/testpfunc2.ycp
-#  - testsuite/tests/types.ycp
-#  - testsuite/tests/types2.ycp
+moves:
+  # module that is imported by other code in doc dir and must be compiled
+  - from: doc/examples/{foo.ycp,intermediate.ycp,imported.pm}
+    to: doc/modules
+
+exports:
+  - doc
+
+excluded:
+  # uses C++ module
+  - doc/examples/example.ycp
+  # broken in upstream and also require C part ( see README in pluglib-bindings )
+  - pluglib-bindings/tests/Reference/test.ycp
+  - pluglib-bindings/tests/std/List/test.ycp
+  - pluglib-bindings/tests/std/ListList/test.ycp
+  - pluglib-bindings/tests/std/Hash/test.ycp
+  - pluglib-bindings/tests/std/HashList/test.ycp
+  - pluglib-bindings/tests/OOP/Namespace/test.ycp
+  - pluglib-bindings/tests/OOP/Simple/test.ycp
