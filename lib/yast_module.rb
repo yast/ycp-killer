@@ -216,7 +216,7 @@ class YastModule
           FileUtils.mkdir_p move["to"]
 
           from_files = Dir.glob(move["from"])
-          puts "WARNING: typo? no matches for: #{from_glob}" if from_files.empty?
+          puts "WARNING: typo? no matches for: #{move["from"]}" if from_files.empty?
           from_files.each do |file|
             # We want the moves stored in git index. This way the "genpatch"
             # command creates patch against state after restructuring, not
