@@ -1,0 +1,29 @@
+diff --git a/module/.cvsignore b/module/.cvsignore
+index 903d300..e69de29 100644
+--- a/module/.cvsignore
++++ b/module/.cvsignore
+@@ -1,5 +0,0 @@
+-Makefile
+-Makefile.in
+-*.kdoc
+-*.ybc
+-.dep
+diff --git a/module/Makefile.am b/module/Makefile.am
+index 35be7b7..e69de29 100644
+--- a/module/Makefile.am
++++ b/module/Makefile.am
+@@ -1,14 +0,0 @@
+-#
+-# Makefile.am for xml/module/src
+-#
+-
+-yncludedir = @yncludedir@/transfer
+-
+-module_DATA =		\
+-	HTTP.ycp	\
+-	FTP.ycp		\
+-	TFTP.ycp
+-
+-EXTRA_DIST = $(module_DATA)
+-
+-include $(top_srcdir)/Makefile.am.common
