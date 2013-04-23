@@ -279,12 +279,20 @@ format.
 [yaml]: http://en.wikipedia.org/wiki/YAML
 
 ```
-# A list of modules this one depends on to compile. Only direct dependencies
-# need to be stated here (the indirect ones are computed automatically when
-# needed).
+# A list of modules this one depends on to compile ycp code to ybc. Only direct
+# dependencies need to be stated here (the indirect ones are computed
+# automatically when needed).
 # Default: []
-deps:
+ybc_deps:
   - yast2
+
+# A list of modules this one additionally depends on to convert  ycp code to
+# ruby. It needs to specify even indirect dependencies opposed to previous list.
+# It is useful when client or testsuite depends on additional modules as
+# ybc_deps are automatically merged.
+# Default: []
+ruby_deps:
+  - testsuite
 
 # A list of operations used by the `restructure` command
 # to make the working tree better fit the Y2DIR scheme.
