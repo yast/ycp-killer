@@ -8,32 +8,38 @@ class YastModule
     :work_dir,
     :result_dir,
     :obs_dir,
-    :ybc_deps,
-    :ruby_deps,
     :exports,
     :excluded,
     :moves
 
   def initialize(name, data, config)
-    @name       = name
-    @config     = config
-    @work_dir   = "#{@config["yast_dir"]}/#{WORK_DIR}/#@name"
-    @result_dir = "#{@config["yast_dir"]}/#{RESULT_DIR}/#@name"
+    @name           = name
+    @config         = config
+    @work_dir       = "#{@config["yast_dir"]}/#{WORK_DIR}/#@name"
+    @result_dir     = "#{@config["yast_dir"]}/#{RESULT_DIR}/#@name"
     # Not suffixed with @name as it does not match (usuall yast2-#{name} )
-    @obs_dir    = "#{@config["yast_dir"]}/#{OBS_DIR}"
-    @ybc_deps   = data.delete("ybc_deps") || []
-    @ruby_deps  = data.delete("ruby_deps") || []
-    @exports    = data.delete("exports") || ["src"]
-    @excluded   = data.delete("excluded") || []
-    @moves      = data.delete("moves") || []
+    @obs_dir        = "#{@config["yast_dir"]}/#{OBS_DIR}"
+    @ybc_dep_names  = data.delete("ybc_deps") || []
+    @ruby_dep_names = data.delete("ruby_deps") || []
+    @exports        = data.delete("exports") || ["src"]
+    @excluded       = data.delete("excluded") || []
+    @moves          = data.delete("moves") || []
 
     if !data.empty?
       puts "WARNING: Unknown keys in #{name}.yml: #{data.keys.join(", ")}."
     end
   end
 
+  def ybc_deps
+    @ybc_dep_names.map { |n| $yast_modules[n] }
+  end
+
+  def ruby_deps
+    @ruby_dep_names.map { |n| $yast_modules[n] }
+  end
+
   def transitive_deps
-    deps_of_deps = ybc_deps.map { |d| $yast_modules[d].transitive_deps }
+    deps_of_deps = ybc_deps.map(&:transitive_deps)
     depth_first_deps = deps_of_deps.reduce([], :+) + ybc_deps
     # Note that they come out topologically sorted
     # because uniq takes the first object.
@@ -54,7 +60,7 @@ class YastModule
     unless @ybc_module_paths
       @ybc_module_paths = [STUBS_DIR] + exported_module_paths
       transitive_deps.each do |dependency|
-        @ybc_module_paths.concat $yast_modules[dependency].exported_module_paths
+        @ybc_module_paths.concat dependency.exported_module_paths
       end
     end
 
@@ -67,7 +73,7 @@ class YastModule
     unless @ybc_include_paths
       @ybc_include_paths = [STUBS_DIR] + exported_include_paths
       transitive_deps.each do |dependency|
-        @ybc_include_paths.concat $yast_modules[dependency].exported_include_paths
+        @ybc_include_paths.concat dependency.exported_include_paths
       end
     end
 
@@ -79,7 +85,7 @@ class YastModule
     # clients dependencies uses only modules and clients from dependency could
     # use modules from converted module
     ret = ruby_deps.reduce([]) do |acc, mod|
-      acc + $yast_modules[mod].exported_module_paths
+      acc + mod.exported_module_paths
     end
 
     (ret + ybc_module_paths + [ File.dirname(file) ]).uniq
@@ -87,7 +93,7 @@ class YastModule
 
   def ruby_include_paths file
     ret = ruby_deps.reduce([]) do |acc, mod|
-      acc + $yast_modules[mod].exported_include_paths
+      acc + mod.exported_include_paths
     end
 
     (ret + ybc_include_paths + [ File.dirname(file) ]).uniq

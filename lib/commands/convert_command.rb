@@ -32,9 +32,9 @@ module Commands
     private
 
     # can only be called once all $yast_modules have been initialized
-    def check_missing_work(yast_module_names)
-      missing = yast_module_names.reject do |d|
-        File.exists?($yast_modules[d].work_dir)
+    def check_missing_work(yast_modules)
+      missing = yast_modules.reject do |m|
+        File.exists?(m.work_dir)
       end
       if ! missing.empty?
         raise "These dependencies do not have a working directory; convert them first: #{missing.join(", ")}"
