@@ -8,7 +8,6 @@ module Commands
       action "Packaging" do
         Dir.chdir mod.result_dir do
           Cheetah.run "make", "-f", "Makefile.cvs" # TODO will not work for cmake based ones
-          Cheetah.run "make"
           Cheetah.run "make", "package-local", "CHECK_SYNTAX=false"
         end
 
