@@ -1,0 +1,45 @@
+diff --git a/doc/autodocs/Makefile.am b/doc/autodocs/Makefile.am
+index f8be896..87a7241 100644
+--- a/doc/autodocs/Makefile.am
++++ b/doc/autodocs/Makefile.am
+@@ -1,5 +1,8 @@
+ # Makefile.am for YCP module .../doc/autodocs
+ 
+-AUTODOCS_YCP = $(wildcard $(srcdir)/../../src/*/*.ycp)
+-AUTODOCS_PM  = $(wildcard $(srcdir)/../../src/*/*.pm)
+-include $(top_srcdir)/autodocs-ycp.ami
++# TODO FIXME: temporarily disabled, enable back when autodocs
++# support is implemented
++
++#AUTODOCS_YCP = $(wildcard $(srcdir)/../../src/*/*.ycp)
++#AUTODOCS_PM  = $(wildcard $(srcdir)/../../src/*/*.pm)
++#include $(top_srcdir)/autodocs-ycp.ami
+diff --git a/yast2-packager.spec.in b/yast2-packager.spec.in
+index 6510846..076ab12 100644
+--- a/yast2-packager.spec.in
++++ b/yast2-packager.spec.in
+@@ -87,11 +87,10 @@ This package contains a client for searching packages in online repositories
+ %dir @yncludedir@/packager
+ @yncludedir@/checkmedia/*
+ @yncludedir@/packager/*
+-@clientdir@/*.ycp
+-%exclude @clientdir@/webpin_package_search.ycp
++@clientdir@/*.rb
++%exclude @clientdir@/webpin_package_search.rb
+ @moduledir@/*
+-%exclude @moduledir@/WebpinPackageSearch.ycp
+-%exclude @moduledir@/WebpinPackageSearch.ybc
++%exclude @moduledir@/WebpinPackageSearch.rb
+ @desktopdir@/*.desktop
+ @scrconfdir@/*
+ @execcompdir@/servers_non_y2/ag_*
+@@ -99,6 +98,6 @@ This package contains a client for searching packages in online repositories
+ 
+ %files webpin
+ %defattr(-,root,root)
+-@clientdir@/webpin_package_search.ycp
+-@moduledir@/WebpinPackageSearch.ycp
+-@moduledir@/WebpinPackageSearch.ybc
++@clientdir@/webpin_package_search.rb
++@moduledir@/WebpinPackageSearch.rb
++
