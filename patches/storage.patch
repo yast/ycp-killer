@@ -1,3 +1,119 @@
+diff --git a/agents-scr/Makefile.am b/agents-scr/Makefile.am
+deleted file mode 100644
+index a2c2946..0000000
+--- a/agents-scr/Makefile.am
++++ /dev/null
+@@ -1,12 +0,0 @@
+-#
+-# Makefile.am for storage/agents-scr
+-#
+-
+-scrconf_DATA = etc_cryptotab.scr	\
+-	       etc_mtab.scr		\
+-	       proc_dasddev.scr		\
+-	       proc_partitions.scr	\
+-	       proc_swaps.scr		\
+-	       sysconfig_storage.scr
+-
+-EXTRA_DIST = $(scrconf_DATA)
+diff --git a/data/Makefile.am b/data/Makefile.am
+deleted file mode 100644
+index 1e7e401..0000000
+--- a/data/Makefile.am
++++ /dev/null
+@@ -1,9 +0,0 @@
+-#
+-# Makefile.am for storage/data
+-#
+-
+-fillup_DATA = sysconfig.storage-yast2-storage
+-
+-EXTRA_DIST = $(fillup_DATA)
+-
+-include $(top_srcdir)/Makefile.am.common
+diff --git a/disk/Makefile.am b/disk/Makefile.am
+deleted file mode 100644
+index a04d172..0000000
+--- a/disk/Makefile.am
++++ /dev/null
+@@ -1,5 +0,0 @@
+-#
+-# Makefile.am for storage/disk
+-#
+-
+-SUBDIRS = src
+diff --git a/disk/src/Makefile.am b/disk/src/Makefile.am
+deleted file mode 100644
+index 69ea25b..0000000
+--- a/disk/src/Makefile.am
++++ /dev/null
+@@ -1,12 +0,0 @@
+-#
+-# Makefile.am for storage/disk/src
+-#
+-
+-client_DATA =			\
+-	storage.ycp		\
+-	disk.ycp		\
+-	disk_worker.ycp
+-
+-desktop_DATA = disk.desktop
+-
+-EXTRA_DIST = $(client_DATA) $(desktop_DATA)
+diff --git a/doc/Makefile.am b/doc/Makefile.am
+index e34ad2b..60ebcd3 100644
+--- a/doc/Makefile.am
++++ b/doc/Makefile.am
+@@ -1,8 +1,8 @@
+ #
+ # Makefile.am for storage/storage/doc
+ #
+-
+-SUBDIRS = autodocs
++# TODO autodocs not yet support ruby
++# SUBDIRS = autodocs
+ 
+ htmldir = $(docdir)
+ 
+diff --git a/multipath-simple/Makefile.am b/multipath-simple/Makefile.am
+deleted file mode 100644
+index 77cf4ba..0000000
+--- a/multipath-simple/Makefile.am
++++ /dev/null
+@@ -1,5 +0,0 @@
+-#
+-# Makefile.am for storage/multipath-simple
+-#
+-
+-SUBDIRS = src
+diff --git a/multipath-simple/src/Makefile.am b/multipath-simple/src/Makefile.am
+deleted file mode 100644
+index 7585ae1..0000000
+--- a/multipath-simple/src/Makefile.am
++++ /dev/null
+@@ -1,8 +0,0 @@
+-#
+-# Makefile.am for storage/multipath-simple/src
+-#
+-
+-client_DATA =			\
+-	multipath-simple.ycp
+-
+-EXTRA_DIST = $(client_DATA)
+diff --git a/scripts/Makefile.am b/scripts/Makefile.am
+deleted file mode 100644
+index 3795ef4..0000000
+--- a/scripts/Makefile.am
++++ /dev/null
+@@ -1,8 +0,0 @@
+-#
+-# Makefile.am for storage/scripts
+-#
+-
+-ybin_SCRIPTS =			\
+-	check.boot
+-
+-EXTRA_DIST = $(ybin_SCRIPTS)
 diff --git a/src/include/partitioning/auto_part_create.ycp b/src/include/partitioning/auto_part_create.ycp
 index a2a68e6..7e81d58 100644
 --- a/src/include/partitioning/auto_part_create.ycp
@@ -57,7 +173,7 @@ index 57c21ab..baa6eb5 100644
  define list<map> prepare_partitions( map target, list<map> partitions )
      ``{
 diff --git a/src/include/partitioning/auto_part_ui.ycp b/src/include/partitioning/auto_part_ui.ycp
-index f62e625..2179e6e 100644
+index f62e625..be693e3 100644
 --- a/src/include/partitioning/auto_part_ui.ycp
 +++ b/src/include/partitioning/auto_part_ui.ycp
 @@ -23,7 +23,7 @@
@@ -69,6 +185,14 @@ index f62e625..2179e6e 100644
   *
   * Purpose: 		This module contains the user interface
   *			definitions for the automatic partitioner
+@@ -48,6 +48,7 @@
+     import "Partitions";
+     import "Popup";
+     import "Product";
++    import "Storage";
+     import "StorageProposal";
+ 
+     // --------------------------------------------------------------
 diff --git a/src/include/partitioning/custom_part_lib.ycp b/src/include/partitioning/custom_part_lib.ycp
 index 2e01fa7..4c30b07 100644
 --- a/src/include/partitioning/custom_part_lib.ycp
@@ -90,10 +214,10 @@ index 2e01fa7..4c30b07 100644
    include "partitioning/partition_defines.ycp";
  
 diff --git a/src/include/partitioning/ep-all.ycp b/src/include/partitioning/ep-all.ycp
-index 2787c17..904cc54 100644
+index 2787c17..f4d3ea5 100644
 --- a/src/include/partitioning/ep-all.ycp
 +++ b/src/include/partitioning/ep-all.ycp
-@@ -30,13 +30,27 @@
+@@ -30,6 +30,10 @@
  {
      textdomain "storage";
  
@@ -104,7 +228,7 @@ index 2787c17..904cc54 100644
      import "PackageCallbacks";
      import "PackageSystem";
  
- 
+@@ -37,6 +41,16 @@
      void CreateAllPanel(any user_data)
      {
  
@@ -121,6 +245,26 @@ index 2787c17..904cc54 100644
  	boolean IsAvailable ( string client )
  	{
  	    //in the installed system, we don't care if the client isn't there
+diff --git a/src/include/partitioning/ep-btrfs-dialogs.ycp b/src/include/partitioning/ep-btrfs-dialogs.ycp
+index 8e99597..4923dea 100644
+--- a/src/include/partitioning/ep-btrfs-dialogs.ycp
++++ b/src/include/partitioning/ep-btrfs-dialogs.ycp
+@@ -30,6 +30,15 @@
+ {
+     textdomain "storage";
+ 
++    import "DevicesSelectionBox";
++    import "Greasemonkey";
++    import "MiniWorkflow";
++    import "Partitions";
++    import "Popup";
++    import "Storage";
++    import "StorageIcons";
++    import "StorageSettings";
++
+ 
+     boolean DlgEditBtrfsVolume(map<string, any> &data)
+ 	{
 diff --git a/src/include/partitioning/ep-btrfs-lib.ycp b/src/include/partitioning/ep-btrfs-lib.ycp
 index 025a667..4753bd3 100644
 --- a/src/include/partitioning/ep-btrfs-lib.ycp
@@ -382,10 +526,26 @@ index db85155..7d911fc 100644
  
  	    data["size_k"] = Region::Length(data["region"]:[0, 0]) * cyl_size / 1024;
 diff --git a/src/include/partitioning/ep-hd.ycp b/src/include/partitioning/ep-hd.ycp
-index 8ff41d0..8d1e717 100644
+index 8ff41d0..9d8681f 100644
 --- a/src/include/partitioning/ep-hd.ycp
 +++ b/src/include/partitioning/ep-hd.ycp
-@@ -306,22 +306,18 @@ selected hard disk.</p>");
+@@ -30,6 +30,15 @@
+ {
+     textdomain "storage";
+ 
++    import "ContextMenu";
++    import "Event";
++    import "Popup";
++    import "Storage";
++    import "StorageIcons";
++    import "StorageFields";
++    import "StorageSettings";
++    import "TreePanel";
++
+     include "partitioning/ep-hd-dialogs.ycp";
+     include "partitioning/ep-hd-lib.ycp";
+ 
+@@ -306,22 +315,18 @@ selected hard disk.</p>");
  	switch (Event::IsWidgetActivated(event))
  	{
  	    case `smart:
@@ -445,6 +605,23 @@ index ce52274..3a7942a 100644
  	    default:
  		break;
  	}
+diff --git a/src/include/partitioning/ep-loop-dialogs.ycp b/src/include/partitioning/ep-loop-dialogs.ycp
+index 28e2dbf..6528e5f 100644
+--- a/src/include/partitioning/ep-loop-dialogs.ycp
++++ b/src/include/partitioning/ep-loop-dialogs.ycp
+@@ -30,6 +30,12 @@
+ {
+     textdomain "storage";
+ 
++    import "Mode";
++    import "MiniWorkflow";
++    import "Popup";
++    import "Storage";
++    import "StorageIcons";
++
+ 
+     string MiniWorkflowStepLoopNameSizeHelptext()
+     {
 diff --git a/src/include/partitioning/ep-lvm-dialogs.ycp b/src/include/partitioning/ep-lvm-dialogs.ycp
 index 79f774f..df2e250 100644
 --- a/src/include/partitioning/ep-lvm-dialogs.ycp
@@ -711,6 +888,21 @@ index bcc655c..0f2046c 100644
  		break;
  	    }
  	}
+diff --git a/src/include/partitioning/ep-summary.ycp b/src/include/partitioning/ep-summary.ycp
+index e6f8ad9..02de74b 100644
+--- a/src/include/partitioning/ep-summary.ycp
++++ b/src/include/partitioning/ep-summary.ycp
+@@ -30,6 +30,10 @@
+ {
+     textdomain "storage";
+ 
++    import "Greasemonkey";
++    import "StorageIcons";
++    import "Wizard";
++
+ 
+     void CreateSummaryPanel(any user_data)
+     {
 diff --git a/src/include/partitioning/ep-unused.ycp b/src/include/partitioning/ep-unused.ycp
 index 0ab4427..d7bb75e 100644
 --- a/src/include/partitioning/ep-unused.ycp
@@ -851,7 +1043,7 @@ index 17c9c81..713b58c 100644
                  boolean up = (widget==`top);
  		sel = (list<string>) UI::QueryWidget(`id(`selected), `SelectedItems);
 diff --git a/src/modules/Partitions.ycp b/src/modules/Partitions.ycp
-index 3c456d4..9b724e5 100644
+index 129e77f..36bc9b4 100644
 --- a/src/modules/Partitions.ycp
 +++ b/src/modules/Partitions.ycp
 @@ -664,99 +664,99 @@ global string FsIdToString(integer fs_id)
@@ -1048,7 +1240,7 @@ index 3c456d4..9b724e5 100644
  }
  
 diff --git a/src/modules/Storage.ycp b/src/modules/Storage.ycp
-index 1c3fcd3..e51da57 100644
+index 0ea15c5..81c882e 100644
 --- a/src/modules/Storage.ycp
 +++ b/src/modules/Storage.ycp
 @@ -29,16 +29,16 @@
@@ -1477,3 +1669,492 @@ index f52706f..968ac05 100644
  	}
      }
  
+diff --git a/storage/Makefile.am b/storage/Makefile.am
+deleted file mode 100644
+index 3e4cfac..0000000
+--- a/storage/Makefile.am
++++ /dev/null
+@@ -1,5 +0,0 @@
+-#
+-# Makefile.am for storage/storage
+-#
+-
+-SUBDIRS = data doc src
+diff --git a/storage/src/Makefile.am b/storage/src/Makefile.am
+deleted file mode 100644
+index 3720ffa..0000000
+--- a/storage/src/Makefile.am
++++ /dev/null
+@@ -1,25 +0,0 @@
+-#
+-# Makefile.am for storage/storage/src
+-#
+-
+-SUBDIRS = include modules proposal testsuite
+-
+-client_DATA =				\
+-	inst_custom_part.ycp		\
+-	inst_disk.ycp			\
+-	inst_disk_proposal.ycp		\
+-	inst_prepdisk.ycp		\
+-	inst_resize_ui.ycp		\
+-	inst_resize_dialog.ycp		\
+-	inst_target_part.ycp		\
+-	inst_target_selection.ycp	\
+-	storage_finish.ycp
+-
+-EXTRA_DIST = $(client_DATA)
+-
+-partitioning:
+-	ln -s include partitioning
+-
+-ycpchook = partitioning
+-
+-include $(top_srcdir)/Makefile.am.common
+diff --git a/storage/src/include/Makefile.am b/storage/src/include/Makefile.am
+deleted file mode 100644
+index e2a0123..0000000
+--- a/storage/src/include/Makefile.am
++++ /dev/null
+@@ -1,9 +0,0 @@
+-#
+-# Makefile.am for storage/storage/src/include
+-#
+-
+-yncludedir = @yncludedir@/partitioning
+-
+-ynclude_HEADERS = $(wildcard *.ycp)
+-
+-EXTRA_DIST = $(ynclude_HEADERS)
+diff --git a/storage/src/modules/Makefile.am b/storage/src/modules/Makefile.am
+deleted file mode 100644
+index eae6439..0000000
+--- a/storage/src/modules/Makefile.am
++++ /dev/null
+@@ -1,33 +0,0 @@
+-#
+-# Makefile.am for storage/storage/src/modules
+-#
+-
+-YCPCFLAGS = -M $(top_builddir)/bindings/ycp
+-
+-YCPC_LD_LIBRARY_PATH = $(top_builddir)/bindings/src/.libs
+-YCPC_Y2DIR = $(top_builddir)/bindings/src/.libs
+-
+-module_DATA =				\
+-	StorageInit.ycp      		\
+-	Partitions.ycp			\
+-	FileSystems.ycp			\
+-	Storage.ycp			\
+-	StorageClients.ycp      	\
+-	StorageControllers.ycp  	\
+-	StorageDevices.ycp		\
+-	StorageFields.ycp		\
+-	StorageIcons.ycp		\
+-	StorageProposal.ycp		\
+-	StorageSettings.ycp		\
+-	StorageUpdate.ycp		\
+-	TreePanel.ycp			\
+-	TabPanel.ycp			\
+-	MiniWorkflow.ycp		\
+-	Greasemonkey.ycp		\
+-	DevicesSelectionBox.ycp		\
+-	DualMultiSelectionBox.ycp	\
+-	Region.ycp
+-
+-EXTRA_DIST = $(module_DATA)
+-
+-include $(top_srcdir)/Makefile.am.common
+diff --git a/storage/src/proposal/Makefile.am b/storage/src/proposal/Makefile.am
+deleted file mode 100644
+index 2659b2f..0000000
+--- a/storage/src/proposal/Makefile.am
++++ /dev/null
+@@ -1,8 +0,0 @@
+-#
+-# Makefile.am for storage/storage/src/proposal
+-#
+-
+-client_DATA = partitions_proposal.ycp
+-EXTRA_DIST = $(client_DATA)
+-
+-include $(top_srcdir)/Makefile.am.common
+diff --git a/testsuite/tests/empty-efi1.ycp b/testsuite/tests/empty-efi1.ycp
+index 4c5345d..ad1d0ee 100644
+--- a/testsuite/tests/empty-efi1.ycp
++++ b/testsuite/tests/empty-efi1.ycp
+@@ -1,10 +1,10 @@
+ // testedfiles: helper1b.yh
+ {
+-    include "./tests/setup-system.yh";
++    include "setup-system.yh";
+ 
+     setup_system("empty-efi");
+ 
+-    include "./tests/helper1a.yh";
++    include "helper1a.yh";
+ 
+     import "ProductFeatures";
+ 
+@@ -13,5 +13,5 @@
+     ProductFeatures::SetStringFeature("partitioning", "vm_desired_size", "30 GB");
+     ProductFeatures::SetStringFeature("partitioning", "root_base_size", "20 GB");
+ 
+-    include "./tests/helper1b.yh";
++    include "helper1b.yh";
+ }
+diff --git a/testsuite/tests/empty-efi2.ycp b/testsuite/tests/empty-efi2.ycp
+index 92de13a..3acd4f2 100644
+--- a/testsuite/tests/empty-efi2.ycp
++++ b/testsuite/tests/empty-efi2.ycp
+@@ -1,10 +1,10 @@
+ // testedfiles: helper1b.yh
+ {
+-    include "./tests/setup-system.yh";
++    include "setup-system.yh";
+ 
+     setup_system("empty-efi");
+ 
+-    include "./tests/helper1a.yh";
++    include "helper1a.yh";
+ 
+     import "ProductFeatures";
+ 
+@@ -13,5 +13,5 @@
+     ProductFeatures::SetStringFeature("partitioning", "vm_desired_size", "30 GB");
+     ProductFeatures::SetStringFeature("partitioning", "root_base_size", "20 GB");
+ 
+-    include "./tests/helper1b.yh";
++    include "helper1b.yh";
+ }
+diff --git a/testsuite/tests/empty1.ycp b/testsuite/tests/empty1.ycp
+index 827e006..915cd3c 100644
+--- a/testsuite/tests/empty1.ycp
++++ b/testsuite/tests/empty1.ycp
+@@ -1,10 +1,10 @@
+ // testedfiles: helper1b.yh
+ {
+-    include "./tests/setup-system.yh";
++    include "setup-system.yh";
+ 
+     setup_system("empty");
+ 
+-    include "./tests/helper1a.yh";
++    include "helper1a.yh";
+ 
+     import "ProductFeatures";
+ 
+@@ -13,5 +13,5 @@
+     ProductFeatures::SetStringFeature("partitioning", "vm_desired_size", "30 GB");
+     ProductFeatures::SetStringFeature("partitioning", "root_base_size", "20 GB");
+ 
+-    include "./tests/helper1b.yh";
++    include "helper1b.yh";
+ }
+diff --git a/testsuite/tests/empty2.ycp b/testsuite/tests/empty2.ycp
+index c688058..b6e23a5 100644
+--- a/testsuite/tests/empty2.ycp
++++ b/testsuite/tests/empty2.ycp
+@@ -1,10 +1,10 @@
+ // testedfiles: helper1b.yh
+ {
+-    include "./tests/setup-system.yh";
++    include "setup-system.yh";
+ 
+     setup_system("empty");
+ 
+-    include "./tests/helper1a.yh";
++    include "helper1a.yh";
+ 
+     import "ProductFeatures";
+ 
+@@ -13,5 +13,5 @@
+     ProductFeatures::SetStringFeature("partitioning", "vm_desired_size", "30 GB");
+     ProductFeatures::SetStringFeature("partitioning", "root_base_size", "20 GB");
+ 
+-    include "./tests/helper1b.yh";
++    include "helper1b.yh";
+ }
+diff --git a/testsuite/tests/empty3.ycp b/testsuite/tests/empty3.ycp
+index ca57fd0..46ad816 100644
+--- a/testsuite/tests/empty3.ycp
++++ b/testsuite/tests/empty3.ycp
+@@ -1,10 +1,10 @@
+ // testedfiles: helper1b.yh
+ {
+-    include "./tests/setup-system.yh";
++    include "setup-system.yh";
+ 
+     setup_system("empty");
+ 
+-    include "./tests/helper1a.yh";
++    include "helper1a.yh";
+ 
+     import "ProductFeatures";
+ 
+@@ -14,5 +14,5 @@
+     ProductFeatures::SetStringFeature("partitioning", "vm_desired_size", "30 GB");
+     ProductFeatures::SetStringFeature("partitioning", "root_base_size", "20 GB");
+ 
+-    include "./tests/helper1b.yh";
++    include "helper1b.yh";
+ }
+diff --git a/testsuite/tests/empty4.ycp b/testsuite/tests/empty4.ycp
+index 2943925..c4eb640 100644
+--- a/testsuite/tests/empty4.ycp
++++ b/testsuite/tests/empty4.ycp
+@@ -1,10 +1,10 @@
+ // testedfiles: helper1b.yh
+ {
+-    include "./tests/setup-system.yh";
++    include "setup-system.yh";
+ 
+     setup_system("empty");
+ 
+-    include "./tests/helper1a.yh";
++    include "helper1a.yh";
+ 
+     import "ProductFeatures";
+ 
+@@ -14,5 +14,5 @@
+     ProductFeatures::SetStringFeature("partitioning", "vm_desired_size", "30 GB");
+     ProductFeatures::SetStringFeature("partitioning", "root_base_size", "20 GB");
+ 
+-    include "./tests/helper1b.yh";
++    include "helper1b.yh";
+ }
+diff --git a/testsuite/tests/empty5.ycp b/testsuite/tests/empty5.ycp
+index 96e11c1..e88faf0 100644
+--- a/testsuite/tests/empty5.ycp
++++ b/testsuite/tests/empty5.ycp
+@@ -1,10 +1,10 @@
+ // testedfiles: helper1b.yh
+ {
+-    include "./tests/setup-system.yh";
++    include "setup-system.yh";
+ 
+     setup_system("empty");
+ 
+-    include "./tests/helper1a.yh";
++    include "helper1a.yh";
+ 
+     import "ProductFeatures";
+ 
+@@ -13,5 +13,5 @@
+     ProductFeatures::SetStringFeature("partitioning", "vm_desired_size", "30 GB");
+     ProductFeatures::SetStringFeature("partitioning", "root_base_size", "20 GB");
+ 
+-    include "./tests/helper1b.yh";
++    include "helper1b.yh";
+ }
+diff --git a/testsuite/tests/empty6.ycp b/testsuite/tests/empty6.ycp
+index 53d2154..0046892 100644
+--- a/testsuite/tests/empty6.ycp
++++ b/testsuite/tests/empty6.ycp
+@@ -1,10 +1,10 @@
+ // testedfiles: helper1b.yh
+ {
+-    include "./tests/setup-system.yh";
++    include "setup-system.yh";
+ 
+     setup_system("empty");
+ 
+-    include "./tests/helper1a.yh";
++    include "helper1a.yh";
+ 
+     import "ProductFeatures";
+ 
+@@ -13,5 +13,5 @@
+     ProductFeatures::SetStringFeature("partitioning", "vm_desired_size", "30 GB");
+     ProductFeatures::SetStringFeature("partitioning", "root_base_size", "20 GB");
+ 
+-    include "./tests/helper1b.yh";
++    include "helper1b.yh";
+ }
+diff --git a/testsuite/tests/half-empty1.ycp b/testsuite/tests/half-empty1.ycp
+index 2bbcf02..4af256b 100644
+--- a/testsuite/tests/half-empty1.ycp
++++ b/testsuite/tests/half-empty1.ycp
+@@ -1,10 +1,10 @@
+ // testedfiles: helper1b.yh
+ {
+-    include "./tests/setup-system.yh";
++    include "setup-system.yh";
+ 
+     setup_system("half-empty");
+ 
+-    include "./tests/helper1a.yh";
++    include "helper1a.yh";
+ 
+     import "ProductFeatures";
+ 
+@@ -12,5 +12,5 @@
+     ProductFeatures::SetBooleanFeature("partitioning", "proposal_lvm", false);
+     ProductFeatures::SetStringFeature("partitioning", "root_base_size", "20 GB");
+ 
+-    include "./tests/helper1b.yh";
++    include "helper1b.yh";
+ }
+diff --git a/testsuite/tests/helper1b.yh b/testsuite/tests/helper1b.yh
+index 969f8c6..e42852b 100644
+--- a/testsuite/tests/helper1b.yh
++++ b/testsuite/tests/helper1b.yh
+@@ -1,6 +1,7 @@
+ {
+     import "Storage";
+     import "StorageProposal";
++    import "Testsuite";
+ 
+     Storage::InitLibstorage(false);
+ 
+diff --git a/testsuite/tests/reuse-home1.ycp b/testsuite/tests/reuse-home1.ycp
+index 481de09..7622a00 100644
+--- a/testsuite/tests/reuse-home1.ycp
++++ b/testsuite/tests/reuse-home1.ycp
+@@ -1,10 +1,10 @@
+ // testedfiles: helper1b.yh
+ {
+-    include "./tests/setup-system.yh";
++    include "setup-system.yh";
+ 
+     setup_system("reuse-home");
+ 
+-    include "./tests/helper1a.yh";
++    include "helper1a.yh";
+ 
+     import "ProductFeatures";
+ 
+@@ -13,5 +13,5 @@
+     ProductFeatures::SetStringFeature("partitioning", "root_max_size", "20 GB");
+     ProductFeatures::SetStringFeature("partitioning", "root_base_size", "15 GB");
+ 
+-    include "./tests/helper1b.yh";
++    include "helper1b.yh";
+ }
+diff --git a/testsuite/tests/windows-only-efi1.ycp b/testsuite/tests/windows-only-efi1.ycp
+index d222d91..24093a5 100644
+--- a/testsuite/tests/windows-only-efi1.ycp
++++ b/testsuite/tests/windows-only-efi1.ycp
+@@ -1,10 +1,10 @@
+ // testedfiles: helper1b.yh
+ {
+-    include "./tests/setup-system.yh";
++    include "setup-system.yh";
+ 
+     setup_system("windows-only-efi");
+ 
+-    include "./tests/helper1a.yh";
++    include "helper1a.yh";
+ 
+     import "ProductFeatures";
+ 
+@@ -13,5 +13,5 @@
+     ProductFeatures::SetStringFeature("partitioning", "root_max_size", "20 GB");
+     ProductFeatures::SetStringFeature("partitioning", "root_base_size", "15 GB");
+ 
+-    include "./tests/helper1b.yh";
++    include "helper1b.yh";
+ }
+diff --git a/testsuite/tests/windows-only1.ycp b/testsuite/tests/windows-only1.ycp
+index 1ef97a5..06cf6a3 100644
+--- a/testsuite/tests/windows-only1.ycp
++++ b/testsuite/tests/windows-only1.ycp
+@@ -1,10 +1,10 @@
+ // testedfiles: helper1b.yh
+ {
+-    include "./tests/setup-system.yh";
++    include "setup-system.yh";
+ 
+     setup_system("windows-only");
+ 
+-    include "./tests/helper1a.yh";
++    include "helper1a.yh";
+ 
+     import "ProductFeatures";
+ 
+@@ -13,5 +13,5 @@
+     ProductFeatures::SetStringFeature("partitioning", "root_max_size", "20 GB");
+     ProductFeatures::SetStringFeature("partitioning", "root_base_size", "15 GB");
+ 
+-    include "./tests/helper1b.yh";
++    include "helper1b.yh";
+ }
+diff --git a/testsuite/tests/windows1.ycp b/testsuite/tests/windows1.ycp
+index 39df374..c751218 100644
+--- a/testsuite/tests/windows1.ycp
++++ b/testsuite/tests/windows1.ycp
+@@ -1,10 +1,10 @@
+ // testedfiles: helper1b.yh
+ {
+-    include "./tests/setup-system.yh";
++    include "setup-system.yh";
+ 
+     setup_system("windows");
+ 
+-    include "./tests/helper1a.yh";
++    include "helper1a.yh";
+ 
+     import "ProductFeatures";
+ 
+@@ -13,5 +13,5 @@
+     ProductFeatures::SetStringFeature("partitioning", "root_max_size", "20 GB");
+     ProductFeatures::SetStringFeature("partitioning", "root_base_size", "15 GB");
+ 
+-    include "./tests/helper1b.yh";
++    include "helper1b.yh";
+ }
+diff --git a/yast2-storage.spec.in b/yast2-storage.spec.in
+index 8ae9071..408d91a 100644
+--- a/yast2-storage.spec.in
++++ b/yast2-storage.spec.in
+@@ -47,26 +47,27 @@ rm -f $RPM_BUILD_ROOT/@plugindir@/libpy2StorageCallbacks.so
+ 
+ # storage
+ %dir @yncludedir@/partitioning
++@yncludedir@/partitioning/*.rb
+ @yncludedir@/partitioning/*.ycp
+-@clientdir@/inst_custom_part.ycp
+-@clientdir@/inst_resize_ui.ycp
+-@clientdir@/inst_resize_dialog.ycp
+-@clientdir@/inst_disk.ycp
+-@clientdir@/inst_target_part.ycp
+-@clientdir@/inst_disk_proposal.ycp
+-@clientdir@/inst_target_selection.ycp
+-@clientdir@/inst_prepdisk.ycp
+-@clientdir@/storage_finish.ycp
+-@clientdir@/partitions_proposal.ycp
+-@clientdir@/storage.ycp
+-@clientdir@/disk.ycp
+-@clientdir@/disk_worker.ycp
+-@clientdir@/multipath-simple.ycp
++@clientdir@/inst_custom_part.rb
++@clientdir@/inst_resize_ui.rb
++@clientdir@/inst_resize_dialog.rb
++@clientdir@/inst_disk.rb
++@clientdir@/inst_target_part.rb
++@clientdir@/inst_disk_proposal.rb
++@clientdir@/inst_target_selection.rb
++@clientdir@/inst_prepdisk.rb
++@clientdir@/storage_finish.rb
++@clientdir@/partitions_proposal.rb
++@clientdir@/storage.rb
++@clientdir@/disk.rb
++@clientdir@/disk_worker.rb
++@clientdir@/multipath-simple.rb
+ @moduledir@/*
+ @fillupdir@/sysconfig.storage-yast2-storage
+ 
+ %dir @ydatadir@
+-@ydatadir@/*.ycp
++@ydatadir@/*.rb
+ 
+ %doc %dir @docdir@
+ %doc @docdir@/README*
+@@ -100,5 +101,6 @@ to develop a program using libstorage.
+ 
+ %files devel
+ %defattr(-,root,root)
+-%doc @docdir@/autodocs
++# TODO ruby autodocs support
++#%doc @docdir@/autodocs
+ %doc @docdir@/config.xml.description
