@@ -1,6 +1,3 @@
-require_relative "build_order"
-require_relative "messages"
-
 class YastModule
 
   WORK_DIR   = "work"
@@ -95,67 +92,4 @@ class YastModule
 
     (ret + ybc_include_paths + [ File.dirname(file) ]).uniq
   end
-
-  private
-
-  def result_failed?
-    if !@counts[:error_ybc].zero? ||
-        !@counts[:error_y2r].zero? ||
-        !@counts[:error_ruby].zero? ||
-        !@counts[:error_other].zero?
-      return true
-    end
-    return false
-  end
-
-  def reset_counts
-    @counts = {
-      :ok          => 0,
-      :excluded    => excluded.size,
-      :error_ybc   => 0,
-      :error_y2r   => 0,
-      :error_ruby  => 0,
-      :error_other => 0
-    }
-  end
-
-  def handle_exception(e, phase, file)
-    raise if e.is_a? Interrupt
-
-    if ! e.is_a? Cheetah::ExecutionFailed
-      phase = :other
-    end
-    Messages.finish "ERROR(#{phase})"
-    @counts["error_#{phase}".to_sym] += 1
-    log_error(file, e)
-  end
-
-  def action(message)
-    Messages.start "  * #{message}..."
-
-    begin
-      yield
-    rescue Exception => e
-      Messages.finish "ERROR"
-      raise
-    end
-
-    Messages.finish "OK"
-  end
-
-  def log_error(file, e)
-    File.open(ERROR_FILE, "a") do |f|
-      f.puts file
-      f.puts "-" * file.size
-      f.puts
-      if e.is_a?(Cheetah::ExecutionFailed)
-        f.puts e.stderr
-      else
-        f.puts e.message
-        e.backtrace.each { |l| f.puts l }
-      end
-      f.puts
-    end
-  end
-
 end
