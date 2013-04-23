@@ -12,10 +12,15 @@ moves:
     to: src/scrconf
   - from: "agents/sysconfig.security-checksig"
     to: src/fillup
-  - from: "src/config/*.desktop"
+  - from: "src/config/release_notes.desktop"
     to: src/desktop
   - from: "src/config/*.rnc"
     to: src/autoyast-rnc
+
+    # TODO: maybe support /usr/share/autoinstall/modules/*.desktop targets?
+  - from: "src/config/{deploy_image.desktop,Makefile.am}"
+    to: autoyast_desktop
+
   - from: "src/inst_finish/*.ycp"
     to: src/clients
   - from: src/include/*.ycp
