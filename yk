@@ -21,6 +21,7 @@ end
 
 require_relative "lib/yast_module"
 require_relative "lib/commands/clone_command"
+require_relative "lib/commands/convert_command"
 require_relative "lib/commands/genpatch_command"
 require_relative "lib/commands/patch_command"
 require_relative "lib/commands/reset_command"
@@ -57,7 +58,7 @@ class CLI < Thor
   desc "convert <module>...", "Convert module(s)"
   def convert(*module_names)
     report_results(module_names) do |mod|
-      mod.convert
+      Commands::ConvertCommand.new(@config).apply(mod)
     end
   end
 

@@ -43,45 +43,6 @@ class YastModule
     depth_first_deps.uniq
   end
 
-  # can only be called once all $yast_modules have been initialized
-  def check_missing_work(yast_module_names)
-    missing = yast_module_names.reject do |d|
-      File.exists?($yast_modules[d].work_dir)
-    end
-    if ! missing.empty?
-      raise "These dependencies do not have a working directory; convert them first: #{missing.join(", ")}"
-    end
-  end
-
-  def convert
-    check_missing_work(ybc_deps + ruby_deps)
-    File.exists?(work_dir) ? update : clone
-    restructure
-    patch
-    compile_modules
-    # in case of error do not continue with submit
-    return @counts if result_failed?
-
-    convert_to_ruby
-    return @counts if result_failed?
-
-    generate_makefiles
-    package
-
-    @counts
-  end
-
-  def update
-    reset
-    pull
-  end
-
-  def pull
-    Dir.chdir work_dir do
-      Cheetah.run "git", "pull"
-    end
-  end
-
   def exported_module_paths
     exports.map { |e| "#{work_dir}/#{e}/modules" }
   end
