@@ -157,6 +157,13 @@ class CLI < Thor
     puts "Total ERROR(ruby):  #{counts[:error_ruby]}"
     puts "Total ERROR(other): #{counts[:error_other]}"
 
+    error_counts = counts.values_at(
+      :error_ybc,
+      :error_y2r,
+      :error_ruby,
+      :error_other
+    )
+    exit 1 if error_counts.any?(&:nonzero?)
   end
 
   def compile_stubs
@@ -217,6 +224,9 @@ rescue Cheetah::ExecutionFailed => e
   puts
   puts "Command #{e.commands[0][0]} failed:"
   puts e.stderr
+  exit 1
 rescue Interrupt
   puts # ^C is printed already
+rescue Exception
+  exit 1
 end
