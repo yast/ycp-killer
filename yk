@@ -20,6 +20,16 @@ $yast_modules = Hash.new do |hash, missing_key|
 end
 
 require_relative "lib/yast_module"
+require_relative "lib/commands/clone_command"
+require_relative "lib/commands/convert_command"
+require_relative "lib/commands/genpatch_command"
+require_relative "lib/commands/patch_command"
+require_relative "lib/commands/reset_command"
+require_relative "lib/commands/restructure_command"
+require_relative "lib/commands/ybc_command"
+require_relative "lib/commands/ruby_command"
+require_relative "lib/commands/makefile_command"
+require_relative "lib/commands/package_command"
 
 class CLI < Thor
 
@@ -41,14 +51,14 @@ class CLI < Thor
   def clone(*module_names)
     modules = modules_from_names(module_names)
     with_modules modules do |mod|
-      mod.clone
+      Commands::CloneCommand.new(@config).apply(mod)
     end
   end
 
   desc "convert <module>...", "Convert module(s)"
   def convert(*module_names)
     report_results(module_names) do |mod|
-      mod.convert
+      Commands::ConvertCommand.new(@config).apply(mod)
     end
   end
 
@@ -56,7 +66,7 @@ class CLI < Thor
   def genpatch(*module_names)
     modules = modules_from_names(module_names)
     with_modules modules do |mod|
-      mod.genpatch
+      Commands::GenpatchCommand.new(@config).apply(mod)
     end
   end
 
@@ -64,7 +74,7 @@ class CLI < Thor
   def patch(*module_names)
     modules = modules_from_names(module_names)
     with_modules modules do |mod|
-      mod.patch
+      Commands::PatchCommand.new(@config).apply(mod)
     end
   end
 
@@ -72,7 +82,7 @@ class CLI < Thor
   def reset(*module_names)
     modules = modules_from_names(module_names)
     with_modules modules do |mod|
-      mod.reset
+      Commands::ResetCommand.new(@config).apply(mod)
     end
   end
 
@@ -80,21 +90,21 @@ class CLI < Thor
   def restructure(*module_names)
     modules = modules_from_names(module_names)
     with_modules modules do |mod|
-      mod.restructure
+      Commands::RestructureCommand.new(@config).apply(mod)
     end
   end
 
   desc "ybc <module>...", "Compile module(s) to ybc"
   def ybc(*module_names)
     report_results(module_names) do |mod|
-      mod.compile_modules
+      Commands::YbcCommand.new(@config).apply(mod)
     end
   end
 
   desc "ruby <module>...", "Convert module(s) to Ruby"
   def ruby(*module_names)
     report_results(module_names) do |mod|
-      mod.convert_to_ruby
+      Commands::RubyCommand.new(@config).apply(mod)
     end
   end
 
@@ -103,7 +113,7 @@ class CLI < Thor
   def makefile(*module_names)
     modules = modules_from_names(module_names)
     with_modules modules do |mod|
-      mod.generate_makefiles
+      Commands::MakefileCommand.new(@config).apply(mod)
     end
   end
 
@@ -111,7 +121,7 @@ class CLI < Thor
   def package(*module_names)
     modules = modules_from_names(module_names)
     with_modules modules do |mod|
-      mod.package
+      Commands::PackageCommand.new(@config).apply(mod)
     end
   end
 
