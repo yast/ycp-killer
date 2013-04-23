@@ -26,6 +26,7 @@ require_relative "lib/commands/patch_command"
 require_relative "lib/commands/reset_command"
 require_relative "lib/commands/restructure_command"
 require_relative "lib/commands/ybc_command"
+require_relative "lib/commands/ruby_command"
 
 class CLI < Thor
 
@@ -100,7 +101,7 @@ class CLI < Thor
   desc "ruby <module>...", "Convert module(s) to Ruby"
   def ruby(*module_names)
     report_results(module_names) do |mod|
-      mod.convert_to_ruby
+      Commands::RubyCommand.new(@config).apply(mod)
     end
   end
 

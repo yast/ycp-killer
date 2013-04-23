@@ -83,46 +83,6 @@ class YastModule
     end
   end
 
-  def convert_to_ruby
-    prepare_result_dir
-    reset_counts
-
-    Dir.chdir work_dir do
-      Dir["**/*.y{cp,h}"].each do |file|
-        next if excluded.include?(file)
-
-        Messages.start "  * Converting #{file}..."
-
-        work_file = "#{work_dir}/#{file}"
-        FileUtils.rm "#{result_dir}/#{file}"
-        result_file = "#{result_dir}/#{file}".sub(/\.y(cp|h)$/, ".rb")
-
-        begin
-          # This makes private symbols in modules visible. Needed by some
-          # testsuites.
-          ENV["Y2ALLGLOBAL"] = "1"
-
-          create_rb  work_file, result_file
-        rescue Exception => e
-          handle_exception(e, :y2r, work_file)
-          next
-        end
-
-        begin
-          check_rb result_file
-        rescue Exception => e
-          handle_exception(e, :ruby, work_file)
-          next
-        end
-
-        Messages.finish "OK"
-        @counts[:ok] += 1
-      end
-    end
-
-    @counts
-  end
-
   def exported_module_paths
     exports.map { |e| "#{work_dir}/#{e}/modules" }
   end
@@ -220,6 +180,25 @@ class YastModule
     end
 
     @ybc_include_paths
+  end
+
+  def ruby_module_paths file
+    # Do not use transitive deps as there is risk to face circle, because
+    # clients dependencies uses only modules and clients from dependency could
+    # use modules from converted module
+    ret = ruby_deps.reduce([]) do |acc, mod|
+      acc + $yast_modules[mod].exported_module_paths
+    end
+
+    (ret + ybc_module_paths + [ File.dirname(file) ]).uniq
+  end
+
+  def ruby_include_paths file
+    ret = ruby_deps.reduce([]) do |acc, mod|
+      acc + $yast_modules[mod].exported_include_paths
+    end
+
+    (ret + ybc_include_paths + [ File.dirname(file) ]).uniq
   end
 
   private
@@ -389,58 +368,6 @@ EOS
     Messages.finish "ERROR(#{phase})"
     @counts["error_#{phase}".to_sym] += 1
     log_error(file, e)
-  end
-
-  def prepare_result_dir
-    FileUtils.mkdir_p File.dirname(result_dir)
-    FileUtils.rm_rf result_dir
-    FileUtils.copy_entry(work_dir, result_dir)
-
-    #clean all compiled ybc files created by ybc step
-    Dir["#{result_dir}/**/*.ybc"].each do |file|
-      FileUtils.rm file
-    end
-  end
-
-  def ruby_module_paths file
-    # Do not use transitive deps as there is risk to face circle, because
-    # clients dependencies uses only modules and clients from dependency could
-    # use modules from converted module
-    ret = ruby_deps.reduce([]) do |acc, mod|
-      acc + $yast_modules[mod].exported_module_paths
-    end
-
-    (ret + ybc_module_paths + [ File.dirname(file) ]).uniq
-  end
-
-  def ruby_include_paths file
-    ret = ruby_deps.reduce([]) do |acc, mod|
-      acc + $yast_modules[mod].exported_include_paths
-    end
-
-    (ret + ybc_include_paths + [ File.dirname(file) ]).uniq
-  end
-
-  def create_rb(file, output_file)
-    cmd = [@config["y2r"]]
-    cmd << "--ycpc" << @config["ycpc"]
-
-    ruby_module_paths(file).each do |module_path|
-      cmd << "--module-path" << module_path
-    end
-
-    ruby_include_paths(file).each do |include_path|
-      cmd << "--include-path" << include_path
-    end
-
-    cmd << file
-    cmd << output_file
-
-    Cheetah.run cmd
-  end
-
-  def check_rb(file)
-    Cheetah.run "ruby", "-c", file
   end
 
   def action(message)
