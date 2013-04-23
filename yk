@@ -217,6 +217,9 @@ rescue Cheetah::ExecutionFailed => e
   puts
   puts "Command #{e.commands[0][0]} failed:"
   puts e.stderr
+  exit 1
 rescue Interrupt
   puts # ^C is printed already
+rescue Exception
+  exit 1
 end
