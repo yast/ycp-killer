@@ -53,6 +53,7 @@ things get gemified, packaged, etc.
 
   4. **Clone the Y2R repository and install Y2R's dependencies**
 
+         $ sudo zypper in gcc-c++ make                  # Needed by Nokogiri
          $ sudo zypper in libxml2-devel libxslt-devel   # Needed by Nokogiri
          $ git clone git://github.com/yast/y2r.git
          $ cd y2r
