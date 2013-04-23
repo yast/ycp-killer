@@ -272,7 +272,6 @@ class YastModule
     action "Packaging" do
       Dir.chdir result_dir do
         Cheetah.run "make", "-f", "Makefile.cvs" # TODO will not work for cmake based ones
-        Cheetah.run "make"
         Cheetah.run "make", "package-local", "CHECK_SYNTAX=false"
       end
 
