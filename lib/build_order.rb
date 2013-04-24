@@ -1,3 +1,5 @@
+require "tsort"
+
 # based on ycpmakedep script https://github.com/yast/yast-devtools/blob/master/devtools/bin/ycpmakedep
 class BuildOrder
 
