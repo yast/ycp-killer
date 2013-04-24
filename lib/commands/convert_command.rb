@@ -7,9 +7,6 @@ module Commands
 
       if File.exists?(mod.work_dir)
         ResetCommand.new(@config).apply(mod)
-        Dir.chdir mod.work_dir do
-          Cheetah.run "git", "pull"
-        end
       else
         CloneCommand.new(@config).apply(mod)
       end
