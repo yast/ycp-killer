@@ -4,8 +4,6 @@ ybc_deps:
   - users
 
 moves:
-  - from: agents/*.scr
-    to:   src/scrconf
   - from: src/config/*.rnc
     to:   src/autoyast
   - from: src/{xinetd,inetd,inetd_auto,inetd_proposal}.ycp
