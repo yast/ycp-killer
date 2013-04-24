@@ -30,6 +30,7 @@ require_relative "lib/commands/ybc_command"
 require_relative "lib/commands/ruby_command"
 require_relative "lib/commands/makefile_command"
 require_relative "lib/commands/package_command"
+require_relative "lib/commands/pull_command"
 
 class CLI < Thor
 
@@ -83,6 +84,14 @@ class CLI < Thor
     modules = modules_from_names(module_names)
     with_modules modules do |mod|
       Commands::ResetCommand.new(@config).apply(mod)
+    end
+  end
+
+  desc "pull <module>...", "Update the module(s) work directory to the latest state (git pull)"
+  def pull(*module_names)
+    modules = modules_from_names(module_names)
+    with_modules modules do |mod|
+      Commands::PullCommand.new(@config).apply(mod)
     end
   end
 

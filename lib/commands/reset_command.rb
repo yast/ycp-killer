@@ -17,6 +17,14 @@ module Commands
           end
         end
       end
+
+      Dir.chdir mod.work_dir do
+        Cheetah.run "git", "fetch"
+        output = Cheetah.run "git", "status", :stdout => :capture
+        if output.include? "Your branch is behind"
+          Messages.info "    WARNING: The Git checkout is obsolete, run 'yk pull #{mod.name}'"
+        end
+      end
     end
   end
 end
