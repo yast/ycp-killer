@@ -34,7 +34,7 @@ module Commands
         File.exists?(m.work_dir)
       end
       if ! missing.empty?
-        raise "These dependencies do not have a working directory; convert them first: #{missing.join(", ")}"
+        raise "These dependencies do not have a working directory; convert them first: #{missing.map(&:name).join(", ")}"
       end
     end
 
