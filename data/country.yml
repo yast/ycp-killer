@@ -2,6 +2,10 @@ ybc_deps:
   - testsuite
   - yast2
 
+ruby_deps:
+  - storage
+  - packager
+
 exports:
   - console/src
   - keyboard/src
@@ -31,8 +35,8 @@ moves:
   - from: "keyboard/agents/*"
     to: keyboard/src/scrconf
   
-  - from: "language/data"
-    to: language/src
+  - from: "language/data/*"
+    to: language/src/data/languages
   - from: "language/src/[A-Z]*.ycp"
     to: language/src/modules
   - from: "language/src/YaPI"
@@ -63,10 +67,3 @@ moves:
   - from: "timezone/agents/*"
     to: timezone/src/scrconf
 
-excluded:
-  # TODO FIXME: hidden storage module dependency
-  - timezone/src/clients/timezone_proposal.ycp
-  - timezone/src/clients/inst_timezone.ycp
-
-  # TODO FIXME: packager module dependency
-  - language/src/clients/select_language.ycp
