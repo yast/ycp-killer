@@ -23,10 +23,22 @@ moves:
   # be more directories than expected
   - from: "library/modules"
     to: src
+  - from: "library/agents/*.scr"
+    to: src/scrconf
+  - from: "library/agents/ag_*"
+    to: src/servers_non_y2
+  - from: "data/sysconfig.yast2"
+    to: src/fillup
+  - from: "data/*.ycp"
+    to: src/data
   - from: "library/types/src/*.{ycp,pm}"
     to: library/types/src/modules
   - from: "library/runlevel/src/*.ycp"
     to: library/runlevel/src/modules
+  - from: "library/runlevel/src/initscripts.scr"
+    to: library/runlevel/src/scrconf
+  - from: "library/runlevel/src/ag_initscripts"
+    to: library/runlevel/src/servers_non_y2
   - from: "library/sequencer/src/Sequencer.ycp"
     to: library/sequencer/src/modules
   - from: "library/sequencer/src/sequencer.ycp"
@@ -35,6 +47,10 @@ moves:
     to: library/xml/src/modules
   - from: "library/commandline/src/*.ycp"
     to: library/commandline/src/modules
+  - from: "library/commandline/agents/*.scr"
+    to: library/commandline/src/scrconf
+  - from: "library/commandline/agents/ag_tty"
+    to: library/commandline/src/servers_non_y2
   - from: "library/desktop/src/Desktop.ycp"
     to: library/desktop/src/modules
   - from: "library/desktop/src/menu.ycp"
@@ -47,12 +63,16 @@ moves:
     to: library/cwm/src/modules
   - from: "library/log/src/*.ycp"
     to: library/log/src/modules
+  - from: "library/system/agents/*.scr"
+    to: library/system/src/scrconf
   - from: "library/system/src/[A-Z]*.ycp"
     to: library/system/src/modules
   - from: "library/system/src/classnames.ycp"
     to: library/system/src/include/hwinfo
   - from: "library/system/src/view_anymsg.ycp"
     to: library/system/src/clients
+  - from: "library/system/src/*.desktop"
+    to: library/system/src/desktop
   - from: "library/packages/src/common.ycp"
     to: library/packages/src/include/packages
     # order is important as common is only include
@@ -60,11 +80,23 @@ moves:
     to: library/packages/src/modules
   - from: "library/cron/src/*.ycp"
     to: library/cron/src/modules
+  - from: "library/cron/src/cron.scr"
+    to: library/cron/src/scrconf
+  - from: "library/cron/src/ag_cron"
+    to: library/cron/src/servers_non_y2
     # TODO there is strange source files in network, investigate!
   - from: "library/network/src/[A-Z]*.{ycp,pm}"
     to: library/network/src/modules
+  - from: "library/network/agents/*.scr{.in,}"
+    to: library/network/src/scrconf
+  - from: "library/network/agents/ag_showexports"
+    to: library/network/src/servers_non_y2
   - from: "library/gpg/src/*.ycp"
     to: library/gpg/src/modules
+  # TODO FIXME: the remote clients seem to obsolete, remove from upstream
+  - from: "remote/*.ycp"
+    to: src/clients
+  # TODO FIXME "remote/*.desktop" are ignored, remove from upstream
 
 excluded:
   # include stuff for testsuite
@@ -79,5 +111,3 @@ excluded:
   - library/sequencer/doc/examples/example4.ycp
   - library/sequencer/doc/examples/example5.ycp
   - library/sequencer/doc/examples/example6.ycp
-  # include files that is not complete
-  - library/packages/src/include/packages/common.ycp
