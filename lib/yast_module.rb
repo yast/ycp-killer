@@ -46,6 +46,10 @@ class YastModule
     depth_first_deps.uniq
   end
 
+  def patch_file
+    "#{PATCHES_DIR}/#@name.patch"
+  end
+
   def exported_module_paths
     exports.map { |e| "#{work_dir}/#{e}/modules" }
   end
