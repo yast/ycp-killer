@@ -4,7 +4,6 @@ module Commands
   class RestructureCommand < Command
     def apply(mod)
       action "Restructuring" do
-        puts "WARNING: No 'moves' section found in #{mod.name}.yml" if mod.moves.empty?
         Dir.chdir mod.work_dir do
           mod.moves.each do |move|
             FileUtils.mkdir_p move["to"]
