@@ -1,3 +1,15 @@
+diff --git a/testsuite/Makefile.am b/testsuite/Makefile.am
+index d9277fe..abc1e9b 100644
+--- a/testsuite/Makefile.am
++++ b/testsuite/Makefile.am
+@@ -13,6 +13,6 @@ check-local:
+ clean-local:
+ 	$(RM) tmp.*
+ 
+-EXTRA_DIST= dump_file test.ycp test.out test.err
++EXTRA_DIST= dump_file test.rb test.out test.err
+ 
+ # EOF
 diff --git a/testsuite/test.ycp b/testsuite/test.ycp
 index 5596f82..f86f329 100644
 --- a/testsuite/test.ycp
