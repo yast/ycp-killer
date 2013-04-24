@@ -237,5 +237,6 @@ rescue Cheetah::ExecutionFailed => e
 rescue Interrupt
   puts # ^C is printed already
 rescue Exception
+  puts $!
   exit 1
 end
