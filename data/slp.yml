@@ -1,9 +1,11 @@
 ybc_deps:
   - yast2
+
 moves:
   - from: "src/SLP.ycp"
     to: src/modules
   - from: "src/slp.ycp"
     to: src/clients
-  - from: "src/slp.desktop"
-    to: src/desktop
+  # FIXME: don't move the *.desktop file
+  # it's not installed/packaged, just leave it, it'll be ignored
+  # remove it from upstream later
