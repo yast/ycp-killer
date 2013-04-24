@@ -1,3 +1,14 @@
+diff --git a/doc/autodocs/Makefile.am b/doc/autodocs/Makefile.am
+index 2a6f678..b9be0f7 100644
+--- a/doc/autodocs/Makefile.am
++++ b/doc/autodocs/Makefile.am
+@@ -1,3 +1,4 @@
+ # Makefile.am for YCP module .../doc/autodocs
+-
+-include $(top_srcdir)/autodocs-ycp.ami
++# TODO
++# FIXME temporarily disabled
++# include $(top_srcdir)/autodocs-ycp.ami
 diff --git a/src/include/inetd/default_conf_xinetd.ycp b/src/include/inetd/default_conf_xinetd.ycp
 index 8e1465e..e9aa7f9 100644
 --- a/src/include/inetd/default_conf_xinetd.ycp
@@ -12,3 +23,21 @@ index 8e1465e..e9aa7f9 100644
  [
    $[
      "comment" : " admind: admin daemon for thin clients\n uses ident and host name lookups for authentication\n security: weak authentication, just enough for thin clients\n client: adminc.pl\n default config file: /etc/opt/SLES/POS/admind.conf\n",
+diff --git a/yast2-inetd.spec.in b/yast2-inetd.spec.in
+index 74e1dd3..9274beb 100644
+--- a/yast2-inetd.spec.in
++++ b/yast2-inetd.spec.in
+@@ -35,10 +35,9 @@ The YaST2 component for configuring the inetd and xinetd daemons.
+ %defattr(-,root,root)
+ %dir @yncludedir@/inetd
+ @yncludedir@/inetd/*
+-@clientdir@/inetd*.ycp
+-@clientdir@/xinetd*.ycp
+-@moduledir@/Inetd.ycp
+-@moduledir@/Inetd.ybc
++@clientdir@/inetd*.rb
++@clientdir@/xinetd*.rb
++@moduledir@/Inetd.rb
+ @desktopdir@/inetd.desktop
+ @schemadir@/autoyast/rnc/inetd.rnc
+ %doc %dir @docdir@
