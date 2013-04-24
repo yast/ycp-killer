@@ -209,7 +209,9 @@ class CLI < Thor
     module_names = [ module_from_cwd ] if module_names.empty?
     module_names = $yast_modules.keys if module_names == ["all"]
 
-    TSorter.sort($yast_modules.values_at(*module_names)) { |m| m.ybc_deps }
+    res = TSorter.sort($yast_modules.values_at(*module_names)) { |m| m.ybc_deps }
+    # select only required modules
+    res.select { |m| module_names.include? m.name }
   end
 
   def with_modules(modules) # :yields: mod
