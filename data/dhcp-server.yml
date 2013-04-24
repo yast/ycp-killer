@@ -14,7 +14,7 @@ moves:
     to: src/include/dhcp-server
   - from: src/*.desktop
     to: src/desktop
-  - from: src/config/*.rnc
+  - from: src/*.rnc
     to: src/autoyast-rnc
   - from: agents/*.scr
     to: src/scrconf
