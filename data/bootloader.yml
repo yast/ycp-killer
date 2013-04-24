@@ -5,8 +5,6 @@ ybc_deps:
   - storage
 
 moves:
-  - from: "src/include/*.ycp"
-    to: src/include/bootloader
   - from: "src/elilo/*.ycp"
     to: src/include/bootloader/elilo
   - from: "src/grub/*.ycp"
