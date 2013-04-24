@@ -2,7 +2,6 @@
 
 require "cheetah"
 require "thor"
-require "tsort"
 require "yaml"
 
 BASE_DIR = File.expand_path(File.dirname(__FILE__))
@@ -19,6 +18,7 @@ $yast_modules = Hash.new do |hash, missing_key|
   raise "Unknown yast module #{missing_key}"
 end
 
+require_relative "lib/tsorter"
 require_relative "lib/yast_module"
 require_relative "lib/commands/clone_command"
 require_relative "lib/commands/convert_command"
@@ -200,7 +200,7 @@ class CLI < Thor
     module_names = [ module_from_cwd ] if module_names.empty?
     module_names = $yast_modules.keys if module_names == ["all"]
 
-    $yast_modules.values_at(*module_names)
+    TSorter.sort($yast_modules.values_at(*module_names)) { |m| m.ybc_deps }
   end
 
   def with_modules(modules) # :yields: mod
