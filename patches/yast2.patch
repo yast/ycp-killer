@@ -1,3 +1,98 @@
+diff --git a/configure.in.in b/configure.in.in
+index eaa7454..2e8623b 100644
+--- a/configure.in.in
++++ b/configure.in.in
+@@ -32,6 +32,6 @@ AC_MSG_RESULT([$IFCFG_DIR])
+ 
+ ## and generate the output
+ # also done via makefile
+-AC_CONFIG_FILES(library/modules/Version.ycp
+-library/network/agents/network.scr)
++AC_CONFIG_FILES(src/modules/Version.ycp
++library/network/src/scrconf/network.scr)
+ @YAST2-OUTPUT@
+diff --git a/data/Makefile.am b/data/Makefile.am
+index 55e4a9d..e471c86 100644
+--- a/data/Makefile.am
++++ b/data/Makefile.am
+@@ -7,12 +7,5 @@ xversiondir = $(sysconfdir)/YaST2
+ xversion_DATA =			\
+ 	XVersion
+ 
+-fillup_DATA =			\
+-	sysconfig.yast2
+-
+-ydata_DATA =                    \
+-        country_long.ycp        \
+-	country.ycp
+-
+-EXTRA_DIST = $(xversion_DATA) $(fillup_DATA) $(ydata_DATA)
++EXTRA_DIST = $(xversion_DATA)
+ include $(top_srcdir)/Makefile.am.common
+diff --git a/doc/autodocs/Makefile.am b/doc/autodocs/Makefile.am
+index 7dca6f8..98d0d0e 100644
+--- a/doc/autodocs/Makefile.am
++++ b/doc/autodocs/Makefile.am
+@@ -1,4 +1,4 @@
+ # Makefile.am for YCP module .../doc/autodocs
+ 
+-AUTODOCS_YCP=$(srcdir)/../../library/*/*.ycp
+-include $(top_srcdir)/autodocs-ycp.ami
++# AUTODOCS_YCP=$(srcdir)/../../library/*/*.ycp
++# include $(top_srcdir)/autodocs-ycp.ami
+diff --git a/library/Makefile.am b/library/Makefile.am
+index 5083c46..ec86614 100644
+--- a/library/Makefile.am
++++ b/library/Makefile.am
+@@ -1,3 +1,3 @@
+ # Makefile.am for yast2/library
+ 
+-SUBDIRS = agents types modules runlevel sequencer xml commandline desktop wizard control cwm log system packages cron network gpg
++SUBDIRS = types runlevel sequencer xml commandline desktop wizard control cwm log system packages cron network gpg
+diff --git a/library/agents/Makefile.am b/library/agents/Makefile.am
+index 88ef7de..e69de29 100644
+--- a/library/agents/Makefile.am
++++ b/library/agents/Makefile.am
+@@ -1,12 +0,0 @@
+-# Makefile.am for yast2/library/agents
+-# $Id$
+-
+-agent_SCRIPTS =		\
+-	ag_content	\
+-	ag_netd		\
+-	ag_anyxml	\
+-	ag_freespace
+-
+-scrconf_DATA = $(wildcard *.scr)
+-
+-EXTRA_DIST = $(agent_SCRIPTS) $(scrconf_DATA)
+diff --git a/library/commandline/agents/Makefile.am b/library/commandline/agents/Makefile.am
+index f495c5f..e69de29 100644
+--- a/library/commandline/agents/Makefile.am
++++ b/library/commandline/agents/Makefile.am
+@@ -1,9 +0,0 @@
+-#
+-# Makefile.am for readline agent
+-#
+-
+-agent_SCRIPTS = ag_tty
+-
+-scrconf_DATA = tty.scr
+-
+-EXTRA_DIST = $(agent_SCRIPTS) $(scrconf_DATA)
+diff --git a/library/commandline/doc/autodocs/Makefile.am b/library/commandline/doc/autodocs/Makefile.am
+index 3fd9da9..e20f556 100644
+--- a/library/commandline/doc/autodocs/Makefile.am
++++ b/library/commandline/doc/autodocs/Makefile.am
+@@ -1,4 +1,6 @@
+ # Makefile.am for YCP module .../doc/autodocs
+ 
+-AUTODOCS_SUBDIR=commandline
+-include $(top_srcdir)/autodocs-ycp.ami
++# TODO FIXME: temporarily disabled
++
++#AUTODOCS_SUBDIR=commandline
++#include $(top_srcdir)/autodocs-ycp.ami
 diff --git a/library/commandline/src/modules/CommandLine.ycp b/library/commandline/src/modules/CommandLine.ycp
 index e69a0f4..8ba5163 100644
 --- a/library/commandline/src/modules/CommandLine.ycp
@@ -368,6 +463,45 @@ index a6b9e52..b3bf479 100644
  
      import "TypeRepository";
      import "CommandLine";
+diff --git a/library/control/doc/autodocs/Makefile.am b/library/control/doc/autodocs/Makefile.am
+index e692626..f2309b8 100644
+--- a/library/control/doc/autodocs/Makefile.am
++++ b/library/control/doc/autodocs/Makefile.am
+@@ -1,4 +1,6 @@
+ # Makefile.am for YCP module .../doc/autodocs
+ 
+-AUTODOCS_SUBDIR=control
+-include $(top_srcdir)/autodocs-ycp.ami
++# TODO FIXME: temporarily disabled
++
++# AUTODOCS_SUBDIR=control
++# include $(top_srcdir)/autodocs-ycp.ami
+diff --git a/library/cron/doc/autodocs/Makefile.am b/library/cron/doc/autodocs/Makefile.am
+index d4a6854..b8295a9 100644
+--- a/library/cron/doc/autodocs/Makefile.am
++++ b/library/cron/doc/autodocs/Makefile.am
+@@ -1,4 +1,6 @@
+ # Makefile.am for YCP module .../doc/autodocs
+ 
+-AUTODOCS_SUBDIR=cron
+-include $(top_srcdir)/autodocs-ycp.ami
++# TODO FIXME: temporarily disabled
++
++#AUTODOCS_SUBDIR=cron
++#include $(top_srcdir)/autodocs-ycp.ami
+diff --git a/library/cwm/doc/autodocs/Makefile.am b/library/cwm/doc/autodocs/Makefile.am
+index 2b51cd4..dde9eef 100644
+--- a/library/cwm/doc/autodocs/Makefile.am
++++ b/library/cwm/doc/autodocs/Makefile.am
+@@ -1,4 +1,6 @@
+ # Makefile.am for YCP module .../doc/autodocs
+ 
+-AUTODOCS_SUBDIR=cwm
+-include $(top_srcdir)/autodocs-ycp.ami
++# TODO FIXME: temporarily disabled
++
++#AUTODOCS_SUBDIR=cwm
++#include $(top_srcdir)/autodocs-ycp.ami
 diff --git a/library/cwm/testsuite/tests/t1.ycp b/library/cwm/testsuite/tests/t1.ycp
 index afa62bb..d41081b 100644
 --- a/library/cwm/testsuite/tests/t1.ycp
@@ -394,6 +528,19 @@ index a86971d..b29f075 100644
      import "Mode";
  
      Mode::SetTest ("testsuite");
+diff --git a/library/desktop/doc/autodocs/Makefile.am b/library/desktop/doc/autodocs/Makefile.am
+index 13a25b8..70a8c1c 100644
+--- a/library/desktop/doc/autodocs/Makefile.am
++++ b/library/desktop/doc/autodocs/Makefile.am
+@@ -1,4 +1,6 @@
+ # Makefile.am for YCP module .../doc/autodocs
+ 
+-AUTODOCS_SUBDIR=desktop
+-include $(top_srcdir)/autodocs-ycp.ami
++# TODO FIXME: temporarily disabled
++
++#AUTODOCS_SUBDIR=desktop
++#include $(top_srcdir)/autodocs-ycp.ami
 diff --git a/library/desktop/src/modules/Desktop.ycp b/library/desktop/src/modules/Desktop.ycp
 index 3ced0f7..f57f665 100644
 --- a/library/desktop/src/modules/Desktop.ycp
@@ -427,6 +574,186 @@ index 3ced0f7..f57f665 100644
      /* read modules */
      map filemap = $[];
      path filepath = nil;
+diff --git a/library/gpg/doc/Makefile.am b/library/gpg/doc/Makefile.am
+index f855694..6a765c1 100644
+--- a/library/gpg/doc/Makefile.am
++++ b/library/gpg/doc/Makefile.am
+@@ -3,6 +3,6 @@
+ SUBDIRS = autodocs
+ 
+ htmldir = $(docdir)/gpg
+-html_DATA = example.ycp
++html_DATA = example.rb
+ 
+ EXTRA_DIST = $(html_DATA)
+diff --git a/library/gpg/doc/autodocs/Makefile.am b/library/gpg/doc/autodocs/Makefile.am
+index 7d43508..b282ae4 100644
+--- a/library/gpg/doc/autodocs/Makefile.am
++++ b/library/gpg/doc/autodocs/Makefile.am
+@@ -1,4 +1,6 @@
+ # Makefile.am for YCP module .../doc/autodocs
+ 
+-AUTODOCS_SUBDIR=gpg
+-include $(top_srcdir)/autodocs-ycp.ami
++# TODO FIXME: temporarily disabled
++
++#AUTODOCS_SUBDIR=gpg
++#include $(top_srcdir)/autodocs-ycp.ami
+diff --git a/library/log/doc/autodocs/Makefile.am b/library/log/doc/autodocs/Makefile.am
+index a64d647..957be1f 100644
+--- a/library/log/doc/autodocs/Makefile.am
++++ b/library/log/doc/autodocs/Makefile.am
+@@ -1,4 +1,6 @@
+ # Makefile.am for YCP module .../doc/autodocs
+ 
+-AUTODOCS_SUBDIR=log
+-include $(top_srcdir)/autodocs-ycp.ami
++# TODO FIXME: temporarily disabled
++
++#AUTODOCS_SUBDIR=log
++#include $(top_srcdir)/autodocs-ycp.ami
+diff --git a/library/network/agents/Makefile.am b/library/network/agents/Makefile.am
+index e368dfd..e69de29 100644
+--- a/library/network/agents/Makefile.am
++++ b/library/network/agents/Makefile.am
+@@ -1,14 +0,0 @@
+-#
+-# Makefile.am for network/ifcfg agent
+-#
+-
+-agent_SCRIPTS = ag_showexports
+-
+-scrconf_DATA = sysconfig_SuSEfirewall2.scr \
+-	       network.scr \
+-	       net_showexports.scr	
+-
+-EXTRA_DIST =   sysconfig_SuSEfirewall2.scr \
+-			network.scr.in \
+-			net_showexports.scr \
+-			$(agent_SCRIPTS)
+diff --git a/library/network/doc/autodocs/Makefile.am b/library/network/doc/autodocs/Makefile.am
+index 3879b6d..9e1aaec 100644
+--- a/library/network/doc/autodocs/Makefile.am
++++ b/library/network/doc/autodocs/Makefile.am
+@@ -1,4 +1,6 @@
+ # Makefile.am for YCP module .../doc/autodocs
+ 
+-AUTODOCS_SUBDIR=network
+-include $(top_srcdir)/autodocs-ycp.ami
++# TODO FIXME: temporarily disabled
++
++#AUTODOCS_SUBDIR=network
++#include $(top_srcdir)/autodocs-ycp.ami
+diff --git a/library/packages/doc/autodocs/Makefile.am b/library/packages/doc/autodocs/Makefile.am
+index 0f42745..0d975b6 100644
+--- a/library/packages/doc/autodocs/Makefile.am
++++ b/library/packages/doc/autodocs/Makefile.am
+@@ -1,4 +1,6 @@
+ # Makefile.am for YCP module .../doc/autodocs
+ 
+-AUTODOCS_SUBDIR=packages
+-include $(top_srcdir)/autodocs-ycp.ami
++# TODO FIXME: temporarily disabled
++
++#AUTODOCS_SUBDIR=packages
++#include $(top_srcdir)/autodocs-ycp.ami
+diff --git a/library/packages/src/include/packages/common.ycp b/library/packages/src/include/packages/common.ycp
+index b61f038..1e0a90d 100644
+--- a/library/packages/src/include/packages/common.ycp
++++ b/library/packages/src/include/packages/common.ycp
+@@ -42,6 +42,18 @@ import "Wizard";
+ import "Mode";
+ import "CommandLine";
+ 
++/**
++ * Was last operation canceled?
++ *
++ * Used to enhance the exit status to distinguish between package
++ * installation fail and installation canceled by user, as in the second
++ * case doesn't make much sense to display any error
++ * Is set to true when user canceled package installation, from
++ * PackageSystem::* functions
++ */
++boolean last_op_canceled = false;
++
++
+ /* Main module prototypes */
+ 
+ global boolean Available(string package);
+diff --git a/library/packages/src/modules/Package.ycp b/library/packages/src/modules/Package.ycp
+index 55dc276..377f07b 100644
+--- a/library/packages/src/modules/Package.ycp
++++ b/library/packages/src/modules/Package.ycp
+@@ -70,8 +70,6 @@ map FunctionsAI = $[
+ 
+ map Functions = Mode::config () ? FunctionsAI : FunctionsSystem;
+ 
+-boolean last_op_canceled = false;
+-
+ include "packages/common.ycp";
+ 
+ /**
+diff --git a/library/packages/src/modules/PackageAI.ycp b/library/packages/src/modules/PackageAI.ycp
+index cc3a8e1..d2a1a38 100644
+--- a/library/packages/src/modules/PackageAI.ycp
++++ b/library/packages/src/modules/PackageAI.ycp
+@@ -38,8 +38,6 @@ textdomain "base";
+ global list<string> toinstall = [];
+ global list<string> toremove = [];
+ 
+-boolean last_op_canceled = false;
+-
+ include "packages/common.ycp";
+ 
+ /* default value of settings modified */
+diff --git a/library/packages/src/modules/PackageSystem.ycp b/library/packages/src/modules/PackageSystem.ycp
+index 9b035c1..af813bf 100644
+--- a/library/packages/src/modules/PackageSystem.ycp
++++ b/library/packages/src/modules/PackageSystem.ycp
+@@ -47,17 +47,6 @@ import "Stage";
+ import "CommandLine";
+ 
+ /**
+- * Was last operation canceled?
+- *
+- * Used to enhance the exit status to distinguish between package
+- * installation fail and installation canceled by user, as in the second
+- * case doesn't make much sense to display any error
+- * Is set to true when user canceled package installation, from
+- * PackageSystem::* functions
+- */
+-boolean last_op_canceled = false;
+-
+-/**
+  * Has Pkg::TargetInit run?
+  */
+ boolean target_initialized = false;
+diff --git a/library/runlevel/doc/autodocs/Makefile.am b/library/runlevel/doc/autodocs/Makefile.am
+index 806afad..926ff20 100644
+--- a/library/runlevel/doc/autodocs/Makefile.am
++++ b/library/runlevel/doc/autodocs/Makefile.am
+@@ -1,4 +1,6 @@
+ # Makefile.am for YCP module .../doc/autodocs
+ 
+-AUTODOCS_SUBDIR=runlevel
+-include $(top_srcdir)/autodocs-ycp.ami
++# TODO FIXME: temporarily disabled
++
++#AUTODOCS_SUBDIR=runlevel
++#include $(top_srcdir)/autodocs-ycp.ami
+diff --git a/library/sequencer/doc/autodocs/Makefile.am b/library/sequencer/doc/autodocs/Makefile.am
+index 449d581..7281339 100644
+--- a/library/sequencer/doc/autodocs/Makefile.am
++++ b/library/sequencer/doc/autodocs/Makefile.am
+@@ -1,4 +1,6 @@
+ # Makefile.am for YCP module .../doc/autodocs
+ 
+-AUTODOCS_SUBDIR=sequencer
+-include $(top_srcdir)/autodocs-ycp.ami
++# TODO FIXME: temporarily disabled
++
++#AUTODOCS_SUBDIR=sequencer
++#include $(top_srcdir)/autodocs-ycp.ami
 diff --git a/library/sequencer/testsuite/tests/WS_check.ycp b/library/sequencer/testsuite/tests/WS_check.ycp
 index 9e11a70..fe8dd72 100644
 --- a/library/sequencer/testsuite/tests/WS_check.ycp
@@ -537,6 +864,57 @@ index a5961f7..780cacf 100644
 +include "Wizard.yh";
  
  }
+diff --git a/library/system/agents/Makefile.am b/library/system/agents/Makefile.am
+index 994a636..e69de29 100644
+--- a/library/system/agents/Makefile.am
++++ b/library/system/agents/Makefile.am
+@@ -1,7 +0,0 @@
+-#
+-# Makefile.am for y2m_inst/ycp/kernel/agents
+-#
+-
+-scrconf_DATA = $(patsubst $(srcdir)/%,%,$(wildcard $(srcdir)/*.scr))
+-
+-EXTRA_DIST = $(scrconf_DATA)
+diff --git a/library/system/doc/autodocs/Makefile.am b/library/system/doc/autodocs/Makefile.am
+index 6248ff4..ae166c7 100644
+--- a/library/system/doc/autodocs/Makefile.am
++++ b/library/system/doc/autodocs/Makefile.am
+@@ -1,4 +1,6 @@
+ # Makefile.am for YCP module .../doc/autodocs
+ 
+-AUTODOCS_SUBDIR=system
+-include $(top_srcdir)/autodocs-ycp.ami
++# TODO FIXME: temporarily disabled
++
++#AUTODOCS_SUBDIR=system
++#include $(top_srcdir)/autodocs-ycp.ami
+diff --git a/library/types/doc/autodocs/Makefile.am b/library/types/doc/autodocs/Makefile.am
+index 2c416a5..4e95b91 100644
+--- a/library/types/doc/autodocs/Makefile.am
++++ b/library/types/doc/autodocs/Makefile.am
+@@ -1,4 +1,6 @@
+ # Makefile.am for YCP module .../doc/autodocs
+ 
+-AUTODOCS_SUBDIR=types
+-include $(top_srcdir)/autodocs-ycp.ami
++# TODO FIXME: temporarily disabled
++
++#AUTODOCS_SUBDIR=types
++#include $(top_srcdir)/autodocs-ycp.ami
+diff --git a/library/wizard/doc/autodocs/Makefile.am b/library/wizard/doc/autodocs/Makefile.am
+index 60abcb8..452a0bb 100644
+--- a/library/wizard/doc/autodocs/Makefile.am
++++ b/library/wizard/doc/autodocs/Makefile.am
+@@ -1,4 +1,6 @@
+ # Makefile.am for YCP module .../doc/autodocs
+ 
+-AUTODOCS_SUBDIR=wizard
+-include $(top_srcdir)/autodocs-ycp.ami
++# TODO FIXME: temporarily disabled
++
++#AUTODOCS_SUBDIR=wizard
++#include $(top_srcdir)/autodocs-ycp.ami
 diff --git a/library/wizard/testsuite/tests/wizard_dialog.ycp b/library/wizard/testsuite/tests/wizard_dialog.ycp
 index f8825de..5d58b65 100644
 --- a/library/wizard/testsuite/tests/wizard_dialog.ycp
@@ -550,3 +928,108 @@ index f8825de..5d58b65 100644
  
    Wizard::CreateDialog();
    Wizard::SetHelpText( _("<p>This is the example of <tt>CreateWizardDialog()</tt></p>"));
+diff --git a/library/xml/doc/autodocs/Makefile.am b/library/xml/doc/autodocs/Makefile.am
+index d8bc715..f4123d4 100644
+--- a/library/xml/doc/autodocs/Makefile.am
++++ b/library/xml/doc/autodocs/Makefile.am
+@@ -1,4 +1,6 @@
+ # Makefile.am for YCP module .../doc/autodocs
+ 
+-AUTODOCS_SUBDIR=xml
+-include $(top_srcdir)/autodocs-ycp.ami
++# TODO FIXME: temporarily disabled
++
++#AUTODOCS_SUBDIR=xml
++#include $(top_srcdir)/autodocs-ycp.ami
+diff --git a/remote/Makefile.am b/remote/Makefile.am
+index d4ecbd3..e69de29 100644
+--- a/remote/Makefile.am
++++ b/remote/Makefile.am
+@@ -1,18 +0,0 @@
+-#
+-# Makefile.am for yast2/remote
+-#
+-
+-client_DATA =			\
+-	password.ycp		\
+-	remotechooser.ycp	\
+-	remoteinstall.ycp
+-
+-desktop_DATA = #		\
+-	remotechooser.desktop	\
+-	remoteinstall.desktop
+-
+-YCPCFLAGS = -M ../library/modules
+-
+-EXTRA_DIST = $(client_DATA) # $(desktop_DATA)
+-
+-include $(top_srcdir)/Makefile.am.common
+diff --git a/yast2.spec.in b/yast2.spec.in
+index 68b9f1a..6043cf1 100644
+--- a/yast2.spec.in
++++ b/yast2.spec.in
+@@ -78,6 +78,7 @@ Provides:       yast2-trans-menu y2t_menu
+ Obsoletes:      yast2-trans-menu y2t_menu
+ 
+ # moved here from another packages
++# TODO FIXME: only add *.rb files or replace existing *.ycp ??
+ Provides:       yast2-installation:/usr/share/YaST2/modules/Installation.ycp
+ Provides:       yast2-installation:/usr/share/YaST2/modules/Product.ycp
+ Provides:       yast2-installation:/usr/share/YaST2/modules/Hotplug.ycp
+@@ -160,7 +161,7 @@ mkdir -p "$RPM_BUILD_ROOT"/etc/YaST2
+ 
+ # yast2
+ 
+-@ydatadir@/*.ycp
++@ydatadir@/*.rb
+ @clientdir@/*
+ @moduledir@/*
+ @scrconfdir@/*
+@@ -180,15 +181,15 @@ mkdir -p "$RPM_BUILD_ROOT"/etc/YaST2
+ 
+ # wizard
+ %dir @yncludedir@/wizard
+-@yncludedir@/wizard/*.ycp
++@yncludedir@/wizard/*.rb
+ 
+ #packags
+ %dir @yncludedir@/packages
+-@yncludedir@/packages/*.ycp
++@yncludedir@/packages/*.rb
+ 
+ #system
+ %dir @yncludedir@/hwinfo
+-@yncludedir@/hwinfo/*.ycp
++@yncludedir@/hwinfo/*.rb
+ @desktopdir@/messages.desktop
+ 
+ # documentation
+@@ -198,19 +199,19 @@ mkdir -p "$RPM_BUILD_ROOT"/etc/YaST2
+ 
+ %doc @docdir@/autodocs
+ %doc @docdir@/commandline
+-%doc @docdir@/control
+-%doc @docdir@/cron
+-%doc @docdir@/cwm
+-%doc @docdir@/desktop
++#%doc @docdir@/control
++#%doc @docdir@/cron
++#%doc @docdir@/cwm
++#%doc @docdir@/desktop
+ %doc @docdir@/gpg
+-%doc @docdir@/log
+-%doc @docdir@/network
++#%doc @docdir@/log
++#%doc @docdir@/network
+ %doc @docdir@/packages
+ %doc @docdir@/runlevel
+ %doc @docdir@/sequencer
+-%doc @docdir@/system
+-%doc @docdir@/types
++#%doc @docdir@/system
++#%doc @docdir@/types
++#%doc @docdir@/xml
+ %doc @docdir@/wizard
+-%doc @docdir@/xml
+ 
+ %changelog
