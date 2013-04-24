@@ -2,7 +2,6 @@
 
 require "cheetah"
 require "thor"
-require "tsort"
 require "yaml"
 
 BASE_DIR = File.expand_path(File.dirname(__FILE__))
