@@ -35,8 +35,9 @@ module Commands
         :key      => "ybin_SCRIPTS"
       },
       {
-        :glob     => "data/*",
-        :key      => "ydata_DATA"
+        :glob     => "data/**/*",
+        :key      => "ydata_DATA",
+        :dir_var  => '@ydatadir@'
       },
       {
         :glob     => "desktop/*",
@@ -64,7 +65,7 @@ module Commands
             Dir.chdir dir do
               sections = MAKEFILE_DESCRIPTION.map do |section|
                 result = section.dup
-                result[:files] = Dir[section[:glob]]
+                result[:files] = Dir[section[:glob]].reject{|f| File.directory?(f)}
 
                 result
               end
