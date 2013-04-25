@@ -73,7 +73,7 @@ module Commands
 
               sections.reject! { |section| section[:files].empty? }
 
-              sections = sections.map { |section| split_section(section) }.reduce(&:+)
+              sections = sections.map { |section| split_section(section) }.reduce([], :+)
 
               sections.each do |section|
                 file.write makefile_entry(section[:key_line] || section[:key], section[:values])
