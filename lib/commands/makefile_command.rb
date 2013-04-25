@@ -40,8 +40,9 @@ module Commands
         :dir_var  => '@ydatadir@'
       },
       {
-        :glob     => "desktop/*",
-        :key      => "desktop_DATA"
+        :glob     => "desktop/**/*",
+        :key      => "desktop_DATA",
+        :dir_var  => '@desktopdir@'
       },
       {
         :glob     => "fillup/*",
