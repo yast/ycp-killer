@@ -5,7 +5,7 @@ ybc_deps:
 
 moves:
   - from: src/config/*.rnc
-    to:   src/autoyast
+    to:   src/autoyast-rnc
   - from: src/{xinetd,inetd,inetd_auto,inetd_proposal}.ycp
     to:   src/clients
   - from: src/{helps,wizards,dialogs,complex,routines,default_conf_xinetd}.ycp
