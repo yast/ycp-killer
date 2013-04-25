@@ -1,0 +1,96 @@
+diff --git a/control/Makefile.am b/control/Makefile.am
+index f5a7abb..2f1bc4a 100644
+--- a/control/Makefile.am
++++ b/control/Makefile.am
+@@ -1,14 +1,12 @@
+ #
+-# Makefile.am for wagon/src/config
++# Makefile.am for control
+ #
+ 
+ controldir = $(yast2dir)/control
+ 
+ control_DATA = $(wildcard *.xml)
+ 
+-desktop_DATA = $(wildcard *.desktop)
+-
+-EXTRA_DIST = $(desktop_DATA) $(control_DATA)
++EXTRA_DIST = $(control_DATA)
+ 
+ check-local:
+ 	xmllint --relaxng $(controldir)/control.rng --noout $(control_DATA)
+diff --git a/doc/autodocs/Makefile.am b/doc/autodocs/Makefile.am
+index 9a2350a..b464f78 100644
+--- a/doc/autodocs/Makefile.am
++++ b/doc/autodocs/Makefile.am
+@@ -2,5 +2,7 @@
+ # Makefile.am for .../doc/autodocs
+ #
+ 
+-AUTODOCS_YCP=$(top_srcdir)/src/*/*.ycp
+-include $(top_srcdir)/autodocs-ycp.ami
++# TODO FIXME: temporarily disabled
++
++#AUTODOCS_YCP=$(top_srcdir)/src/*/*.ycp
++#include $(top_srcdir)/autodocs-ycp.ami
+diff --git a/yast2-update.spec.in b/yast2-update.spec.in
+index 07df4cc..b8884b0 100644
+--- a/yast2-update.spec.in
++++ b/yast2-update.spec.in
+@@ -28,7 +28,7 @@ Requires:	yast2-packager >= 2.17.27
+ 
+ # moved into yast2-update from yast2-installation
+ # to remove dependency on yast2-storage
+-Provides:	yast2-installation:/usr/share/YaST2/clients/vendor.ycp
++Provides:	yast2-installation:/usr/share/YaST2/clients/vendor.rb
+ 
+ # Required only in inst-sys
+ # Requires:	yast2-storage
+@@ -48,7 +48,7 @@ Requires:	yast2-update yast2
+ 
+ # moved into yast2-update from yast2-installation
+ # to remove dependency on yast2-storage
+-Provides:	yast2-update:/usr/share/YaST2/clients/update.ycp
++Provides:	yast2-update:/usr/share/YaST2/clients/update.rb
+ 
+ Summary:	YaST2 - Update
+ 
+@@ -71,19 +71,19 @@ Use this component if you wish to update your system.
+ @ybindir@/*
+ @moduledir@/*
+ 
+-@clientdir@/inst_rootpart.ycp
+-@clientdir@/inst_update.ycp
+-@clientdir@/inst_backup.ycp
+-@clientdir@/rootpart_proposal.ycp
+-@clientdir@/update_proposal.ycp
+-@clientdir@/packages_proposal.ycp
+-@clientdir@/backup_proposal.ycp
+-@clientdir@/inst_update_partition.ycp
+-@clientdir@/inst_update_partition_auto.ycp
+-@clientdir@/rootpart_check_keyboard.ycp
++@clientdir@/inst_rootpart.rb
++@clientdir@/inst_update.rb
++@clientdir@/inst_backup.rb
++@clientdir@/rootpart_proposal.rb
++@clientdir@/update_proposal.rb
++@clientdir@/packages_proposal.rb
++@clientdir@/backup_proposal.rb
++@clientdir@/inst_update_partition.rb
++@clientdir@/inst_update_partition_auto.rb
++@clientdir@/rootpart_check_keyboard.rb
+ 
+ @yncludedir@/update
+-@yncludedir@/update/rootpart.ycp
++@yncludedir@/update/rootpart.rb
+ 
+ %doc @docdir@
+ 
+@@ -92,5 +92,5 @@ Use this component if you wish to update your system.
+ @desktopdir@/update.desktop
+ %dir /usr/share/YaST2/control
+ /usr/share/YaST2/control/update.xml
+-@clientdir@/update.ycp
+-@clientdir@/run_update.ycp
++@clientdir@/update.rb
++@clientdir@/run_update.rb
