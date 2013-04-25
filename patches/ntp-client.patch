@@ -1,0 +1,60 @@
+diff --git a/agents/Makefile.am b/agents/Makefile.am
+index 3b65eee..e69de29 100644
+--- a/agents/Makefile.am
++++ b/agents/Makefile.am
+@@ -1,9 +0,0 @@
+-#
+-# Makefile.am for devtools/devtools/skeletons/config/agents
+-#
+-
+-scrconf_DATA =		\
+-	etc_ntp.scr	\
+-	cfg_ntp.scr
+-
+-EXTRA_DIST = $(scrconf_DATA)
+diff --git a/data/Makefile.am b/data/Makefile.am
+index 2178917..e69de29 100644
+--- a/data/Makefile.am
++++ b/data/Makefile.am
+@@ -1,9 +0,0 @@
+-#
+-# Makefile.am for ntp-client/data
+-#
+-
+-ydata_DATA = \
+-	ntp_servers.ycp
+-
+-
+-EXTRA_DIST = $(ydata_DATA)
+diff --git a/doc/autodocs/Makefile.am b/doc/autodocs/Makefile.am
+index 2a6f678..4cb582c 100644
+--- a/doc/autodocs/Makefile.am
++++ b/doc/autodocs/Makefile.am
+@@ -1,3 +1,5 @@
+ # Makefile.am for YCP module .../doc/autodocs
+ 
+-include $(top_srcdir)/autodocs-ycp.ami
++# TODO FIXME: temporarily disabled
++
++# include $(top_srcdir)/autodocs-ycp.ami
+diff --git a/yast2-ntp-client.spec.in b/yast2-ntp-client.spec.in
+index 5e11c6f..b93a8d8 100644
+--- a/yast2-ntp-client.spec.in
++++ b/yast2-ntp-client.spec.in
+@@ -30,12 +30,12 @@ This package contains the YaST2 component for NTP client configuration.
+ %defattr(-,root,root)
+ %dir @yncludedir@/ntp-client
+ @yncludedir@/ntp-client/*
+-@clientdir@/ntp-client.ycp
+-@clientdir@/ntp-client_*.ycp
++@clientdir@/ntp-client.rb
++@clientdir@/ntp-client_*.rb
+ @scrconfdir@/cfg_ntp.scr
+ @scrconfdir@/etc_ntp.scr
+-@moduledir@/*.y*
++@moduledir@/*.rb
+ @desktopdir@/ntp-client.desktop
+-@ydatadir@/ntp_servers.ycp
++@ydatadir@/ntp_servers.rb
+ %doc @docdir@
+ @schemadir@/autoyast/rnc/ntpclient.rnc
