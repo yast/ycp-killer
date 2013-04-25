@@ -68,7 +68,7 @@ things get gemified, packaged, etc.
 
          $ sudo zypper in perl-JSON                 # Needed to load the Json.pm YCP module
          $ sudo zypper in suseRegister              # Needed to load the YSR.pm YCP module
-         $ sudo zypper in cracklib-devel            # Dependency of the dependency of users YaST module
+         $ sudo zypper in cracklib-devel            # Dependency of the users YaST module
          $ sudo zypper in perl-Date-Calc perl-camgm # Dependency of the ca-management YaST module
          $ sudo zypper in sablotron                 # Needed to package storage YaST module
          $ git clone git://github.com/yast/ycp-killer.git
