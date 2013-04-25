@@ -38,7 +38,7 @@ module Commands
       if ! e.is_a? Cheetah::ExecutionFailed
         phase = :other
       end
-      Messages.finish "ERROR(#{phase})"
+      Messages.finish "ERROR(#{phase})" if verbose
       @counts["error_#{phase}".to_sym] += 1
       log_error(mod, file, e)
     end

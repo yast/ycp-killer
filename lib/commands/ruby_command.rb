@@ -7,38 +7,55 @@ module Commands
       prepare_result_dir(mod)
       reset_counts(mod)
 
+      threads = []
+
       Dir.chdir mod.work_dir do
-        Dir["**/*.y{cp,h}"].each do |file|
-          next if mod.excluded.include?(file)
+        processors = cpu_count
+        Messages.info "  Detected #{processors} processors, using #{processors} threads for conversion"
 
-          Messages.start "  * Converting #{file}..."
+        tasks = split_array(Dir["**/*.y{cp,h}"], processors)
 
-          work_file = "#{mod.work_dir}/#{file}"
-          FileUtils.rm "#{mod.result_dir}/#{file}"
-          result_file = "#{mod.result_dir}/#{file}".sub(/\.y(cp|h)$/, ".rb")
+        tasks.each do |task|
+          threads << Thread.new(task) do |files|
+            files.each do |file|
+              next if mod.excluded.include?(file)
 
-          begin
-            # This makes private symbols in modules visible. Needed by some
-            # testsuites.
-            ENV["Y2ALLGLOBAL"] = "1"
+              msg = "  * Converting #{file}..."
 
-            create_rb mod, work_file, result_file
-          rescue Exception => e
-            handle_exception(e, :y2r, mod, file)
-            next
+              work_file = "#{mod.work_dir}/#{file}"
+              FileUtils.rm "#{mod.result_dir}/#{file}"
+              result_file = "#{mod.result_dir}/#{file}".sub(/\.y(cp|h)$/, ".rb")
+
+              begin
+                # This makes private symbols in modules visible. Needed by some
+                # testsuites.
+                ENV["Y2ALLGLOBAL"] = "1"
+
+                create_rb mod, work_file, result_file
+              rescue Exception => e
+                Messages.status msg, "ERROR(y2r)"
+                handle_exception(e, :y2r, mod, file)
+                next
+              end
+
+              begin
+                check_rb result_file
+              rescue Exception => e
+                Messages.status msg, "ERROR(ruby)"
+                handle_exception(e, :ruby, mod, file)
+                next
+              end
+
+              Messages.status msg, "OK"
+              @counts[:ok] += 1
+            end
           end
-
-          begin
-            check_rb result_file
-          rescue Exception => e
-            handle_exception(e, :ruby, mod, file)
-            next
-          end
-
-          Messages.finish "OK"
-          @counts[:ok] += 1
         end
+
       end
+
+      # wait for all threads
+      threads.each {|t| t.join}
 
       @counts
     end
@@ -76,6 +93,16 @@ module Commands
 
     def check_rb(file)
       Cheetah.run "ruby", "-c", file
+    end
+
+    def cpu_count
+      File.read("/proc/cpuinfo").split("\n").select{|s| s.start_with?("processor\t:")}.size
+    end
+
+    def split_array(arr, parts)
+      ret = [];
+      arr.each_slice((arr.size / parts.to_f).ceil){ |part| ret << part}
+      ret
     end
   end
 end
