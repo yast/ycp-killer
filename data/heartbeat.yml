@@ -13,10 +13,3 @@ moves:
     to:   src/modules
   - from: src/heartbeat.desktop
     to:   src/desktop
-
-#TODO
-excluded:
-  # undeclared identifier 'timeouts_conf_Read/Write
-  - src/include/heartbeat/log_conf.ycp
-  # undeclared identifier HELPS
-  - src/include/heartbeat/common.ycp
