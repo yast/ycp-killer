@@ -14,6 +14,12 @@ moves:
     to: src/include/ntp-client
   - from: data/ntp_servers.ycp
     to: src/data
+  - from: agents/*.scr
+    to: src/scrconf
+  - from: src/*.desktop
+    to: src/desktop
+  - from: src/ntpclient.rnc
+    to: src/autoyast-rnc
 
 excluded:
   # Y2R thinks they have Undeclared identifiers even though they don't !?
