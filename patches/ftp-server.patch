@@ -1,3 +1,40 @@
+diff --git a/agents/Makefile.am b/agents/Makefile.am
+index d75de90..e69de29 100644
+--- a/agents/Makefile.am
++++ b/agents/Makefile.am
+@@ -1,9 +0,0 @@
+-# Makefile.am for ftpd/agents
+-
+-agent_SCRIPTS =
+-
+-scrconf_DATA = 		\
+-	pure-ftpd.scr   \
+-	vsftpd.scr
+-
+-EXTRA_DIST = $(agent_SCRIPTS) $(scrconf_DATA)
+diff --git a/config/Makefile.am b/config/Makefile.am
+index a2b7e6f..e69de29 100644
+--- a/config/Makefile.am
++++ b/config/Makefile.am
+@@ -1,7 +0,0 @@
+-# Makefile.am for source/ftp-server/src/config
+-# $Id: $
+-
+-rncdir =  $(schemadir)/autoyast/rnc
+-rnc_DATA = ftp-server.rnc
+-
+-EXTRA_DIST = $(rnc_DATA)
+diff --git a/doc/autodocs/Makefile.am b/doc/autodocs/Makefile.am
+index 2f8c84a..6510afa 100644
+--- a/doc/autodocs/Makefile.am
++++ b/doc/autodocs/Makefile.am
+@@ -1,3 +1,4 @@
+ # Makefile.am for ftp-server/doc/autodocs
+-
+-include $(top_srcdir)/autodocs-ycp.ami
++# TODO
++# FIXME temporarily disabled
++# include $(top_srcdir)/autodocs-ycp.ami
 diff --git a/src/include/ftp-server/wid_functions.ycp b/src/include/ftp-server/wid_functions.ycp
 index 592e527..fe65d56 100644
 --- a/src/include/ftp-server/wid_functions.ycp
@@ -218,3 +255,18 @@ index 8fc5f60..540d97a 100644
  	         FtpServer::start_xinetd = true;
                   if (Service::Enabled("vsftpd"))
                      Service::Disable("vsftpd");
+diff --git a/yast2-ftp-server.spec.in b/yast2-ftp-server.spec.in
+index 896a8c7..a3a401d 100644
+--- a/yast2-ftp-server.spec.in
++++ b/yast2-ftp-server.spec.in
+@@ -28,8 +28,8 @@ configure two daemons: pure-ftpd and vsftpd.
+ %defattr(-,root,root)
+ %dir @yncludedir@/ftp-server
+ @yncludedir@/ftp-server/*
+-@clientdir@/ftp-server.ycp
+-@clientdir@/ftp-server_*.ycp
++@clientdir@/ftp-server.rb
++@clientdir@/ftp-server_*.rb
+ @moduledir@/FtpServer.*
+ @desktopdir@/ftp-server.desktop
+ @schemadir@/autoyast/rnc/ftp-server.rnc
