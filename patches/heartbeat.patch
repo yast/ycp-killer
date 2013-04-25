@@ -1,3 +1,24 @@
+diff --git a/doc/autodocs/Makefile.am b/doc/autodocs/Makefile.am
+index 6152b88..425ed35 100644
+--- a/doc/autodocs/Makefile.am
++++ b/doc/autodocs/Makefile.am
+@@ -1,10 +1,11 @@
+ # Makefile.am for heartbeat/doc/autodocs
+ 
+-htmldir = $(docdir)/autodocs
++# FIXME temporarily disabled
++# htmldir = $(docdir)/autodocs
+ 
+-index.html: $(srcdir)/../../src/*.ycp
+-	$(ybindir)/ycpdoc -d. $(srcdir)/../../src/*.ycp
++# index.html: $(srcdir)/../../src/*.rb
++# 	$(ybindir)/ycpdoc -d. $(srcdir)/../../src/*.rb
+ 
+-html_DATA = index.html $(wildcard *.html)
++# html_DATA = index.html $(wildcard *.html)
+ 
+-CLEANFILES = $(html_DATA)
++# CLEANFILES = $(html_DATA)
 diff --git a/src/include/heartbeat/auth_conf.ycp b/src/include/heartbeat/auth_conf.ycp
 index 921999a..611a0c6 100644
 --- a/src/include/heartbeat/auth_conf.ycp
@@ -10,6 +31,19 @@ index 921999a..611a0c6 100644
  
  include "heartbeat/helps.ycp";
  include "heartbeat/common.ycp";
+diff --git a/src/include/heartbeat/common.ycp b/src/include/heartbeat/common.ycp
+index 11f21c5..54e0c1f 100644
+--- a/src/include/heartbeat/common.ycp
++++ b/src/include/heartbeat/common.ycp
+@@ -57,7 +57,7 @@ import "Heartbeat";
+ import "Popup";
+ import "CWM";
+ 
+-//include "heartbeat/helps.ycp";
++include "heartbeat/helps.ycp";
+ 
+ list<string> DIALOG = [
+     "node_conf",
 diff --git a/src/include/heartbeat/ipfail_conf.ycp b/src/include/heartbeat/ipfail_conf.ycp
 index 4d29b98..c049388 100644
 --- a/src/include/heartbeat/ipfail_conf.ycp
@@ -22,6 +56,40 @@ index 4d29b98..c049388 100644
  
  include "heartbeat/helps.ycp";
  include "heartbeat/common.ycp";
+diff --git a/src/include/heartbeat/log_conf.ycp b/src/include/heartbeat/log_conf.ycp
+index 1302d3a..8b2d23c 100644
+--- a/src/include/heartbeat/log_conf.ycp
++++ b/src/include/heartbeat/log_conf.ycp
+@@ -59,7 +59,6 @@ import "SCR";
+ include "heartbeat/helps.ycp";
+ include "heartbeat/common.ycp";
+ 
+-
+ any log_conf_Read()
+ {
+     return true;
+@@ -93,7 +92,9 @@ term timeouts_conf_getDialog()
+ 
+ any ConfigureTimeoutsDialog () {
+ 
+-    timeouts_conf_Read();
++   // FIXME not defined in this file; 
++   // it's present in the timeouts_conf.ycp file but that is not included
++   //timeouts_conf_Read();
+     
+     my_SetContents("timeouts_conf", timeouts_conf_getDialog());
+     
+@@ -119,7 +120,9 @@ any ConfigureTimeoutsDialog () {
+ 
+ 	if (ret == `next || ret == `back || contains(DIALOG, (string)ret)) {
+ 	
+-	    if (!timeouts_conf_Write()) continue;
++    // FIXME not defined in this file;
++    // it's present in the timeouts_conf.ycp, however it expects 2 parameters
++	  // if (!timeouts_conf_Write()) continue;
+ 	    
+ 	    if (ret != `next && ret != `back)
+ 		ret = symbolof(toterm(ret));
 diff --git a/src/include/heartbeat/startup_conf.ycp b/src/include/heartbeat/startup_conf.ycp
 index ae99787..7e9ee32 100644
 --- a/src/include/heartbeat/startup_conf.ycp
@@ -46,3 +114,17 @@ index ba90cfe..01014ae 100644
  
  include "heartbeat/helps.ycp";
  include "heartbeat/common.ycp";
+diff --git a/yast2-heartbeat.spec.in b/yast2-heartbeat.spec.in
+index 6193558..f3044f6 100644
+--- a/yast2-heartbeat.spec.in
++++ b/yast2-heartbeat.spec.in
+@@ -25,8 +25,7 @@ YaST-Module to configure heartbeat
+ %defattr(-,root,root)
+ %dir @yncludedir@/heartbeat
+ @yncludedir@/heartbeat/*
+-@clientdir@/heartbeat.ycp
+-# @clientdir@/heartbeat_*.ycp
++@clientdir@/heartbeat.rb
+ @moduledir@/Heartbeat.*
+ @desktopdir@/heartbeat.desktop
+ @scrconfdir@/*.scr
