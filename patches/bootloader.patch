@@ -1,3 +1,47 @@
+diff --git a/agents/Makefile.am b/agents/Makefile.am
+index f2e1523..e69de29 100644
+--- a/agents/Makefile.am
++++ b/agents/Makefile.am
+@@ -1,24 +0,0 @@
+-#
+-# Makefile.am for bootloader/installation/agents
+-#
+-
+-scrconf_DATA = $(patsubst $(srcdir)/%,%,$(wildcard $(srcdir)/*.scr))
+-
+-agent_SCRIPTS = ag_bootloader
+-
+-fillup_DATA = sysconfig.bootloader
+-
+-SYSCONFIGSOURCES = $(wildcard sysconfig.bootloader.*)
+-
+-EXTRA_DIST = $(scrconf_DATA) $(SYSCONFIGSOURCES) $(agent_SCRIPTS)
+-
+-if I386_OR_AMD64
+-sysconfig.bootloader : sysconfig.bootloader.i386
+-	cp sysconfig.bootloader.i386 sysconfig.bootloader
+-else
+-sysconfig.bootloader : sysconfig.bootloader.default
+-	cp sysconfig.bootloader.default sysconfig.bootloader
+-endif
+-
+-
+-
+diff --git a/doc/autodocs/Makefile.am b/doc/autodocs/Makefile.am
+index 1833773..d7b8303 100644
+--- a/doc/autodocs/Makefile.am
++++ b/doc/autodocs/Makefile.am
+@@ -1,5 +1,7 @@
+ # Makefile.am for YCP module .../doc/autodocs
+ 
+-AUTODOCS_YCP = $(top_srcdir)/src/*/*.ycp
+-AUTODOCS_PM  = $(top_srcdir)/src/*/*.pm
+-include $(top_srcdir)/autodocs-ycp.ami
++# TODO FIXME: temporarily disabled
++
++#AUTODOCS_YCP = $(top_srcdir)/src/*/*.ycp
++#AUTODOCS_PM  = $(top_srcdir)/src/*/*.pm
++#include $(top_srcdir)/autodocs-ycp.ami
 diff --git a/src/include/bootloader/elilo/options.ycp b/src/include/bootloader/elilo/options.ycp
 index 1584c1e..2a1b431 100644
 --- a/src/include/bootloader/elilo/options.ycp
@@ -1060,3 +1104,20 @@ index f756b6c..5659a4f 100644
  
  import "Linuxrc";
  
+diff --git a/yast2-bootloader.spec.in b/yast2-bootloader.spec.in
+index dac4bd0..325d018 100644
+--- a/yast2-bootloader.spec.in
++++ b/yast2-bootloader.spec.in
+@@ -66,9 +66,9 @@ This package contains the YaST2 component for bootloader configuration.
+ %dir @yncludedir@/bootloader
+ @yncludedir@/bootloader/*
+ @moduledir@/*
+-@clientdir@/bootloader*.ycp
+-@clientdir@/print-product.ycp
+-@clientdir@/inst_*.ycp
++@clientdir@/bootloader*.rb
++@clientdir@/print-product.rb
++@clientdir@/inst_*.rb
+ @ybindir@/*
+ @agentdir@/ag_*
+ @scrconfdir@/*.scr
