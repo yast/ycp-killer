@@ -1,3 +1,39 @@
+diff --git a/agents/Makefile.am b/agents/Makefile.am
+index 945046b..e69de29 100644
+--- a/agents/Makefile.am
++++ b/agents/Makefile.am
+@@ -1,9 +0,0 @@
+-#
+-# Makefile.am for y2c_network/agents
+-#
+-# $Id$
+-#
+-
+-agent_SCRIPTS = ag_udev_persistent
+-scrconf_DATA = $(wildcard *.scr)
+-EXTRA_DIST = $(agent_SCRIPTS) $(scrconf_DATA)
+diff --git a/data/Makefile.am b/data/Makefile.am
+index 15ffd95..e69de29 100644
+--- a/data/Makefile.am
++++ b/data/Makefile.am
+@@ -1,4 +0,0 @@
+-# Makefile.am for .../source/network/data
+-
+-ydata_DATA = modem-t35-keys.ycp phone-codes.ycp
+-EXTRA_DIST = $(ydata_DATA)
+diff --git a/doc/autodocs/Makefile.am b/doc/autodocs/Makefile.am
+index a708e92..4b93a56 100644
+--- a/doc/autodocs/Makefile.am
++++ b/doc/autodocs/Makefile.am
+@@ -1,4 +1,6 @@
+ # Makefile.am for YCP module .../doc/autodocs
+ 
+-AUTODOCS_YCP = $(srcdir)/../../src/*/*.ycp
+-include $(top_srcdir)/autodocs-ycp.ami
++# TODO FIXME: temporarily disabled
++
++#AUTODOCS_YCP = $(srcdir)/../../src/*/*.ycp
++#include $(top_srcdir)/autodocs-ycp.ami
 diff --git a/src/include/network/lan/bridge.ycp b/src/include/network/lan/bridge.ycp
 index e597956..ec028b3 100644
 --- a/src/include/network/lan/bridge.ycp
@@ -14,10 +50,10 @@ index e597956..ec028b3 100644
  /**
   * Initializes widget (BRIDGE_PORTS) which contains list of devices available
 diff --git a/src/include/network/lan/complex.ycp b/src/include/network/lan/complex.ycp
-index e11a8a4..d1b12aa 100644
+index e11a8a4..0dc4672 100644
 --- a/src/include/network/lan/complex.ycp
 +++ b/src/include/network/lan/complex.ycp
-@@ -355,7 +357,9 @@ If you edit the settings for this interface here,
+@@ -355,7 +355,9 @@ If you edit the settings for this interface here,
  the interface will no longer be managed by NetworkManager.
  ")))
                  {
@@ -28,7 +64,7 @@ index e11a8a4..d1b12aa 100644
                  }
  
                  // TODO move the defaults to GetDefaultsForHW
-@@ -367,7 +371,9 @@ the interface will no longer be managed by NetworkManager.
+@@ -367,7 +369,9 @@ the interface will no longer be managed by NetworkManager.
              if (! AddInterface ()) 
              {
                  y2error( "handleOverview: AddInterface failed.");
@@ -39,7 +75,7 @@ index e11a8a4..d1b12aa 100644
              }
  
              if( !DeviceReady( LanItems::getCurrentItem()[ "hwinfo", "dev_name"]:"") )
-@@ -386,11 +393,20 @@ will be deleted as well.
+@@ -386,11 +390,20 @@ will be deleted as well.
  Really continue?
  "), LanItems::getCurrentItem()["ifcfg"]:"");
  	    if(LanItems::InterfaceHasAliases() && Popup::YesNoHeadline(Label::WarningMsg(), pop) != true)
@@ -105,3 +141,20 @@ index c29640e..1adbc3f 100644
  
  include "network/routines.ycp";
  include "network/widgets.ycp";
+diff --git a/yast2-network.spec.in b/yast2-network.spec.in
+index de9eec7..e8b2cbc 100644
+--- a/yast2-network.spec.in
++++ b/yast2-network.spec.in
+@@ -71,10 +71,9 @@ fi
+ @ybindir@/*
+ @ydatadir@/*
+ @yncludedir@/network
+-@clientdir@/*.ycp
++@clientdir@/*.rb
+ @moduledir@/YaPI/NETWORK.pm
+-@moduledir@/*.ycp
+-@moduledir@/*.ybc
++@moduledir@/*.rb
+ @desktopdir@/*.desktop
+ @scrconfdir@/*.scr
+ @agentdir@/ag_udev_persistent
