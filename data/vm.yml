@@ -9,6 +9,8 @@ moves:
     to:   src/clients
   - from: "src/{complex,dialogs,helps,wizards}.ycp"
     to:   src/include/relocation-server
+  - from: "src/virtualization.desktop"
+    to:   src/desktop/groups
   - from: "src/*.desktop"
     to:   src/desktop
   - from: "agents/xend.scr"
