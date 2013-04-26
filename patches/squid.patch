@@ -1,0 +1,65 @@
+diff --git a/agents/Makefile.am b/agents/Makefile.am
+index 36955ab..a848583 100644
+--- a/agents/Makefile.am
++++ b/agents/Makefile.am
+@@ -1,3 +1,3 @@
+ # Makefile.am for squid/agents
+-SUBDIRS = src config
++SUBDIRS = src
+ 
+diff --git a/agents/config/Makefile.am b/agents/config/Makefile.am
+index 99225c0..e69de29 100644
+--- a/agents/config/Makefile.am
++++ b/agents/config/Makefile.am
+@@ -1,5 +0,0 @@
+-# Makefile.am for squid/agents
+-
+-scrconf_DATA = squid.scr
+-
+-EXTRA_DIST = $(scrconf_DATA)
+diff --git a/config/Makefile.am b/config/Makefile.am
+index 293b916..cdbfd1f 100644
+--- a/config/Makefile.am
++++ b/config/Makefile.am
+@@ -1,14 +1,7 @@
+ # Makefile.am for squid/src
+ 
+-rncdir = $(schemadir)/autoyast/rnc
+ pkgdatadir = /etc/sysconfig/SuSEfirewall2.d/services
+-
+-desktop_DATA =			\
+-	squid.desktop
+-
+-rnc_DATA = squid.rnc
+-
+ pkgdata_DATA = SuSEfirewall2/squid
+ 
+-EXTRA_DIST = $(desktop_DATA) $(rnc_DATA) $(pkgdata_DATA)
++EXTRA_DIST = $(pkgdata_DATA)
+ 
+diff --git a/doc/autodocs/Makefile.am b/doc/autodocs/Makefile.am
+index 5c90780..e70ce9c 100644
+--- a/doc/autodocs/Makefile.am
++++ b/doc/autodocs/Makefile.am
+@@ -1,3 +1,5 @@
+ # Makefile.am for squid/doc/autodocs
+ 
+-include $(top_srcdir)/autodocs-ycp.ami
++# TODO FIXME: temporarily disabled
++
++# include $(top_srcdir)/autodocs-ycp.ami
+diff --git a/yast2-squid.spec.in b/yast2-squid.spec.in
+index 7837bae..6476be6 100644
+--- a/yast2-squid.spec.in
++++ b/yast2-squid.spec.in
+@@ -28,8 +28,8 @@ rm -rf %{buildroot}/@plugindir@/libpy2ag_squid.la
+ %dir @yncludedir@/squid
+ %config /etc/sysconfig/SuSEfirewall2.d/services/squid
+ @yncludedir@/squid/*
+-@clientdir@/squid.ycp
+-@clientdir@/squid_*.ycp
++@clientdir@/squid.rb
++@clientdir@/squid_*.rb
+ @moduledir@/Squid.*
+ @moduledir@/SquidACL.*
+ @moduledir@/SquidErrorMessages.*
