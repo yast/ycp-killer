@@ -77,6 +77,13 @@ things get gemified, packaged, etc.
          $ sudo zypper in yast2-storage           # Needed by storage
          $ sudo zypper in sablotron               # Needed by storage
          $ sudo zypper in limal-perl              # Needed by bootloader
+         $ sudo zypper in yast2-ldap              # Needed by dns-server and
+                                                  # dhcp-server
+         $ sudo zypper in perl-Digest-SHA1        # Needed by ftp-server,
+                                                  # phone-services,
+                                                  # profile-manager and s390
+         $ sudo zypper in perl-X500-DN            # Needed by ldap-server
+         $ sudo zypper in perl-NetxAP             # Needed by mail
          $ git clone git://github.com/yast/ycp-killer.git
          $ cd ycp-killer
          $ bundle install
