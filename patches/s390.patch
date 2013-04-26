@@ -1,0 +1,50 @@
+diff --git a/agents/Makefile.am b/agents/Makefile.am
+index d719f6f..e69de29 100644
+--- a/agents/Makefile.am
++++ b/agents/Makefile.am
+@@ -1,7 +0,0 @@
+-# Makefile.am for xpram/agents
+-
+-agent_SCRIPTS =
+-
+-scrconf_DATA = *.scr
+-
+-EXTRA_DIST = $(agent_SCRIPTS) $(scrconf_DATA)
+diff --git a/doc/autodocs/Makefile.am b/doc/autodocs/Makefile.am
+index 7d55a84..7ce8d69 100644
+--- a/doc/autodocs/Makefile.am
++++ b/doc/autodocs/Makefile.am
+@@ -1,5 +1,7 @@
+ # Makefile.am for devtools/devtools/skeletons/config/doc/autodocs
+ 
+-AUTODOCS_YCP = $(srcdir)/../../src/*/*.ycp
+-include $(top_srcdir)/autodocs-ycp.ami
++# TODO FIXME: temporarily disabled
++
++#AUTODOCS_YCP = $(srcdir)/../../src/*/*.ycp
++#include $(top_srcdir)/autodocs-ycp.ami
+ 
+diff --git a/yast2-s390.spec.in b/yast2-s390.spec.in
+index 9f098e9..aa91cca 100644
+--- a/yast2-s390.spec.in
++++ b/yast2-s390.spec.in
+@@ -5,7 +5,9 @@ Group:		System/YaST
+ License:        GPL-2.0
+ BuildRequires:	docbook-xsl-stylesheets doxygen libxslt perl-XML-Writer sgml-skel update-desktop-files
+ BuildRequires:	yast2 yast2-devtools yast2-testsuite yast2-users yast2-bootloader
+-ExclusiveArch:  s390 s390x
++# TODO FIXME: temporarily enable build on non-s390 arch to check if it actually builds
++# uncomment this back at production
++#ExclusiveArch:  s390 s390x
+ Requires:       yast2 s390-tools
+ 
+ Summary:	YaST2 - S/390 Specific Features Configuration
+@@ -26,7 +28,7 @@ S/390-specific features.
+ %defattr(-,root,root)
+ %dir @yncludedir@/s390
+ @yncludedir@/s390/*
+-@clientdir@/*.ycp
++@clientdir@/*.rb
+ @moduledir@/*
+ @scrconfdir@/*.scr
+ @desktopdir@/*.desktop
