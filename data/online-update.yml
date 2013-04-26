@@ -1,5 +1,6 @@
 ybc_deps:
   - yast2
+  - packager
 
 moves:
   - from: "src/[A-Z]*.ycp"
