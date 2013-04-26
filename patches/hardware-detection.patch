@@ -1,0 +1,71 @@
+diff --git a/conf/Makefile.am b/conf/Makefile.am
+index 18ebdc2..e69de29 100644
+--- a/conf/Makefile.am
++++ b/conf/Makefile.am
+@@ -1,7 +0,0 @@
+-#
+-# Makefile.am for core/agent-probe/conf
+-#
+-
+-scrconf_DATA = probe.scr
+-
+-EXTRA_DIST = $(scrconf_DATA)
+diff --git a/doc/autodocs/Makefile.am b/doc/autodocs/Makefile.am
+index 842d408..6f679e5 100644
+--- a/doc/autodocs/Makefile.am
++++ b/doc/autodocs/Makefile.am
+@@ -1,3 +1,5 @@
+ # Makefile.am for .../agent-hardware-detection/doc/autodocs
+ 
+-include $(top_srcdir)/autodocs-cc.ami
++# TODO FIXME: temporarily disabled
++
++#include $(top_srcdir)/autodocs-cc.ami
+diff --git a/testsuite/Makefile.am b/testsuite/Makefile.am
+index a710e62..20ad188 100644
+--- a/testsuite/Makefile.am
++++ b/testsuite/Makefile.am
+@@ -17,5 +17,5 @@ runag_hwprobe_SOURCES = runag_hwprobe.cc
+ runag_hwprobe_LDADD = ${AGENT_LIBADD}
+ runag_hwprobe_LDFLAGS = 			\
+ 	-Xlinker --whole-archive		\
+-	../src/libpy2ag_hwprobe.la		\
++	../agent/libpy2ag_hwprobe.la		\
+ 	-Xlinker --no-whole-archive
+diff --git a/testsuite/ag_hwprobe.test/ag_hwprobe.exp b/testsuite/ag_hwprobe.test/ag_hwprobe.exp
+index 437379e..41e04cb 100644
+--- a/testsuite/ag_hwprobe.test/ag_hwprobe.exp
++++ b/testsuite/ag_hwprobe.test/ag_hwprobe.exp
+@@ -5,7 +5,7 @@
+ 
+ # get all files matching tests/*.ycp
+ 
+-set filenames [glob $srcdir/tests/*.ycp]
++set filenames [glob $srcdir/tests/*.rb]
+ 
+ # foreach file, call ycp-run (from testsuite/lib)
+ 
+diff --git a/testsuite/runag_hwprobe.cc b/testsuite/runag_hwprobe.cc
+index 08f8d0d..59d2218 100644
+--- a/testsuite/runag_hwprobe.cc
++++ b/testsuite/runag_hwprobe.cc
+@@ -7,7 +7,7 @@
+ 
+ #include <scr/run_agent.h>
+ 
+-#include "../src/HwProbe.h"
++#include "../agent/HwProbe.h"
+ 
+ 
+ int
+diff --git a/testsuite/tests/Makefile.am b/testsuite/tests/Makefile.am
+index 78aebd5..f8da694 100644
+--- a/testsuite/tests/Makefile.am
++++ b/testsuite/tests/Makefile.am
+@@ -2,5 +2,5 @@
+ # Makefile.am for core/agent-probe/testsuite/tests
+ #
+ 
+-EXTRA_DIST = *.ycp *.out *.err runtest.sh
++EXTRA_DIST = *.rb *.out *.err runtest.sh
+ 
