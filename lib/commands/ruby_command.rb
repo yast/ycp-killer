@@ -24,14 +24,14 @@ module Commands
 
             create_rb mod, work_file, result_file
           rescue Exception => e
-            handle_exception(e, :y2r, work_file)
+            handle_exception(e, :y2r, mod, file)
             next
           end
 
           begin
             check_rb result_file
           rescue Exception => e
-            handle_exception(e, :ruby, work_file)
+            handle_exception(e, :ruby, mod, file)
             next
           end
 
