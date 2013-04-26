@@ -1,0 +1,47 @@
+diff --git a/agents/Makefile.am b/agents/Makefile.am
+index e503682..e69de29 100644
+--- a/agents/Makefile.am
++++ b/agents/Makefile.am
+@@ -1,7 +0,0 @@
+-#
+-# Makefile.am for nis-server/agents
+-#
+-
+-scrconf_DATA = $(wildcard $(srcdir)/*.scr)
+-
+-EXTRA_DIST = $(scrconf_DATA)
+diff --git a/doc/autodocs/Makefile.am b/doc/autodocs/Makefile.am
+index 2a6f678..9de7be0 100644
+--- a/doc/autodocs/Makefile.am
++++ b/doc/autodocs/Makefile.am
+@@ -1,3 +1,5 @@
+ # Makefile.am for YCP module .../doc/autodocs
+ 
+-include $(top_srcdir)/autodocs-ycp.ami
++# TODO FIXME: temporarily disabled
++
++#include $(top_srcdir)/autodocs-ycp.ami
+diff --git a/yast2-nis-server.spec.in b/yast2-nis-server.spec.in
+index 67be058..8e6d83a 100644
+--- a/yast2-nis-server.spec.in
++++ b/yast2-nis-server.spec.in
+@@ -44,14 +44,13 @@ This package contains documentation for yast2-nis-server
+ %files
+ %defattr(-,root,root)
+ %dir @yncludedir@/nis_server
+-@yncludedir@/nis_server/*.ycp
++@yncludedir@/nis_server/*.rb
+ %dir @moduledir@
+-@moduledir@/NisServer.ycp
+-@moduledir@/NisServer.ybc
++@moduledir@/NisServer.rb
+ %dir @clientdir@
+-@clientdir@/nis_server.ycp
+-@clientdir@/nis_server_auto.ycp
+-@clientdir@/nis-server.ycp
++@clientdir@/nis_server.rb
++@clientdir@/nis_server_auto.rb
++@clientdir@/nis-server.rb
+ %dir @desktopdir@
+ @desktopdir@/nis_server.desktop
+ %dir @scrconfdir@
