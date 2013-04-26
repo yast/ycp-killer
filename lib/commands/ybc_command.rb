@@ -19,7 +19,7 @@ module Commands
             Messages.finish "OK"
             @counts[:ok] += 1
           rescue Exception => e
-            handle_exception(e, :ybc, file)
+            handle_exception(e, :ybc, mod, file)
           end
         end
       end

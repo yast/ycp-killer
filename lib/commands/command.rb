@@ -32,7 +32,7 @@ module Commands
       }
     end
 
-    def handle_exception(e, phase, file)
+    def handle_exception(e, phase, mod, file)
       raise if e.is_a? Interrupt
 
       if ! e.is_a? Cheetah::ExecutionFailed
@@ -40,13 +40,14 @@ module Commands
       end
       Messages.finish "ERROR(#{phase})"
       @counts["error_#{phase}".to_sym] += 1
-      log_error(file, e)
+      log_error(mod, file, e)
     end
 
-    def log_error(file, e)
+    def log_error(mod, file, e)
       File.open(ERROR_FILE, "a") do |f|
-        f.puts file
-        f.puts "-" * file.size
+        header = "[#{mod.name}] #{file}"
+        f.puts header
+        f.puts "-" * header.size
         f.puts
         if e.is_a?(Cheetah::ExecutionFailed)
           f.puts e.stderr
