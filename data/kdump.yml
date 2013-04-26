@@ -16,7 +16,3 @@ moves:
   - from: "config/kdump.rnc"
     to:   src/autoyast-rnc
 
-excluded:
-  # TODO: Include files, can't be compiled for now.
-  - src/include/kdump/dialogs.ycp
-  - src/include/kdump/uifunctions.ycp
