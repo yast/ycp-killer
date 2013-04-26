@@ -1,0 +1,49 @@
+diff --git a/data/Makefile.am b/data/Makefile.am
+index e1f62a7..7f6f360 100644
+--- a/data/Makefile.am
++++ b/data/Makefile.am
+@@ -4,7 +4,7 @@
+ # $Id$
+ #
+ 
+-ydata_DATA = tv_cards-lirc_gpio.ycp tv_cards.ycp tv_tuners.ycp tv_dvbcards.ycp tv_dvbfirmware.ycp
++ydata_DATA = tv_cards.ycp tv_tuners.ycp
+ 
+ tv_cards.ycp: CARDLIST.bttv CARDLIST.saa7134 CARDLIST.cx88 CARDLIST.ivtv CARDLIST.em28xx CARDLIST.cx23885 CARDLIST.saa7164 CARDLIST.au0828
+ 	$(srcdir)/create_tv_db $^ > $@
+@@ -13,7 +13,7 @@ tv_tuners.ycp: CARDLIST.tuner
+ 	$(srcdir)/create_tuner_db $^ > $@
+ 
+ EXTRA_DIST = CARDLIST.bttv CARDLIST.saa7134 CARDLIST.cx88 CARDLIST.ivtv CARDLIST.tuner CARDLIST.em28xx CARDLIST.cx23885 CARDLIST.saa7164 CARDLIST.au0828 \
+-	     create_tv_db create_tuner_db tv_cards-lirc_gpio.ycp tv_dvbcards.ycp tv_dvbfirmware.ycp
++	     create_tv_db create_tuner_db
+ 
+ # delete generated files
+ CLEANFILES = tv_cards.ycp tv_tuners.ycp
+diff --git a/doc/autodocs/Makefile.am b/doc/autodocs/Makefile.am
+index 2a6f678..4cb582c 100644
+--- a/doc/autodocs/Makefile.am
++++ b/doc/autodocs/Makefile.am
+@@ -1,3 +1,5 @@
+ # Makefile.am for YCP module .../doc/autodocs
+ 
+-include $(top_srcdir)/autodocs-ycp.ami
++# TODO FIXME: temporarily disabled
++
++# include $(top_srcdir)/autodocs-ycp.ami
+diff --git a/yast2-tv.spec.in b/yast2-tv.spec.in
+index 0656c33..99d7fd9 100644
+--- a/yast2-tv.spec.in
++++ b/yast2-tv.spec.in
+@@ -49,9 +49,10 @@ fi
+ %defattr(-,root,root)
+ %dir @yncludedir@/tv
+ @yncludedir@/tv/*
+-@clientdir@/*.ycp
++@clientdir@/*.rb
+ @moduledir@/*.*
+ @desktopdir@/*.desktop
+ @scrconfdir@/*.scr
+ @ydatadir@/*.ycp
++@ydatadir@/*.rb
+ %doc @docdir@
