@@ -23,6 +23,10 @@ moves:
     to: src/fillup
   - from: "agents/ag_bootloader"
     to: src/servers_non_y2
+  - from: "src/config/bootloader.desktop"
+    to: "src/desktop"
+  - from: "src/config/bootloader.rnc"
+    to: "src/autoyast-rnc"
 
 excluded:
 
