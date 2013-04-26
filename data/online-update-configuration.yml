@@ -1,6 +1,9 @@
 ybc_deps:
   - yast2
 
+ruby_deps:
+  - packager
+
 moves:
   - from: "src/dialogs/OUCDialogs.ycp"
     to:   src/include/online-update-configuration
