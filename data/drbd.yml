@@ -12,6 +12,4 @@ moves:
     to:   src/desktop
   - from: "agents/drbd.scr"
     to:   src/scrconf
-  - from: "agents/{ag_drbd,drbd.rb.yy,Makefile.*}"
-    to:   src/servers_non_y2
 
