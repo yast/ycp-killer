@@ -1,0 +1,12 @@
+diff --git a/doc/autodocs/Makefile.am b/doc/autodocs/Makefile.am
+index 2c8851b..4c23223 100644
+--- a/doc/autodocs/Makefile.am
++++ b/doc/autodocs/Makefile.am
+@@ -2,4 +2,6 @@
+ # Makefile.am for pam/doc/autodocs
+ #
+ 
+-include $(top_srcdir)/autodocs-ycp.ami
++# TODO FIXME: temporarily disabled
++
++#include $(top_srcdir)/autodocs-ycp.ami
