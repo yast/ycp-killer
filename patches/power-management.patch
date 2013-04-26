@@ -75,3 +75,18 @@ index 4c44712..9dcef54 100644
  /**
    * Handler for command line interface
    * @param options map options from the command line
+diff --git a/yast2-power-management.spec.in b/yast2-power-management.spec.in
+index 145f877..45cd61d 100644
+--- a/yast2-power-management.spec.in
++++ b/yast2-power-management.spec.in
+@@ -28,8 +28,8 @@ configuration.
+ %defattr(-,root,root)
+ %dir @yncludedir@/power-management
+ @yncludedir@/power-management/*
+-@clientdir@/power-management.ycp
+-@clientdir@/power-management_*.ycp
++@clientdir@/power-management.rb
++@clientdir@/power-management_*.rb
+ @moduledir@/PowerManagement.*
+ @desktopdir@/power-management.desktop
+ @scrconfdir@/*
