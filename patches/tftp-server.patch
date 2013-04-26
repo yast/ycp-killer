@@ -1,0 +1,24 @@
+diff --git a/doc/autodocs/Makefile.am b/doc/autodocs/Makefile.am
+index 2a6f678..9de7be0 100644
+--- a/doc/autodocs/Makefile.am
++++ b/doc/autodocs/Makefile.am
+@@ -1,3 +1,5 @@
+ # Makefile.am for YCP module .../doc/autodocs
+ 
+-include $(top_srcdir)/autodocs-ycp.ami
++# TODO FIXME: temporarily disabled
++
++#include $(top_srcdir)/autodocs-ycp.ami
+diff --git a/yast2-tftp-server.spec.in b/yast2-tftp-server.spec.in
+index 96e62f9..2f20712 100644
+--- a/yast2-tftp-server.spec.in
++++ b/yast2-tftp-server.spec.in
+@@ -33,7 +33,7 @@ network.
+ %defattr(-,root,root)
+ %dir @yncludedir@/tftp-server
+ @yncludedir@/tftp-server/*
+-@clientdir@/tftp-server*.ycp
++@clientdir@/tftp-server*.rb
+ @moduledir@/TftpServer.*
+ @desktopdir@/tftp-server.desktop
+ @scrconfdir@/etc_xinetd_d_tftp.scr
