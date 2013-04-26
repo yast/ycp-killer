@@ -1,0 +1,59 @@
+diff --git a/agent-ypserv/conf/Makefile.am b/agent-ypserv/conf/Makefile.am
+index b2a9e01..e69de29 100644
+--- a/agent-ypserv/conf/Makefile.am
++++ b/agent-ypserv/conf/Makefile.am
+@@ -1,7 +0,0 @@
+-#
+-# Makefile.am for core/agent-ypserv/conf
+-#
+-
+-scrconf_DATA = ypserv.scr
+-
+-EXTRA_DIST = $(scrconf_DATA)
+diff --git a/agents/Makefile.am b/agents/Makefile.am
+index 9f64c0a..b9dae7f 100644
+--- a/agents/Makefile.am
++++ b/agents/Makefile.am
+@@ -4,11 +4,7 @@
+ # $Id$
+ #
+ 
+-agent_SCRIPTS = ag_yp_conf
+-
+-scrconf_DATA = cfg_ypbind.scr yp_conf.scr
+-
+ TESTS = test-ypconf
+ testdata = test-ypconf-i.in test-ypconf-i.out test-ypconf-o.out
+ 
+-EXTRA_DIST = $(agent_SCRIPTS) $(scrconf_DATA) $(TESTS) $(testdata)
++EXTRA_DIST = $(TESTS) $(testdata)
+diff --git a/doc/autodocs/Makefile.am b/doc/autodocs/Makefile.am
+index 2a6f678..4cb582c 100644
+--- a/doc/autodocs/Makefile.am
++++ b/doc/autodocs/Makefile.am
+@@ -1,3 +1,5 @@
+ # Makefile.am for YCP module .../doc/autodocs
+ 
+-include $(top_srcdir)/autodocs-ycp.ami
++# TODO FIXME: temporarily disabled
++
++# include $(top_srcdir)/autodocs-ycp.ami
+diff --git a/yast2-nis-client.spec.in b/yast2-nis-client.spec.in
+index 8a34023..c31cb81 100644
+--- a/yast2-nis-client.spec.in
++++ b/yast2-nis-client.spec.in
+@@ -35,10 +35,10 @@ yellow pages.
+ %files
+ %defattr(-,root,root)
+ %dir @yncludedir@/nis
+-@yncludedir@/nis/ui.ycp
+-@clientdir@/nis.ycp
+-@clientdir@/nis-client.ycp
+-@clientdir@/nis_auto.ycp
++@yncludedir@/nis/ui.rb
++@clientdir@/nis.rb
++@clientdir@/nis-client.rb
++@clientdir@/nis_auto.rb
+ @moduledir@/Nis.*
+ @desktopdir@/nis.desktop
+ @agentdir@/ag_yp_conf

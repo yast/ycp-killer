@@ -16,6 +16,8 @@ moves:
     to:   src/autoyast-rnc
   - from: agents/*.scr
     to:   src/scrconf
+  - from: agent-ypserv/conf/*.scr
+    to:   src/scrconf
   - from: agents/ag_yp_conf
     to:   src/servers_non_y2
   # agent-ypserv is in C, leave it there for now
