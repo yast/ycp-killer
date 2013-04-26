@@ -1,0 +1,45 @@
+TODO: fix agent packaging upstream
+
+diff --git a/agents/Makefile.am b/agents/Makefile.am
+index 1ef025a..e69de29 100644
+--- a/agents/Makefile.am
++++ b/agents/Makefile.am
+@@ -1,9 +0,0 @@
+-# Makefile.am for squidguard/agents
+-
+-agentdir = @execcompdir@/servers_non_y2
+-
+-agent_SCRIPTS = ag_squidguard
+-
+-scrconf_DATA = squidguard.scr
+-
+-EXTRA_DIST = $(agent_SCRIPTS) $(scrconf_DATA)
+diff --git a/doc/autodocs/Makefile.am b/doc/autodocs/Makefile.am
+index d0e5f35..56cb5d0 100644
+--- a/doc/autodocs/Makefile.am
++++ b/doc/autodocs/Makefile.am
+@@ -1,3 +1,5 @@
+ # Makefile.am for squidguard/doc/autodocs
+ 
+-include $(top_srcdir)/autodocs-ycp.ami
++# TODO FIXME: temporarily disabled
++
++#include $(top_srcdir)/autodocs-ycp.ami
+diff --git a/yast2-squidguard.spec.in b/yast2-squidguard.spec.in
+index 5a0cf74..9b728ea 100644
+--- a/yast2-squidguard.spec.in
++++ b/yast2-squidguard.spec.in
+@@ -23,9 +23,11 @@ Summary:	Configuration of squidguard
+ %defattr(-,root,root)
+ %dir @yncludedir@/squidguard
+ @yncludedir@/squidguard/*
+-@clientdir@/squidguard.ycp
+-@clientdir@/squidguard_*.ycp
++@clientdir@/squidguard.rb
++@clientdir@/squidguard_*.rb
+ @moduledir@/Squidguard.*
+ @moduledir@/Squidguard2.*
+ @desktopdir@/squidguard.desktop
++@scrconfdir@/*.scr
++@agentdir@/ag_squidguard
+ %doc @docdir@
