@@ -1,3 +1,14 @@
+diff --git a/doc/autodocs/Makefile.am b/doc/autodocs/Makefile.am
+index bb7ebdc..e34d7ca 100644
+--- a/doc/autodocs/Makefile.am
++++ b/doc/autodocs/Makefile.am
+@@ -1,3 +1,5 @@
+ # Makefile.am for iscsi-client/doc/autodocs
+ 
+-include $(top_srcdir)/autodocs-ycp.ami
++# TODO FIXME: temporarily disabled
++
++#include $(top_srcdir)/autodocs-ycp.ami
 diff --git a/src/include/iscsi-client/complex.ycp b/src/include/iscsi-client/complex.ycp
 index 378c26a..c90b295 100644
 --- a/src/include/iscsi-client/complex.ycp
@@ -58,3 +69,20 @@ index 8c49b17..52fb8e9 100644
    case(`del):
  		// delete (logout from) connected target
  		record = setRecord();
+diff --git a/yast2-iscsi-client.spec.in b/yast2-iscsi-client.spec.in
+index d945497..f4475c1 100644
+--- a/yast2-iscsi-client.spec.in
++++ b/yast2-iscsi-client.spec.in
+@@ -35,9 +35,9 @@ client.
+ %defattr(-,root,root)
+ %dir @yncludedir@/iscsi-client
+ @yncludedir@/iscsi-client/*
+-@clientdir@/iscsi-client.ycp
+-@clientdir@/iscsi-client_*.ycp
+-@clientdir@/inst_iscsi-client.ycp
++@clientdir@/iscsi-client.rb
++@clientdir@/iscsi-client_*.rb
++@clientdir@/inst_iscsi-client.rb
+ @moduledir@/IscsiClient.*
+ @moduledir@/IscsiClientLib.*
+ @desktopdir@/iscsi-client.desktop
