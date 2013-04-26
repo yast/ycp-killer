@@ -1,3 +1,22 @@
+diff --git a/data/Makefile.am b/data/Makefile.am
+index 7d66112..f7efc11 100644
+--- a/data/Makefile.am
++++ b/data/Makefile.am
+@@ -6,7 +6,7 @@
+ 
+ SUBDIRS = doc
+ 
+-ydata_DATA = alsa_packages.ycp sndcards.ycp
++ydata_DATA = sndcards.ycp
+ 
+ sound_db_generator = alsa_drivers.rb data_cards.rb data_joystick.rb data_mixer.rb data_extra_ids.rb generate_soundcard_db.rb sound_db_generator.rb ycp_format.rb
+ 
+@@ -17,4 +17,4 @@ sndcards.ycp: $(sound_db_generator)
+ 
+ CLEANFILES = sndcards.ycp
+ 
+-EXTRA_DIST = alsa_packages.ycp $(sound_db_generator)
++EXTRA_DIST = $(sound_db_generator)
 diff --git a/doc/autodocs/Makefile.am b/doc/autodocs/Makefile.am
 index 2a6f678..19b5419 100644
 --- a/doc/autodocs/Makefile.am
@@ -16,3 +35,29 @@ index 0764d69..9ef8dbb 100644
  # Makefile.am for sound/sound
 -SUBDIRS = doc src testsuite agents config
 +SUBDIRS =
+diff --git a/yast2-sound.spec.in b/yast2-sound.spec.in
+index 1b9ba31..a127a87 100644
+--- a/yast2-sound.spec.in
++++ b/yast2-sound.spec.in
+@@ -42,9 +42,9 @@ fi
+ 
+ # sound
+ %dir @yncludedir@/sound
+-@yncludedir@/sound/*.ycp
+-@clientdir@/sound*.ycp
+-@clientdir@/joystick.ycp
++@yncludedir@/sound/*.rb
++@clientdir@/sound*.rb
++@clientdir@/joystick.rb
+ @desktopdir@/sound.desktop
+ @desktopdir@/joystick.desktop
+ @ybindir@/copyfonts
+@@ -57,7 +57,7 @@ fi
+ 
+ # database
+ @ydatadir@/sndcards.ycp
+-@ydatadir@/alsa_packages.ycp
++@ydatadir@/alsa_packages.rb
+ 
+ # agents
+ @plugindir@/libpy2ag_audio.so*
