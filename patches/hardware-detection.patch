@@ -1,0 +1,35 @@
+diff --git a/doc/autodocs/Makefile.am b/doc/autodocs/Makefile.am
+index 842d408..6f7fe55 100644
+--- a/doc/autodocs/Makefile.am
++++ b/doc/autodocs/Makefile.am
+@@ -1,3 +1,4 @@
+ # Makefile.am for .../agent-hardware-detection/doc/autodocs
+-
+-include $(top_srcdir)/autodocs-cc.ami
++# TODO
++# FIXME temporarily disabled
++# include $(top_srcdir)/autodocs-cc.ami
+diff --git a/testsuite/ag_hwprobe.test/ag_hwprobe.exp b/testsuite/ag_hwprobe.test/ag_hwprobe.exp
+index 437379e..41e04cb 100644
+--- a/testsuite/ag_hwprobe.test/ag_hwprobe.exp
++++ b/testsuite/ag_hwprobe.test/ag_hwprobe.exp
+@@ -5,7 +5,7 @@
+ 
+ # get all files matching tests/*.ycp
+ 
+-set filenames [glob $srcdir/tests/*.ycp]
++set filenames [glob $srcdir/tests/*.rb]
+ 
+ # foreach file, call ycp-run (from testsuite/lib)
+ 
+diff --git a/testsuite/tests/Makefile.am b/testsuite/tests/Makefile.am
+index 78aebd5..f8da694 100644
+--- a/testsuite/tests/Makefile.am
++++ b/testsuite/tests/Makefile.am
+@@ -2,5 +2,5 @@
+ # Makefile.am for core/agent-probe/testsuite/tests
+ #
+ 
+-EXTRA_DIST = *.ycp *.out *.err runtest.sh
++EXTRA_DIST = *.rb *.out *.err runtest.sh
+ 
