@@ -1,0 +1,50 @@
+diff --git a/agents/Makefile.am b/agents/Makefile.am
+index 5a24d19..e69de29 100644
+--- a/agents/Makefile.am
++++ b/agents/Makefile.am
+@@ -1,14 +0,0 @@
+-#
+-# Makefile.am for nfs-server/agents
+-#
+-# $Id$
+-#
+-
+-agent_SCRIPTS = ag_exports\
+-		ag_idmapd_conf
+-
+-scrconf_DATA = etc_exports.scr\
+-		etc_idmapd_conf.scr\
+-		cfg_nfs.scr
+-
+-EXTRA_DIST = $(agent_SCRIPTS) $(scrconf_DATA)
+diff --git a/doc/autodocs/Makefile.am b/doc/autodocs/Makefile.am
+index 2a6f678..9de7be0 100644
+--- a/doc/autodocs/Makefile.am
++++ b/doc/autodocs/Makefile.am
+@@ -1,3 +1,5 @@
+ # Makefile.am for YCP module .../doc/autodocs
+ 
+-include $(top_srcdir)/autodocs-ycp.ami
++# TODO FIXME: temporarily disabled
++
++#include $(top_srcdir)/autodocs-ycp.ami
+diff --git a/yast2-nfs-server.spec.in b/yast2-nfs-server.spec.in
+index 80a0e70..ed328ce 100644
+--- a/yast2-nfs-server.spec.in
++++ b/yast2-nfs-server.spec.in
+@@ -42,11 +42,10 @@ Requires:       limal-nfs-server-perl
+ %defattr(-,root,root)
+ %dir @yncludedir@/nfs_server
+ @yncludedir@/nfs_server/*
+-@clientdir@/nfs-server.ycp
+-@clientdir@/nfs_server.ycp
+-@clientdir@/nfs_server_auto.ycp
+-@moduledir@/NfsServer.ycp
+-@moduledir@/NfsServer.ybc
++@clientdir@/nfs-server.rb
++@clientdir@/nfs_server.rb
++@clientdir@/nfs_server_auto.rb
++@moduledir@/NfsServer.rb
+ @desktopdir@/nfs_server.desktop
+ @scrconfdir@/etc_exports.scr
+ @agentdir@/ag_exports
