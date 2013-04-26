@@ -7,6 +7,11 @@ ybc_deps:
   - storage
   - transfer
 
+ruby_deps:
+  - bootloader
+  - runlevel
+  - network
+
 moves:
   - from: src/{dialogs,include}/*.ycp
     to: src/include/autoinstall
@@ -32,3 +37,19 @@ moves:
   # Autoyast specific xml transformation files
   - from: src/data/*
     to: xslt
+
+excluded:
+  # TODO: Include files, can't be compiled for now.
+  - src/include/autoinstall/wizards.ycp
+  - src/include/autoinstall/general_dialogs.ycp
+  - src/include/autoinstall/autoinst_dialogs.ycp
+  - src/include/autoinstall/partition_dialogs.ycp
+  - src/include/autoinstall/VolgroupDialog.ycp
+  - src/include/autoinstall/PartitionDialog.ycp
+  - src/include/autoinstall/ask.ycp
+  - src/include/autoinstall/DriveDialog.ycp
+  - src/include/autoinstall/conftree.ycp
+  - src/include/autoinstall/script_dialogs.ycp
+  - src/include/autoinstall/autopart.ycp
+  - src/include/autoinstall/classes.ycp
+  - testsuite/devel/autoinst_test.ycp
