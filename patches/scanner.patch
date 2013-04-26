@@ -1,0 +1,24 @@
+diff --git a/doc/autodocs/Makefile.am b/doc/autodocs/Makefile.am
+index 2a6f678..9de7be0 100644
+--- a/doc/autodocs/Makefile.am
++++ b/doc/autodocs/Makefile.am
+@@ -1,3 +1,5 @@
+ # Makefile.am for YCP module .../doc/autodocs
+ 
+-include $(top_srcdir)/autodocs-ycp.ami
++# TODO FIXME: temporarily disabled
++
++#include $(top_srcdir)/autodocs-ycp.ami
+diff --git a/yast2-scanner.spec.in b/yast2-scanner.spec.in
+index 625ac90..5dcb128 100644
+--- a/yast2-scanner.spec.in
++++ b/yast2-scanner.spec.in
+@@ -42,7 +42,7 @@ chmod 755 %{my_requires}
+ %defattr(-,root,root)
+ %dir @yncludedir@/scanner
+ @yncludedir@/scanner/*
+-@clientdir@/scanner.ycp
++@clientdir@/scanner.rb
+ @moduledir@/Scanner.*
+ @desktopdir@/scanner.desktop
+ @ybindir@/*scanner*
