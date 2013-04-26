@@ -14,3 +14,5 @@ moves:
     to: src/autoyast-rnc
   - from: agents/*.scr
     to: src/scrconf
+  - from: agents/ag_*
+    to: src/servers_non_y2
