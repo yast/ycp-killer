@@ -1,1 +1,7 @@
-# Nothing to do.
+
+moves:
+  - from: src/*
+    to: agent
+  - from: conf/*.scr
+    to: src/scrconf
+
