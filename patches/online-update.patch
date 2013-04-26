@@ -1,0 +1,33 @@
+diff --git a/doc/autodocs/Makefile.am b/doc/autodocs/Makefile.am
+index 2a6f678..4cb582c 100644
+--- a/doc/autodocs/Makefile.am
++++ b/doc/autodocs/Makefile.am
+@@ -1,3 +1,5 @@
+ # Makefile.am for YCP module .../doc/autodocs
+ 
+-include $(top_srcdir)/autodocs-ycp.ami
++# TODO FIXME: temporarily disabled
++
++# include $(top_srcdir)/autodocs-ycp.ami
+diff --git a/yast2-online-update.spec.in b/yast2-online-update.spec.in
+index 12e1cd3..b7e86da 100644
+--- a/yast2-online-update.spec.in
++++ b/yast2-online-update.spec.in
+@@ -40,12 +40,11 @@ YaST control center.
+ %files
+ %defattr(-,root,root)
+ @scrconfdir@/*.scr
+-@clientdir@/online*.ycp
+-@clientdir@/cd_update.ycp
+-@clientdir@/inst_you.ycp
+-@clientdir@/do_online_update_auto.ycp
+-@moduledir@/OnlineUpdate*.ycp
+-@moduledir@/OnlineUpdate*.ybc
++@clientdir@/online*.rb
++@clientdir@/cd_update.rb
++@clientdir@/inst_you.rb
++@clientdir@/do_online_update_auto.rb
++@moduledir@/OnlineUpdate*.rb
+ %doc @docdir@
+ 
+ %package frontend

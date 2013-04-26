@@ -4,11 +4,14 @@ ybc_deps:
   - online-update
 
 moves:
-  - from: "src/clients/wagon"
-    to:   src/bin
+  - from: "src/clients/{wagon,Makefile.am}"
+    to:   bin
   - from: "src/include/{wagon_helpers,common_func}.ycp"
     to:   src/include/wagon
   - from: "src/config/cd_update.desktop"
     to:   src/desktop
+  # TODO FIXME: add support for control files?
   - from: "src/config/online_migration-*.xml"
-    to:   src/control-rng
+    to:   control
+  - from: "src/config/Makefile.am"
+    to:   control

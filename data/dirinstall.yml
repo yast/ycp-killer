@@ -10,4 +10,8 @@ ybc_deps:
 moves:
   - from: "src/include/*.ycp"
     to: src/include/dirinstall
+  - from: "src/config/dirinstall.desktop"
+    to: src/desktop
+  - from: "src/config/*"
+    to: control
 
