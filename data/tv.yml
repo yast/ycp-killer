@@ -12,8 +12,8 @@ moves:
     to: src/clients
   - from: "src/*.ycp"
     to: src/include/tv
-  - from: data
-    to: src
+  - from: "data/*.ycp"
+    to: src/data
   - from: "agents/*"
     to: src/scrconf
   - from: "src/*.desktop"
