@@ -19,6 +19,6 @@ moves:
     to: src
   - from: "sound/doc"
     to: "."
-  - from: "data"
-    to: src
+  - from: "data/alsa_packages.ycp"
+    to: src/data
 # TODO file data/sndcards.ycp is dynamically generated at build time
