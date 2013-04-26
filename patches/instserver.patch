@@ -7,3 +7,28 @@ index 2a6f678..19b5419 100644
  
 -include $(top_srcdir)/autodocs-ycp.ami
 +# include $(top_srcdir)/autodocs-ycp.ami
+diff --git a/httpd/Makefile.am b/httpd/Makefile.am
+index 93ce8ad..1d261db 100644
+--- a/httpd/Makefile.am
++++ b/httpd/Makefile.am
+@@ -1,4 +1,7 @@
+ apacheconfdir = /etc/apache2/conf.d
+ apacheconf_DATA = inst_server.conf.in
+ 
++install-data-local:
++	install -d -m 755 $(DESTDIR)/etc/YaST2/instserver
++
+ EXTRA_DIST = $(apacheconf_DATA) 
+diff --git a/yast2-instserver.spec.in b/yast2-instserver.spec.in
+index e452ea7..7502c98 100644
+--- a/yast2-instserver.spec.in
++++ b/yast2-instserver.spec.in
+@@ -31,7 +31,7 @@ NFS sources are supported.
+ %defattr(-,root,root)
+ %dir @yncludedir@/instserver
+ @yncludedir@/instserver/*
+-@clientdir@/instserver.ycp
++@clientdir@/instserver.rb
+ @moduledir@/Instserver.*
+ @desktopdir@/instserver.desktop
+ %doc @docdir@
