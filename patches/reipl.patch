@@ -1,0 +1,51 @@
+diff --git a/agents/Makefile.am b/agents/Makefile.am
+index c1898cd..e69de29 100644
+--- a/agents/Makefile.am
++++ b/agents/Makefile.am
+@@ -1,7 +0,0 @@
+-# Makefile.am for reipl/agents
+-
+-agent_SCRIPTS =
+-
+-scrconf_DATA =
+-
+-EXTRA_DIST = $(agent_SCRIPTS) $(scrconf_DATA)
+diff --git a/doc/autodocs/Makefile.am b/doc/autodocs/Makefile.am
+index 26d35b7..4709d9d 100644
+--- a/doc/autodocs/Makefile.am
++++ b/doc/autodocs/Makefile.am
+@@ -1,3 +1,5 @@
+ # Makefile.am for reipl/doc/autodocs
+ 
+-include $(top_srcdir)/autodocs-ycp.ami
++# TODO FIXME: temporary disabled
++
++#include $(top_srcdir)/autodocs-ycp.ami
+diff --git a/src/include/reipl/dialogs.ycp b/src/include/reipl/dialogs.ycp
+index 83bbbd9..464185d 100644
+--- a/src/include/reipl/dialogs.ycp
++++ b/src/include/reipl/dialogs.ycp
+@@ -36,6 +36,7 @@ import "Wizard";
+ import "Reipl";
+ 
+ include "reipl/helps.ycp";
++include "reipl/complex.ycp";
+ 
+ /**
+  * Configure dialog
+diff --git a/yast2-reipl.spec.in b/yast2-reipl.spec.in
+index 490276d..8c2cfa3 100644
+--- a/yast2-reipl.spec.in
++++ b/yast2-reipl.spec.in
+@@ -48,9 +48,8 @@ Module for loading IPL from running system on S/390
+ 
+ %files
+ %defattr(-,root,root)
+-@clientdir@/*.ycp
+-@moduledir@/*.ycp
+-@moduledir@/*.ybc
++@clientdir@/*.rb
++@moduledir@/*.rb
+ @desktopdir@/*.desktop
+ %dir @yncludedir@/reipl
+ @yncludedir@/reipl/*
