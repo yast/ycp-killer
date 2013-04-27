@@ -1,0 +1,13 @@
+diff --git a/yast2-rear.spec.in b/yast2-rear.spec.in
+index 6efa94c..03524bf 100644
+--- a/yast2-rear.spec.in
++++ b/yast2-rear.spec.in
+@@ -28,7 +28,7 @@ The YaST2 component for configuring Rear - Relax and Recover Backup
+ %defattr(-,root,root)
+ %dir @yncludedir@/rear
+ @yncludedir@/rear/*
+-@clientdir@/rear.ycp
++@clientdir@/rear.rb
+ @moduledir@/RearSystemCheck.*
+ @moduledir@/Rear.*
+ @desktopdir@/rear.desktop
