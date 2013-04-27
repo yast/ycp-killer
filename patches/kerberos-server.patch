@@ -1,3 +1,27 @@
+diff --git a/doc/autodocs/Makefile.am b/doc/autodocs/Makefile.am
+index 754a2e6..70bbab6 100644
+--- a/doc/autodocs/Makefile.am
++++ b/doc/autodocs/Makefile.am
+@@ -1,3 +1,5 @@
+ # Makefile.am for kerberos-server/doc/autodocs
+ 
+-include $(top_srcdir)/autodocs-ycp.ami
++# TODO FIXME: temporarily disabled
++
++#include $(top_srcdir)/autodocs-ycp.ami
+diff --git a/src/include/kerberos-server/advanced_items.ycp b/src/include/kerberos-server/advanced_items.ycp
+index 86804bd..c6b2da0 100644
+--- a/src/include/kerberos-server/advanced_items.ycp
++++ b/src/include/kerberos-server/advanced_items.ycp
+@@ -35,6 +35,8 @@ import "Wizard";
+ import "Label";
+ import "KerberosServer";
+ 
++include "kerberos-server/helps.ycp";
++
+ // #################################################################################
+ // #################################################################################
+ // #################################################################################
 diff --git a/src/include/kerberos-server/complex.ycp b/src/include/kerberos-server/complex.ycp
 index 64a5036..74b6629 100644
 --- a/src/include/kerberos-server/complex.ycp
@@ -10,3 +34,16 @@ index 64a5036..74b6629 100644
  import "Wizard";
  import "Confirm";
  import "KerberosServer";
+diff --git a/yast2-kerberos-server.spec.in b/yast2-kerberos-server.spec.in
+index 1c43fd4..98e22c3 100644
+--- a/yast2-kerberos-server.spec.in
++++ b/yast2-kerberos-server.spec.in
+@@ -28,7 +28,7 @@ Control Center.
+ %defattr(-,root,root)
+ %dir @yncludedir@/kerberos-server
+ @yncludedir@/kerberos-server/*
+-@clientdir@/kerberos-server.ycp
++@clientdir@/kerberos-server.rb
+ @moduledir@/KerberosServer.*
+ @desktopdir@/kerberos-server.desktop
+ @scrconfdir@/*.scr
