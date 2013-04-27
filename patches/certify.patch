@@ -1,8 +1,57 @@
+diff --git a/doc/autodocs/Makefile.am b/doc/autodocs/Makefile.am
+index 5f96352..4fb22a9 100644
+--- a/doc/autodocs/Makefile.am
++++ b/doc/autodocs/Makefile.am
+@@ -1,9 +1,11 @@
+ # Makefile.am for YCP module .../doc/autodocs
+ 
+-htmldir = @docdir@/autodocs
++# TODO FIXME: temporarily disabled
+ 
+-html_DATA = index.html $(wildcard *.html)
+-CLEANFILES = $(html_DATA)
++#htmldir = @docdir@/autodocs
+ 
+-index.html: $(srcdir)/../../src/*.ycp
+-	@ybindir@/ycpdoc -d. $(srcdir)/../../src/*.ycp
++#html_DATA = index.html $(wildcard *.html)
++#CLEANFILES = $(html_DATA)
++
++#index.html: $(srcdir)/../../src/*.ycp
++#	@ybindir@/ycpdoc -d. $(srcdir)/../../src/*.ycp
+diff --git a/src/include/certify/ui_system.ycp b/src/include/certify/ui_system.ycp
+index 3f78e18..8b699c9 100644
+--- a/src/include/certify/ui_system.ycp
++++ b/src/include/certify/ui_system.ycp
+@@ -11,6 +11,11 @@
+ 
+     textdomain "certify";
+     import "Certify";
++    import "Popup";
++    import "Wizard";
++    import "Label";
++
++    include "certify/helps.ycp";
+ 
+     /**
+      * SystemDialog
 diff --git a/src/include/certify/ui_tests.ycp b/src/include/certify/ui_tests.ycp
-index 71b4c62..5c174aa 100644
+index 71b4c62..3fd9c7d 100644
 --- a/src/include/certify/ui_tests.ycp
 +++ b/src/include/certify/ui_tests.ycp
-@@ -26,7 +26,7 @@
+@@ -11,6 +11,11 @@
+ 
+     textdomain "certify";
+     import "Certify";
++    import "Popup";
++    import "Wizard";
++    import "Label";
++
++    include "certify/helps.ycp";
+ 
+     global string status_running = _("running...");
+     global string status_failed = _("failed");
+@@ -26,7 +31,7 @@
       * @return term
       * Create a label, a button and a outputfield
       */
@@ -11,3 +60,28 @@ index 71b4c62..5c174aa 100644
  
  	string statusmsg = _("Current Status: %1");
  
+diff --git a/yast2-certify.spec.in b/yast2-certify.spec.in
+index 526f418..871867c 100644
+--- a/yast2-certify.spec.in
++++ b/yast2-certify.spec.in
+@@ -1,8 +1,10 @@
+ @HEADER-COMMENT@
+-# neededforbuild yast2-devel-packages
+ 
+ @HEADER@
+ Requires:	yast2
++
++BuildRequires:  update-desktop-files yast2-devtools yast2
++
+ Provides:	y2m_certify yast2-module-certify
+ Obsoletes:	y2m_certify yast2-module-certify
+ BuildArchitectures:	noarch
+@@ -24,7 +26,7 @@ Summary:	Self certification
+ %defattr(-,root,root)
+ %dir @yncludedir@/certify
+ @yncludedir@/certify/*
+-@clientdir@/*.ycp
++@clientdir@/*.rb
+ @moduledir@/*
+ @desktopdir@/*.desktop
+ %doc @docdir@

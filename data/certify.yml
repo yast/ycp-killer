@@ -11,9 +11,3 @@ moves:
   - from: "src/certify.desktop"
     to:   src/desktop
 
-excluded:
-  # TODO: Include files, can't be compiled for now.
-  - src/include/certify/helps.ycp
-  - src/include/certify/ui.ycp
-  - src/include/certify/ui_system.ycp
-  - src/include/certify/ui_tests.ycp
