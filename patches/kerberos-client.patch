@@ -1,0 +1,50 @@
+diff --git a/agents/Makefile.am b/agents/Makefile.am
+index 79445a3..e69de29 100644
+--- a/agents/Makefile.am
++++ b/agents/Makefile.am
+@@ -1,7 +0,0 @@
+-#
+-# Makefile.am for devtools/devtools/skeletons/config/agents
+-#
+-
+-scrconf_DATA = *.scr
+-
+-EXTRA_DIST = $(scrconf_DATA)
+diff --git a/doc/autodocs/Makefile.am b/doc/autodocs/Makefile.am
+index 2a6f678..9de7be0 100644
+--- a/doc/autodocs/Makefile.am
++++ b/doc/autodocs/Makefile.am
+@@ -1,3 +1,5 @@
+ # Makefile.am for YCP module .../doc/autodocs
+ 
+-include $(top_srcdir)/autodocs-ycp.ami
++# TODO FIXME: temporarily disabled
++
++#include $(top_srcdir)/autodocs-ycp.ami
+diff --git a/yast2-kerberos-client.spec.in b/yast2-kerberos-client.spec.in
+index c63921e..a55237a 100644
+--- a/yast2-kerberos-client.spec.in
++++ b/yast2-kerberos-client.spec.in
+@@ -30,16 +30,15 @@ Kerberos server will be used for user authentication.
+ 
+ %files
+ %defattr(-,root,root)
+-@clientdir@/kerberos.ycp
+-@clientdir@/kerberos-client.ycp
+-@clientdir@/kerberos-client_auto.ycp
+-@moduledir@/Kerberos.ycp
+-@moduledir@/Kerberos.ybc
++@clientdir@/kerberos.rb
++@clientdir@/kerberos-client.rb
++@clientdir@/kerberos-client_auto.rb
++@moduledir@/Kerberos.rb
+ @desktopdir@/kerberos.desktop
+ @scrconfdir@/*.scr
+ @schemadir@/autoyast/rnc/kerberos.rnc
+ %dir @yncludedir@/kerberos-client
+-@yncludedir@/kerberos-client/dialogs.ycp
+-@yncludedir@/kerberos-client/wizards.ycp
++@yncludedir@/kerberos-client/dialogs.rb
++@yncludedir@/kerberos-client/wizards.rb
+ %doc @docdir@
+ %doc COPYING
