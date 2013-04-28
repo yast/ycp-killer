@@ -9,11 +9,10 @@ moves:
     to:   src/clients
   - from: "src/dialog/HPCDialog.ycp"
     to:   src/include/hpc
-  - from: "src/config/hpc.desktop"
-    to:   src/desktop
   - from: "scripts/*.{sh,pl,patch,cfg}"
     to:   src/bin
+# TODO FIXME: temporarily disabled, update-desktop-files fails with
+# "contains X-SuSE-translate - called the macro twice?" error
+  - from: "src/config/hpc.desktop"
+    to:   desktop
 
-excluded:
-  # TODO: Include file, can't be compiled for now.
-  - src/include/hpc/HPCDialog.ycp

@@ -1,0 +1,62 @@
+diff --git a/scripts/Makefile.am b/scripts/Makefile.am
+index 856418a..e69de29 100644
+--- a/scripts/Makefile.am
++++ b/scripts/Makefile.am
+@@ -1,16 +0,0 @@
+-#
+-# Makefile.am for hpc/scripts
+-#
+-
+-ybin_SCRIPTS = \
+-	nodes.sh \
+-	detect_queues.sh \
+-	Makefile.patch \
+-	mergemaps.sh \
+-	dhcpd.hpc.sh \
+-	ssh_hpc.sh \
+-	installhost.sh \
+-	nsswitch.patch \
+-	DHCPToHosts.pl \
+-	sample_hpc.cfg
+-EXTRA_DIST = $(ybin_SCRIPTS)
+diff --git a/src/include/hpc/HPCDialog.ycp b/src/include/hpc/HPCDialog.ycp
+index 2129f06..a2999af 100644
+--- a/src/include/hpc/HPCDialog.ycp
++++ b/src/include/hpc/HPCDialog.ycp
+@@ -27,6 +27,7 @@ STATUS        : Development
+ 
+ 	import "HPCControl";
+ 	import "HPCMessages";
++        import "Popup";
+ 
+ 
+ 
+diff --git a/yast2-hpc.spec.in b/yast2-hpc.spec.in
+index 3a404d6..c6ee79a 100644
+--- a/yast2-hpc.spec.in
++++ b/yast2-hpc.spec.in
+@@ -1,6 +1,11 @@
+ @HEADER-COMMENT@
+ 
+-# neededforbuild  yast2-devel-packages yast2 gpp libgpp
++
++# TODO FIXME: verify if this is correct
++BuildRequires:	yast2-devtools doxygen yast2 yast2-testsuite update-desktop-files libtool gcc-c++
++
++# TODO FIXME: temporarily disabled, not provided in Factory/12.3
++#BuildRequires:	gpp libgpp
+ 
+ @HEADER@
+ Requires:	yast2
+@@ -23,8 +28,9 @@ Summary:	-
+ @moduledir@/*
+ %dir @yncludedir@/hpc
+ @yncludedir@/hpc/*
+-@clientdir@/*.ycp
+-@desktopdir@/*.desktop
++@clientdir@/*.rb
++# TODO FIXME: temporarily disabled
++#@desktopdir@/*.desktop
+ @ybindir@/nodes.sh
+ @ybindir@/detect_queues.sh
+ @ybindir@/mergemaps.sh
