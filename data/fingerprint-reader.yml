@@ -2,6 +2,9 @@ ybc_deps:
   - yast2
   - pam
 
+ruby_deps:
+  - users
+
 moves:
   - from: "src/*FingerprintReader.{ycp,pm}"
     to:   src/modules
@@ -11,3 +14,5 @@ moves:
     to:   src/include/fingerprint-reader
   - from: "src/fingerprint-reader.desktop"
     to:   src/desktop
+  - from: "agent-fprint/conf/*"
+    to: src/scrconf
