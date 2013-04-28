@@ -1,0 +1,28 @@
+diff --git a/doc/autodocs/Makefile.am b/doc/autodocs/Makefile.am
+index c6064ce..37172fc 100644
+--- a/doc/autodocs/Makefile.am
++++ b/doc/autodocs/Makefile.am
+@@ -1,3 +1,5 @@
+ # Makefile.am for fcoe-client/doc/autodocs
+ 
+-include $(top_srcdir)/autodocs-ycp.ami
++# TODO FIXME: temporarily disabled
++
++#include $(top_srcdir)/autodocs-ycp.ami
+diff --git a/yast2-fcoe-client.spec.in b/yast2-fcoe-client.spec.in
+index 44e9242..9c6e173 100644
+--- a/yast2-fcoe-client.spec.in
++++ b/yast2-fcoe-client.spec.in
+@@ -26,9 +26,9 @@ Ethernet (FCoE) configuration.
+ %defattr(-,root,root)
+ %dir @yncludedir@/fcoe-client
+ @yncludedir@/fcoe-client/*
+-@clientdir@/fcoe-client.ycp
+-@clientdir@/fcoe-client_*.ycp
+-@clientdir@/inst_fcoe-client.ycp
++@clientdir@/fcoe-client.rb
++@clientdir@/fcoe-client_*.rb
++@clientdir@/inst_fcoe-client.rb
+ @moduledir@/FcoeClient.*
+ @desktopdir@/fcoe-client.desktop
+ %dir @scrconfdir@
