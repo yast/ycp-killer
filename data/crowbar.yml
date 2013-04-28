@@ -11,8 +11,3 @@ moves:
   - from: "src/crowbar.desktop"
     to:   src/desktop
 
-excluded:
-  # TODO: Include files, can't be compiled for now.
-  - src/include/crowbar/complex.ycp
-  - src/include/crowbar/helps.ycp
-  - src/include/crowbar/wizards.ycp
