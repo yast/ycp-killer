@@ -17,7 +17,3 @@ moves:
   - from: "agents/*.scr"
     to:   src/scrconf
 
-excluded:
-  # TODO: Include files, can't be compiled for now.
-  - src/include/kerberos-client/dialogs.ycp
-  - src/include/kerberos-client/wizards.ycp
