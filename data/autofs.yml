@@ -11,6 +11,3 @@ moves:
   - from: "src/autofs.desktop"
     to:   src/desktop
 
-excluded:
-  # TODO: Include file, can't be compiled for now.
-  - src/include/autofs/dialogs.ycp

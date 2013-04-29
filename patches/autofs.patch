@@ -4,6 +4,17 @@ probably obsolete.
 
 TODO: Discuss this with upstream and possibly remove the files there.
 
+diff --git a/doc/autodocs/Makefile.am b/doc/autodocs/Makefile.am
+index cb9e9f3..4365926 100644
+--- a/doc/autodocs/Makefile.am
++++ b/doc/autodocs/Makefile.am
+@@ -1,3 +1,5 @@
+ # Makefile.am for autofs/doc/autodocs
+ 
+-include $(top_srcdir)/autodocs-ycp.ami
++# TODO FIXME: temporarily disabled
++
++#include $(top_srcdir)/autodocs-ycp.ami
 diff --git a/src/clients/autofs_auto.ycp b/src/clients/autofs_auto.ycp
 deleted file mode 100644
 index 35be156..0000000
@@ -241,3 +252,30 @@ index 268cc0a..0000000
 -
 -/* EOF */
 -}
+diff --git a/src/include/autofs/dialogs.ycp b/src/include/autofs/dialogs.ycp
+index f230f4d..52cdd7f 100644
+--- a/src/include/autofs/dialogs.ycp
++++ b/src/include/autofs/dialogs.ycp
+@@ -36,6 +36,7 @@ import "Wizard";
+ import "Autofs";
+ 
+ include "autofs/helps.ycp";
++include "autofs/complex.ycp";
+ 
+ 
+ /**
+diff --git a/yast2-autofs.spec.in b/yast2-autofs.spec.in
+index e157043..11b4227 100644
+--- a/yast2-autofs.spec.in
++++ b/yast2-autofs.spec.in
+@@ -29,8 +29,8 @@ under ou=AUTOFS,$LDAPBASE.
+ %defattr(-,root,root)
+ %dir @yncludedir@/autofs
+ @yncludedir@/autofs/*
+-@clientdir@/autofs.ycp
+-#@clientdir@/autofs_*.ycp
++@clientdir@/autofs.rb
++#@clientdir@/autofs_*.rb
+ @moduledir@/Autofs*
+ @desktopdir@/autofs.desktop
+ %doc @docdir@
