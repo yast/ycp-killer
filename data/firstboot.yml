@@ -11,13 +11,14 @@ moves:
     to:   src/clients
   - from: "src/routines.ycp"
     to:   src/include/firstboot
-  - from: "src/data/firstboot.desktop"
-    to:   src/desktop
+  - from: "src/data/{firstboot.desktop,Makefile.am}"
+    to:   desktop
   - from: "src/data/firstboot.rnc"
     to:   src/autoyast-rnc
   - from: "src/data/sysconfig.firstboot"
     to:   src/fillup
   - from: "agents/cfg_firstboot.scr"
     to:   src/scrconf
-  - from: "scripts/*"
-    to:   src/bin
+  - from: src/control
+    to:   .
+
