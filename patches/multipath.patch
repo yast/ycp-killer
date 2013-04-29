@@ -1,0 +1,58 @@
+diff --git a/agents/.cvsignore b/agents/.cvsignore
+deleted file mode 100644
+index 282522d..0000000
+--- a/agents/.cvsignore
++++ /dev/null
+@@ -1,2 +0,0 @@
+-Makefile
+-Makefile.in
+diff --git a/agents/Makefile.am b/agents/Makefile.am
+deleted file mode 100644
+index 5d589cd..0000000
+--- a/agents/Makefile.am
++++ /dev/null
+@@ -1,7 +0,0 @@
+-# Makefile.am for multipath/agents
+-
+-agent_SCRIPTS = ag_multipath
+-
+-scrconf_DATA = etc_multipath.scr multipath.scr
+-
+-EXTRA_DIST = $(agent_SCRIPTS) $(scrconf_DATA)
+diff --git a/doc/Makefile.am b/doc/Makefile.am
+index 4ab8f24..eb43d2a 100644
+--- a/doc/Makefile.am
++++ b/doc/Makefile.am
+@@ -1,6 +1,7 @@
+ # Makefile.am for multipath/doc
+ 
+-SUBDIRS = autodocs
++# TODO missing support of ruby in auto-docs
++#SUBDIRS = autodocs
+ 
+ htmldir = $(docdir)
+ 
+diff --git a/yast2-multipath.spec.in b/yast2-multipath.spec.in
+index 07a0732..cf40490 100644
+--- a/yast2-multipath.spec.in
++++ b/yast2-multipath.spec.in
+@@ -29,11 +29,11 @@ You can configure your multipathed devices with this module.
+ 
+ %files
+ %defattr(-,root,root)
+-%dir %{prefix}/share/YaST2/include/multipath
+-%{prefix}/share/YaST2/include/multipath/*
+-%{prefix}/share/YaST2/clients/multipath.ycp
+-%{prefix}/share/YaST2/modules/Multipath.*
+-%{prefix}/share/applications/YaST2/multipath.desktop
+-%{prefix}/share/YaST2/scrconf/*.scr
+-%{prefix}/lib/YaST2/servers_non_y2/*
+-%doc %{prefix}/share/doc/packages/yast2-multipath
++%dir %{_prefix}/share/YaST2/include/multipath
++%{_prefix}/share/YaST2/include/multipath/*
++%{_prefix}/share/YaST2/clients/multipath.rb
++%{_prefix}/share/YaST2/modules/Multipath.*
++%{_prefix}/share/applications/YaST2/multipath.desktop
++%{_prefix}/share/YaST2/scrconf/*.scr
++%{_prefix}/lib/YaST2/servers_non_y2/*
++%doc %{_prefix}/share/doc/packages/yast2-multipath
