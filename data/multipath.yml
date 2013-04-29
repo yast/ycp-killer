@@ -10,9 +10,13 @@ moves:
   - from: "src/{complex,helps,options,wizards}.ycp"
     to:   src/include/multipath
   - from: "src/multipath.desktop"
-    to:   src/dekstop
-  - from: "agents/*"
-    to:   src/scrconfig
+    to:   src/desktop
+  - from: "agents/*.scr"
+    to:   src/scrconf
+  - from: "agents/ag*.out"
+    to:   testsuite/tests
+  - from: "agents/ag*"
+    to:   src/servers_non_y2
 
 excluded:
   # TODO: Include files, can't be compiled for now.
