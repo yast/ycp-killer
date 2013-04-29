@@ -13,7 +13,3 @@ moves:
     to:   src/desktop
   - from: "agents/cfg_irda.scr"
     to:   src/scrconf
-
-excluded:
-  # TODO: Include file, can't be compiled for now.
-  - src/include/irda/ui.ycp
