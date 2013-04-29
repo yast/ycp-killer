@@ -7,7 +7,12 @@ ruby_deps:
 moves:
   - from: "src/dialogs/OUCDialogs.ycp"
     to:   src/include/online-update-configuration
+  - from: "src/config/*.desktop"
+    to: src/desktop
+  - from: "src/config/sysconfig.*"
+    to: src/fillup
+  - from: "src/config/*.rnc"
+    to: src/autoyast-rnc
+  - from: "src/scripts/*"
+    to: src/bin
 
-excluded:
-  # TODO: Include file, can't be compiled for now.
-  - src/include/online-update-configuration/OUCDialogs.ycp
