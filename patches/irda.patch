@@ -1,0 +1,36 @@
+diff --git a/agents/Makefile.am b/agents/Makefile.am
+index 4af041f..e69de29 100644
+--- a/agents/Makefile.am
++++ b/agents/Makefile.am
+@@ -1,7 +0,0 @@
+-# Makefile.am for irda/agents
+-
+-agent_SCRIPTS =
+-
+-scrconf_DATA = *.scr
+-
+-EXTRA_DIST = $(agent_SCRIPTS) $(scrconf_DATA)
+diff --git a/doc/autodocs/Makefile.am b/doc/autodocs/Makefile.am
+index 2a6f678..6c072bd 100644
+--- a/doc/autodocs/Makefile.am
++++ b/doc/autodocs/Makefile.am
+@@ -1,3 +1,4 @@
+ # Makefile.am for YCP module .../doc/autodocs
+-
+-include $(top_srcdir)/autodocs-ycp.ami
++# FIXME
++# TODO autodocs temporarily off
++# include $(top_srcdir)/autodocs-ycp.ami
+diff --git a/yast2-irda.spec.in b/yast2-irda.spec.in
+index 6390d36..9856e2f 100644
+--- a/yast2-irda.spec.in
++++ b/yast2-irda.spec.in
+@@ -28,7 +28,7 @@ stack.
+ %defattr(-,root,root)
+ %dir @yncludedir@/irda
+ @yncludedir@/irda/*
+-@clientdir@/irda.ycp
++@clientdir@/irda.rb
+ @moduledir@/Irda.*
+ @desktopdir@/irda.desktop
+ @scrconfdir@/*.scr
