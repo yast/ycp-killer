@@ -4,8 +4,11 @@ require_relative "../messages"
 module Commands
   class RubyCommand < Command
     def apply(mod)
-      prepare_result_dir(mod)
       reset_counts(mod)
+
+      action "Creating result directory" do
+        prepare_result_dir(mod)
+      end
 
       Dir.chdir mod.work_dir do
         Dir["**/*.y{cp,h}"].each do |file|
