@@ -17,10 +17,7 @@ moves:
     to:   src/desktop
   - from: "agents/*.scr"
     to:   src/scrconf
-  - from: "agents/ag_*"
-    to:   src/scripts
-
-excluded:
-  - src/include/http-server/dialogs.ycp
-  - src/include/http-server/routines.ycp
-  - src/include/http-server/wizard-dialog.ycp
+  - from: agents/ag_http_server
+    to:   src/servers_non_y2
+  - from: src/http-server.rnc
+    to:   src/autoyast-rnc

@@ -1,0 +1,103 @@
+diff --git a/agents/Makefile.am b/agents/Makefile.am
+index 3ee8332..e69de29 100644
+--- a/agents/Makefile.am
++++ b/agents/Makefile.am
+@@ -1,9 +0,0 @@
+-#
+-# Makefile.am for devtools/devtools/skeletons/config/agents
+-#
+-
+-agent_SCRIPTS = ag_http_server
+-
+-scrconf_DATA = cfg_http_server.scr
+-
+-EXTRA_DIST = $(agent_SCRIPTS) $(scrconf_DATA)
+diff --git a/doc/autodocs/Makefile.am b/doc/autodocs/Makefile.am
+index 2a6f678..3ae3ce2 100644
+--- a/doc/autodocs/Makefile.am
++++ b/doc/autodocs/Makefile.am
+@@ -1,3 +1,4 @@
+ # Makefile.am for YCP module .../doc/autodocs
+-
+-include $(top_srcdir)/autodocs-ycp.ami
++# TODO disable autodocs temporarily
++# FIXME
++# include $(top_srcdir)/autodocs-ycp.ami
+diff --git a/src/include/http-server/dialogs.ycp b/src/include/http-server/dialogs.ycp
+index bc7845f..3793b8a 100644
+--- a/src/include/http-server/dialogs.ycp
++++ b/src/include/http-server/dialogs.ycp
+@@ -28,6 +28,7 @@
+     import "Package";
+ 
+ 
++    include "http-server/complex.ycp";
+ 
+ 
+     /**
+diff --git a/src/include/http-server/routines.ycp b/src/include/http-server/routines.ycp
+index 1fd4425..9edee6c 100644
+--- a/src/include/http-server/routines.ycp
++++ b/src/include/http-server/routines.ycp
+@@ -15,14 +15,15 @@ import "Directory";
+ import "Progress";
+ import "String";
+ import "Popup";
++import "HttpServer";
+ 
+ /**
+  * Abort function
+  * @return blah blah lahjk
+  */
+ global define boolean Abort() ``{
+-    if(AbortFunction != nil)
+-	return AbortFunction() == true;
++    if(HttpServer::AbortFunction != nil)
++	return HttpServer::AbortFunction() == true;
+     return false;
+ }
+ 
+@@ -39,7 +40,7 @@ global define boolean PollAbort() ``{
+  * @return true if abort is confirmed
+  */
+ global define boolean ReallyAbort() ``{
+-    return !Modified() || Popup::ReallyAbort(true);
++    return !HttpServer::Modified() || Popup::ReallyAbort(true);
+ }
+ 
+ /**
+diff --git a/src/include/http-server/wizard-dialog.ycp b/src/include/http-server/wizard-dialog.ycp
+index ed077e7..42be13e 100644
+--- a/src/include/http-server/wizard-dialog.ycp
++++ b/src/include/http-server/wizard-dialog.ycp
+@@ -9,12 +9,15 @@
+ {
+ 
+ textdomain "http-server";
++import "YaST::HTTPDData";
+ import "HttpServerWidgets";
+ import "Wizard";
+ import "CWM";
+ import "Label";
+ import "HttpServer";
+ 
++include "http-server/complex.ycp";
++include "http-server/dialogs.ycp";
+   /**
+    * Sequention used for determining on which ip adresses and port apache2 will listen and if firewall is enebled
+    * whether to open firewall on this port.
+diff --git a/yast2-http-server.spec.in b/yast2-http-server.spec.in
+index 2821125..f6c5e17 100644
+--- a/yast2-http-server.spec.in
++++ b/yast2-http-server.spec.in
+@@ -30,8 +30,8 @@ configuration.
+ %dir @yncludedir@/http-server
+ @schemadir@/autoyast/rnc/http-server.rnc
+ @yncludedir@/http-server/*
+-@clientdir@/http-server.ycp
+-@clientdir@/http-server_*.ycp
++@clientdir@/http-server.rb
++@clientdir@/http-server_*.rb
+ @moduledir@/*
+ @desktopdir@/http-server.desktop
+ @scrconfdir@/*
