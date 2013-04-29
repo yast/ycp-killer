@@ -1,0 +1,43 @@
+diff --git a/agents/Makefile.am b/agents/Makefile.am
+index 8231ac3..e69de29 100644
+--- a/agents/Makefile.am
++++ b/agents/Makefile.am
+@@ -1,9 +0,0 @@
+-#
+-# Makefile.am for y2m_restore/agents
+-#
+-
+-agent_SCRIPTS =
+-
+-scrconf_DATA =
+-
+-EXTRA_DIST = $(agent_SCRIPTS) $(scrconf_DATA)
+diff --git a/doc/autodocs/Makefile.am b/doc/autodocs/Makefile.am
+index 2a6f678..9de7be0 100644
+--- a/doc/autodocs/Makefile.am
++++ b/doc/autodocs/Makefile.am
+@@ -1,3 +1,5 @@
+ # Makefile.am for YCP module .../doc/autodocs
+ 
+-include $(top_srcdir)/autodocs-ycp.ami
++# TODO FIXME: temporarily disabled
++
++#include $(top_srcdir)/autodocs-ycp.ami
+diff --git a/yast2-restore.spec.in b/yast2-restore.spec.in
+index 15010fc..f7be7a6 100644
+--- a/yast2-restore.spec.in
++++ b/yast2-restore.spec.in
+@@ -35,10 +35,9 @@ Backup module.
+ 
+ %dir @yncludedir@/restore
+ @yncludedir@/restore/*
+-@clientdir@/restore.ycp
+-@clientdir@/restore_*.ycp
+-@moduledir@/Restore.ycp
+-@moduledir@/Restore.ybc
++@clientdir@/restore.rb
++@clientdir@/restore_*.rb
++@moduledir@/Restore.rb
+ @desktopdir@/restore.desktop
+ @ybindir@/restore_parse_pkginfo.pl
+ %doc @docdir@
