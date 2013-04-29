@@ -1,25 +1,39 @@
+require "smart_colored/extend"
+
 module Messages
-  MAX_MESSAGE_WIDTH = 70
-
   class << self
-    def start(message)
-      print message
+    def header(message)
+      puts message.yellow.bold
 
-      @last_message_size = message.size
+      @prefix = "  "
     end
 
-    def finish(status)
-      spaces = if @last_message_size < MAX_MESSAGE_WIDTH
-        " " * (MAX_MESSAGE_WIDTH - @last_message_size)
-      else
-        ""
-      end
+    def reset
+      @prefix = ""
+    end
 
-      puts spaces + status
+    def item(message)
+      puts "  * #{message}..."
+
+      @prefix = "    "
     end
 
     def info(message)
-      puts message
+      log $stdout, message
+    end
+
+    def warning(message)
+      log $stderr, "WARNING: #{message}".yellow
+    end
+
+    def error(message)
+      log $stderr, "ERROR: #{message}".red
+    end
+
+    private
+
+    def log(stream, message)
+      stream.puts "#@prefix#{message}"
     end
   end
 end
