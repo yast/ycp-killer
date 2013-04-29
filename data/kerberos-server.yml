@@ -13,10 +13,6 @@ moves:
     to:   src/desktop
   - from: "agents/*"
     to:   src/scrconf
+  - from: "src/scrconf/ag_*"
+    to: src/servers_non_y2
 
-excluded:
-  # TODO: Include files, can't be compiled for now.
-  - src/include/kerberos-server/advanced_items.ycp
-  - src/include/kerberos-server/complex.ycp
-  - src/include/kerberos-server/helps.ycp
-  - src/include/kerberos-server/wizards.ycp
