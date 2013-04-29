@@ -3,6 +3,29 @@ module recently.
 
 TODO: Upstream this.
 
+diff --git a/agents/Makefile.am b/agents/Makefile.am
+index d66023a..e69de29 100644
+--- a/agents/Makefile.am
++++ b/agents/Makefile.am
+@@ -1,7 +0,0 @@
+-# Makefile.am for rdp/agents
+-
+-agent_SCRIPTS =
+-
+-scrconf_DATA =
+-
+-EXTRA_DIST = $(agent_SCRIPTS) $(scrconf_DATA)
+diff --git a/doc/autodocs/Makefile.am b/doc/autodocs/Makefile.am
+index b37c4fb..bf3b5a7 100644
+--- a/doc/autodocs/Makefile.am
++++ b/doc/autodocs/Makefile.am
+@@ -1,3 +1,5 @@
+ # Makefile.am for rdp/doc/autodocs
+ 
+-include $(top_srcdir)/autodocs-ycp.ami
++# TODO FIXME: temporarily disabled
++
++#include $(top_srcdir)/autodocs-ycp.ami
 diff --git a/src/include/rdp/dialogs.ycp b/src/include/rdp/dialogs.ycp
 index 2189d55..7fe38e7 100644
 --- a/src/include/rdp/dialogs.ycp
@@ -16,3 +39,18 @@ index 2189d55..7fe38e7 100644
      /* Ramote Administration dialog caption */
      string caption = _("Remote Administration");
  
+diff --git a/yast2-rdp.spec.in b/yast2-rdp.spec.in
+index 3e26290..0090126 100644
+--- a/yast2-rdp.spec.in
++++ b/yast2-rdp.spec.in
+@@ -23,8 +23,8 @@ Summary:	Configuration of rdp
+ %defattr(-,root,root)
+ %dir @yncludedir@/rdp
+ @yncludedir@/rdp/*
+-@clientdir@/rdp.ycp
+-@clientdir@/rdp_*.ycp
++@clientdir@/rdp.rb
++@clientdir@/rdp_*.rb
+ @moduledir@/RDP.*
+ @desktopdir@/rdp.desktop
+ %doc @docdir@
