@@ -1,5 +1,7 @@
 require "tsort"
 
+require_relative "messages"
+
 # based on ycpmakedep script https://github.com/yast/yast-devtools/blob/master/devtools/bin/ycpmakedep
 class BuildOrder
 
@@ -157,7 +159,7 @@ class BuildOrder
       # Discard all dependencies leading from the module.
       mod = modules.first
       mod.includes.each do |i|
-        puts "Broke a cyclic dependency between #{mod.name} and #{i}."
+        Messages.info "Broke a cyclic dependency between #{mod.name} and #{i}."
       end
       mod.includes.clear
     end
