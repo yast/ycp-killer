@@ -2,6 +2,50 @@ Removed product_start.ycp file is obsolete according to Jiří Suchomel.
 
 TODO: Upstream this.
 
+diff --git a/agents/Makefile.am b/agents/Makefile.am
+index 112eb8f..e69de29 100644
+--- a/agents/Makefile.am
++++ b/agents/Makefile.am
+@@ -1,7 +0,0 @@
+-# Makefile.am for firstboot/agents
+-
+-agent_SCRIPTS =
+-
+-scrconf_DATA = cfg_firstboot.scr
+-
+-EXTRA_DIST = $(agent_SCRIPTS) $(scrconf_DATA)
+diff --git a/desktop/Makefile.am b/desktop/Makefile.am
+index 1f8f3a5..832dcf6 100644
+--- a/desktop/Makefile.am
++++ b/desktop/Makefile.am
+@@ -1,15 +1,9 @@
+ # Makefile.am for firstboot/src/data
+ 
+ 
+-fillupdir = /var/adm/fillup-templates/
+-fillup_DATA = sysconfig.firstboot
+-
+ modconfigdir = $(prefix)/share/autoinstall/modules
+ modconfig_DATA = firstboot.desktop
+ 
+-schemafilesdir =  $(schemadir)/autoyast/rnc
+-schemafiles_DATA = $(wildcard *.rnc)
+-
+-EXTRA_DIST = $(fillup_DATA) $(modconfig_DATA) $(schemafiles_DATA)
++EXTRA_DIST = $(modconfig_DATA)
+ 
+ include $(top_srcdir)/Makefile.am.common
+diff --git a/doc/autodocs/Makefile.am b/doc/autodocs/Makefile.am
+index 2a6f678..9de7be0 100644
+--- a/doc/autodocs/Makefile.am
++++ b/doc/autodocs/Makefile.am
+@@ -1,3 +1,5 @@
+ # Makefile.am for YCP module .../doc/autodocs
+ 
+-include $(top_srcdir)/autodocs-ycp.ami
++# TODO FIXME: temporarily disabled
++
++#include $(top_srcdir)/autodocs-ycp.ami
 diff --git a/src/product_start.ycp b/src/product_start.ycp
 deleted file mode 100644
 index 671b84b..0000000
@@ -91,3 +135,21 @@ index 671b84b..0000000
 -    UI::CloseDialog();
 -    return ret;
 -}
+diff --git a/yast2-firstboot.spec.in b/yast2-firstboot.spec.in
+index b0a1cd5..a2dab07 100644
+--- a/yast2-firstboot.spec.in
++++ b/yast2-firstboot.spec.in
+@@ -53,10 +53,10 @@ mkdir -p $RPM_BUILD_ROOT/usr/share/firstboot/scripts
+ %dir @ystartupdir@/startup/Firstboot-Stage
+ @ystartupdir@/startup/Firstboot-Stage/*
+ @ystartupdir@/startup/YaST2.Firstboot
+-@clientdir@/firstboot_*.ycp
+-@clientdir@/firstboot.ycp
++@clientdir@/firstboot_*.rb
++@clientdir@/firstboot.rb
+ %dir @yncludedir@/firstboot
+-@yncludedir@/firstboot/*.ycp
++@yncludedir@/firstboot/*.rb
+ @moduledir@/Firstboot.*
+ @scrconfdir@/*.scr
+ /var/adm/fillup-templates/sysconfig.firstboot
