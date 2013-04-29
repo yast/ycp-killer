@@ -28,7 +28,7 @@ class YastModule
     @moves          = data.delete("moves") || []
 
     if !data.empty?
-      Messages.info "WARNING: Unknown keys in #{name}.yml: #{data.keys.join(", ")}."
+      Messages.warning "Unknown keys in #{name}.yml: #{data.keys.join(", ")}."
     end
   end
 
