@@ -1,6 +1,7 @@
 require_relative "command"
 require_relative "../build_order"
 require_relative "../messages"
+require_relative "../threading"
 
 module Commands
   class YbcCommand < Command
@@ -12,14 +13,15 @@ module Commands
         # list of full paths
         ordered_modules = BuildOrder.new(mod.exports).ordered_modules
 
-        ordered_modules.each do |file|
-          begin
-            Messages.start "  * Compiling #{file}..."
-            create_ybc mod, file
-            Messages.finish "OK"
-            @counts[:ok] += 1
-          rescue Exception => e
-            handle_exception(e, :ybc, mod, file)
+        Threading.in_parallel ordered_modules do |files|
+          files.each do |file|
+            begin
+              Messages.info "  * Compiling #{file}..."
+              create_ybc mod, file
+              @counts[:ok] += 1
+            rescue Exception => e
+              handle_exception(e, :ybc, mod, file)
+            end
           end
         end
       end
