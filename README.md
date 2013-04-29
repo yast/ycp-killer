@@ -83,7 +83,10 @@ things get gemified, packaged, etc.
          $ sudo zypper in sablotron               # Needed by storage
          $ sudo zypper in suseRegister            # Needed by registration
          $ sudo zypper in yast2-ldap              # Needed by dns-server and
-                                                  # dhcp-server
+                                                  # dhcp-server (they need Perl
+                                                  # modules which are not
+                                                  # available otherwise as we
+                                                  # don't translate ldap)
          $ sudo zypper in yast2-storage           # Needed by storage (it needs
                                                   # a C part, so let's use
                                                   # already built one)
