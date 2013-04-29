@@ -66,16 +66,30 @@ things get gemified, packaged, etc.
 
   6. **Clone the YCP Killer repository and install YCP Killer's dependencies**
 
-         $ sudo zypper in yast2-ycp-ui-bindings     # Implements UI::*
-         $ sudo zypper in yast2-pkg-bindings        # Implements Pkg::*
-         $ sudo zypper in yast2-perl-bindings       # Makes Perl modules work
-         $ sudo zypper in perl-JSON                 # Needed to load the Json.pm YCP module
-         $ sudo zypper in suseRegister              # Needed to load the YSR.pm YCP module
-         $ sudo zypper in cracklib-devel            # Dependency of the users YaST module
-         $ sudo zypper in perl-Date-Calc perl-camgm # Dependency of the ca-management YaST module
-         $ sudo zypper in yast2-storage             # Needed by the storage YaST module
-         $ sudo zypper in sablotron                 # Needed to package storage YaST module
-         $ sudo zypper in limal-perl                # Needed by the bootloader YaST module
+         $ sudo zypper in yast2-ycp-ui-bindings   # Implements UI::*
+         $ sudo zypper in yast2-pkg-bindings      # Implements Pkg::*
+         $ sudo zypper in yast2-perl-bindings     # Makes Perl modules work
+
+         $ sudo zypper in cracklib-devel          # Needed by users
+         $ sudo zypper in limal-perl              # Needed by bootloader
+         $ sudo zypper in perl-Date-Calc          # Needed by ca-management
+         $ sudo zypper in perl-Digest-SHA1        # Needed by ftp-server,
+                                                  # phone-services,
+                                                  # profile-manager and s390
+         $ sudo zypper in perl-JSON               # Needed by crowbar
+         $ sudo zypper in perl-NetxAP             # Needed by mail
+         $ sudo zypper in perl-X500-DN            # Needed by ldap-server
+         $ sudo zypper in perl-camgm              # Needed by ca-management
+         $ sudo zypper in sablotron               # Needed by storage
+         $ sudo zypper in suseRegister            # Needed by registration
+         $ sudo zypper in yast2-ldap              # Needed by dns-server and
+                                                  # dhcp-server (they need Perl
+                                                  # modules which are not
+                                                  # available otherwise as we
+                                                  # don't translate ldap)
+         $ sudo zypper in yast2-storage           # Needed by storage (it needs
+                                                  # a C part, so let's use
+                                                  # already built one)
          $ git clone git://github.com/yast/ycp-killer.git
          $ cd ycp-killer
          $ bundle install
