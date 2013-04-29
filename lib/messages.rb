@@ -26,7 +26,7 @@ module Messages
       spaces = if message.size < MAX_MESSAGE_WIDTH
         " " * (MAX_MESSAGE_WIDTH - message.size)
       else
-        ""
+        " "
       end
 
       puts message + spaces + status
