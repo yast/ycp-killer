@@ -19,13 +19,8 @@ module Commands
         end
 
         ordered_modules.each do |file|
-          begin
-            Messages.start "  * Compiling #{file}..."
+          file_action "Compiling", :y2r, mod, file do
             create_ybc mod, file
-            Messages.finish "OK"
-            @counts[:ok] += 1
-          rescue Exception => e
-            handle_exception(e, :ybc, mod, file)
           end
         end
       end
