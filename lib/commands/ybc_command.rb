@@ -5,21 +5,22 @@ require_relative "../messages"
 module Commands
   class YbcCommand < Command
     def apply(mod)
-      clean_previous_compilation(mod)
       reset_counts(mod)
 
+      action "Cleaning previous compilation results" do
+        clean_previous_compilation(mod)
+      end
+
       Dir.chdir mod.work_dir do
-        # list of full paths
-        ordered_modules = BuildOrder.new(mod.exports).ordered_modules
+        ordered_modules = nil
+        action "Ordering modules" do
+          # list of full paths
+          ordered_modules = BuildOrder.new(mod.exports).ordered_modules
+        end
 
         ordered_modules.each do |file|
-          begin
-            Messages.start "  * Compiling #{file}..."
+          file_action "Compiling", :y2r, mod, file do
             create_ybc mod, file
-            Messages.finish "OK"
-            @counts[:ok] += 1
-          rescue Exception => e
-            handle_exception(e, :ybc, mod, file)
           end
         end
       end

@@ -1,25 +1,49 @@
+require "smart_colored/extend"
+
 module Messages
-  MAX_MESSAGE_WIDTH = 70
+  STATES_TO_PREFIXES = {
+    :header => "  ",
+    :item   => "    "
+  }
 
   class << self
-    def start(message)
-      print message
+    def header(message)
+      puts message.bold
 
-      @last_message_size = message.size
+      in_state(:header) { yield }
     end
 
-    def finish(status)
-      spaces = if @last_message_size < MAX_MESSAGE_WIDTH
-        " " * (MAX_MESSAGE_WIDTH - @last_message_size)
-      else
-        ""
-      end
+    def item(message)
+      puts "  * #{message}..."
 
-      puts spaces + status
+      in_state(:item) { yield }
     end
 
     def info(message)
-      puts message
+      log $stdout, message
+    end
+
+    def warning(message)
+      log $stderr, "WARNING: #{message}".yellow
+    end
+
+    def error(message)
+      log $stderr, "ERROR: #{message}".red
+    end
+
+    private
+
+    def in_state(state)
+      saved_state = @state
+      @state = state
+      yield
+      @state = saved_state
+    end
+
+    def log(stream, message)
+      prefix = STATES_TO_PREFIXES[@state] || ""
+
+      stream.puts "#{prefix}#{message}"
     end
   end
 end

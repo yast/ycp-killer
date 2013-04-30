@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 
 require "cheetah"
+require "smart_colored/extend"
 require "thor"
 require "yaml"
 
@@ -18,6 +19,7 @@ $yast_modules = Hash.new do |hash, missing_key|
   raise "Unknown yast module #{missing_key}"
 end
 
+require_relative "lib/messages"
 require_relative "lib/tsorter"
 require_relative "lib/yast_module"
 require_relative "lib/commands/clone_command"
@@ -174,15 +176,15 @@ class CLI < Thor
       counts.keys.each { |k| counts[k] += module_counts[k] }
     end
 
-    puts
-    puts "-----"
-    puts
-    puts "Total OK:           #{counts[:ok]}"
-    puts "Total EXCLUDED:     #{counts[:excluded]}"
-    puts "Total ERROR(ybc):   #{counts[:error_ybc]}"
-    puts "Total ERROR(y2r):   #{counts[:error_y2r]}"
-    puts "Total ERROR(ruby):  #{counts[:error_ruby]}"
-    puts "Total ERROR(other): #{counts[:error_other]}"
+    Messages.info ""
+    Messages.info "-----"
+    Messages.info ""
+    Messages.info "Total OK:           #{counts[:ok]}"
+    Messages.info "Total EXCLUDED:     #{counts[:excluded]}"
+    Messages.info "Total ERROR(ybc):   #{counts[:error_ybc]}"
+    Messages.info "Total ERROR(y2r):   #{counts[:error_y2r]}"
+    Messages.info "Total ERROR(ruby):  #{counts[:error_ruby]}"
+    Messages.info "Total ERROR(other): #{counts[:error_other]}"
 
     error_counts = counts.values_at(
       :error_ybc,
@@ -236,13 +238,15 @@ class CLI < Thor
     max_counter_size = 3 + ((Math.log10(modules.size).to_i + 1) * 2)
 
     modules.each_index do |i|
-      printf(
+      message = sprintf(
         "%-#{max_counter_size}s %s",
         "[#{i + 1}/#{modules.size}]",
-        "Processing #{modules[i].name}:\n"
+        "Processing #{modules[i].name}:"
       )
 
-      yield modules[i]
+      Messages.header message do
+        yield modules[i]
+      end
     end
   end
 end
@@ -250,13 +254,13 @@ end
 begin
   CLI.start(ARGV)
 rescue Cheetah::ExecutionFailed => e
-  puts
-  puts "Command #{e.commands[0][0]} failed:"
-  puts e.stderr
+  $stderr.puts
+  $stderr.puts "Command #{e.commands[0][0]} failed:".red
+  $stderr.puts e.stderr.red
   exit 1
 rescue Interrupt
   puts # ^C is printed already
 rescue Exception
-  puts $!
+  $stderr.puts $!.to_s.red
   exit 1
 end

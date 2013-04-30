@@ -4,39 +4,31 @@ require_relative "../messages"
 module Commands
   class RubyCommand < Command
     def apply(mod)
-      prepare_result_dir(mod)
       reset_counts(mod)
+
+      action "Creating result directory" do
+        prepare_result_dir(mod)
+      end
 
       Dir.chdir mod.work_dir do
         Dir["**/*.y{cp,h}"].each do |file|
           next if mod.excluded.include?(file)
 
-          Messages.start "  * Converting #{file}..."
-
           work_file = "#{mod.work_dir}/#{file}"
           FileUtils.rm "#{mod.result_dir}/#{file}"
           result_file = "#{mod.result_dir}/#{file}".sub(/\.y(cp|h)$/, ".rb")
 
-          begin
+          file_action "Converting", :y2r, mod, file do
             # This makes private symbols in modules visible. Needed by some
             # testsuites.
             ENV["Y2ALLGLOBAL"] = "1"
 
             create_rb mod, work_file, result_file
-          rescue Exception => e
-            handle_exception(e, :y2r, mod, file)
-            next
           end
 
-          begin
+          file_action "Checking", :ruby, mod, file do
             check_rb result_file
-          rescue Exception => e
-            handle_exception(e, :ruby, mod, file)
-            next
           end
-
-          Messages.finish "OK"
-          @counts[:ok] += 1
         end
       end
 
