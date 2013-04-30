@@ -31,6 +31,7 @@ require_relative "lib/commands/restructure_command"
 require_relative "lib/commands/ybc_command"
 require_relative "lib/commands/ruby_command"
 require_relative "lib/commands/makefile_command"
+require_relative "lib/commands/build_command"
 require_relative "lib/commands/package_command"
 require_relative "lib/commands/pull_command"
 
@@ -133,6 +134,14 @@ class CLI < Thor
     modules = modules_from_names(module_names)
     with_modules modules do |mod|
       Commands::PackageCommand.new(@config).apply(mod)
+    end
+  end
+
+  desc "build <module>...", "Build package(s) for module(s) locally"
+  def build(*module_names)
+    modules = modules_from_names(module_names)
+    with_modules modules do |mod|
+      Commands::BuildCommand.new(@config).apply(mod)
     end
   end
 
