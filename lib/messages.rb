@@ -48,15 +48,5 @@ module Messages
 
       @log_lock.synchronize { stream.puts "#{prefix}#{message}" }
     end
-
-    def status(message, status)
-      spaces = if message.size < MAX_MESSAGE_WIDTH
-        " " * (MAX_MESSAGE_WIDTH - message.size)
-      else
-        " "
-      end
-
-      puts message + spaces + status
-    end
   end
 end
