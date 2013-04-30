@@ -1,9 +1,8 @@
 require_relative "command"
+require_relative "../yast_module"
 
 module Commands
   class PackageCommand < Command
-    OBS_PROJECT = "YaST:Head:ruby"
-
     def apply(mod)
       action "Packaging" do
         Dir.chdir mod.result_dir do
@@ -11,18 +10,14 @@ module Commands
           Cheetah.run "make", "package-local", "CHECK_SYNTAX=false"
         end
 
-        package_name = File.read("#{mod.result_dir}/RPMNAME").chomp
-
-        FileUtils.mkdir_p mod.obs_dir
-        Dir.chdir mod.obs_dir do
-          package_obs_dir = "#{mod.obs_dir}/#{OBS_PROJECT}/#{package_name}"
-
-          create_obs_package_dir!(package_name) unless File.exists?(package_obs_dir)
+        FileUtils.mkdir_p mod.obs_base_dir
+        Dir.chdir mod.obs_base_dir do
+          create_obs_package_dir!(mod.package_name) unless File.exists?(mod.obs_dir)
 
           Dir["#{mod.result_dir}/package/*"].each do |file|
             # for last three arguments keep defaults except last that we switch to
             # overwrite file in destrination
-            FileUtils.copy_entry file, "#{package_obs_dir}/#{File.basename(file)}", false, false, true
+            FileUtils.copy_entry file, "#{mod.obs_dir}/#{File.basename(file)}", false, false, true
           end
         end
       end
@@ -31,15 +26,15 @@ module Commands
     private
 
     # cwd must be obs_dir
-    def create_obs_package_dir!(package_name)
+    def create_obs_package_dir!(pkg_name)
       first = true
       begin
-        Cheetah.run "osc", "co", OBS_PROJECT, package_name
+        Cheetah.run "osc", "co", YastModule::OBS_PROJECT, pkg_name
       rescue Cheetah::ExecutionFailed
         # probably it is not created yet, so lets create it
         if first
           first = false
-          create_package_in_obs package_name
+          create_package_in_obs pkg_name
           retry
         end
 
@@ -47,7 +42,7 @@ module Commands
       end
     end
 
-    def create_package_in_obs(package_name)
+    def create_package_in_obs(pkg_name)
       ENV["EDITOR"] = "ed"
       # just add description via ed as meta pkg invoke editor
       ed_command = <<EOS
@@ -62,7 +57,7 @@ module Commands
         q
 EOS
 
-      Cheetah.run "osc", "meta", "pkg", OBS_PROJECT, package_name, "-e", :stdin => StringIO.new(ed_command)
+      Cheetah.run "osc", "meta", "pkg", YastModule::OBS_PROJECT, pkg_name, "-e", :stdin => StringIO.new(ed_command)
     end
   end
 end
