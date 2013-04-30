@@ -3,11 +3,12 @@ class YastModule
   WORK_DIR   = "work"
   RESULT_DIR = "result"
   OBS_DIR = "build_service"
+  OBS_PROJECT = "YaST:Head:ruby"
 
   attr_reader :name,
     :work_dir,
     :result_dir,
-    :obs_dir,
+    :obs_base_dir,
     :exports,
     :excluded,
     :moves
@@ -17,8 +18,7 @@ class YastModule
     @config         = config
     @work_dir       = "#{@config["yast_dir"]}/#{WORK_DIR}/#@name"
     @result_dir     = "#{@config["yast_dir"]}/#{RESULT_DIR}/#@name"
-    # Not suffixed with @name as it does not match (usuall yast2-#{name} )
-    @obs_dir        = "#{@config["yast_dir"]}/#{OBS_DIR}"
+    @obs_base_dir   = "#{@config["yast_dir"]}/#{OBS_DIR}"
     @ybc_dep_names  = data.delete("ybc_deps") || []
     @ruby_dep_names = data.delete("ruby_deps") || []
     @exports        = data.delete("exports") || ["src"]
@@ -28,6 +28,14 @@ class YastModule
     if !data.empty?
       puts "WARNING: Unknown keys in #{name}.yml: #{data.keys.join(", ")}."
     end
+  end
+
+  def obs_dir
+    @obs_dir ||= "#{@obs_base_dir}/#{OBS_PROJECT}/#{package_name}"
+  end
+
+  def package_name
+    @package_name ||= File.read("#{result_dir}/RPMNAME").chomp
   end
 
   def ybc_deps
