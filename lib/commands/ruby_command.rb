@@ -4,6 +4,7 @@ require "bundler/setup"   # Needed to setup path to the "y2r" binary.
 
 require_relative "command"
 require_relative "../messages"
+require_relative "../threading"
 
 module Commands
   class RubyCommand < Command
@@ -14,8 +15,12 @@ module Commands
         prepare_result_dir(mod)
       end
 
+      # This makes private symbols in modules visible. Needed by some
+      # testsuites.
+      ENV["Y2ALLGLOBAL"] = "1"
+
       Dir.chdir mod.work_dir do
-        Dir["**/*.y{cp,h}"].each do |file|
+        Threading.in_parallel Dir["**/*.y{cp,h}"] do |file|
           next if mod.excluded.include?(file)
 
           work_file = "#{mod.work_dir}/#{file}"
@@ -23,10 +28,6 @@ module Commands
           result_file = "#{mod.result_dir}/#{file}".sub(/\.y(cp|h)$/, ".rb")
 
           file_action "Converting", :y2r, mod, file do
-            # This makes private symbols in modules visible. Needed by some
-            # testsuites.
-            ENV["Y2ALLGLOBAL"] = "1"
-
             create_rb mod, work_file, result_file
           end
 
