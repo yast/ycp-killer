@@ -6,15 +6,18 @@ module Messages
     :item   => "    "
   }
 
+  # print messages only by one thread at a time
+  @log_lock = Mutex.new
+
   class << self
     def header(message)
-      puts message.bold
+      @log_lock.synchronize { puts message.bold }
 
       in_state(:header) { yield }
     end
 
     def item(message)
-      puts "  * #{message}..."
+      @log_lock.synchronize { puts "  * #{message}..." }
 
       in_state(:item) { yield }
     end
@@ -43,7 +46,7 @@ module Messages
     def log(stream, message)
       prefix = STATES_TO_PREFIXES[@state] || ""
 
-      stream.puts "#{prefix}#{message}"
+      @log_lock.synchronize { stream.puts "#{prefix}#{message}" }
     end
   end
 end

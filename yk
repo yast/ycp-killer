@@ -22,6 +22,7 @@ end
 require_relative "lib/messages"
 require_relative "lib/tsorter"
 require_relative "lib/yast_module"
+require_relative "lib/threading"
 require_relative "lib/commands/clone_command"
 require_relative "lib/commands/convert_command"
 require_relative "lib/commands/genpatch_command"
@@ -39,6 +40,7 @@ require_relative "lib/commands/pull_command"
 class CLI < Thor
 
   class_option :debug, :type => :boolean, :desc => "verbosely log what commands are run"
+  class_option :threads, :type => :numeric, :desc => "limit the number of threads in parallel tasks (default: all detected CPUs)"
 
   def initialize(*args)
     super *args
@@ -46,6 +48,10 @@ class CLI < Thor
     if options[:debug]
       log = Logger.new(STDOUT)
       Cheetah.default_options = { :logger => log }
+    end
+
+    if options[:threads].to_i > 0
+      Threading.threads = options[:threads]
     end
 
     load_config
