@@ -1,7 +1,6 @@
 require_relative "command"
 require_relative "../build_order"
 require_relative "../messages"
-require_relative "../threading"
 
 module Commands
   class YbcCommand < Command
@@ -19,11 +18,9 @@ module Commands
           ordered_modules = BuildOrder.new(mod.exports).ordered_modules
         end
 
-        Threading.in_parallel ordered_modules do |files|
-          files.each do |file|
-            file_action "Compiling", :y2r, mod, file do
-              create_ybc mod, file
-            end
+        ordered_modules.each do |file|
+          file_action "Compiling", :y2r, mod, file do
+            create_ybc mod, file
           end
         end
       end
