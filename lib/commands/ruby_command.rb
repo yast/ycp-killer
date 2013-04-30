@@ -16,8 +16,6 @@ module Commands
           files.each do |file|
             next if mod.excluded.include?(file)
 
-            Messages.info "  * Converting #{file}..."
-
             work_file = "#{mod.work_dir}/#{file}"
             FileUtils.rm "#{mod.result_dir}/#{file}"
             result_file = "#{mod.result_dir}/#{file}".sub(/\.y(cp|h)$/, ".rb")
