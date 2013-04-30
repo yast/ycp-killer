@@ -1,0 +1,741 @@
+diff --git a/agents/Makefile.am b/agents/Makefile.am
+index c22e4db..e69de29 100644
+--- a/agents/Makefile.am
++++ b/agents/Makefile.am
+@@ -1,10 +0,0 @@
+-#
+-# Makefile.am for devtools/devtools/skeletons/config/agents
+-#
+-
+-scrconf_DATA =		cfg_dhcpd.scr \
+-			etc_dhcpd_conf.scr
+-
+-agent_SCRIPTS =		ag_dhcpd_conf
+-
+-EXTRA_DIST = $(scrconf_DATA) $(agent_SCRIPTS)
+diff --git a/doc/autodocs/Makefile.am b/doc/autodocs/Makefile.am
+index 2a6f678..6fade89 100644
+--- a/doc/autodocs/Makefile.am
++++ b/doc/autodocs/Makefile.am
+@@ -1,3 +1,3 @@
+ # Makefile.am for YCP module .../doc/autodocs
+-
+-include $(top_srcdir)/autodocs-ycp.ami
++# FIXME autodocs temporarily disabled
++# include $(top_srcdir)/autodocs-ycp.ami
+diff --git a/src/clients/dhcp-server.ycp b/src/clients/dhcp-server.ycp
+index d8326de..e0f2695 100644
+--- a/src/clients/dhcp-server.ycp
++++ b/src/clients/dhcp-server.ycp
+@@ -21,20 +21,8 @@ textdomain "dhcp-server";
+ y2milestone ("----------------------------------------");
+ y2milestone ("Dhcp-server module started");
+ 
+-import "DhcpServerUI";
+-
+-/**
+-  * CommandLine handler for running GUI
+-  * @return boolean true if settings were saved
+-  */
+-define boolean GuiHandler () {
+-    symbol ret = DhcpServerUI::DhcpSequence ();
+-    if (ret == `abort || ret == `back || ret == `nil)
+-	return false;
+-    return true;
+-}
+-
+ include "dhcp-server/commandline.ycp";
++
+ any ret = CommandLine::Run(cmdline);
+ y2debug("ret=%1", ret);
+ 
+diff --git a/src/include/dhcp-server/commandline.ycp b/src/include/dhcp-server/commandline.ycp
+index e737474..1ef5769 100644
+--- a/src/include/dhcp-server/commandline.ycp
++++ b/src/include/dhcp-server/commandline.ycp
+@@ -13,11 +13,24 @@
+ import "CommandLine";
+ import "DhcpServer";
+ import "NetworkInterfaces";
++import "DhcpServerUI";
+ 
+ textdomain "dhcp-server";
+ 
+ include "dhcp-server/misc.ycp";
+ 
++
++/**
++  * CommandLine handler for running GUI
++  * @return boolean true if settings were saved
++  */
++define boolean GuiHandler () {
++    symbol ret = DhcpServerUI::DhcpSequence ();
++    if (ret == `abort || ret == `back || ret == `nil)
++	return false;
++    return true;
++}
++
+ /**
+   * Handler for command line interface
+   * @param options map options from the command line
+diff --git a/src/include/dhcp-server/dialogs.ycp b/src/include/dhcp-server/dialogs.ycp
+index 8643ffc..651d00f 100644
+--- a/src/include/dhcp-server/dialogs.ycp
++++ b/src/include/dhcp-server/dialogs.ycp
+@@ -19,6 +19,9 @@ import "Popup";
+ import "Label";
+ import "Confirm";
+ 
++include "dhcp-server/helps.ycp";
++include "dhcp-server/widgets.ycp";
++
+ global map<symbol,any> functions = $[
+     `abort : confirmAbort,
+ ];
+@@ -66,7 +69,7 @@ global define symbol WriteDialog() ``{
+   */
+ global define symbol OldMainDialog () ``{
+     y2milestone ("Running main dialog");
+-    list<map<string,any> > w = CWM::CreateWidgets (["start", "chroot", "ldap_support", "configtree"], widgets);
++    list<map<string,any> > w = CWM::CreateWidgets (["start", "chroot", "ldap_support", "configtree"], DhcpServerUI::widgets);
+     term contents = `HBox (`HSpacing (2), `VBox (
+ 	`VSpacing (1),
+ 	`Left (w[0, "widget"]:`VSpacing (0)),
+@@ -96,7 +99,7 @@ global define symbol OldMainDialog () ``{
+   */
+ global define symbol GlobalsDialog () ``{
+     y2milestone ("Running global options dialog");
+-    list<map<string,any> > w = CWM::CreateWidgets (["global_table"], widgets);
++    list<map<string,any> > w = CWM::CreateWidgets (["global_table"], DhcpServerUI::widgets);
+     term contents = `HBox (`HSpacing (2), `VBox (
+ 	`VSpacing (1),
+ 	w[0, "widget"]:`VSpacing (0),
+@@ -120,7 +123,7 @@ global define symbol GlobalsDialog () ``{
+ global define symbol SubnetDialog () ``{
+     y2milestone ("Running subnet dialog");
+     list<map<string,any> > w = CWM::CreateWidgets (["subnet", "subnet_table",
+-	"dyn_dns_button"], widgets);
++	"dyn_dns_button"], DhcpServerUI::widgets);
+     term contents = `HBox (`HSpacing (2), `VBox (
+ 	`VSpacing (1),
+ 	w[0, "widget"]:`VSpacing (0),
+@@ -145,7 +148,7 @@ global define symbol SubnetDialog () ``{
+   */
+ global define symbol HostDialog () ``{
+     y2milestone ("Running host dialog");
+-    list<map<string,any> > w = CWM::CreateWidgets (["host", "host_table"], widgets);
++    list<map<string,any> > w = CWM::CreateWidgets (["host", "host_table"], DhcpServerUI::widgets);
+     term contents = `HBox (`HSpacing (2), `VBox (
+ 	`VSpacing (1),
+ 	`HBox (`HSpacing (2),
+@@ -173,7 +176,7 @@ global define symbol HostDialog () ``{
+ global define symbol SharedNetworkDialog () ``{
+     y2milestone ("Running shared network dialog");
+     list<map<string,any> > w = CWM::CreateWidgets (
+-	["shared-network", "shared-network_table"], widgets);
++	["shared-network", "shared-network_table"], DhcpServerUI::widgets);
+     term contents = `HBox (`HSpacing (2), `VBox (
+ 	`VSpacing (1),
+ 	`HBox (`HSpacing (2),
+@@ -200,7 +203,7 @@ global define symbol SharedNetworkDialog () ``{
+   */
+ global define symbol PoolDialog () ``{
+     y2milestone ("Running pool dialog");
+-    list<map<string,any> > w = CWM::CreateWidgets (["pool", "pool_table"], widgets);
++    list<map<string,any> > w = CWM::CreateWidgets (["pool", "pool_table"], DhcpServerUI::widgets);
+     term contents = `HBox (`HSpacing (2), `VBox (
+ 	`VSpacing (1),
+ 	`HBox (`HSpacing (2),
+@@ -228,7 +231,7 @@ global define symbol PoolDialog () ``{
+   */
+ global define symbol Groupdialog () ``{
+     y2milestone ("Running group dialog");
+-    list<map<string,any> > w = CWM::CreateWidgets (["group", "group_table"], widgets);
++    list<map<string,any> > w = CWM::CreateWidgets (["group", "group_table"], DhcpServerUI::widgets);
+     term contents = `HBox (`HSpacing (2), `VBox (
+ 	`VSpacing (1),
+ 	`HBox (`HSpacing (2),
+@@ -255,7 +258,7 @@ global define symbol Groupdialog () ``{
+   */
+ global define symbol ClassDialog () ``{
+     y2milestone ("Running class dialog");
+-    list<map<string,any> > w = CWM::CreateWidgets (["class", "class_table"], widgets);
++    list<map<string,any> > w = CWM::CreateWidgets (["class", "class_table"], DhcpServerUI::widgets);
+     term contents = `HBox (`HSpacing (2), `VBox (
+ 	`VSpacing (1),
+ 	`HBox (`HSpacing (2),
+@@ -284,8 +287,8 @@ global define symbol ClassDialog () ``{
+ global define symbol SectionTypeChoose () ``{
+     y2milestone ("Running section type selection dialog");
+     list parents = [];
+-    string par_id = parent_id;
+-    string par_type = parent_type;
++    string par_id = DhcpServerUI::parent_id;
++    string par_type = DhcpServerUI::parent_type;
+     while (par_id != "")
+     {
+ 	parents = add (parents, par_type);
+@@ -366,7 +369,7 @@ global define symbol SectionTypeChoose () ``{
+     }
+     if (ret == `next)
+     {
+-	current_entry_type = (string)UI::QueryWidget (`id (`entry_type),
++      DhcpServerUI::current_entry_type = (string)UI::QueryWidget (`id (`entry_type),
+ 	    `CurrentButton);
+     }
+     return ret;
+@@ -379,7 +382,7 @@ global define symbol SectionTypeChoose () ``{
+   */
+ global define symbol IfacesDialog (boolean initial) ``{
+     y2milestone ("Running interfaces dialog");
+-    list<map<string,any> > w = CWM::CreateWidgets (["interfaces", "open_firewall"],widgets);
++    list<map<string,any> > w = CWM::CreateWidgets (["interfaces", "open_firewall"],DhcpServerUI::widgets);
+     term contents = `HBox (`HStretch (), `VBox (
+ 	`VStretch (),
+ 	w[0, "widget"]:`VSpacing (0),
+@@ -435,7 +438,7 @@ global define symbol DynDnsDialog () ``{
+ 
+     return CWM::ShowAndRun ($[
+ 	"widget_names" : w,
+-	"widget_descr" : widgets,
++	"widget_descr" : DhcpServerUI::widgets,
+ 	"contents" : contents,
+ 	"caption" :  caption,
+ 	"back_button" : Label::BackButton (),
+@@ -464,7 +467,7 @@ global define symbol RunTsigKeysDialog (boolean called_from_subnet) ``{
+ 
+     symbol ret = CWM::ShowAndRun ($[
+ 	"widget_names" : w,
+-	"widget_descr" : widgets,
++	"widget_descr" : DhcpServerUI::widgets,
+ 	"contents" : contents,
+ 	"caption" :  caption,
+ 	"back_button" : Label::BackButton (),
+@@ -488,19 +491,19 @@ global define symbol RunTsigKeysDialog (boolean called_from_subnet) ``{
+   */
+ global define symbol SelectEditationDialog () ``{
+     y2milestone ("Determining what is selected");
+-    if (current_entry_type == "")
++    if (DhcpServerUI::current_entry_type == "")
+ 	return `global;
+-    if (current_entry_type == "subnet")
++    if (DhcpServerUI::current_entry_type == "subnet")
+ 	return `subnet;
+-    if (current_entry_type == "host")
++    if (DhcpServerUI::current_entry_type == "host")
+ 	return `host;
+-    if (current_entry_type == "pool")
++    if (DhcpServerUI::current_entry_type == "pool")
+ 	return `pool;
+-    if (current_entry_type == "group")
++    if (DhcpServerUI::current_entry_type == "group")
+ 	return `group;
+-    if (current_entry_type == "shared-network")
++    if (DhcpServerUI::current_entry_type == "shared-network")
+ 	return `shared_network;
+-    if (current_entry_type == "class")
++    if (DhcpServerUI::current_entry_type == "class")
+ 	return `class;
+     y2error ("Unknown declaration was selected");
+     return `back;
+@@ -511,23 +514,23 @@ global define symbol SelectEditationDialog () ``{
+   * @return symbol for ws, always `next
+   */
+ global define symbol SectionStore () ``{
+-    if (current_operation == `edit) // existing entry was edited
++    if (DhcpServerUI::current_operation == `edit) // existing entry was edited
+     {
+ 	y2milestone ("Storing changed record");
+-	DhcpServer::ChangeEntry (original_entry_type, original_entry_id,
+-	    current_entry_type, current_entry_id);
++	DhcpServer::ChangeEntry (DhcpServerUI::original_entry_type, DhcpServerUI::original_entry_id,
++	    DhcpServerUI::current_entry_type, DhcpServerUI::current_entry_id);
+     }
+     else // new entry was added
+     {
+ 	y2milestone ("Storing new record");
+-	DhcpServer::CreateEntry (current_entry_type, current_entry_id,
+-	    parent_type, parent_id);
++	DhcpServer::CreateEntry (DhcpServerUI::current_entry_type, DhcpServerUI::current_entry_id,
++	    DhcpServerUI::parent_type, DhcpServerUI::parent_id);
+     }
+ 
+-    DhcpServer::SetEntryDirectives (current_entry_type, current_entry_id,
+-	current_entry_directives);
+-    DhcpServer::SetEntryOptions (current_entry_type, current_entry_id,
+-	current_entry_options);
++    DhcpServer::SetEntryDirectives (DhcpServerUI::current_entry_type, DhcpServerUI::current_entry_id,
++	DhcpServerUI::current_entry_directives);
++    DhcpServer::SetEntryOptions (DhcpServerUI::current_entry_type, DhcpServerUI::current_entry_id,
++	DhcpServerUI::current_entry_options);
+     DhcpServer::SetModified ();
+ 
+ /*    DhcpServer::SetDDNSFileName (current_ddns_key_file);
+diff --git a/src/include/dhcp-server/dialogs2.ycp b/src/include/dhcp-server/dialogs2.ycp
+index 32d79ea..e2a0900 100644
+--- a/src/include/dhcp-server/dialogs2.ycp
++++ b/src/include/dhcp-server/dialogs2.ycp
+@@ -32,6 +32,7 @@ include "dhcp-server/helps.ycp";
+ include "dhcp-server/widgets.ycp";
+ include "dhcp-server/dns-server-management.ycp";
+ include "dhcp-server/dns-server-wizard.ycp";
++include "dhcp-server/dialogs.ycp";
+ 
+ /* Using expert UI */
+ //define boolean expert_ui = (ProductFeatures::GetFeature ("globals", "ui_mode") == "expert");
+@@ -1790,7 +1791,7 @@ void SaveAndRestart () {
+ }
+ 
+ map<string,map<string,any> > new_widgets = (map<string,map<string,any> >)union (
+-  widgets,
++  DhcpServerUI::widgets,
+   $[
+     "auto_start_up" : CWMServiceStart::CreateAutoStartWidget ($[
+ 	"get_service_auto_start" : GetStartService,
+@@ -1900,7 +1901,7 @@ symbol CommonConfigDialog () {
+ 	"ids_order" : ids_order,
+ 	"initial_screen" : "start_up",
+ 	"screens" :  tabs,
+-	"widget_descr" : widgets,
++	"widget_descr" : DhcpServerUI::widgets,
+ 	"back_button" : "",
+ 	"abort_button" :  Label::CancelButton (),
+ 	"next_button" : Label::OKButton (),
+@@ -1919,7 +1920,7 @@ symbol FirstRunDialog (string current_tab, integer step_number) {
+ 
+     symbol ret = CWM::ShowAndRun ($[
+ 	"widget_names" : tab_descr["widget_names"]:[],
+-	"widget_descr" : widgets,
++	"widget_descr" : DhcpServerUI::widgets,
+ 	"contents" : tab_descr["contents"]:`VBox (),
+ 	"caption" :  caption,
+ 	"back_button" : Label::BackButton (),
+diff --git a/src/include/dhcp-server/options.ycp b/src/include/dhcp-server/options.ycp
+index 57b16f4..741ab04 100644
+--- a/src/include/dhcp-server/options.ycp
++++ b/src/include/dhcp-server/options.ycp
+@@ -13,8 +13,10 @@
+ 
+     import "Address";
+     import "DhcpServer";
++    import "DhcpServerUI";
+     import "IP";
+     import "Label";
++    import "Popup";
+ 
+ // generic routines
+ 
+@@ -34,11 +36,11 @@
+ 	string value = "";
+ 	if (substring (key, 0, 7) == "option ")
+ 	{
+-	    value = current_entry_options[index, "value"]:"";
++	    value = DhcpServerUI::current_entry_options[index, "value"]:"";
+ 	}
+ 	else
+ 	{
+-	    value = current_entry_directives[index, "value"]:"";
++	    value = DhcpServerUI::current_entry_directives[index, "value"]:"";
+ 	}
+ 	return value;
+     }
+@@ -54,14 +56,14 @@
+ 	{
+ 	    if (substring (key, 0, 7) == "option ")
+ 	    {
+-		current_entry_options = add (current_entry_options, $[
++        DhcpServerUI::current_entry_options = add (DhcpServerUI::current_entry_options, $[
+ 		    "key" : substring (key, 7),
+ 		    "value" : value,
+ 		]);
+ 	    }
+ 	    else
+ 	    {
+-		 current_entry_directives = add (current_entry_directives, $[
++        DhcpServerUI::current_entry_directives = add (DhcpServerUI::current_entry_directives, $[
+ 		    "key" : key,
+ 		    "value" : value,
+ 		]);
+@@ -74,11 +76,11 @@
+ 	    regexpsub ((string)opt_id, "^[a-z]+ ([0-9]+)$", "\\1"));
+ 	if (substring (key, 0, 7) == "option ")
+ 	{
+-	    current_entry_options[index, "value"] = (string)value;
++    DhcpServerUI::current_entry_options[index, "value"] = (string)value;
+ 	}
+ 	else
+ 	{
+-	    current_entry_directives[index, "value"] = (string)value;
++    DhcpServerUI::current_entry_directives[index, "value"] = (string)value;
+ 	}
+ 
+     }
+@@ -117,9 +119,9 @@
+ 	integer index = tointeger (
+ 	    regexpsub ((string)opt_id, "^[a-z]+ ([0-9]+)$", "\\1"));
+ 	if (substring (key, 0, 7) == "option ")
+-	    return sformat ("%1", current_entry_options[index, "value"]:"");
++	    return sformat ("%1", DhcpServerUI::current_entry_options[index, "value"]:"");
+ 	else
+-	    return sformat ("%1", current_entry_directives[index, "value"]:"");
++	    return sformat ("%1", DhcpServerUI::current_entry_directives[index, "value"]:"");
+     }
+ 
+     /**
+@@ -205,16 +207,16 @@
+ 	{
+ 	    string del_addr
+ 		= (string)UI::QueryWidget (`id (`addresses), `CurrentItem);
+-	    entry_list = filter (string a, entry_list, ``(a != del_addr));
++      DhcpServerUI::entry_list = filter (string a, DhcpServerUI::entry_list, ``(a != del_addr));
+ 	}
+ 	UI::ReplaceWidget (`addresses_rp, `SelectionBox (
+-	    `id (`addresses), label, entry_list
++	    `id (`addresses), label, DhcpServerUI::entry_list
+ 	));
+-	UI::ChangeWidget (`id (`delete), `Enabled, size (entry_list) > 0);
+-	if (size (entry_list) > 0)
++	UI::ChangeWidget (`id (`delete), `Enabled, size (DhcpServerUI::entry_list) > 0);
++	if (size (DhcpServerUI::entry_list) > 0)
+ 	{
+ 	    UI::ChangeWidget (`id (`addresses), `CurrentItem,
+-		entry_list[0]:"");
++		DhcpServerUI::entry_list[0]:"");
+ 	}
+ 
+     }
+@@ -237,7 +239,7 @@
+ 		v = substring (v, 0, size (v) - 1);
+ 	    return v;
+ 	});
+-	entry_list = filter (string v, values, ``(v != ""));
++  DhcpServerUI::entry_list = filter (string v, values, ``(v != ""));
+ 	redraw_list (opt_id, key, $[], label);
+     }
+ 
+@@ -267,7 +269,7 @@
+ 		Popup::Message (_("The entered address is not valid."));
+ 		return nil;
+ 	    }
+-	    entry_list = add (entry_list, new_addr);
++      DhcpServerUI::entry_list = add (DhcpServerUI::entry_list, new_addr);
+ 	}
+ 	redraw_list (opt_id, key, event, _("A&ddresses"));
+     }
+@@ -280,7 +282,7 @@
+       * @return boolean true if widget settings ok
+       */
+     global define boolean ip_array_validate (any opt_id, string key, map event){
+-	if (size (entry_list) == 0)
++	if (size (DhcpServerUI::entry_list) == 0)
+ 	{
+ 	    // message popup
+ 	    Popup::Message (_("At least one address must be specified."));
+@@ -295,7 +297,7 @@
+       * @param key any option key
+       */
+     global define void entry_array_store (any opt_id, string key) ``{
+-	storeValue (opt_id, key, mergestring ((list<string>)entry_list,", "));
++	storeValue (opt_id, key, mergestring ((list<string>)DhcpServerUI::entry_list,", "));
+     }
+ 
+     /**
+@@ -318,7 +320,7 @@
+ 	if (event["ID"]:nil == `add)
+ 	{
+ 	    integer val = (integer)UI::QueryWidget (`id (`new_addr), `Value);
+-	    entry_list = add (entry_list, tostring (val));
++      DhcpServerUI::entry_list = add (DhcpServerUI::entry_list, tostring (val));
+ 	}
+ 	redraw_list (opt_id, key, event, _("&Values"));
+     }
+@@ -331,7 +333,7 @@
+       * @return boolean true if widget settings ok
+       */
+     global define boolean value_array_validate (any opt_id, string key, map event) ``{
+-        if (size (entry_list) == 0)
++        if (size (DhcpServerUI::entry_list) == 0)
+         {
+             // message popup
+             Popup::Message (_("At least one address must be specified."));
+@@ -359,7 +361,7 @@
+ 		Popup::Message (_("The entered addresses are not valid."));
+ 		return nil;
+ 	    }
+-	    entry_list = add (entry_list, new_addr);
++      DhcpServerUI::entry_list = add (DhcpServerUI::entry_list, new_addr);
+ 	}
+ 	redraw_list (opt_id, key, event, _("A&ddresses"));
+     }
+@@ -372,7 +374,7 @@
+       * @return boolean true if widget settings ok
+       */
+     global define boolean ip_pair_array_validate (any opt_id, string key, map event){
+-	if (size (entry_list) == 0)
++	if (size (DhcpServerUI::entry_list) == 0)
+ 	{
+ 	    // message popup
+ 	    Popup::Message (_("At least one address pair must be specified."));
+diff --git a/src/include/dhcp-server/routines.ycp b/src/include/dhcp-server/routines.ycp
+index 7be11fb..0ed3325 100644
+--- a/src/include/dhcp-server/routines.ycp
++++ b/src/include/dhcp-server/routines.ycp
+@@ -11,6 +11,9 @@
+ 
+ textdomain "dhcp-server";
+ 
++import "DhcpServer";
++import "Service";
++
+ /**
+  * Restart the DHCP daemon
+  */
+diff --git a/src/include/dhcp-server/widgets.ycp b/src/include/dhcp-server/widgets.ycp
+index 692ee03..8de80ea 100644
+--- a/src/include/dhcp-server/widgets.ycp
++++ b/src/include/dhcp-server/widgets.ycp
+@@ -22,6 +22,12 @@
+     import "TablePopup";
+     import "SuSEFirewall";
+     import "Mode";
++    import "DhcpServerUI";
++    import "Report";
++
++include "dhcp-server/options.ycp";
++include "dhcp-server/helps.ycp";
++include "dhcp-server/routines.ycp";
+ 
+ 
+ // pre-declarations
+@@ -46,16 +52,16 @@ global define symbol ldapHandle (string id, map event);
+ 	    regexpsub ((string)opt_id, "^[a-z]+ ([0-9]+)$", "\\1"));
+ 	if (substring (key, 0, 7) == "option ")
+ 	{
+-	    current_entry_options[index] = nil;
+-	    current_entry_options = filter (map<string,string> o,
+-		current_entry_options,
++    DhcpServerUI::current_entry_options[index] = nil;
++    DhcpServerUI::current_entry_options = filter (map<string,string> o,
++		DhcpServerUI::current_entry_options,
+ 		``( o != nil));
+ 	}
+ 	else
+ 	{
+-	    current_entry_directives[index] = nil;
+-	    current_entry_directives = filter (map<string,string> d,
+-		current_entry_directives,
++    DhcpServerUI::current_entry_directives[index] = nil;
++    DhcpServerUI::current_entry_directives = filter (map<string,string> d,
++		DhcpServerUI::current_entry_directives,
+ 		``( d != nil));
+ 	}
+ 	return true;
+@@ -68,13 +74,13 @@ global define symbol ldapHandle (string id, map event);
+       */
+     global define list getTableContents (map descr) ``{
+ 	integer index = -1;
+-	list<string> opts = maplist (map m, current_entry_options, ``{
++	list<string> opts = maplist (map m, DhcpServerUI::current_entry_options, ``{
+ 	    index = index + 1;
+ 	    return sformat ("option %1", index);
+ 	});
+ 
+ 	index = -1;
+-	list<string> dirs = maplist (map m, current_entry_directives, ``{
++	list<string> dirs = maplist (map m, DhcpServerUI::current_entry_directives, ``{
+ 	    index = index + 1;
+ 	    if (m["key"]:"" != "zone")
+ 		return sformat ("directive %1", index);
+@@ -98,12 +104,12 @@ global define symbol ldapHandle (string id, map event);
+ 	{
+ 	    integer index = tointeger (substring (strid, 7));
+ 	    return sformat ("option %1",
+-		current_entry_options[index, "key"]:"");
++		DhcpServerUI::current_entry_options[index, "key"]:"");
+ 	}
+ 	else if (substring (strid, 0, 10) == "directive ")
+ 	{
+ 	    integer index = tointeger (substring (strid, 10));
+-	    return current_entry_directives[index, "key"]:"";
++	    return DhcpServerUI::current_entry_directives[index, "key"]:"";
+ 	}
+ 	return strid;
+     }
+@@ -114,7 +120,7 @@ global define symbol ldapHandle (string id, map event);
+       * @return map popup description map
+       */
+     global define map key2descr (string opt_key) ``{
+-	map ret = (map)(popups[opt_key]:nil);
++	map ret = (map)(DhcpServerUI::popups[opt_key]:nil);
+ 	if (ret != nil)
+ 	    return ret;
+ 	return $[
+@@ -134,7 +140,7 @@ global define symbol ldapHandle (string id, map event);
+ 	    $[
+ 		"init": TablePopup::TableInitWrapper,
+ 		"handle": TablePopup::TableHandleWrapper,
+-		"options": popups,
++		"options": DhcpServerUI::popups,
+ 		"id2key": id2key,
+ 		"ids": getTableContents,
+ 		"help": HELPS["options_table"]:"",
+@@ -473,33 +479,33 @@ preparation for autoinstallation."));
+ 
+     if (event["ID"]:nil == `add)
+     {
+-	original_entry_type = "";
+-	original_entry_id = "";
+-	parent_type = selected["type"]:"";
+-	parent_id = selected["id"]:"";
+-	current_entry_options = [];
+-	current_entry_directives = [];
+-	current_entry_type = "";
+-	current_entry_id = "";
+-	current_operation = `add;
++      DhcpServerUI::original_entry_type = "";
++      DhcpServerUI::original_entry_id = "";
++      DhcpServerUI::parent_type = selected["type"]:"";
++      DhcpServerUI::parent_id = selected["id"]:"";
++      DhcpServerUI::current_entry_options = [];
++      DhcpServerUI::current_entry_directives = [];
++      DhcpServerUI::current_entry_type = "";
++      DhcpServerUI::current_entry_id = "";
++      DhcpServerUI::current_operation = `add;
+ 	return `add;
+     }
+     else if (event["ID"]:nil == `edit)
+     {
+-	current_entry_type = selected["type"]:"";
+-	current_entry_id = selected["id"]:"";
+-	current_entry_options = DhcpServer::GetEntryOptions (
+-	    current_entry_type,
+-	    current_entry_id);
+-	current_entry_directives = DhcpServer::GetEntryDirectives (
+-	    current_entry_type,
+-	    current_entry_id);
+-
+-	original_entry_type = current_entry_type;
+-	original_entry_id = current_entry_id;
+-	parent_type = "";
+-	parent_id = "";
+-	current_operation = `edit;
++      DhcpServerUI::current_entry_type = selected["type"]:"";
++      DhcpServerUI::current_entry_id = selected["id"]:"";
++      DhcpServerUI::current_entry_options = DhcpServer::GetEntryOptions (
++          DhcpServerUI::current_entry_type,
++          DhcpServerUI::current_entry_id);
++      DhcpServerUI::current_entry_directives = DhcpServer::GetEntryDirectives (
++          DhcpServerUI::current_entry_type,
++          DhcpServerUI::current_entry_id);
++
++      DhcpServerUI::original_entry_type = DhcpServerUI::current_entry_type;
++      DhcpServerUI::original_entry_id = DhcpServerUI::current_entry_id;
++      DhcpServerUI::parent_type = "";
++      DhcpServerUI::parent_id = "";
++  DhcpServerUI::current_operation = `edit;
+ 
+ 	return `edit;
+     }
+@@ -548,7 +554,7 @@ global define void configTreeInit (string id) ``{
+  * @param id any widget id
+  */
+ global define void subnetInit (string id) ``{
+-    list<string> l = regexptokenize (current_entry_id,
++    list<string> l = regexptokenize (DhcpServerUI::current_entry_id,
+ 	"^[ \t]*([^ \t]+)[ \t]*netmask[ \t]*([^ \t]+)[ \t]*$");
+     UI::ChangeWidget (`id (`subnet), `Value, l[0]:"");
+     UI::ChangeWidget (`id (`netmask), `Value, l[1]:"");
+@@ -563,7 +569,7 @@ global define void subnetStore (string id, map event) ``{
+     string id = sformat ("%1 netmask %2",
+ 	(string)UI::QueryWidget (`id (`subnet), `Value),
+ 	(string)UI::QueryWidget (`id (`netmask), `Value));
+-    current_entry_id = id;
++    DhcpServerUI::current_entry_id = id;
+ }
+ 
+ /**
+@@ -571,7 +577,7 @@ global define void subnetStore (string id, map event) ``{
+  * @param id any widget id
+  */
+ global define void idInit (string id) ``{
+-    UI::ChangeWidget (`id (id), `Value, current_entry_id);
++    UI::ChangeWidget (`id (id), `Value, DhcpServerUI::current_entry_id);
+ }
+ 
+ /**
+@@ -580,7 +586,7 @@ global define void idInit (string id) ``{
+  * @param event map event that caused storing process
+  */
+ global define void idStore (string id, map event) ``{
+-    current_entry_id = (string)
++  DhcpServerUI::current_entry_id = (string)
+ 	UI::QueryWidget (`id (id), `Value);
+ }
+ 
+@@ -672,7 +678,7 @@ global define void DDNSZonesInit (string id) ``{
+     UI::ChangeWidget (`id ("reverse_ip"), `ValidChars,
+ 	Hostname::ValidCharsDomain);
+     boolean found_ddns = false;
+-    foreach (map d, current_entry_directives, ``{
++    foreach (map d, DhcpServerUI::current_entry_directives, ``{
+ 	if (d["key"]:"" == "zone")
+ 	{
+ 	    string value = (string)(d["value"]:"");
+@@ -765,8 +771,8 @@ global define boolean DNSZonesValidate (string id, map event) {
+  * @param event map event that caused storing process
+  */
+ global define void DDNSZonesStore (string id, map event) ``{
+-    current_entry_directives = filter (map<string,string> m,
+-	current_entry_directives, ``(
++  DhcpServerUI::current_entry_directives = filter (map<string,string> m,
++	DhcpServerUI::current_entry_directives, ``(
+ 	m["key"]:"" != "zone"
+     ));
+     if ((boolean)UI::QueryWidget (`id ("ddns_enable"), `Value))
+@@ -785,7 +791,7 @@ global define void DDNSZonesStore (string id, map event) ``{
+ 	{
+ 	    if (! regexpmatch (zone, "^.*\\.$"))
+ 		zone = zone + ".";
+-	    current_entry_directives = add (current_entry_directives, $[
++      DhcpServerUI::current_entry_directives = add (DhcpServerUI::current_entry_directives, $[
+ 		"key" : "zone",
+ 		"value" : sformat ("%1 { primary %2; key %3; }",
+ 		    zone, ip, key),
+@@ -795,7 +801,7 @@ global define void DDNSZonesStore (string id, map event) ``{
+ 	{
+ 	    if (! regexpmatch (rev_zone, "^.*\\.$"))
+ 		rev_zone = rev_zone + ".";
+-	    current_entry_directives = add (current_entry_directives, $[
++      DhcpServerUI::current_entry_directives = add (DhcpServerUI::current_entry_directives, $[
+ 		"key" : "zone",
+ 		"value" : sformat ("%1 { primary %2; key %3; }",
+ 		    rev_zone, rev_ip, rev_key),
+diff --git a/src/include/dhcp-server/wizards.ycp b/src/include/dhcp-server/wizards.ycp
+index 285ec51..7278154 100644
+--- a/src/include/dhcp-server/wizards.ycp
++++ b/src/include/dhcp-server/wizards.ycp
+@@ -15,6 +15,9 @@ import "Directory";
+ import "Wizard";
+ import "Sequencer";
+ 
++include "dhcp-server/dialogs.ycp";
++include "dhcp-server/dialogs2.ycp";
++
+ any FirstRunSequence() {
+ 
+     map aliases = $[
+diff --git a/yast2-dhcp-server.spec.in b/yast2-dhcp-server.spec.in
+index 90af475..34eff11 100644
+--- a/yast2-dhcp-server.spec.in
++++ b/yast2-dhcp-server.spec.in
+@@ -33,8 +33,8 @@ configuration.
+ %defattr(-,root,root)
+ %dir @yncludedir@/dhcp-server
+ @yncludedir@/dhcp-server/*
+-@clientdir@/dhcp-server.ycp
+-@clientdir@/dhcp-server_*.ycp
++@clientdir@/dhcp-server.rb
++@clientdir@/dhcp-server_*.rb
+ @moduledir@/*
+ @desktopdir@/dhcp-server.desktop
+ @scrconfdir@/cfg_dhcpd.scr
