@@ -10,16 +10,13 @@ moves:
     to:   src/include/add-on-creator
   - from: "src/add-on-creator.desktop"
     to:   src/desktop
-  - from: "src/template.prod"
-    to:   src/data
+  # TODO FIXME: it is in a data/ subdirectory
+  - from: "src/{template.prod,Makefile.am}"
+    to:   data
   - from: "agents/ag_*"
-    to:   src/scripts
+    to:   src/servers_non_y2
   - from: "agents/*.scr"
     to:   src/scrconf
   - from: "agents/sysconfig.add-on-creator"
-    to:   fillup
+    to:   src/fillup
 
-excluded:
-  # TODO: Include files, can't be compiled for now.
-  - src/include/add-on-creator/dialogs.ycp
-  - src/include/add-on-creator/patterns.ycp
