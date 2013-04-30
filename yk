@@ -219,13 +219,15 @@ class CLI < Thor
     max_counter_size = 3 + ((Math.log10(modules.size).to_i + 1) * 2)
 
     modules.each_index do |i|
-      Messages.info sprintf(
+      message = sprintf(
         "%-#{max_counter_size}s %s",
         "[#{i + 1}/#{modules.size}]",
-        "Processing #{modules[i].name}:\n"
+        "Processing #{modules[i].name}:"
       )
 
-      yield modules[i]
+      Messages.header message do
+        yield modules[i]
+      end
     end
   end
 end
@@ -233,13 +235,13 @@ end
 begin
   CLI.start(ARGV)
 rescue Cheetah::ExecutionFailed => e
-  Messages.info ""
-  Messages.info "Command #{e.commands[0][0]} failed:"
-  Messages.info e.stderr
+  $stderr.puts
+  $stderr.puts "Command #{e.commands[0][0]} failed:"
+  $stderr.puts e.stderr
   exit 1
 rescue Interrupt
   puts # ^C is printed already
 rescue Exception
-  Messages.info $!
+  $stderr.puts $!
   exit 1
 end
