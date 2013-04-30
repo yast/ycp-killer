@@ -1,0 +1,80 @@
+diff --git a/agents/Makefile.am b/agents/Makefile.am
+index c0ce51b..e69de29 100644
+--- a/agents/Makefile.am
++++ b/agents/Makefile.am
+@@ -1,7 +0,0 @@
+-# Makefile.am for isns/agents
+-
+-agent_SCRIPTS =
+-
+-scrconf_DATA = isnsd.scr
+-
+-EXTRA_DIST = $(agent_SCRIPTS) $(scrconf_DATA)
+diff --git a/doc/autodocs/Makefile.am b/doc/autodocs/Makefile.am
+index a5421e3..af859b1 100644
+--- a/doc/autodocs/Makefile.am
++++ b/doc/autodocs/Makefile.am
+@@ -1,3 +1,5 @@
+ # Makefile.am for isns/doc/autodocs
+ 
+-include $(top_srcdir)/autodocs-ycp.ami
++# TODO FIXME: temporarily disabled
++
++#include $(top_srcdir)/autodocs-ycp.ami
+diff --git a/src/include/isns/dialogs.ycp b/src/include/isns/dialogs.ycp
+index 309ade0..244253d 100644
+--- a/src/include/isns/dialogs.ycp
++++ b/src/include/isns/dialogs.ycp
+@@ -22,6 +22,7 @@ import "TablePopup";
+ 
+ include "isns/helps.ycp";
+ include "isns/widgets.ycp";
++include "isns/complex.ycp";
+ 
+ // store current here
+ string current_tab = "service";
+diff --git a/src/include/isns/widgets.ycp b/src/include/isns/widgets.ycp
+index 8402786..5017864 100644
+--- a/src/include/isns/widgets.ycp
++++ b/src/include/isns/widgets.ycp
+@@ -5,6 +5,7 @@ import "Label";
+ import "IsnsServer";
+ import "String";
+ import "Report";
++import "Popup";
+ 
+ string address = "";  //global
+ 
+@@ -529,8 +530,6 @@ symbol handleDiscoveryDomainSet(string key, map event){
+  }
+ }
+ 
+-}
+-
+ symbol handleDiscoveryDomainMembers(string key, map event)
+ {
+    if ( event["EventReason"]:"" == "Activated" ){
+@@ -623,3 +622,5 @@ integer checkISNS()
+ 
+     return 0;
+ }
++
++}
+diff --git a/yast2-isns.spec.in b/yast2-isns.spec.in
+index 6803626..08f3dd8 100644
+--- a/yast2-isns.spec.in
++++ b/yast2-isns.spec.in
+@@ -24,10 +24,9 @@ Summary:	Configuration of isns
+ %defattr(-,root,root)
+ %dir @yncludedir@/isns
+ @yncludedir@/isns/*
+-@clientdir@/isns.ycp
+-@clientdir@/isns_*.ycp
+-@moduledir@/*.ycp
+-@moduledir@/*.ybc
++@clientdir@/isns.rb
++@clientdir@/isns_*.rb
++@moduledir@/*.rb
+ @desktopdir@/isns.desktop
+ @scrconfdir@/*.scr
+ %doc @docdir@
