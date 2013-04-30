@@ -9,11 +9,7 @@ moves:
   - from: "src/{complex,dialogs,helps,widgets,wizards}.ycp"
     to:   src/include/iscsi-lio-server
   - from: "src/iscsi-lio-server.desktop"
-    to:   src/iscsi-lio-server
+    to:   src/desktop
   - from: "agents/ietd.scr"
     to:   src/scrconf
 
-excluded:
-  # TODO: Include files, can't be compiled for now.
-  - src/include/iscsi-lio-server/widgets.ycp
-  - src/include/iscsi-lio-server/dialogs.ycp
