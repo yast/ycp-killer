@@ -2,6 +2,10 @@ ybc_deps:
   - yast2
 
 moves:
+  - from: agents/{cfg_named,convert_named_conf,dns_named,dns_zone,named_forwarders}.scr
+    to:   src/scrconf
+  - from: agents/{ag_convert_named_conf,ag_dns_zone,ag_named_forwarders}
+    to:   src/servers_non_y2
   - from: src/DNSD.pm
     to: src/modules/YaPI
   - from: src/Dns*.{ycp,pm}
@@ -14,16 +18,3 @@ moves:
     to: src/desktop
   - from: src/*.rnc
     to: src/autoyast-rnc
-
-excluded:
-  # they refer to symbols declared outside.
-  # in fact DnsServerUI is just a shell that declares some variables
-  # and includes all of these
-  - src/include/dns-server/dialog-installwizard.ycp
-  - src/include/dns-server/dialog-main.ycp
-  - src/include/dns-server/dialog-masterzone.ycp
-  - src/include/dns-server/dialogs.ycp
-  - src/include/dns-server/options.ycp
-  - src/include/dns-server/wizards.ycp
-  # unused file ?!
-  - src/widgets.ycp
