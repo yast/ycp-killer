@@ -22,7 +22,7 @@ module Commands
         Cheetah.run "git", "fetch"
         output = Cheetah.run "git", "status", :stdout => :capture
         if output.include? "Your branch is behind"
-          Messages.info "    WARNING: The Git checkout is obsolete, run 'yk pull #{mod.name}'"
+          Messages.warning "The Git checkout is obsolete, run 'yk pull #{mod.name}'"
         end
       end
     end
