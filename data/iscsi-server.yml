@@ -10,3 +10,5 @@ moves:
     to:   src/include/iscsi-server
   - from: src/*.desktop
     to:   src/desktop
+  - from: agents/ietd.scr
+    to:   src/scrconf

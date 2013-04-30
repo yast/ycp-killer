@@ -1,3 +1,26 @@
+diff --git a/agents/Makefile.am b/agents/Makefile.am
+index 358303c..e69de29 100644
+--- a/agents/Makefile.am
++++ b/agents/Makefile.am
+@@ -1,7 +0,0 @@
+-# Makefile.am for iscsi-server/agents
+-
+-agent_SCRIPTS =
+-
+-scrconf_DATA = ietd.scr
+-
+-EXTRA_DIST = $(agent_SCRIPTS) $(scrconf_DATA)
+diff --git a/doc/autodocs/Makefile.am b/doc/autodocs/Makefile.am
+index 6461f9c..6d99b70 100644
+--- a/doc/autodocs/Makefile.am
++++ b/doc/autodocs/Makefile.am
+@@ -1,3 +1,5 @@
+ # Makefile.am for iscsi-server/doc/autodocs
+ 
+-include $(top_srcdir)/autodocs-ycp.ami
++# TODO FIXME: temporarily disabled
++
++#include $(top_srcdir)/autodocs-ycp.ami
 diff --git a/src/include/iscsi-server/complex.ycp b/src/include/iscsi-server/complex.ycp
 index 6920367..30ae128 100644
 --- a/src/include/iscsi-server/complex.ycp
@@ -57,3 +80,18 @@ index 1141380..b2aee43 100644
  import "Sequencer";
  import "Wizard";
  
+diff --git a/yast2-iscsi-server.spec.in b/yast2-iscsi-server.spec.in
+index 94a45c6..7f968a1 100644
+--- a/yast2-iscsi-server.spec.in
++++ b/yast2-iscsi-server.spec.in
+@@ -30,8 +30,8 @@ Configuration of iSCSI target
+ %defattr(-,root,root)
+ %dir @yncludedir@/iscsi-server
+ @yncludedir@/iscsi-server/*
+-@clientdir@/iscsi-server.ycp
+-@clientdir@/iscsi-server_*.ycp
++@clientdir@/iscsi-server.rb
++@clientdir@/iscsi-server_*.rb
+ @moduledir@/IscsiServer*
+ @desktopdir@/iscsi-server.desktop
+ @scrconfdir@/ietd.scr
