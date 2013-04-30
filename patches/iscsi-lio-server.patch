@@ -1,3 +1,26 @@
+diff --git a/agents/Makefile.am b/agents/Makefile.am
+index 358303c..e69de29 100644
+--- a/agents/Makefile.am
++++ b/agents/Makefile.am
+@@ -1,7 +0,0 @@
+-# Makefile.am for iscsi-server/agents
+-
+-agent_SCRIPTS =
+-
+-scrconf_DATA = ietd.scr
+-
+-EXTRA_DIST = $(agent_SCRIPTS) $(scrconf_DATA)
+diff --git a/doc/autodocs/Makefile.am b/doc/autodocs/Makefile.am
+index 6461f9c..6d99b70 100644
+--- a/doc/autodocs/Makefile.am
++++ b/doc/autodocs/Makefile.am
+@@ -1,3 +1,5 @@
+ # Makefile.am for iscsi-server/doc/autodocs
+ 
+-include $(top_srcdir)/autodocs-ycp.ami
++# TODO FIXME: temporarily disabled
++
++#include $(top_srcdir)/autodocs-ycp.ami
 diff --git a/src/include/iscsi-lio-server/complex.ycp b/src/include/iscsi-lio-server/complex.ycp
 index c7edcae..6e098d2 100644
 --- a/src/include/iscsi-lio-server/complex.ycp
@@ -10,3 +33,44 @@ index c7edcae..6e098d2 100644
  import "IscsiLioServer";
  
  include "iscsi-lio-server/helps.ycp";
+diff --git a/src/include/iscsi-lio-server/dialogs.ycp b/src/include/iscsi-lio-server/dialogs.ycp
+index 4b2622c..0440f3b 100644
+--- a/src/include/iscsi-lio-server/dialogs.ycp
++++ b/src/include/iscsi-lio-server/dialogs.ycp
+@@ -47,6 +47,7 @@ import "TablePopup";
+ 
+ include "iscsi-lio-server/helps.ycp";
+ include "iscsi-lio-server/widgets.ycp";
++include "iscsi-lio-server/complex.ycp";
+ 
+ // store current here
+ string current_tab = "service";
+diff --git a/src/include/iscsi-lio-server/widgets.ycp b/src/include/iscsi-lio-server/widgets.ycp
+index 5539378..8f476e9 100644
+--- a/src/include/iscsi-lio-server/widgets.ycp
++++ b/src/include/iscsi-lio-server/widgets.ycp
+@@ -29,6 +29,9 @@ import "Label";
+ import "Event";
+ import "ContextMenu";
+ import "IP";
++import "Popup";
++import "String";
++
+ //	**************** global funcions and variables *****
+ string curr_target = "";
+ integer curr_tpg = 1;
+diff --git a/yast2-iscsi-lio-server.spec.in b/yast2-iscsi-lio-server.spec.in
+index 0df1e82..8d1c915 100644
+--- a/yast2-iscsi-lio-server.spec.in
++++ b/yast2-iscsi-lio-server.spec.in
+@@ -31,8 +31,8 @@ This package contains configuration of iSCSI LIO target
+ %defattr(-,root,root)
+ %dir @yncludedir@/iscsi-lio-server
+ @yncludedir@/iscsi-lio-server/*
+-@clientdir@/iscsi-lio-server.ycp
+-@clientdir@/iscsi-lio-server_*.ycp
++@clientdir@/iscsi-lio-server.rb
++@clientdir@/iscsi-lio-server_*.rb
+ @moduledir@/IscsiLioServer*
+ @moduledir@/IscsiLioData*
+ @desktopdir@/iscsi-lio-server.desktop
