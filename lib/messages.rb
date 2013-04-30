@@ -1,3 +1,5 @@
+require "smart_colored/extend"
+
 module Messages
   STATES_TO_PREFIXES = {
     :header => "  ",
@@ -6,7 +8,7 @@ module Messages
 
   class << self
     def header(message)
-      puts message
+      puts message.bold
 
       in_state(:header) { yield }
     end
@@ -22,11 +24,11 @@ module Messages
     end
 
     def warning(message)
-      log $stderr, "WARNING: #{message}"
+      log $stderr, "WARNING: #{message}".yellow
     end
 
     def error(message)
-      log $stderr, "ERROR: #{message}"
+      log $stderr, "ERROR: #{message}".red
     end
 
     private

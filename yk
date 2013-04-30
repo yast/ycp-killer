@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 
 require "cheetah"
+require "smart_colored/extend"
 require "thor"
 require "yaml"
 
@@ -236,12 +237,12 @@ begin
   CLI.start(ARGV)
 rescue Cheetah::ExecutionFailed => e
   $stderr.puts
-  $stderr.puts "Command #{e.commands[0][0]} failed:"
-  $stderr.puts e.stderr
+  $stderr.puts "Command #{e.commands[0][0]} failed:".red
+  $stderr.puts e.stderr.red
   exit 1
 rescue Interrupt
   puts # ^C is printed already
 rescue Exception
-  $stderr.puts $!
+  $stderr.puts $!.to_s.red
   exit 1
 end
