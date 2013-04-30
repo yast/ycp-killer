@@ -6,21 +6,23 @@ require_relative "../threading"
 module Commands
   class YbcCommand < Command
     def apply(mod)
-      clean_previous_compilation(mod)
       reset_counts(mod)
 
+      action "Cleaning previous compilation results" do
+        clean_previous_compilation(mod)
+      end
+
       Dir.chdir mod.work_dir do
-        # list of full paths
-        ordered_modules = BuildOrder.new(mod.exports).ordered_modules
+        ordered_modules = nil
+        action "Ordering modules" do
+          # list of full paths
+          ordered_modules = BuildOrder.new(mod.exports).ordered_modules
+        end
 
         Threading.in_parallel ordered_modules do |files|
           files.each do |file|
-            begin
-              Messages.info "  * Compiling #{file}..."
+            file_action "Compiling", :y2r, mod, file do
               create_ybc mod, file
-              @counts[:ok] += 1
-            rescue Exception => e
-              handle_exception(e, :ybc, mod, file)
             end
           end
         end

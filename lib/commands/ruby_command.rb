@@ -5,8 +5,11 @@ require_relative "../threading"
 module Commands
   class RubyCommand < Command
     def apply(mod)
-      prepare_result_dir(mod)
       reset_counts(mod)
+
+      action "Creating result directory" do
+        prepare_result_dir(mod)
+      end
 
       Dir.chdir mod.work_dir do
         Threading.in_parallel Dir["**/*.y{cp,h}"] do |files|
@@ -19,27 +22,17 @@ module Commands
             FileUtils.rm "#{mod.result_dir}/#{file}"
             result_file = "#{mod.result_dir}/#{file}".sub(/\.y(cp|h)$/, ".rb")
 
-            begin
+            file_action "Converting", :y2r, mod, file do
               # This makes private symbols in modules visible. Needed by some
               # testsuites.
               ENV["Y2ALLGLOBAL"] = "1"
 
               create_rb mod, work_file, result_file
-            rescue Exception => e
-              Messages.status msg, "ERROR(y2r)"
-              handle_exception(e, :y2r, mod, file)
-              next
             end
 
-            begin
+            file_action "Checking", :ruby, mod, file do
               check_rb result_file
-            rescue Exception => e
-              Messages.status msg, "ERROR(ruby)"
-              handle_exception(e, :ruby, mod, file)
-              next
             end
-
-            @counts[:ok] += 1
           end
         end
       end

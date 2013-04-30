@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 
 require "cheetah"
+require "smart_colored/extend"
 require "thor"
 require "yaml"
 
@@ -18,6 +19,7 @@ $yast_modules = Hash.new do |hash, missing_key|
   raise "Unknown yast module #{missing_key}"
 end
 
+require_relative "lib/messages"
 require_relative "lib/tsorter"
 require_relative "lib/yast_module"
 require_relative "lib/threading"
@@ -30,6 +32,8 @@ require_relative "lib/commands/restructure_command"
 require_relative "lib/commands/ybc_command"
 require_relative "lib/commands/ruby_command"
 require_relative "lib/commands/makefile_command"
+require_relative "lib/commands/build_command"
+require_relative "lib/commands/submit_command"
 require_relative "lib/commands/package_command"
 require_relative "lib/commands/pull_command"
 
@@ -140,6 +144,22 @@ class CLI < Thor
     end
   end
 
+  desc "build <module>...", "Build package(s) for module(s) locally"
+  def build(*module_names)
+    modules = modules_from_names(module_names)
+    with_modules modules do |mod|
+      Commands::BuildCommand.new(@config).apply(mod)
+    end
+  end
+
+  desc "submit <module>...", "Submit source files to build service for module(s)"
+  def submit(*module_names)
+    modules = modules_from_names(module_names)
+    with_modules modules do |mod|
+      Commands::SubmitCommand.new(@config).apply(mod)
+    end
+  end
+
   private
 
   def report_results(module_names) # :yields: mod
@@ -162,15 +182,15 @@ class CLI < Thor
       counts.keys.each { |k| counts[k] += module_counts[k] }
     end
 
-    puts
-    puts "-----"
-    puts
-    puts "Total OK:           #{counts[:ok]}"
-    puts "Total EXCLUDED:     #{counts[:excluded]}"
-    puts "Total ERROR(ybc):   #{counts[:error_ybc]}"
-    puts "Total ERROR(y2r):   #{counts[:error_y2r]}"
-    puts "Total ERROR(ruby):  #{counts[:error_ruby]}"
-    puts "Total ERROR(other): #{counts[:error_other]}"
+    Messages.info ""
+    Messages.info "-----"
+    Messages.info ""
+    Messages.info "Total OK:           #{counts[:ok]}"
+    Messages.info "Total EXCLUDED:     #{counts[:excluded]}"
+    Messages.info "Total ERROR(ybc):   #{counts[:error_ybc]}"
+    Messages.info "Total ERROR(y2r):   #{counts[:error_y2r]}"
+    Messages.info "Total ERROR(ruby):  #{counts[:error_ruby]}"
+    Messages.info "Total ERROR(other): #{counts[:error_other]}"
 
     error_counts = counts.values_at(
       :error_ybc,
@@ -224,13 +244,15 @@ class CLI < Thor
     max_counter_size = 3 + ((Math.log10(modules.size).to_i + 1) * 2)
 
     modules.each_index do |i|
-      printf(
+      message = sprintf(
         "%-#{max_counter_size}s %s",
         "[#{i + 1}/#{modules.size}]",
-        "Processing #{modules[i].name}:\n"
+        "Processing #{modules[i].name}:"
       )
 
-      yield modules[i]
+      Messages.header message do
+        yield modules[i]
+      end
     end
   end
 end
@@ -238,13 +260,13 @@ end
 begin
   CLI.start(ARGV)
 rescue Cheetah::ExecutionFailed => e
-  puts
-  puts "Command #{e.commands[0][0]} failed:"
-  puts e.stderr
+  $stderr.puts
+  $stderr.puts "Command #{e.commands[0][0]} failed:".red
+  $stderr.puts e.stderr.red
   exit 1
 rescue Interrupt
   puts # ^C is printed already
 rescue Exception
-  puts $!
+  $stderr.puts $!.to_s.red
   exit 1
 end
