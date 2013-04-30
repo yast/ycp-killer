@@ -9,16 +9,14 @@ module Commands
     protected
 
     def action(message)
-      Messages.start "  * #{message}..."
-
-      begin
-        yield
-      rescue Exception => e
-        Messages.finish "ERROR"
-        raise
+      Messages.item message do
+        begin
+          yield
+        rescue Exception => e
+          Messages.error "#{message} failed."
+          raise
+        end
       end
-
-      Messages.finish "OK"
     end
 
     def file_action(message, phase, mod, file)
@@ -27,6 +25,7 @@ module Commands
           yield
           @counts[:ok] += 1
         rescue Exception => e
+          Messages.error "#{message} #{file} failed."
           handle_exception(e, phase, mod, file)
           @counts["error_#{phase}".to_sym] += 1
         end
