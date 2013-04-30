@@ -57,7 +57,7 @@ class Threading
     # split an array to (possibly) equal parts
     def split_array(arr, parts)
       ret = [];
-      arr.each_slice((arr.size / parts.to_f).ceil){ |part| ret << part}
+      arr.each_slice((arr.size / parts.to_f).ceil){ |part| ret << part} unless arr.empty?
       ret
     end
 
