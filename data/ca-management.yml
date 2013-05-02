@@ -7,8 +7,6 @@ ruby_deps:
   - network
 
 moves:
-  - from: "scripts/{generateCRL.pl,exportCRL.pl}"
-    to: src/bin
   - from: src/CaMgm.ycp
     to: src/modules
   - from: src/YaPI
@@ -26,24 +24,3 @@ moves:
   - from: "src/*.rnc"
     to: src/autoyast-rnc
 
-excluded:
-  # include files we cannot translate now
-  - src/include/ca-management/crlExport.ycp
-  - src/include/ca-management/request.ycp
-  - src/include/ca-management/new_cert_read_write.ycp
-  - src/include/ca-management/certificate.ycp
-  - src/include/ca-management/crl.ycp
-  - src/include/ca-management/crlDefault.ycp
-  - src/include/ca-management/new_cert_items.ycp
-  - src/include/ca-management/new_cert_advanced.ycp
-  - src/include/ca-management/popup.ycp
-  - src/include/ca-management/certDefault.ycp
-  - src/include/ca-management/startup.ycp
-  - src/include/ca-management/new_cert.ycp
-  - src/include/ca-management/commandline.ycp
-  - src/include/ca-management/ca.ycp
-  - src/include/ca-management/dialog-ca.ycp
-  - src/include/ca-management/wizards.ycp
-  - src/include/ca-management/util.ycp
-  - src/include/ca-management/new_cert_callbacks.ycp
-  - src/include/ca-management/signRequest.ycp
