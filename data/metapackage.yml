@@ -7,3 +7,10 @@ moves:
     to:   src/clients
   - from: src/*.{ycp,pm}
     to:   src/modules
+  - from: src/*.desktop
+    to:   desktop
+  - from: src/OneClickInstall*
+    to:   bin
+  - from: src/yast2-metapackage-handler-mimetypes.xml
+    to:   mime
+

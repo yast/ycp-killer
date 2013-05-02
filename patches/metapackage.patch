@@ -1,0 +1,59 @@
+diff --git a/yast2-metapackage-handler.spec.in b/yast2-metapackage-handler.spec.in
+index ba8e259..dba910c 100644
+--- a/yast2-metapackage-handler.spec.in
++++ b/yast2-metapackage-handler.spec.in
+@@ -88,10 +88,9 @@ fi
+ /sbin/OneClickInstallCLI
+ /sbin/OCICLI
+ %dir @clientdir@
+-@clientdir@/*.ycp
++@clientdir@/*.rb
+ %dir @moduledir@
+-@moduledir@/*.ycp
+-@moduledir@/*.ybc
++@moduledir@/*.rb
+ @moduledir@/*.pm
+ %if %suse_version <= 1020
+ /opt/kde3
+diff --git a/desktop/Makefile.am b/desktop/Makefile.am
+new file mode 100644
+index 0000000..1e882d4
+--- /dev/null
++++ b/desktop/Makefile.am
+@@ -0,0 +1,10 @@
++
++
++old_distro_Data = kdeymp.desktop x-suse-ymp.desktop
++
++# overrides devtools
++desktopdir = $(datadir)/applications
++desktop_DATA = yast2-metapackage-handler.desktop yast2-metapackage-handler-ymu.desktop
++
++EXTRA_DIST = $(old_distro_Data) $(desktop_DATA)
++
+diff --git a/mime/Makefile.am b/mime/Makefile.am
+new file mode 100644
+index 0000000..b45cc19
+--- /dev/null
++++ b/mime/Makefile.am
+@@ -0,0 +1,6 @@
++
++mimedir = $(datadir)/mime/packages
++mime_DATA = yast2-metapackage-handler-mimetypes.xml
++
++EXTRA_DIST = $(mime_DATA)
++
+diff --git a/bin/Makefile.am b/bin/Makefile.am
+new file mode 100644
+index 0000000..c803e85
+--- /dev/null
++++ b/bin/Makefile.am
+@@ -0,0 +1,8 @@
++dist_sbin_SCRIPTS = \
++	OneClickInstallUrlHandler \
++	OneClickInstallCLI
++
++install-exec-hook:
++	$(LN_S) -f OneClickInstallUrlHandler $(DESTDIR)$(sbindir)/OneClickInstallUI 
++	$(LN_S) -f OneClickInstallCLI $(DESTDIR)$(sbindir)/OCICLI
++
