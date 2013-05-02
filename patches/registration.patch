@@ -1,0 +1,76 @@
+TODO FIXME: The patch also moves from PolicyKit-devel to polkit,
+fix this upstream.
+
+diff --git a/SUBDIRS b/SUBDIRS
+index 8d9a14f..3508cf2 100644
+--- a/SUBDIRS
++++ b/SUBDIRS
+@@ -1 +1 @@
+-agents doc src
++agents doc src yastbrowser
+diff --git a/agents/Makefile.am b/agents/Makefile.am
+index 0fcd3e0..e69de29 100644
+--- a/agents/Makefile.am
++++ b/agents/Makefile.am
+@@ -1,7 +0,0 @@
+-# Makefile.am for registration/agents
+-
+-agent_SCRIPTS =
+-
+-scrconf_DATA = $(wildcard *.scr)
+-
+-EXTRA_DIST = $(agent_SCRIPTS) $(scrconf_DATA)
+diff --git a/yast2-registration.spec.in b/yast2-registration.spec.in
+index a6554c2..ee05fcd 100644
+--- a/yast2-registration.spec.in
++++ b/yast2-registration.spec.in
+@@ -31,10 +31,12 @@ Requires(post): sed grep
+ PreReq:         %fillup_prereq
+ BuildRequires:  yast2 >= 2.23.13
+ BuildRequires:  perl-XML-Writer update-desktop-files yast2-devtools yast2-packager yast2-testsuite
+-BuildRequires:  limal limal-ca-mgm-perl limal-perl perl-TimeDate
++BuildRequires:  limal limal-perl perl-TimeDate
++# TODO FIXME: disabled actually not needed for build (not available in Factory/openSUSE-12.3)
++#Buildrequires:  limal-ca-mgm-perl
+ BuildRequires:  yast2-pkg-bindings >= 2.17.20
+ BuildRequires:  suseRegister
+-Buildrequires:  PolicyKit-devel
++Buildrequires:  polkit
+ BuildArch:      noarch
+ Summary:        YaST2 - Registration Module
+ 
+@@ -54,8 +56,8 @@ Authors:
+ 
+ @INSTALL@
+ 
+-mkdir -p $RPM_BUILD_ROOT/usr/share/PolicyKit/policy
+-install -m 0644 %SOURCE1 $RPM_BUILD_ROOT/usr/share/PolicyKit/policy/
++mkdir -p $RPM_BUILD_ROOT/usr/share/polkit-1/actions
++install -m 0644 %SOURCE1 $RPM_BUILD_ROOT/usr/share/polkit-1/actions
+ 
+ 
+ @CLEAN@
+@@ -113,19 +115,18 @@ fi
+ %files
+ %defattr(-,root,root)
+ %doc @docdir@
+-@clientdir@/*.ycp
++@clientdir@/*.rb
+ @moduledir@/*.pm
+-@moduledir@/*.ycp
+-@moduledir@/*.ybc
++@moduledir@/*.rb
+ %dir @yncludedir@/registration
+-@yncludedir@/registration/*.ycp
++@yncludedir@/registration/*.rb
+ @schemadir@/autoyast/rnc/*.rnc
+ /usr/share/YaST2/yastbrowser
+ # agents
+ @scrconfdir@/cfg_suse_register.scr
+ #fillup
+ @fillupdir@/sysconfig.suse_register-yast2-registration
+-%attr(644,root,root) %config /usr/share/PolicyKit/policy/org.opensuse.yast.modules.*.policy
++%attr(644,root,root) %config /usr/share/polkit-1/actions/org.opensuse.yast.modules.*.policy
+ 
+ %files branding-SLE
+ %defattr(-,root,root)
