@@ -64,7 +64,6 @@ index 1302d3a..8b2d23c 100644
  include "heartbeat/helps.ycp";
  include "heartbeat/common.ycp";
  
--
  any log_conf_Read()
  {
      return true;
