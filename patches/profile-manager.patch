@@ -1,0 +1,46 @@
+diff --git a/agents/Makefile.am b/agents/Makefile.am
+index cc7d64e..e69de29 100644
+--- a/agents/Makefile.am
++++ b/agents/Makefile.am
+@@ -1,9 +0,0 @@
+-#
+-# Makefile.am for scpm/agents
+-#
+-
+-agent_SCRIPTS =
+-
+-scrconf_DATA = *.scr
+-
+-EXTRA_DIST = $(agent_SCRIPTS) $(scrconf_DATA)
+diff --git a/doc/autodocs/Makefile.am b/doc/autodocs/Makefile.am
+index 86f42b0..ddde8e7 100644
+--- a/doc/autodocs/Makefile.am
++++ b/doc/autodocs/Makefile.am
+@@ -1,5 +1,8 @@
+ #
+ # Makefile.am for devtools/devtools/skeletons/config/doc/autodocs
+ #
+-include $(top_srcdir)/autodocs-ycp.ami
++
++# TODO FIXME: temporarily disabled
++
++#include $(top_srcdir)/autodocs-ycp.ami
+ 
+diff --git a/yast2-profile-manager.spec.in b/yast2-profile-manager.spec.in
+index b8e6a4e..ada8309 100644
+--- a/yast2-profile-manager.spec.in
++++ b/yast2-profile-manager.spec.in
+@@ -28,10 +28,9 @@ profiles of your system configuration and switch between them.
+ %defattr(-,root,root)
+ %dir @yncludedir@/profile-manager
+ @yncludedir@/profile-manager/*
+-@clientdir@/profile-manager.ycp
+-@clientdir@/profile_manager.ycp
+-@moduledir@/ProfileManager.ycp
+-@moduledir@/ProfileManager.ybc
++@clientdir@/profile-manager.rb
++@clientdir@/profile_manager.rb
++@moduledir@/ProfileManager.rb
+ @desktopdir@/profile-manager.desktop
+ @scrconfdir@/*.scr
+ @plugindir@/libpy2ag_scpm.so.*
