@@ -20,3 +20,6 @@ moves:
     to: src/scrconf
   - from: agents/ag*
     to: src/servers_non_y2
+
+excluded:
+  - src/include/dhcp-server/commandline.ycp
