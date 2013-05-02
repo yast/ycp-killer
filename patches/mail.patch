@@ -1,3 +1,129 @@
+diff --git a/SUBDIRS b/SUBDIRS
+index 922f4d3..ea3a6ee 100644
+--- a/SUBDIRS
++++ b/SUBDIRS
+@@ -1 +1 @@
+-agents doc permissions src users-plugin
++agents doc permissions src users-plugin schema
+diff --git a/agents/Makefile.am b/agents/Makefile.am
+index ea86233..fd6424b 100644
+--- a/agents/Makefile.am
++++ b/agents/Makefile.am
+@@ -4,40 +4,6 @@
+ # $Id$
+ #
+ 
+-agent_SCRIPTS = ag_fetchmailrc \
+-		ag_smtp_auth \
+-		ag_mailtable \
+-		setup_dkim_verifying.pl \
+-		ag_mailconfig \
+-		ag_postfix_mastercf \
+-		MasterCFParser.pm \
+-		ag_mail_ldaptable \
+-                ag_cyrus_conf \
+-		CyrusConfParser.pm
+-
+-scrconf_DATA = \
+-	cfg_amavis.scr		\
+-	cfg_mail.scr		\
+-	cfg_postfix.scr		\
+-	cfg_sendmail.scr	\
+-	mail_aliases.scr	\
+-	mail_fetchmail.scr	\
+-	mail_p_auth.scr		\
+-	mail_p_canonical.scr	\
+-	mail_p_virtual.scr	\
+-	mail_s_auth.scr		\
+-	mail_s_generics.scr	\
+-	mail_s_virtuser.scr     \
+-	\
+-	mail_maincf.scr \
+-	mail_saslpasswd.scr \
+-	mail_mastercf.scr \
+-	etc_imapd_conf.scr \
+-        mail_ldaptable.scr \
+-	mail_cyrusconf.scr \
+-	cfg_fetchmail.scr
+-
+-fillup_DATA =  sysconfig.mail
+ 
+ # ag_fetchmailrc is tested in testsuite dir
+ TESTS = test-mailtable
+@@ -50,4 +16,4 @@ testdata = \
+ 	test-mailtable-4.in test-mailtable-4.out \
+ 	test-mailtable-18487.in test-mailtable-18487.out
+ 
+-EXTRA_DIST = $(agent_SCRIPTS) $(scrconf_DATA) $(TESTS) $(testdata) $(fillup_DATA)
++EXTRA_DIST = $(TESTS) $(testdata)
+diff --git a/doc/autodocs/Makefile.am b/doc/autodocs/Makefile.am
+index df3ffca..9de7be0 100644
+--- a/doc/autodocs/Makefile.am
++++ b/doc/autodocs/Makefile.am
+@@ -1,2 +1,5 @@
+ # Makefile.am for YCP module .../doc/autodocs
+-include $(top_srcdir)/autodocs-ycp.ami
++
++# TODO FIXME: temporarily disabled
++
++#include $(top_srcdir)/autodocs-ycp.ami
+diff --git a/schema/Makefile.am b/schema/Makefile.am
+index aba8ca0..749104b 100644
+--- a/schema/Makefile.am
++++ b/schema/Makefile.am
+@@ -4,51 +4,10 @@
+ # $Id$
+ #
+ 
+-SUBDIRS = YaPI
+-
+-myyncludedir = $(yncludedir)/mail
+ ldapschemadir  = /etc/openldap/schema
+ 
+-client_DATA =			\
+-	mail.ycp		\
+-	mail_auto.ycp		\
+-        mail-standard.ycp       \
+-        mail-advanced.ycp       \
+-        mail-server_auto.ycp    \
+-        mail-server_proposal.ycp \
+-	mail-server_ldap-setup.ycp
+-
+-
+-myynclude_DATA =		\
+-	helps.ycp		\
+-	wj.ycp			\
+-	widgets.ycp		\
+-	ui.ycp			\
+-	\
+-	mail-server_helps.ycp   \
+-        mail-server_wizards.ycp \
+-        mail-server_dialogs.ycp \
+-        mail-server_complex.ycp
+-
+-desktop_DATA =			\
+-	mail.desktop
+-
+-module_DATA =			\
+-	Mail.ycp		\
+-	MailServer.ycp		\
+-	MailServerLDAP.pm
+-
+ ldapschema_DATA = suse-mailserver.schema
+ 
+-rncdir =  $(schemadir)/autoyast/rnc
+-rnc_DATA = mail.rnc
+-
+-mail:
+-	ln -sf . mail
+-
+-ycpchook = mail
+-
+-EXTRA_DIST = $(client_DATA) $(myynclude_DATA) $(module_DATA) $(desktop_DATA) $(rnc_DATA) \
+-             $(ldapschema_DATA)
++EXTRA_DIST = $(ldapschema_DATA)
+ 
+ include $(top_srcdir)/Makefile.am.common
 diff --git a/src/include/mail/mail-server_dialogs.ycp b/src/include/mail/mail-server_dialogs.ycp
 index 1aa3e3b..05d8c27 100644
 --- a/src/include/mail/mail-server_dialogs.ycp
@@ -21,3 +147,21 @@ index 1aa3e3b..05d8c27 100644
  
  boolean ReallyAbort() {
      return !MailServer::Modified() || Popup::ReallyAbort(true);
+diff --git a/yast2-mail.spec.in b/yast2-mail.spec.in
+index d0f7ef7..0620e48 100644
+--- a/yast2-mail.spec.in
++++ b/yast2-mail.spec.in
+@@ -61,11 +61,9 @@ configuration.
+ %dir @clientdir@
+ @clientdir@/mail*
+ %dir @moduledir@
+-@moduledir@/Mail.ybc
+-@moduledir@/MailServer.ybc
+-@moduledir@/MailServer.ycp
++@moduledir@/MailServer.rb
+ @moduledir@/MailServerLDAP.pm
+-@moduledir@/Mail.ycp
++@moduledir@/Mail.rb
+ %dir @moduledir@/YaPI
+ @moduledir@/YaPI/Mail*
+ %dir @desktopdir@

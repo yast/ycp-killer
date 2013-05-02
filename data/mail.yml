@@ -22,7 +22,7 @@ moves:
   - from: agents/{ag_fetchmailrc,ag_smtp_auth,ag_mailtable,setup_dkim_verifying.pl,ag_postfix_mastercf,ag_mailconfig,MasterCFParser.pm,ag_mail_ldaptable,ag_cyrus_conf,CyrusConfParser.pm}
     to:   src/servers_non_y2
   - from: agents/sysconfig.mail
-    to:   fillup
+    to:   src/fillup
   - from: src/{mail,mail_auto,mail-standard,mail-advanced,mail-server_auto,mail-server_proposal,mail-server_ldap-setup}.ycp
     to:   src/clients
   - from: src/{helps,wj,widgets,ui,mail-server_helps,mail-server_wizards,mail-server_dialogs,mail-server_complex}.ycp
@@ -36,6 +36,5 @@ moves:
   #FIXME not in Makefile
   - from: src/mail-server.ycp
     to:   src/clients
-  #TODO missing Makefile for the schema dir
-  - from: src/suse-mailserver.schema
+  - from: src/{suse-mailserver.schema,Makefile.am}
     to:   schema
