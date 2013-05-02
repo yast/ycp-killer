@@ -1,0 +1,404 @@
+diff --git a/agents/Makefile.am b/agents/Makefile.am
+index 4110426..e69de29 100644
+--- a/agents/Makefile.am
++++ b/agents/Makefile.am
+@@ -1,11 +0,0 @@
+-#
+-# Makefile.am for y2c_autoinst/agents
+-#
+-
+-agent_SCRIPTS = \
+-	ag_ksimport
+-
+-scrconf_DATA = $(wildcard *.scr)
+-
+-
+-EXTRA_DIST = $(scrconf_DATA)  $(agent_SCRIPTS)
+diff --git a/autoyast2.spec.in b/autoyast2.spec.in
+index c7196fd..3f5d91a 100644
+--- a/autoyast2.spec.in
++++ b/autoyast2.spec.in
+@@ -110,31 +110,32 @@ rmdir $RPM_BUILD_ROOT/@docdir@/html/autoyast
+ 
+ @desktopdir@/autoyast.desktop
+ /usr/share/autoinstall/modules/*.desktop
+-@yncludedir@/autoinstall/classes.ycp
+-@yncludedir@/autoinstall/conftree.ycp
+-@yncludedir@/autoinstall/dialogs.ycp
++@yncludedir@/autoinstall/classes.rb
++@yncludedir@/autoinstall/conftree.rb
++@yncludedir@/autoinstall/dialogs.rb
++# TODO FIXME: unused, remove it?
+ @yncludedir@/autoinstall/partition_dialogs.ycp
+-@yncludedir@/autoinstall/script_dialogs.ycp
+-@yncludedir@/autoinstall/general_dialogs.ycp
+-@yncludedir@/autoinstall/wizards.ycp
+-@yncludedir@/autoinstall/helps.ycp
++@yncludedir@/autoinstall/script_dialogs.rb
++@yncludedir@/autoinstall/general_dialogs.rb
++@yncludedir@/autoinstall/wizards.rb
++@yncludedir@/autoinstall/helps.rb
+ /usr/share/YaST2/schema/autoyast/rnc/*.rnc
+ 
+-@clientdir@/general_auto.ycp
+-@clientdir@/report_auto.ycp
+-@clientdir@/classes_auto.ycp
+-@clientdir@/scripts_auto.ycp
+-@clientdir@/software_auto.ycp
+-@clientdir@/storage_auto.ycp
+-@clientdir@/autoyast.ycp
+-@clientdir@/clone_system.ycp
+-@clientdir@/ayast_setup.ycp
++@clientdir@/general_auto.rb
++@clientdir@/report_auto.rb
++@clientdir@/classes_auto.rb
++@clientdir@/scripts_auto.rb
++@clientdir@/software_auto.rb
++@clientdir@/storage_auto.rb
++@clientdir@/autoyast.rb
++@clientdir@/clone_system.rb
++@clientdir@/ayast_setup.rb
+ 
+ @scrconfdir@/ksimport.scr
+ 
+ 
+-@moduledir@/AutoinstClass.y*
+-@moduledir@/Kickstart.y*
++@moduledir@/AutoinstClass.rb
++@moduledir@/Kickstart.rb
+ @agentdir@/ag_ksimport
+ 
+ 
+@@ -168,58 +169,58 @@ rmdir $RPM_BUILD_ROOT/@docdir@/html/autoyast
+ /usr/share/autoinstall/xslt/merge.xslt
+ # config file
+ 
+-@moduledir@/AutoinstClone.y*
++@moduledir@/AutoinstClone.rb
+ %dir @yncludedir@/autoinstall
+-@yncludedir@/autoinstall/autopart.ycp
+-@yncludedir@/autoinstall/io.ycp
+-@yncludedir@/autoinstall/autoinst_dialogs.ycp
+-@yncludedir@/autoinstall/AdvancedPartitionDialog.ycp
+-@yncludedir@/autoinstall/DriveDialog.ycp
+-@yncludedir@/autoinstall/PartitionDialog.ycp
+-@yncludedir@/autoinstall/StorageDialog.ycp
+-@yncludedir@/autoinstall/VolgroupDialog.ycp
+-@yncludedir@/autoinstall/common.ycp
+-@yncludedir@/autoinstall/tree.ycp
+-@yncludedir@/autoinstall/types.ycp
++@yncludedir@/autoinstall/autopart.rb
++@yncludedir@/autoinstall/io.rb
++@yncludedir@/autoinstall/autoinst_dialogs.rb
++@yncludedir@/autoinstall/AdvancedPartitionDialog.rb
++@yncludedir@/autoinstall/DriveDialog.rb
++@yncludedir@/autoinstall/PartitionDialog.rb
++@yncludedir@/autoinstall/StorageDialog.rb
++@yncludedir@/autoinstall/VolgroupDialog.rb
++@yncludedir@/autoinstall/common.rb
++@yncludedir@/autoinstall/tree.rb
++@yncludedir@/autoinstall/types.rb
+ 
+ /usr/share/YaST2/control/*.xml
+ 
+-@moduledir@/AutoInstall.y*
+-@moduledir@/AutoinstScripts.y*
+-@moduledir@/AutoinstGeneral.y*
+-@moduledir@/AutoinstImage.y*
+-@moduledir@/Y2ModuleConfig.y*
+-@moduledir@/Profile.y*
+-@moduledir@/AutoinstFile.y*
+-@moduledir@/AutoinstConfig.y*
+-@moduledir@/AutoinstSoftware.y*
+-@moduledir@/AutoinstLVM.y*
+-@moduledir@/AutoinstRAID.y*
+-@moduledir@/AutoinstStorage.y*
+-@moduledir@/AutoInstallRules.y*
+-@moduledir@/ProfileLocation.y*
+-@moduledir@/AutoinstCommon.y*
+-@moduledir@/AutoinstDrive.y*
+-@moduledir@/AutoinstPartPlan.y*
+-@moduledir@/AutoinstPartition.y*
++@moduledir@/AutoInstall.rb
++@moduledir@/AutoinstScripts.rb
++@moduledir@/AutoinstGeneral.rb
++@moduledir@/AutoinstImage.rb
++@moduledir@/Y2ModuleConfig.rb
++@moduledir@/Profile.rb
++@moduledir@/AutoinstFile.rb
++@moduledir@/AutoinstConfig.rb
++@moduledir@/AutoinstSoftware.rb
++@moduledir@/AutoinstLVM.rb
++@moduledir@/AutoinstRAID.rb
++@moduledir@/AutoinstStorage.rb
++@moduledir@/AutoInstallRules.rb
++@moduledir@/ProfileLocation.rb
++@moduledir@/AutoinstCommon.rb
++@moduledir@/AutoinstDrive.rb
++@moduledir@/AutoinstPartPlan.rb
++@moduledir@/AutoinstPartition.rb
+ 
+ #clients
+-@clientdir@/inst_autoinit.ycp
+-@clientdir@/inst_autoimage.ycp
+-@clientdir@/inst_autosetup.ycp
+-@clientdir@/inst_autoconfigure.ycp
+-@clientdir@/inst_autopost.ycp
+-@clientdir@/files_auto.ycp
+-@clientdir@/autoinst_test_clone.ycp
+-@clientdir@/autoinst_test_stage.ycp
+-@clientdir@/autoinst_scripts1_finish.ycp
+-@clientdir@/autoinst_scripts2_finish.ycp
+-@clientdir@/ayast_probe.ycp
+-@clientdir@/inst_autosetup_upgrade.ycp
+-@clientdir@/inst_store_upgrade_software.ycp
+-
+-@yncludedir@/autoinstall/xml.ycp
+-@yncludedir@/autoinstall/ask.ycp
++@clientdir@/inst_autoinit.rb
++@clientdir@/inst_autoimage.rb
++@clientdir@/inst_autosetup.rb
++@clientdir@/inst_autoconfigure.rb
++@clientdir@/inst_autopost.rb
++@clientdir@/files_auto.rb
++@clientdir@/autoinst_test_clone.rb
++@clientdir@/autoinst_test_stage.rb
++@clientdir@/autoinst_scripts1_finish.rb
++@clientdir@/autoinst_scripts2_finish.rb
++@clientdir@/ayast_probe.rb
++@clientdir@/inst_autosetup_upgrade.rb
++@clientdir@/inst_store_upgrade_software.rb
++
++@yncludedir@/autoinstall/xml.rb
++@yncludedir@/autoinstall/ask.rb
+ 
+ # scripts
+ @ybindir@/fetch_image.sh
+diff --git a/control/Makefile.am b/control/Makefile.am
+index db3f28c..e7e794d 100644
+--- a/control/Makefile.am
++++ b/control/Makefile.am
+@@ -5,18 +5,13 @@
+ #
+ controldir = $(yast2dir)/control
+ 
+-client_DATA = \
+-    autoinst_test_clone.ycp \
+-    autoinst_test_stage.ycp
+-
+ control_DATA = \
+     control_continue_autoyast.xml
+ 
+ EXTRA_DIST =                    \
+-	$(client_DATA) $(control_DATA)
++	$(control_DATA)
+ 
+ check-local:
+ 	xmllint --relaxng $(controldir)/control.rng --noout $(control_DATA)
+ 
+-
+ include $(top_srcdir)/Makefile.am.common
+diff --git a/doc/autodocs/Makefile.am b/doc/autodocs/Makefile.am
+index 9a2350a..b464f78 100644
+--- a/doc/autodocs/Makefile.am
++++ b/doc/autodocs/Makefile.am
+@@ -2,5 +2,7 @@
+ # Makefile.am for .../doc/autodocs
+ #
+ 
+-AUTODOCS_YCP=$(top_srcdir)/src/*/*.ycp
+-include $(top_srcdir)/autodocs-ycp.ami
++# TODO FIXME: temporarily disabled
++
++#AUTODOCS_YCP=$(top_srcdir)/src/*/*.ycp
++#include $(top_srcdir)/autodocs-ycp.ami
+diff --git a/modconfig/Makefile.am b/modconfig/Makefile.am
+index 8e75e4e..87c47ba 100644
+--- a/modconfig/Makefile.am
++++ b/modconfig/Makefile.am
+@@ -13,7 +13,5 @@ modconfig_DATA = \
+ 	software.desktop \
+ 	files.desktop
+ 
+-desktop_DATA = autoyast.desktop
+-
+-EXTRA_DIST =  $(desktop_DATA) $(modconfig_DATA)
++EXTRA_DIST = $(modconfig_DATA)
+ 
+diff --git a/scripts/Makefile.am b/scripts/Makefile.am
+index bc6f88f..ac5e97e 100644
+--- a/scripts/Makefile.am
++++ b/scripts/Makefile.am
+@@ -2,6 +2,4 @@
+ # Makefile.am for installation/scripts
+ #
+ 
+-ybin_SCRIPTS = fetch_image.sh autoyast-initscripts.sh
+-
+-EXTRA_DIST = $(ybin_SCRIPTS) autoyast-initscripts.service
++EXTRA_DIST = autoyast-initscripts.service
+diff --git a/src/include/autoinstall/DriveDialog.ycp b/src/include/autoinstall/DriveDialog.ycp
+index f7dfc4d..567f816 100644
+--- a/src/include/autoinstall/DriveDialog.ycp
++++ b/src/include/autoinstall/DriveDialog.ycp
+@@ -18,6 +18,7 @@
+ 
+   include "autoinstall/common.ycp";
+   include "autoinstall/types.ycp";
++  include "autoinstall/tree.ycp";
+ 
+   import "Popup";
+ 
+diff --git a/src/include/autoinstall/PartitionDialog.ycp b/src/include/autoinstall/PartitionDialog.ycp
+index 9f87a71..9a9a2cc 100644
+--- a/src/include/autoinstall/PartitionDialog.ycp
++++ b/src/include/autoinstall/PartitionDialog.ycp
+@@ -18,6 +18,7 @@
+ 
+   include "autoinstall/common.ycp";
+   include "autoinstall/AdvancedPartitionDialog.ycp";
++  include "autoinstall/tree.ycp";
+   import "AutoinstPartPlan";
+   import "AutoinstDrive";
+   import "AutoinstPartition";
+diff --git a/src/include/autoinstall/VolgroupDialog.ycp b/src/include/autoinstall/VolgroupDialog.ycp
+index 11c2a68..7cbc294 100644
+--- a/src/include/autoinstall/VolgroupDialog.ycp
++++ b/src/include/autoinstall/VolgroupDialog.ycp
+@@ -18,9 +18,11 @@
+ 
+   include "autoinstall/common.ycp";
+   include "autoinstall/types.ycp";
++  include "autoinstall/tree.ycp";
+ 
+   import "AutoinstPartPlan";
+   import "AutoinstDrive";
++  import "Popup";
+ 
+   /**
+    * INTERNAL STUFF
+diff --git a/src/include/autoinstall/ask.ycp b/src/include/autoinstall/ask.ycp
+index 92744e8..56afab7 100644
+--- a/src/include/autoinstall/ask.ycp
++++ b/src/include/autoinstall/ask.ycp
+@@ -14,6 +14,7 @@
+     import "Label";
+     import "Stage";
+     import "Popup";
++    import "AutoinstConfig";
+ 
+     define list<any> path2pos( string pa ) {
+         list<any> pos = [];
+diff --git a/src/include/autoinstall/autoinst_dialogs.ycp b/src/include/autoinstall/autoinst_dialogs.ycp
+index f734d34..b54bb96 100644
+--- a/src/include/autoinstall/autoinst_dialogs.ycp
++++ b/src/include/autoinstall/autoinst_dialogs.ycp
+@@ -11,6 +11,7 @@
+     textdomain "autoinst";
+     import "Label";
+     import "Storage";
++    import "Popup";
+ 
+     /**
+       * Shows a dialog when 'control file' can't be found
+diff --git a/src/include/autoinstall/autopart.ycp b/src/include/autoinstall/autopart.ycp
+index 3227f04..9fc31e1 100644
+--- a/src/include/autoinstall/autopart.ycp
++++ b/src/include/autoinstall/autopart.ycp
+@@ -9,6 +9,8 @@ $Id$
+     import "FileSystems";
+     import "Partitions";
+     import "Arch";
++    import "Storage";
++    import "AutoinstStorage";
+ 
+ 
+     map get_gap_info( map disk, map pd, boolean add_exist_linux );
+@@ -229,7 +231,7 @@ global map AddFilesysData( map st_map, map xml_map )
+         boolean root = size(filter( map e, conf["partitions"]:[], 
+                                     ``(e["mount"]:""=="/"))) > 0;
+         map tc = (map) eval(conf);
+-        if( !planHasBoot && root &&
++        if( !AutoinstStorage::planHasBoot && root &&
+             (disk["cyl_count"]:0 > Partitions::BootCyl() ||
+              Arch::ia64 () || Arch::ppc () || Arch::sparc ()) )
+         {
+diff --git a/src/include/autoinstall/classes.ycp b/src/include/autoinstall/classes.ycp
+index e97781b..d2d714b 100644
+--- a/src/include/autoinstall/classes.ycp
++++ b/src/include/autoinstall/classes.ycp
+@@ -13,6 +13,7 @@
+     import "AutoinstClass";
+     import "XML";
+ 
++    include "autoinstall/dialogs.ycp";
+ 
+     /**
+      * XML_cleanup()
+diff --git a/src/include/autoinstall/conftree.ycp b/src/include/autoinstall/conftree.ycp
+index 5fa1b35..e039a4a 100644
+--- a/src/include/autoinstall/conftree.ycp
++++ b/src/include/autoinstall/conftree.ycp
+@@ -23,6 +23,7 @@
+     import "Icon";
+     import "AutoinstSoftware";
+     import "AutoinstClone";
++    import "Y2ModuleConfig";
+ 
+     string title = _("Autoinstallation - Configuration");
+     boolean show_source = false;
+diff --git a/src/include/autoinstall/general_dialogs.ycp b/src/include/autoinstall/general_dialogs.ycp
+index d81321c..1fcece8 100644
+--- a/src/include/autoinstall/general_dialogs.ycp
++++ b/src/include/autoinstall/general_dialogs.ycp
+@@ -10,6 +10,9 @@
+     textdomain "autoinst";
+     import "GetInstArgs";
+     import "Label";
++    import "Wizard";
++    import "AutoinstGeneral";
++    import "Sequencer";
+ 
+ 
+     /**
+diff --git a/src/include/autoinstall/script_dialogs.ycp b/src/include/autoinstall/script_dialogs.ycp
+index 916110d..bf81882 100644
+--- a/src/include/autoinstall/script_dialogs.ycp
++++ b/src/include/autoinstall/script_dialogs.ycp
+@@ -20,6 +20,9 @@
+ 
+     import "Popup";
+     import "AutoinstConfig";
++    import "AutoinstScripts";
++    import "Label";
++    import "Wizard";
+ 
+ 
+     /**
+diff --git a/src/include/autoinstall/wizards.ycp b/src/include/autoinstall/wizards.ycp
+index 6e4f464..4eb2077 100644
+--- a/src/include/autoinstall/wizards.ycp
++++ b/src/include/autoinstall/wizards.ycp
+@@ -10,8 +10,11 @@
+     textdomain "autoinst";
+     import "Wizard";
+     import "Label";
++    import "AutoinstConfig";
++    import "Sequencer";
+     include "autoinstall/classes.ycp";
+     include "autoinstall/dialogs.ycp";
++    include "autoinstall/conftree.ycp";
+ 
+ 
+     /**
+diff --git a/xslt/Makefile.am b/xslt/Makefile.am
+index 98761a2..763da68 100644
+--- a/xslt/Makefile.am
++++ b/xslt/Makefile.am
+@@ -12,6 +12,4 @@ xmldir = $(prefix)/share/autoinstall/xslt
+ xml_DATA = \
+     merge.xslt
+ 
+-fillup_DATA = sysconfig.autoinstall
+-
+ EXTRA_DIST =  $(xml_DATA)  $(fillup_DATA)  
