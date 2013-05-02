@@ -11,7 +11,7 @@ index cc3cb74..d223884 100644
  
  EXTRA_DIST = $(agent_SCRIPTS) $(scrconf_DATA)
 diff --git a/doc/Makefile.am b/doc/Makefile.am
-index 942c239..7e40599 100644
+index 942c239..33acb79 100644
 --- a/doc/Makefile.am
 +++ b/doc/Makefile.am
 @@ -1,6 +1,7 @@
@@ -24,10 +24,10 @@ index 942c239..7e40599 100644
  htmldir = $(docdir)
  
 diff --git a/src/include/support/dialogs.ycp b/src/include/support/dialogs.ycp
-index 105e952..f651ee3 100644
+index 105e952..a3adbed 100644
 --- a/src/include/support/dialogs.ycp
 +++ b/src/include/support/dialogs.ycp
-@@ -32,6 +32,7 @@
+@@ -32,12 +32,14 @@
  textdomain "support";
  
  import "Label";
@@ -35,6 +35,13 @@ index 105e952..f651ee3 100644
  import "Report";
  import "Wizard";
  import "Support";
+ import "Map";
+ include "support/helps.ycp";
+ include "support/supportconfig_conf.ycp";
++include "support/complex.ycp";
+ 
+ any OverviewDialog(){
+ 
 diff --git a/yast2-support.spec.in b/yast2-support.spec.in
 index 41404e7..ca203a6 100644
 --- a/yast2-support.spec.in
