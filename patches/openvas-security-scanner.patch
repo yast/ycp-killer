@@ -1,6 +1,17 @@
 The "Wizard_hw" module import does not work and the module is actually not used,
 so this patch removes it.
 
+diff --git a/doc/autodocs/Makefile.am b/doc/autodocs/Makefile.am
+index 0a581b4..1daac7c 100644
+--- a/doc/autodocs/Makefile.am
++++ b/doc/autodocs/Makefile.am
+@@ -1,3 +1,5 @@
+ # Makefile.am for openvas-security-scanner/doc/autodocs
+ 
+-include $(top_srcdir)/autodocs-ycp.ami
++# TODO FIXME: temporarily disabled
++
++#include $(top_srcdir)/autodocs-ycp.ami
 diff --git a/src/include/openvas-security-scanner/complex.ycp b/src/include/openvas-security-scanner/complex.ycp
 index 27bbcac..f6daf89 100644
 --- a/src/include/openvas-security-scanner/complex.ycp
@@ -13,3 +24,16 @@ index 27bbcac..f6daf89 100644
  import "Confirm";
  import "OpenvasSecurityScanner";
  
+diff --git a/yast2-openvas-security-scanner.spec.in b/yast2-openvas-security-scanner.spec.in
+index 7abed8e..4f07978 100644
+--- a/yast2-openvas-security-scanner.spec.in
++++ b/yast2-openvas-security-scanner.spec.in
+@@ -23,7 +23,7 @@ Summary:	Configuration of openvas-security-scanner
+ %defattr(-,root,root)
+ %dir @yncludedir@/openvas-security-scanner
+ @yncludedir@/openvas-security-scanner/*
+-@clientdir@/openvas-security-scanner.ycp
++@clientdir@/openvas-security-scanner.rb
+ @moduledir@/OpenvasSecurityScanner.*
+ @desktopdir@/openvas-security-scanner.desktop
+ @scrconfdir@/*
