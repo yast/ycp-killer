@@ -1,3 +1,5 @@
+TODO: fix the broken symlinks upstream
+
 diff --git a/src/include/apparmor/aa-config.ycp b/src/include/apparmor/aa-config.ycp
 index 1307c6e..c59c5c4 100644
 --- a/src/include/apparmor/aa-config.ycp
