@@ -22,11 +22,4 @@ moves:
     to: src/servers_non_y2
 
 excluded:
-  # incomplete include files
-  - src/include/dhcp-server/options.ycp
-  - src/include/dhcp-server/widgets.ycp
-  - src/include/dhcp-server/dialogs.ycp
   - src/include/dhcp-server/commandline.ycp
-  - src/include/dhcp-server/routines.ycp
-  - src/include/dhcp-server/wizards.ycp
-  - src/include/dhcp-server/dialogs2.ycp
