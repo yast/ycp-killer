@@ -39,6 +39,7 @@ require_relative "lib/commands/pull_command"
 class CLI < Thor
 
   class_option :debug, :type => :boolean, :desc => "verbosely log what commands are run"
+  class_option :with_deps, :type => :boolean, :desc => "also include module dependencies in operations"
 
   def initialize(*args)
     super *args
@@ -229,9 +230,15 @@ class CLI < Thor
     module_names = [ module_from_cwd ] if module_names.empty?
     module_names = $yast_modules.keys if module_names == ["all"]
 
-    res = TSorter.sort($yast_modules.values_at(*module_names)) { |m| m.ybc_deps }
-    # select only required modules
-    res.select { |m| module_names.include? m.name }
+    modules = TSorter.sort($yast_modules.values_at(*module_names)) { |m| m.ybc_deps }
+
+    # TSorter.sort includes all dependencies in the result, even if they weren't
+    # in the original array. This may or may not be what we want.
+    if options[:with_deps]
+      modules
+    else
+      modules.select { |m| module_names.include? m.name }
+    end
   end
 
   def with_modules(modules) # :yields: mod
