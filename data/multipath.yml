@@ -18,7 +18,3 @@ moves:
   - from: "agents/ag*"
     to:   src/servers_non_y2
 
-excluded:
-  # TODO: Include files, can't be compiled for now.
-  - src/include/multipath/complex.ycp
-  - src/include/multipath/options.ycp
