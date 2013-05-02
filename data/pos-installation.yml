@@ -2,8 +2,9 @@ ybc_deps:
   - yast2
 
 moves:
+  # TODO FIXME: the desktop file is not installed/packaged, ignore it for now
   - from: "config/pos_migration_assistent.desktop"
-    to:   src/desktop
+    to:   desktop
 
 excluded:
   # TODO: The pos-installation directory looks like an old copy of the whole

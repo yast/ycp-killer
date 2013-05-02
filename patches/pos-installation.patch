@@ -1,0 +1,16 @@
+diff --git a/yast2-pos-installation.spec.in b/yast2-pos-installation.spec.in
+index 3ec00b7..4425a0d 100644
+--- a/yast2-pos-installation.spec.in
++++ b/yast2-pos-installation.spec.in
+@@ -23,9 +23,8 @@ mkdir -p "$RPM_BUILD_ROOT"/etc/SLEPOS
+ 
+ %files
+ %defattr(-,root,root)
+-@clientdir@/*.ycp
+-@moduledir@/*.ycp
+-@moduledir@/*.ybc
++@clientdir@/*.rb
++@moduledir@/*.rb
+ #@desktopdir@/*.desktop
+ %dir /etc/SLEPOS
+ /etc/SLEPOS/*
