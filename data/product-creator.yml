@@ -18,7 +18,10 @@ moves:
     to:   src/scrconf
   - from: "scripts/y2mkiso"
     to:   src/bin
+  - from: "src/data/sysconfig.product-creator"
+    to:   src/fillup
+  # TODO FIXME: data are in a subdir
+  - from: "src/data"
+    to: "."
 
-excluded:
-  # TODO: Include file, can't be compiled for now.
-  - src/include/product-creator/commandline.ycp
+
