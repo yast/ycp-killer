@@ -14,8 +14,3 @@ moves:
     to: "src/servers_non_y2"
   - from: "agents/*.scr"
     to: "src/scrconf"
-
-excluded:
-  # include files with missing variables
-  - src/include/cluster/dialogs.ycp
-  - src/include/cluster/common.ycp
