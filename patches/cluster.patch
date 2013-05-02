@@ -27,3 +27,59 @@ index 627c681..39cfe13 100644
  
  htmldir = $(docdir)
  
+diff --git a/doc/autodocs/Makefile.am b/doc/autodocs/Makefile.am
+index 1bb2081..7784d62 100644
+--- a/doc/autodocs/Makefile.am
++++ b/doc/autodocs/Makefile.am
+@@ -1,3 +1,4 @@
+ # Makefile.am for cluster/doc/autodocs
+-
+-include $(top_srcdir)/autodocs-ycp.ami
++# TODO
++# FIXME disabling autodocs temporarily
++# include $(top_srcdir)/autodocs-ycp.ami
+diff --git a/src/include/cluster/common.ycp b/src/include/cluster/common.ycp
+index 07ac83e..45c08ad 100644
+--- a/src/include/cluster/common.ycp
++++ b/src/include/cluster/common.ycp
+@@ -11,6 +11,8 @@
+ 	import "SuSEFirewall";
+ 	import "SuSEFirewallServices";
+ 
++  include "cluster/helps.ycp";
++
+ 	list<string> DIALOG = [
+ 		"communication",
+ 		"security",
+diff --git a/src/include/cluster/dialogs.ycp b/src/include/cluster/dialogs.ycp
+index ce438f1..9623c97 100644
+--- a/src/include/cluster/dialogs.ycp
++++ b/src/include/cluster/dialogs.ycp
+@@ -44,6 +44,7 @@ import "SuSEFirewallServices";
+ 
+ include "cluster/helps.ycp";
+ include "cluster/common.ycp";
++include "cluster/complex.ycp";
+ 
+ list<string> csync2_suggest_files = ["/etc/corosync/corosync.conf",
+ 	"/etc/corosync/authkey", "/etc/sysconfig/pacemaker",
+diff --git a/yast2-cluster.spec.in b/yast2-cluster.spec.in
+index 6063b4e..3ca9ef3 100644
+--- a/yast2-cluster.spec.in
++++ b/yast2-cluster.spec.in
+@@ -23,12 +23,10 @@ Summary:	Configuration of cluster
+ %defattr(-,root,root)
+ %dir @yncludedir@/cluster
+ @yncludedir@/cluster/*
+-@clientdir@/cluster.ycp
+-@clientdir@/cluster_*.ycp
++@clientdir@/cluster.rb
++@clientdir@/cluster_*.rb
+ @moduledir@/Cluster.*
+-@moduledir@/Cluster2.*
+-@moduledir@/Cluster3.py
+ @desktopdir@/cluster.desktop
+-@scrconfdir@/openais.scr
++@scrconfdir@/*.scr
+ @agentdir@/ag_openais
+ %doc @docdir@
