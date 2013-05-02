@@ -18,7 +18,7 @@ moves:
   - from: src/config/autoyast.desktop
     to: src/desktop
   # Autoyast specific desktop files
-  - from: src/config/*.desktop
+  - from: src/config/{*.desktop,Makefile.am}
     to: modconfig
   # Autoyast specific schemas
   - from: src/schema/*.rnc
@@ -37,19 +37,11 @@ moves:
   # Autoyast specific xml transformation files
   - from: src/data/*
     to: xslt
+  - from: agents/*.scr
+    to: src/scrconf
 
 excluded:
-  # TODO: Include files, can't be compiled for now.
-  - src/include/autoinstall/wizards.ycp
-  - src/include/autoinstall/general_dialogs.ycp
-  - src/include/autoinstall/autoinst_dialogs.ycp
-  - src/include/autoinstall/partition_dialogs.ycp
-  - src/include/autoinstall/VolgroupDialog.ycp
-  - src/include/autoinstall/PartitionDialog.ycp
-  - src/include/autoinstall/ask.ycp
-  - src/include/autoinstall/DriveDialog.ycp
-  - src/include/autoinstall/conftree.ycp
-  - src/include/autoinstall/script_dialogs.ycp
-  - src/include/autoinstall/autopart.ycp
-  - src/include/autoinstall/classes.ycp
+  # TODO FIXME: broken: Profile::Flat is undefined
   - testsuite/devel/autoinst_test.ycp
+  # TODO FIXME: broken, but not used anywhere, remove in upstream?
+  - src/include/autoinstall/partition_dialogs.ycp
