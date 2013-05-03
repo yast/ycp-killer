@@ -220,9 +220,27 @@ class CLI < Thor
       $yast_modules[name] = YastModule.new(
         name,
         YAML.load_file(file) || {},
-        @config
+        yast_dir
       )
     end
+  end
+
+  def yast_dir
+    # XDG Base Directory Specification, version 0.7:
+    #
+    #   $XDG_DATA_HOME defines the base directory relative to which user
+    #   specific data files should be stored. If $XDG_DATA_HOME is either not
+    #   set or empty, a default equal to $HOME/.local/share should be used.
+
+    if ENV["XDG_DATA_HOME"] && !ENV["XDG_DATA_HOME"].empty?
+      data_dir = ENV["XDG_DATA_HOME"]
+    elsif ENV["HOME"] && !ENV["HOME"].empty?
+      data_dir = "#{ENV["HOME"]}/.local/share"
+    else
+      raise "Don't know where to store data, both $XDG_DATA_HOME and $HOME are not set or empty."
+    end
+
+    yast_dir = "#{data_dir}/ycp-killer/yast"
   end
 
   def module_from_cwd

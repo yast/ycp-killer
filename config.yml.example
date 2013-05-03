@@ -1,4 +1,2 @@
 # Copy this file to config.yml and fill-in the settngs.
 
-# Path to a directory where YaST modules can be checked out.
-yast_dir: ""
