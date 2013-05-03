@@ -198,7 +198,7 @@ class CLI < Thor
 
   def compile_stubs
     Dir["#{STUBS_DIR}/*.ycp"].each do |file|
-      Cheetah.run @config["ycpc"], "-c", file
+      Cheetah.run "ycpc", "-c", file
     end
   end
 

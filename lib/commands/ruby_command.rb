@@ -50,7 +50,6 @@ module Commands
 
     def create_rb(mod, file, output_file)
       cmd = [@config["y2r"]]
-      cmd << "--ycpc" << @config["ycpc"]
 
       mod.ruby_module_paths(file).each do |module_path|
         cmd << "--module-path" << module_path

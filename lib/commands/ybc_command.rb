@@ -37,7 +37,7 @@ module Commands
     end
 
     def create_ybc(mod, file)
-      cmd = [@config["ycpc"], "--no-std-includes", "--no-std-modules"]
+      cmd = ["ycpc", "--no-std-includes", "--no-std-modules"]
       mod.ybc_module_paths.each do |module_path|
         cmd << "--module-path" << module_path
       end
