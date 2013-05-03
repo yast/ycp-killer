@@ -51,20 +51,16 @@ things get gemified, packaged, etc.
 
          $ sudo zypper in ruby ruby-devel rubygem-bundler
 
-  4. **Clone the Y2R repository and install Y2R's dependencies**
-
-         $ sudo zypper in gcc-c++ make                  # Needed by Nokogiri
-         $ sudo zypper in libxml2-devel libxslt-devel   # Needed by Nokogiri
-         $ git clone git://github.com/yast/y2r.git
-         $ cd y2r
-         $ bundle install
-         $ cd ..
-
-  5. **Create a directory for compiled YaST modules**
+  4. **Create a directory for compiled YaST modules**
 
          $ mkdir yast
 
-  6. **Clone the YCP Killer repository and install YCP Killer's dependencies**
+  5. **Install YCP Killer's dependencies and clone its repository**
+
+         $ sudo zypper in gcc-c++                 # Needed by Nokogiri (used by Y2R)
+         $ sudo zypper in make                    # Needed by Nokogiri (used by Y2R)
+         $ sudo zypper in libxml2-devel           # Needed by Nokogiri (used by Y2R)
+         $ sudo zypper in libxslt-devel           # Needed by Nokogiri (used by Y2R)
 
          $ sudo zypper in yast2-ycp-ui-bindings   # Implements UI::*
          $ sudo zypper in yast2-pkg-bindings      # Implements Pkg::*
@@ -95,12 +91,12 @@ things get gemified, packaged, etc.
          $ cd ycp-killer
          $ bundle install
 
-  7. **Configure YCP Killer**
+  6. **Configure YCP Killer**
 
      Copy the `config.yml.example` file to `config.yml` and fill in the
      settings as described by comments in the file.
 
-  8. **Done!**
+  7. **Done!**
 
      You can now start killing YCP.
 
