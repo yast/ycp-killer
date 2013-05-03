@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 require "smart_colored/extend"
 
 module Messages

@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 require_relative "command"
 require_relative "../build_order"
 require_relative "../messages"
