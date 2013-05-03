@@ -1,5 +1,7 @@
 # encoding: utf-8
 
+require "bundler/setup"   # Needed to setup path to the "y2r" binary.
+
 require_relative "command"
 require_relative "../messages"
 
@@ -51,7 +53,7 @@ module Commands
     end
 
     def create_rb(mod, file, output_file)
-      cmd = [@config["y2r"]]
+      cmd = ["y2r"]
 
       mod.ruby_module_paths(file).each do |module_path|
         cmd << "--module-path" << module_path

@@ -2,7 +2,3 @@
 
 # Path to a directory where YaST modules can be checked out.
 yast_dir: ""
-
-# Path to the Y2R binary to use (preferably a one from Y2R's Git repository
-# checkout).
-y2r:      "<git-checkout-dir>/y2r/bin/y2r"
