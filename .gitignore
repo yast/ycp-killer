@@ -1,5 +1,4 @@
 stubs/*.ybc
 Gemfile.lock
-config.yml
 error.log
 .ruby-version

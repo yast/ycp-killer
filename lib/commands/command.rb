@@ -4,10 +4,6 @@ require_relative "../messages"
 
 module Commands
   class Command
-    def initialize(config)
-      @config = config
-    end
-
     protected
 
     def action(message)
