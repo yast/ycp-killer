@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 require "tsort"
 
 # Simple wrapper around the "tsort" library, which has a horrible API. The main
