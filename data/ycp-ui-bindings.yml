@@ -1,6 +1,10 @@
 ybc_deps:
   - yast2
 
+moves:
+  - from: src/*
+    to: source
+
 excluded:
   # TODO FIXME: does not compile, too old code
   - examples/DemoBrowser.ycp
