@@ -144,14 +144,24 @@ command to all YaST modules.
 ```
 $ ./yk help
 Tasks:
+  yk build <module>...        # Build package(s) for module(s) locally
   yk clone <module>...        # Clone module(s)
-  yk compile <module>...      # Compile module(s)
   yk convert <module>...      # Convert module(s)
   yk genpatch <module>...     # Store changes from work directory of module(s) into a patch
   yk help [TASK]              # Describe available tasks or one specific task
+  yk makefile <module>...     # Generates Makefile.am for exported dirs of module(s)
+  yk package <module>...      # Create packages in build service directory for module(s)
   yk patch <module>...        # Patch module(s)
+  yk pull <module>...         # Update the module(s) work directory to the latest state (git pull)
   yk reset <module>...        # Revert module(s) work directory to clean state
   yk restructure <module>...  # Change module(s) work directory structure to fit the Y2DIR scheme
+  yk ruby <module>...         # Convert module(s) to Ruby
+  yk submit <module>...       # Submit source files to build service for module(s)
+  yk ybc <module>...          # Compile module(s) to ybc
+
+Options:
+  [--debug]      # verbosely log what commands are run
+  [--with-deps]  # also include module dependencies in operations
 ```
 
 ### Commands
@@ -176,7 +186,7 @@ specified by the `yast_dir` setting in `config.yml`.
 ```
 $ ./yk clone testsuite
 [1/1] Processing testsuite:
-  * Cloning...                                                        OK
+  * Cloning...
 ```
 
 #### yk reset
@@ -186,11 +196,20 @@ It is a local variant of `yk clone`
 in that it **removes all modifications in the working tree**.
 Use `yk genpatch` beforehand to save them.
 
+The command also checks if the current Git checkout is up to date with the original YaST
+repository and prints a warning it not (see `yk pull` command).
+
 ```
 $ ./yk reset testsuite
 [1/1] Processing testsuite:
-  * Resetting...                                                      OK
+  * Resetting...
 ```
+
+#### yk pull
+
+Pulls changes from the upstream YaST Git repository. If the changes cannot be
+merged (e.g. because of changes done by restructuring or by patching)
+you need to run `yk reset` and try it again.
 
 #### yk restructure
 
@@ -206,7 +225,7 @@ to ensure that `yk genpatch` diffs properly against the new structure.
 ```
 $ ./yk restructure testsuite
 [1/1] Processing testsuite:
-  * Restructuring...                                                  OK
+  * Restructuring...
 ```
 
 #### yk patch
@@ -217,20 +236,19 @@ checkouts. If a module doesn't have a patch, this command does not do anything.
 ```
 $ ./yk patch testsuite
 [1/1] Processing testsuite:
-  * Patching...                                                       OK
+  * Patching...
 ```
 
-#### yk compile
+#### yk ruby
 
 Compiles YCP files of specified modules to Ruby, placing the result in the
 *result* tree.
 The compilation is driven by
 module descriptions stored in the `data` directory. It uses `ycpc` and `y2r`
-binaries specified by the `ycpc` and `y2r` setting in `config.xml`.
+(see `y2r` setting in `config.xml`).
 
-The compilation of each file may finish in one the following states:
+The compilation of each file can pass or may fail with one of the following error:
 
-  * **OK** – the compilation was successful
   * **ERROR(ybc)** – the compilation failed when running `ycpc`
     on the module code
   * **ERROR(y2r)** – the compilation failed when running `y2r`
@@ -241,31 +259,31 @@ The compilation of each file may finish in one the following states:
 
 If the compilation is successful, all YCP files defined in the module
 description will be compiled by `ycp` and will have an eqivalent Ruby file
-created by their side (e.g. compiling `Sysconfig.ycp` will produce
-`Sysconfig.ybc` and `Sysconfig.rb` in the same directory).
+created in the **result** tree (e.g. compiling `Sysconfig.ycp` will produce
+`Sysconfig.rb` file).
 
 In case of `ERROR(y2r)` and `ERROR(ruby)`, details of the error are logged into
 the `error.log` file in the YCP Killer directory.
 
 ```
-$ ./yk compile testsuite
-[1/1] Compiling testsuite...
-  * devel/src/bench.ycp                                               ERROR(y2r)
-  * devel/src/debug.ycp                                               ERROR(y2r)
-  * devel/src/devel.ycp                                               ERROR(y2r)
-  * devel/testsuite/tests/bench.ycp                                   ERROR(y2r)
-  * devel/testsuite/tests/debug.ycp                                   ERROR(y2r)
-  * src/Pkg.ycp                                                       OK
-  * src/Testsuite.ycp                                                 OK
-  * src/testsuite.ycp                                                 OK
-  * testsuite/test.ycp                                                ERROR(y2r)
+$ ./yk ruby testsuite
+[1/1] Processing testsuite:
+  * Creating result directory...
+  * Converting src/modules/Pkg.ycp...
+  * Checking src/modules/Pkg.ycp...
+  * Converting src/modules/Testsuite.ycp...
+  * Checking src/modules/Testsuite.ycp...
+  * Converting src/include/testsuite.ycp...
+  * Checking src/include/testsuite.ycp...
+  * Converting testsuite/test.ycp...
+  * Checking testsuite/test.ycp...
 
 -----
 
-Total OK:           3
+Total OK:           8
 Total EXCLUDED:     0
 Total ERROR(ybc):   0
-Total ERROR(y2r):   6
+Total ERROR(y2r):   0
 Total ERROR(ruby):  0
 Total ERROR(other): 0
 ```
@@ -278,8 +296,9 @@ into a patch in the `patches` directory.
 **Any existing patch for the module is removed**.
 
 ```
+$ ./yk genpatch testsuite
 [1/1] Processing testsuite:
-  * Generating patch...                                               OK
+  * Generating patch...
 ```
 
 #### yk makefile
