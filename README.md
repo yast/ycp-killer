@@ -72,6 +72,7 @@ things get gemified, packaged, etc.
 
          $ sudo zypper in cracklib-devel          # Needed by users
          $ sudo zypper in limal-perl              # Needed by bootloader
+         $ sudo zypper in perl-Crypt-SubHash      # Needed by samba-server
          $ sudo zypper in perl-Date-Calc          # Needed by ca-management
          $ sudo zypper in perl-Digest-SHA1        # Needed by ftp-server,
                                                   # phone-services,
