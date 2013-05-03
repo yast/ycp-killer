@@ -8,22 +8,22 @@ module Commands
       check_missing_work(mod.ybc_deps + mod.ruby_deps)
 
       if File.exists?(mod.work_dir)
-        ResetCommand.new(@config).apply(mod)
+        ResetCommand.new.apply(mod)
       else
-        CloneCommand.new(@config).apply(mod)
+        CloneCommand.new.apply(mod)
       end
 
-      RestructureCommand.new(@config).apply(mod)
-      PatchCommand.new(@config).apply(mod)
-      @counts = YbcCommand.new(@config).apply(mod)
+      RestructureCommand.new.apply(mod)
+      PatchCommand.new.apply(mod)
+      @counts = YbcCommand.new.apply(mod)
       # in case of error do not continue with submit
       return @counts if result_failed?
 
-      @counts = RubyCommand.new(@config).apply(mod)
+      @counts = RubyCommand.new.apply(mod)
       return @counts if result_failed?
 
-      MakefileCommand.new(@config).apply(mod)
-      PackageCommand.new(@config).apply(mod)
+      MakefileCommand.new.apply(mod)
+      PackageCommand.new.apply(mod)
 
       @counts
     end
