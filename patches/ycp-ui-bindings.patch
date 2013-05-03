@@ -1,0 +1,19 @@
+diff --git a/SUBDIRS b/SUBDIRS
+index 77f0865..3f0d4c6 100644
+--- a/SUBDIRS
++++ b/SUBDIRS
+@@ -1 +1 @@
+-src examples
++source examples
+diff --git a/examples/Makefile.am b/examples/Makefile.am
+index 8ecd346..adac1f5 100644
+--- a/examples/Makefile.am
++++ b/examples/Makefile.am
+@@ -4,6 +4,6 @@ examplesdir = 	$(docdir)/examples
+ 
+ SUBDIRS = 	screenshots
+ 
+-examples_DATA =	$(wildcard *.ycp)
++examples_DATA =	$(wildcard *.ycp) $(wildcard *.rb)
+ 
+ EXTRA_DIST = $(examples_DATA)
