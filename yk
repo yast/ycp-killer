@@ -56,7 +56,6 @@ class CLI < Thor
       Threading.threads_count = options[:threads]
     end
 
-    load_config
     load_module_data
   end
 
@@ -64,14 +63,14 @@ class CLI < Thor
   def clone(*module_names)
     modules = modules_from_names(module_names)
     with_modules modules do |mod|
-      Commands::CloneCommand.new(@config).apply(mod)
+      Commands::CloneCommand.new.apply(mod)
     end
   end
 
   desc "convert <module>...", "Convert module(s)"
   def convert(*module_names)
     report_results(module_names) do |mod|
-      Commands::ConvertCommand.new(@config).apply(mod)
+      Commands::ConvertCommand.new.apply(mod)
     end
   end
 
@@ -79,7 +78,7 @@ class CLI < Thor
   def genpatch(*module_names)
     modules = modules_from_names(module_names)
     with_modules modules do |mod|
-      Commands::GenpatchCommand.new(@config).apply(mod)
+      Commands::GenpatchCommand.new.apply(mod)
     end
   end
 
@@ -87,7 +86,7 @@ class CLI < Thor
   def patch(*module_names)
     modules = modules_from_names(module_names)
     with_modules modules do |mod|
-      Commands::PatchCommand.new(@config).apply(mod)
+      Commands::PatchCommand.new.apply(mod)
     end
   end
 
@@ -95,7 +94,7 @@ class CLI < Thor
   def reset(*module_names)
     modules = modules_from_names(module_names)
     with_modules modules do |mod|
-      Commands::ResetCommand.new(@config).apply(mod)
+      Commands::ResetCommand.new.apply(mod)
     end
   end
 
@@ -103,7 +102,7 @@ class CLI < Thor
   def pull(*module_names)
     modules = modules_from_names(module_names)
     with_modules modules do |mod|
-      Commands::PullCommand.new(@config).apply(mod)
+      Commands::PullCommand.new.apply(mod)
     end
   end
 
@@ -111,21 +110,21 @@ class CLI < Thor
   def restructure(*module_names)
     modules = modules_from_names(module_names)
     with_modules modules do |mod|
-      Commands::RestructureCommand.new(@config).apply(mod)
+      Commands::RestructureCommand.new.apply(mod)
     end
   end
 
   desc "ybc <module>...", "Compile module(s) to ybc"
   def ybc(*module_names)
     report_results(module_names) do |mod|
-      Commands::YbcCommand.new(@config).apply(mod)
+      Commands::YbcCommand.new.apply(mod)
     end
   end
 
   desc "ruby <module>...", "Convert module(s) to Ruby"
   def ruby(*module_names)
     report_results(module_names) do |mod|
-      Commands::RubyCommand.new(@config).apply(mod)
+      Commands::RubyCommand.new.apply(mod)
     end
   end
 
@@ -134,7 +133,7 @@ class CLI < Thor
   def makefile(*module_names)
     modules = modules_from_names(module_names)
     with_modules modules do |mod|
-      Commands::MakefileCommand.new(@config).apply(mod)
+      Commands::MakefileCommand.new.apply(mod)
     end
   end
 
@@ -142,7 +141,7 @@ class CLI < Thor
   def package(*module_names)
     modules = modules_from_names(module_names)
     with_modules modules do |mod|
-      Commands::PackageCommand.new(@config).apply(mod)
+      Commands::PackageCommand.new.apply(mod)
     end
   end
 
@@ -150,7 +149,7 @@ class CLI < Thor
   def build(*module_names)
     modules = modules_from_names(module_names)
     with_modules modules do |mod|
-      Commands::BuildCommand.new(@config).apply(mod)
+      Commands::BuildCommand.new.apply(mod)
     end
   end
 
@@ -158,7 +157,7 @@ class CLI < Thor
   def submit(*module_names)
     modules = modules_from_names(module_names)
     with_modules modules do |mod|
-      Commands::SubmitCommand.new(@config).apply(mod)
+      Commands::SubmitCommand.new.apply(mod)
     end
   end
 
@@ -207,10 +206,6 @@ class CLI < Thor
     Dir["#{STUBS_DIR}/*.ycp"].each do |file|
       Cheetah.run "ycpc", "-c", file
     end
-  end
-
-  def load_config
-    @config = YAML.load_file("#{BASE_DIR}/config.yml")
   end
 
   def load_module_data
