@@ -45,21 +45,6 @@ index 8402786..5017864 100644
  
  string address = "";  //global
  
-@@ -529,8 +530,6 @@ symbol handleDiscoveryDomainSet(string key, map event){
-  }
- }
- 
--}
--
- symbol handleDiscoveryDomainMembers(string key, map event)
- {
-    if ( event["EventReason"]:"" == "Activated" ){
-@@ -623,3 +622,5 @@ integer checkISNS()
- 
-     return 0;
- }
-+
-+}
 diff --git a/yast2-isns.spec.in b/yast2-isns.spec.in
 index 6803626..08f3dd8 100644
 --- a/yast2-isns.spec.in
