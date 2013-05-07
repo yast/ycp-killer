@@ -29,37 +29,7 @@ module Commands
 
     # cwd must be obs_dir
     def create_obs_package_dir!(pkg_name)
-      first = true
-      begin
-        Cheetah.run "osc", "co", YastModule::OBS_PROJECT, pkg_name
-      rescue Cheetah::ExecutionFailed
-        # probably it is not created yet, so lets create it
-        if first
-          first = false
-          create_package_in_obs pkg_name
-          retry
-        end
-
-        raise
-      end
-    end
-
-    def create_package_in_obs(pkg_name)
-      ENV["EDITOR"] = "ed"
-      # just add description via ed as meta pkg invoke editor
-      ed_command = <<EOS
-        # enable error reporting
-        H
-        # title is required
-        # comma: all lines; s: substitute
-        ,s/<title>/<title>YaST module converted to ruby/
-        # write
-        w
-        # quit
-        q
-EOS
-
-      Cheetah.run "osc", "meta", "pkg", YastModule::OBS_PROJECT, pkg_name, "-e", :stdin => StringIO.new(ed_command)
+      Cheetah.run "osc", "co", YastModule::OBS_PROJECT, pkg_name
     end
   end
 end
