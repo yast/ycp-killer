@@ -1,0 +1,19 @@
+diff --git a/src/services/namespace_service/testsuite/modules/Makefile.am b/src/services/namespace_service/testsuite/modules/Makefile.am
+index 3f35fba..a38d034 100644
+--- a/src/services/namespace_service/testsuite/modules/Makefile.am
++++ b/src/services/namespace_service/testsuite/modules/Makefile.am
+@@ -1,13 +1,4 @@
+ 
+-yast_modules = TEST.ycp
++yast_modules = TEST.rb
+ 
+ EXTRA_DIST = $(yast_modules)
+-
+-yast_modules_ybc = $(yast_modules:.ycp=.ybc)
+-
+-$(yast_modules_ybc): $(yast_modules)
+-	ycpc -c $<
+-
+-all: $(yast_modules_ybc)
+-
+-CLEANFILES = $(wildcard *.ybc)
