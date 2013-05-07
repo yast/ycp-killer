@@ -14,7 +14,3 @@ moves:
   - from: "agents/isnsd.scr"
     to:   src/scrconf
 
-excluded:
-  # TODO: Include files, can't be compiled for now.
-  - src/include/isns/widgets.ycp
-  - src/include/isns/dialogs.ycp
