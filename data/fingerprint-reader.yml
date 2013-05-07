@@ -14,3 +14,5 @@ moves:
     to:   src/include/fingerprint-reader
   - from: "src/fingerprint-reader.desktop"
     to:   src/desktop
+  - from: "agent-fprint/conf/*"
+    to: src/scrconf
