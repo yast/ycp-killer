@@ -37,24 +37,6 @@ diff --git a/yast2-update.spec.in b/yast2-update.spec.in
 index 07df4cc..b8884b0 100644
 --- a/yast2-update.spec.in
 +++ b/yast2-update.spec.in
-@@ -28,7 +28,7 @@ Requires:	yast2-packager >= 2.17.27
- 
- # moved into yast2-update from yast2-installation
- # to remove dependency on yast2-storage
--Provides:	yast2-installation:/usr/share/YaST2/clients/vendor.ycp
-+Provides:	yast2-installation:/usr/share/YaST2/clients/vendor.rb
- 
- # Required only in inst-sys
- # Requires:	yast2-storage
-@@ -48,7 +48,7 @@ Requires:	yast2-update yast2
- 
- # moved into yast2-update from yast2-installation
- # to remove dependency on yast2-storage
--Provides:	yast2-update:/usr/share/YaST2/clients/update.ycp
-+Provides:	yast2-update:/usr/share/YaST2/clients/update.rb
- 
- Summary:	YaST2 - Update
- 
 @@ -71,19 +71,19 @@ Use this component if you wish to update your system.
  @ybindir@/*
  @moduledir@/*
