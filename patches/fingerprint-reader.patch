@@ -30,18 +30,6 @@ index 6233695..96989d4 100644
 +# TODO FIXME: temporarily disabled
 +
 +#include $(top_srcdir)/autodocs-ycp.ami
-diff --git a/src/clients/users_plugin_fingerprint_reader.ycp b/src/clients/users_plugin_fingerprint_reader.ycp
-index 1763905..dee084e 100644
---- a/src/clients/users_plugin_fingerprint_reader.ycp
-+++ b/src/clients/users_plugin_fingerprint_reader.ycp
-@@ -43,6 +43,7 @@
-     import "Users";
-     import "UsersPluginFingerprintReader";
-     import "Wizard";
-+    import "Users";
- 
-     any ret			= nil;
-     string func			= "";
 diff --git a/yast2-fingerprint-reader.spec.in b/yast2-fingerprint-reader.spec.in
 index bcceba7..0788492 100644
 --- a/yast2-fingerprint-reader.spec.in
