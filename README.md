@@ -53,14 +53,20 @@ things get gemified, packaged, etc.
 
   4. **Install YCP Killer's dependencies and clone its repository**
 
-         $ sudo zypper in gcc-c++                 # Needed by Nokogiri (used by Y2R)
-         $ sudo zypper in make                    # Needed by Nokogiri (used by Y2R)
-         $ sudo zypper in libxml2-devel           # Needed by Nokogiri (used by Y2R)
-         $ sudo zypper in libxslt-devel           # Needed by Nokogiri (used by Y2R)
+     Install Y2R's dependencies:
+
+         $ sudo zypper in gcc-c++                 # Needed by Nokogiri
+         $ sudo zypper in make                    # Needed by Nokogiri
+         $ sudo zypper in libxml2-devel           # Needed by Nokogiri
+         $ sudo zypper in libxslt-devel           # Needed by Nokogiri
+
+     Install packages needed to convert YaST modules into Ruby in general:
 
          $ sudo zypper in yast2-ycp-ui-bindings   # Implements UI::*
          $ sudo zypper in yast2-pkg-bindings      # Implements Pkg::*
          $ sudo zypper in yast2-perl-bindings     # Makes Perl modules work
+
+     Install packages needed to convert specific YaST modules:
 
          $ sudo zypper in cracklib-devel          # Needed by users
          $ sudo zypper in limal-perl              # Needed by bootloader
@@ -83,6 +89,9 @@ things get gemified, packaged, etc.
          $ sudo zypper in yast2-storage           # Needed by storage (it needs
                                                   # a C part, so let's use
                                                   # already built one)
+
+     Clone YCP Killer's repository and install Gem dependencies:
+
          $ git clone git://github.com/yast/ycp-killer.git
          $ cd ycp-killer
          $ bundle install
