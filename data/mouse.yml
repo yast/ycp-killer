@@ -4,8 +4,6 @@ ybc_deps:
 moves:
   - from: "agents/*"
     to: src/scrconf
-  - from: "data"
-    to: src
   - from: "src/proposal/mouse_proposal.ycp"
     to: src/clients
   - from: "src/*.ycp"

@@ -10,15 +10,12 @@ index 10187ee..7ec4a56 100644
 +# AUTODOCS_YCP=$(srcdir)/../../src/*.ycp $(srcdir)/../../src/*/*.ycp
 +# include $(top_srcdir)/autodocs-ycp.ami
 diff --git a/yast2-mouse.spec.in b/yast2-mouse.spec.in
-index 7b21f91..bf87e31 100644
+index 441235f..145a434 100644
 --- a/yast2-mouse.spec.in
 +++ b/yast2-mouse.spec.in
-@@ -38,9 +38,9 @@ rm -f $RPM_BUILD_ROOT@desktopdir@/mouse.desktop
- 
- %files
- %defattr(-,root,root)
--@ydatadir@/*.ycp
-+@ydatadir@/*.rb
+@@ -41,7 +41,7 @@ rm -f $RPM_BUILD_ROOT@desktopdir@/mouse.desktop
+ %dir @yncludedir@/mouse
+ @yncludedir@/mouse/*
  @moduledir@/*
 -@clientdir@/*.ycp
 +@clientdir@/*.rb
