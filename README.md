@@ -122,7 +122,15 @@ things get gemified, packaged, etc.
          $ cd ycp-killer
          $ bundle install
 
-  5. **Done!**
+  5. **Configure `osc`**
+
+     Configure your `osc` credentials if you didn't use `osc` on the machine
+     yet. Just run `osc`, it will ask for them and save them to `~/.oscrc`.
+
+     You can skip this step if you don't plan to create translated package
+     sources (using `yk package`).
+
+  6. **Done!**
 
      You can now start killing YCP.
 
