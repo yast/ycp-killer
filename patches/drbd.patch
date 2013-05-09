@@ -1,10 +1,10 @@
 diff --git a/agents/Makefile.am b/agents/Makefile.am
-index 02eb27f..13c109d 100644
+index a6ddabb..a9d7966 100644
 --- a/agents/Makefile.am
 +++ b/agents/Makefile.am
-@@ -3,12 +3,9 @@
+@@ -3,9 +3,6 @@
  agent_SCRIPTS = \
- 	ag_drbd drbd.rb.yy
+ 	ag_drbd
  
 -scrconf_DATA = \
 -	drbd.scr
@@ -12,10 +12,6 @@ index 02eb27f..13c109d 100644
  ag_drbd: drbd.rb.yy
  	rm -f drbd.rb
  	racc -e "/usr/bin/ruby" -v -g drbd.rb.yy -o ag_drbd
- 	chmod ugo+x ag_drbd
- 
--EXTRA_DIST = $(agent_SCRIPTS) $(scrconf_DATA)
-+EXTRA_DIST = $(agent_SCRIPTS)
 diff --git a/doc/autodocs/Makefile.am b/doc/autodocs/Makefile.am
 index 3dca519..c7779b2 100644
 --- a/doc/autodocs/Makefile.am
@@ -40,29 +36,16 @@ index f5c46d3..5e7eb23 100644
  	list<string> DIALOG = [
  		"startup_conf",
  		"global_conf",
-diff --git a/yast2-drbd.spec b/yast2-drbd.spec
-index 2a19503..a4e11ef 100644
---- a/yast2-drbd.spec
-+++ b/yast2-drbd.spec
-@@ -60,8 +60,8 @@ make %{?jobs:-j%jobs}
- make install DESTDIR="$RPM_BUILD_ROOT"
- pushd $RPM_BUILD_ROOT
- rm -f $RPM_BUILD_ROOT/%{prefix}/lib/YaST2/servers_non_y2/drbd.rb.yy
--rm -f $RPM_BUILD_ROOT/%{prefix}/share/YaST2/clients/drbd_auto.ycp
--rm -f $RPM_BUILD_ROOT/%{prefix}/share/YaST2/clients/drbd_proposal.ycp
-+rm -f $RPM_BUILD_ROOT/%{prefix}/share/YaST2/clients/drbd_auto.rb
-+rm -f $RPM_BUILD_ROOT/%{prefix}/share/YaST2/clients/drbd_proposal.rb
- popd
- [ -e "%{prefix}/share/YaST2/data/devtools/NO_MAKE_CHECK" ] || Y2DIR="$RPM_BUILD_ROOT/usr/share/YaST2" make check DESTDIR="$RPM_BUILD_ROOT"
- for f in `find $RPM_BUILD_ROOT/%{prefix}/share/applications/YaST2/ -name "*.desktop"` ; do
-@@ -76,8 +76,8 @@ rm -rf "$RPM_BUILD_ROOT"
+diff --git a/yast2-drbd.spec.in b/yast2-drbd.spec.in
+index 70d1f7b..c79b0e1 100644
+--- a/yast2-drbd.spec.in
++++ b/yast2-drbd.spec.in
+@@ -30,7 +30,7 @@ Authors:
+ %files
  %defattr(-,root,root)
- %dir /usr/share/YaST2/include/drbd
- /usr/share/YaST2/include/drbd/*
--/usr/share/YaST2/clients/drbd.ycp
--# /usr/share/YaST2/clients/heartbeat_*.ycp
-+/usr/share/YaST2/clients/drbd.rb
-+# /usr/share/YaST2/clients/heartbeat_*.rb
- /usr/share/YaST2/modules/Drbd.*
- %{prefix}/share/applications/YaST2/drbd.desktop
- /usr/share/YaST2/scrconf/*.scr
+ @yncludedir@/drbd/
+-@clientdir@/drbd.ycp
++@clientdir@/drbd.rb
+ @moduledir@/Drbd.*
+ @desktopdir@/drbd.desktop
+ @scrconfdir@/*.scr
