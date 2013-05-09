@@ -125,6 +125,70 @@ things get gemified, packaged, etc.
 
      You can now start killing YCP.
 
+Overview
+--------
+
+YCP Killer is a command-line tool built around tasks that are applied on YaST
+module source code. Some of these tasks are driven by *module metadata files*
+which contain various information about all the translated modules (see [Module
+Metadata](#module-metadata).
+
+The usual YCP Killer usage workflow is:
+
+  * Clone YaST module Git repository.
+  * Restructure the YaST module source code to match the new structure (see [New
+    YaST Module Structure](#new-yast-module-structure).
+  * Apply patches to the restructured YaST module source code (typically to
+    adapt Makefiles to Ruby translation and to work around Y2R deficiencies).
+  * Compile YaST module's YCP modules (without this any code depending on them
+    can't be translated by Y2R).
+  * Convert the YaST module source code into Ruby.
+  * Create a YaST module package source.
+  * Build the package locally.
+  * Submit a package into OBS.
+
+All these tasks (and some more) can be executed by commands described in the
+[Usage](#usage) section.
+
+YCP Killer stores its data in `$XDG_DATA_HOME/ycp-killer` (usually
+`~/.local/share/ycp-killer`). The directory structure looks like this:
+
+    $XDG_DATA_HOME/ycp-killer
+    └─ yast
+       ├─ work
+       │  ├─ add-on-creator
+       │  ├─ ...
+       │  └─ ycp-ui-bindings
+       ├─ result
+       │  ├─ add-on-creator
+       │  ├─ ...
+       │  └─ ycp-ui-bindings
+       └─ build_service
+          └─ YaST:Head:ruby
+             ├─ autoyast2
+             ├─ ...
+             └─ yast2-ycp-ui-bindings
+
+For each YaST module, YCP Killer creates three directories:
+
+  * **Work directory** (`$XDG_DATA_HOME/ycp-killer/yast/work/<module-name>`)
+
+    Contains clone of module Git repository. Restructuring, patching and module
+    compilation all happen here.
+
+  * **Result directory** (`$XDG_DATA_HOME/ycp-killer/yast/result/<module-name>`)
+
+    Contains module source code after translation into Ruby.
+
+  * **OBS directory** (`$XDG_DATA_HOME/ycp-killer/yast/build_service/YaST:Head:ruby/<module-package-name>`)
+
+    Contains translated module package source, ready to be built locally or
+    submitted to OBS. Techically, this directory is an OBS package checkout as
+    created by `osc`.
+
+Data in the `$XDG_DATA_HOME/ycp-killer` directory can easily grow into
+gigabytes, so make sure you have enough free space.
+
 Usage
 -----
 
