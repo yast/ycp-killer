@@ -32,6 +32,8 @@ module Commands
               create_rb mod, work_file, result_file
             end
 
+            next unless File.exists?(result_file)
+
             file_action "Checking", :ruby, mod, file do
               check_rb result_file
             end
