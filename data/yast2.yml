@@ -111,3 +111,9 @@ excluded:
   - library/sequencer/doc/examples/example4.ycp
   - library/sequencer/doc/examples/example5.ycp
   - library/sequencer/doc/examples/example6.ycp
+
+  # loaded via .target.ycp agent
+  # do not convert (would fail at runtime)
+  - src/data/country.ycp
+  - src/data/country_long.ycp
+
