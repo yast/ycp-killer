@@ -125,35 +125,6 @@ things get gemified, packaged, etc.
 
      You can now start killing YCP.
 
-Resulting Directory Structure
------------------------------
-
-The existing directory tree layout of nearly all YaST modules is rather random
-and stupid. It is convenient to use the translation occasion to also move
-files to a more logical and uniform scheme, to enable exporting the working
-directory via `Y2DIR` and to unify Makefiles.
-
-The following tree shows what gets installed where:
-
-```
-tictactoe-server
-└── src
-    ├── bin            ->  /usr/lib/YaST2/bin       (lib, even if lib64 exists)
-    ├── servers_non_y2 ->  /usr/lib/YaST2/servers_non_y2
-    ├── clients        ->  /usr/share/YaST2/clients
-    ├── data           ->  /usr/share/YaST2/data
-    ├── include        ->  /usr/share/YaST2/include
-    ├── modules        ->  /usr/share/YaST2/modules
-    ├── scrconf        ->  /usr/share/YaST2/scrconf
-    ├── autoyast-rnc   ->  /usr/share/YaST2/schema/autoyast/rnc
-    ├── control-rnc    ->  /usr/share/YaST2/schema/control/rnc
-    ├── desktop        ->  /usr/share/applications/YaST2
-    └── fillup         ->  /var/adm/fillup-templates
-```
-
-Other directories, like `doc` and `testsuite`, are not restructured now
-and keep their existing Makefiles.
-
 Usage
 -----
 
@@ -392,3 +363,32 @@ exports:
   - library/sequencer/src
   - library/packages/src
 ```
+
+New YaST Module Structure
+-------------------------
+
+The existing directory tree layout of nearly all YaST modules is rather random
+and stupid. It is convenient to use the translation occasion to also move
+files to a more logical and uniform scheme, to enable exporting the working
+directory via `Y2DIR` and to unify Makefiles.
+
+The following tree shows what gets installed where:
+
+```
+tictactoe-server
+└── src
+    ├── bin            ->  /usr/lib/YaST2/bin       (lib, even if lib64 exists)
+    ├── servers_non_y2 ->  /usr/lib/YaST2/servers_non_y2
+    ├── clients        ->  /usr/share/YaST2/clients
+    ├── data           ->  /usr/share/YaST2/data
+    ├── include        ->  /usr/share/YaST2/include
+    ├── modules        ->  /usr/share/YaST2/modules
+    ├── scrconf        ->  /usr/share/YaST2/scrconf
+    ├── autoyast-rnc   ->  /usr/share/YaST2/schema/autoyast/rnc
+    ├── control-rnc    ->  /usr/share/YaST2/schema/control/rnc
+    ├── desktop        ->  /usr/share/applications/YaST2
+    └── fillup         ->  /var/adm/fillup-templates
+```
+
+Other directories, like `doc` and `testsuite`, are not restructured now
+and keep their existing Makefiles.
