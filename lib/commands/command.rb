@@ -65,5 +65,24 @@ module Commands
         f.puts
       end
     end
+
+    # A wrapper for safe restoring environment after changes
+    #
+    # Example:
+    #
+    #   with_env do
+    #     ENV["foo"] = bar
+    #     foo()
+    #   end
+    #
+    #   # here is the original ENV restored
+    def with_env
+      begin
+        env_old = ENV
+        yield
+      ensure
+        ENV.replace env_old
+      end
+    end
   end
 end

@@ -15,24 +15,26 @@ module Commands
         prepare_result_dir(mod)
       end
 
-      # This makes private symbols in modules visible. Needed by some
-      # testsuites.
-      ENV["Y2ALLGLOBAL"] = "1"
+      with_env do
+        # This makes private symbols in modules visible. Needed by some
+        # testsuites.
+        ENV["Y2ALLGLOBAL"] = "1"
 
-      Dir.chdir mod.work_dir do
-        Threading.in_parallel Dir["**/*.y{cp,h}"] do |file|
-          next if mod.excluded.include?(file)
+        Dir.chdir mod.work_dir do
+          Threading.in_parallel Dir["**/*.y{cp,h}"] do |file|
+            next if mod.excluded.include?(file)
 
-          work_file = "#{mod.work_dir}/#{file}"
-          FileUtils.rm "#{mod.result_dir}/#{file}"
-          result_file = "#{mod.result_dir}/#{file}".sub(/\.y(cp|h)$/, ".rb")
+            work_file = "#{mod.work_dir}/#{file}"
+            FileUtils.rm "#{mod.result_dir}/#{file}"
+            result_file = "#{mod.result_dir}/#{file}".sub(/\.y(cp|h)$/, ".rb")
 
-          file_action "Converting", :y2r, mod, file do
-            create_rb mod, work_file, result_file
-          end
+            file_action "Converting", :y2r, mod, file do
+              create_rb mod, work_file, result_file
+            end
 
-          file_action "Checking", :ruby, mod, file do
-            check_rb result_file
+            file_action "Checking", :ruby, mod, file do
+              check_rb result_file
+            end
           end
         end
       end
