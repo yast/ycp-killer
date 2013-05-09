@@ -1,14 +1,15 @@
-moves:
-  # module that is imported by other code in doc dir and must be compiled
-  - from: doc/examples/{foo.ycp,intermediate.ycp,imported.pm}
-    to: doc/modules
-
-exports:
-  - doc
+#nothing to export, only tests and doc
+exports: []
 
 excluded:
-  # uses C++ module
+  # doc that we agreed to not translate
+  - doc/useperl.ycp
   - doc/examples/example.ycp
+  - doc/examples/intermediate.ycp
+  - doc/examples/import.ycp
+  - doc/examples/foo.ycp
+  - doc/examples/doimport.ycp
+  - doc/examples/import2.ycp
   # broken in upstream and also require C part ( see README in pluglib-bindings )
   - pluglib-bindings/tests/Reference/test.ycp
   - pluglib-bindings/tests/std/List/test.ycp
