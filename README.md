@@ -143,6 +143,8 @@ The usual YCP Killer usage workflow is:
   * Compile YaST module's YCP modules (without this any code depending on them
     can't be translated by Y2R).
   * Convert the YaST module source code into Ruby.
+  * Generate `Makefile.am` files in all source directories matching the new
+    structure (usually only `src`).
   * Create a YaST module package source.
   * Build the package locally.
   * Submit a package into OBS.
