@@ -27,3 +27,7 @@ excluded:
   - src/include/ntp-client/widgets.ycp    
   - src/include/ntp-client/dialogs.ycp    
   - src/include/ntp-client/commandline.ycp
+
+  # loaded via .target.ycp agent
+  # do not convert it (would fail at runtime)
+  - src/data/ntp_servers.ycp

@@ -38,10 +38,10 @@ index 2a6f678..4cb582c 100644
 +
 +# include $(top_srcdir)/autodocs-ycp.ami
 diff --git a/yast2-ntp-client.spec.in b/yast2-ntp-client.spec.in
-index 5e11c6f..b93a8d8 100644
+index 4b69c82..39f7e06 100644
 --- a/yast2-ntp-client.spec.in
 +++ b/yast2-ntp-client.spec.in
-@@ -30,12 +30,12 @@ This package contains the YaST2 component for NTP client configuration.
+@@ -34,11 +34,11 @@ This package contains the YaST2 component for NTP client configuration.
  %defattr(-,root,root)
  %dir @yncludedir@/ntp-client
  @yncludedir@/ntp-client/*
@@ -54,7 +54,5 @@ index 5e11c6f..b93a8d8 100644
 -@moduledir@/*.y*
 +@moduledir@/*.rb
  @desktopdir@/ntp-client.desktop
--@ydatadir@/ntp_servers.ycp
-+@ydatadir@/ntp_servers.rb
+ @ydatadir@/ntp_servers.ycp
  %doc @docdir@
- @schemadir@/autoyast/rnc/ntpclient.rnc
