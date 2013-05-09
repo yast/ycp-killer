@@ -8,8 +8,13 @@ module Commands
     def apply(mod)
       action "Packaging" do
         Dir.chdir mod.result_dir do
-          Cheetah.run "make", "-f", "Makefile.cvs" # TODO will not work for cmake based ones
-          Cheetah.run "make", "package-local", "CHECK_SYNTAX=false"
+          save_env do
+            # unset RUBYOPT (set by bundler) to not check for configured
+            # rubygems in external ruby scripts called during packaging
+            ENV.delete "RUBYOPT"
+            Cheetah.run "make", "-f", "Makefile.cvs" # TODO will not work for cmake based ones
+            Cheetah.run "make", "package-local", "CHECK_SYNTAX=false"
+          end
         end
 
         FileUtils.mkdir_p mod.obs_base_dir
