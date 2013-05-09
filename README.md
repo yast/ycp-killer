@@ -1,26 +1,16 @@
 YCP Killer
 ==========
 
-YCP Killer is a tool that manages translation of
+YCP Killer is a tool that manages tasks related to translation of
 [YCP](http://doc.opensuse.org/projects/YaST/SLES10/tdg/Book-YCPLanguage.html)
-code in [YaST](http://en.opensuse.org/Portal:YaST) into Ruby. Once complete, it
-will be used to translate the whole YaST codebase into Ruby, which will allow us
-to get rid of YCP completely.
+code in [YaST](http://en.opensuse.org/Portal:YaST) modules into Ruby. It will be
+used to translate the whole YaST codebase into Ruby, which will allow us to get
+rid of YCP completely.
 
-Description
------------
+To do the actual translation, YCP Killer uses
+[Y2R](https://github.com/yast/y2r).
 
-YCP Killer translates YaST code into Ruby module by module. The translation is
-driven by files in the `data` directory, which describe which files in each
-module need to be translated and also contain some other metadata. To perform
-the actual translation, YCP Killer uses [Y2R](https://github.com/yast/y2r).
-
-Before the actual translation, modules can be patched using patches in the
-`patches` directory. This makes it possible e.g. to rewrite parts of module code
-that contain constructs that Y2R can't handle.
-
-**Note:** YCP Killer is work in progress and translation of many modules
-currently fails with errors.
+**YCP Killer is still work in progress.**
 
 Installation
 ------------
