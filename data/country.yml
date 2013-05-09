@@ -67,3 +67,72 @@ moves:
   - from: "timezone/agents/*"
     to: timezone/src/scrconf
 
+excluded:
+  # these files are loaded via .target/.local.yast2 agent
+  # do not convert them (would fail at runtime)
+  - console/src/data/consolefonts.ycp
+  - timezone/src/data/lang2tz.ycp
+  - timezone/src/data/timezone_raw.ycp
+  - keyboard/src/data/keyboard_raw.ycp
+  - keyboard/src/data/lang2keyboard.ycp
+  - keyboard/src/data/xkblayout2keyboard.ycp
+  - language/src/data/languages/languages.ycp
+  - language/src/data/languages/language_af_ZA.ycp
+  - language/src/data/languages/language_ar_EG.ycp
+  - language/src/data/languages/language_ast_ES.ycp
+  - language/src/data/languages/language_bg_BG.ycp
+  - language/src/data/languages/language_bn_BD.ycp
+  - language/src/data/languages/language_bs_BA.ycp
+  - language/src/data/languages/language_ca_ES.ycp
+  - language/src/data/languages/language_cs_CZ.ycp
+  - language/src/data/languages/language_cy_GB.ycp
+  - language/src/data/languages/language_da_DK.ycp
+  - language/src/data/languages/language_de_DE.ycp
+  - language/src/data/languages/language_el_GR.ycp
+  - language/src/data/languages/language_en_GB.ycp
+  - language/src/data/languages/language_en_US.ycp
+  - language/src/data/languages/language_es_ES.ycp
+  - language/src/data/languages/language_et_EE.ycp
+  - language/src/data/languages/language_fi_FI.ycp
+  - language/src/data/languages/language_fr_FR.ycp
+  - language/src/data/languages/language_gl_ES.ycp
+  - language/src/data/languages/language_gu_IN.ycp
+  - language/src/data/languages/language_he_IL.ycp
+  - language/src/data/languages/language_hi_IN.ycp
+  - language/src/data/languages/language_hr_HR.ycp
+  - language/src/data/languages/language_hu_HU.ycp
+  - language/src/data/languages/language_id_ID.ycp
+  - language/src/data/languages/language_it_IT.ycp
+  - language/src/data/languages/language_ja_JP.ycp
+  - language/src/data/languages/language_ka_GE.ycp
+  - language/src/data/languages/language_km_KH.ycp
+  - language/src/data/languages/language_ko_KR.ycp
+  - language/src/data/languages/language_lt_LT.ycp
+  - language/src/data/languages/language_mk_MK.ycp
+  - language/src/data/languages/language_mr_IN.ycp
+  - language/src/data/languages/language_nb_NO.ycp
+  - language/src/data/languages/language_nl_NL.ycp
+  - language/src/data/languages/language_nn_NO.ycp
+  - language/src/data/languages/language_pa_IN.ycp
+  - language/src/data/languages/language_pl_PL.ycp
+  - language/src/data/languages/language_pt_BR.ycp
+  - language/src/data/languages/language_pt_PT.ycp
+  - language/src/data/languages/language_ro_RO.ycp
+  - language/src/data/languages/language_ru_RU.ycp
+  - language/src/data/languages/language_si_LK.ycp
+  - language/src/data/languages/language_sk_SK.ycp
+  - language/src/data/languages/language_sl_SI.ycp
+  - language/src/data/languages/language_sr_RS.ycp
+  - language/src/data/languages/language_sv_SE.ycp
+  - language/src/data/languages/language_ta_IN.ycp
+  - language/src/data/languages/language_tg_TJ.ycp
+  - language/src/data/languages/language_th_TH.ycp
+  - language/src/data/languages/language_tr_TR.ycp
+  - language/src/data/languages/language_uk_UA.ycp
+  - language/src/data/languages/language_vi_VN.ycp
+  - language/src/data/languages/language_wa_BE.ycp
+  - language/src/data/languages/language_xh_ZA.ycp
+  - language/src/data/languages/language_zh_CN.ycp
+  - language/src/data/languages/language_zh_TW.ycp
+  - language/src/data/languages/language_zu_ZA.ycp
+
