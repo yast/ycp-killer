@@ -15,7 +15,7 @@ module Commands
         prepare_result_dir(mod)
       end
 
-      with_env do
+      save_env do
         # This makes private symbols in modules visible. Needed by some
         # testsuites.
         ENV["Y2ALLGLOBAL"] = "1"

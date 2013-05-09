@@ -66,17 +66,17 @@ module Commands
       end
     end
 
-    # A wrapper for safe restoring environment after changes
+    # A wrapper for saving and restoring environment after changes
     #
     # Example:
     #
-    #   with_env do
+    #   save_env do
     #     ENV["foo"] = bar
     #     foo()
     #   end
     #
     #   # here is the original ENV restored
-    def with_env
+    def save_env
       begin
         env_old = ENV
         yield

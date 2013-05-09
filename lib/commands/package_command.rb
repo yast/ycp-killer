@@ -8,7 +8,7 @@ module Commands
     def apply(mod)
       action "Packaging" do
         Dir.chdir mod.result_dir do
-          with_env do
+          save_env do
             # unset RUBYOPT (set by bundler) to not check for configured
             # rubygems in external ruby scripts called during packaging
             ENV.delete "RUBYOPT"
