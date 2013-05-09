@@ -1,26 +1,16 @@
 YCP Killer
 ==========
 
-YCP Killer is a tool that manages translation of
+YCP Killer is a tool that manages tasks related to translation of
 [YCP](http://doc.opensuse.org/projects/YaST/SLES10/tdg/Book-YCPLanguage.html)
-code in [YaST](http://en.opensuse.org/Portal:YaST) into Ruby. Once complete, it
-will be used to translate the whole YaST codebase into Ruby, which will allow us
-to get rid of YCP completely.
+code in [YaST](http://en.opensuse.org/Portal:YaST) modules into Ruby. It will be
+used to translate the whole YaST codebase into Ruby, which will allow us to get
+rid of YCP completely.
 
-Description
------------
+To do the actual translation, YCP Killer uses
+[Y2R](https://github.com/yast/y2r).
 
-YCP Killer translates YaST code into Ruby module by module. The translation is
-driven by files in the `data` directory, which describe which files in each
-module need to be translated and also contain some other metadata. To perform
-the actual translation, YCP Killer uses [Y2R](https://github.com/yast/y2r).
-
-Before the actual translation, modules can be patched using patches in the
-`patches` directory. This makes it possible e.g. to rewrite parts of module code
-that contain constructs that Y2R can't handle.
-
-**Note:** YCP Killer is work in progress and translation of many modules
-currently fails with errors.
+**YCP Killer is still work in progress.**
 
 Installation
 ------------
@@ -37,12 +27,13 @@ things get gemified, packaged, etc.
 
          $ sudo zypper in git
 
-  2. **Update `ycpc` (yast-core package)**
+  2. **Update `ycpc`**
 
      Updated `ycpc` is needed because Y2R relies on some features that
      are not present in `ycpc` bundled with openSUSE 12.3.
 
-     Install prebuilt RPM packages from **YaST:Head:ruby** OBS repository.
+     To install updated `ycpc`, install the `yast2-core` package from
+     `YaST:Head:ruby`:
 
          $ sudo zypper ar -f http://download.opensuse.org/repositories/YaST:/Head:/ruby/openSUSE_12.3/ YaST:Head:ruby
          $ sudo zypper in -f -r YaST:Head:ruby yast2-core
@@ -134,34 +125,71 @@ things get gemified, packaged, etc.
 
      You can now start killing YCP.
 
-Resulting Directory Structure
------------------------------
+Overview
+--------
 
-The existing directory tree layout of nearly all YaST modules is rather random
-and stupid. It is convenient to use the translation occasion to also move
-files to a more logical and uniform scheme, to enable exporting the working
-directory via `Y2DIR` and to unify Makefiles.
+YCP Killer is a command-line tool built around tasks that are applied on YaST
+module source code. Some of these tasks are driven by *module metadata files*
+which contain various information about all the translated modules (see [Module
+Metadata](#module-metadata).
 
-The following tree shows what gets installed where:
+The usual YCP Killer usage workflow is:
 
-```
-tictactoe-server
-└── src
-    ├── bin            ->  /usr/lib/YaST2/bin       (lib, even if lib64 exists)
-    ├── servers_non_y2 ->  /usr/lib/YaST2/servers_non_y2
-    ├── clients        ->  /usr/share/YaST2/clients
-    ├── data           ->  /usr/share/YaST2/data
-    ├── include        ->  /usr/share/YaST2/include
-    ├── modules        ->  /usr/share/YaST2/modules
-    ├── scrconf        ->  /usr/share/YaST2/scrconf
-    ├── autoyast-rnc   ->  /usr/share/YaST2/schema/autoyast/rnc
-    ├── control-rnc    ->  /usr/share/YaST2/schema/control/rnc
-    ├── desktop        ->  /usr/share/applications/YaST2
-    └── fillup         ->  /var/adm/fillup-templates
-```
+  * Clone YaST module Git repository.
+  * Restructure the YaST module source code to match the new structure (see [New
+    YaST Module Structure](#new-yast-module-structure).
+  * Apply patches to the restructured YaST module source code (typically to
+    adapt Makefiles to Ruby translation and to work around Y2R deficiencies).
+  * Compile YaST module's YCP modules (without this any code depending on them
+    can't be translated by Y2R).
+  * Convert the YaST module source code into Ruby.
+  * Generate `Makefile.am` files in all source directories matching the new
+    structure (usually only `src`).
+  * Create a YaST module package source.
+  * Build the package locally.
+  * Submit a package into OBS.
 
-Other directories, like `doc` and `testsuite`, are not restructured now
-and keep their existing Makefiles.
+All these tasks (and some more) can be executed by commands described in the
+[Usage](#usage) section.
+
+YCP Killer stores its data in `$XDG_DATA_HOME/ycp-killer` (usually
+`~/.local/share/ycp-killer`). The directory structure looks like this:
+
+    $XDG_DATA_HOME/ycp-killer
+    └─ yast
+       ├─ work
+       │  ├─ add-on-creator
+       │  ├─ ...
+       │  └─ ycp-ui-bindings
+       ├─ result
+       │  ├─ add-on-creator
+       │  ├─ ...
+       │  └─ ycp-ui-bindings
+       └─ build_service
+          └─ YaST:Head:ruby
+             ├─ autoyast2
+             ├─ ...
+             └─ yast2-ycp-ui-bindings
+
+For each YaST module, YCP Killer creates three directories:
+
+  * **Work directory** (`$XDG_DATA_HOME/ycp-killer/yast/work/<module-name>`)
+
+    Contains clone of module Git repository. Restructuring, patching and module
+    compilation all happen here.
+
+  * **Result directory** (`$XDG_DATA_HOME/ycp-killer/yast/result/<module-name>`)
+
+    Contains module source code after translation into Ruby.
+
+  * **OBS directory** (`$XDG_DATA_HOME/ycp-killer/yast/build_service/YaST:Head:ruby/<module-package-name>`)
+
+    Contains translated module package source, ready to be built locally or
+    submitted to OBS. Techically, this directory is an OBS package checkout as
+    created by `osc`.
+
+Data in the `$XDG_DATA_HOME/ycp-killer` directory can easily grow into
+gigabytes, so make sure you have enough free space.
 
 Usage
 -----
@@ -401,3 +429,32 @@ exports:
   - library/sequencer/src
   - library/packages/src
 ```
+
+New YaST Module Structure
+-------------------------
+
+The existing directory tree layout of nearly all YaST modules is rather random
+and stupid. It is convenient to use the translation occasion to also move
+files to a more logical and uniform scheme, to enable exporting the working
+directory via `Y2DIR` and to unify Makefiles.
+
+The following tree shows what gets installed where:
+
+```
+tictactoe-server
+└── src
+    ├── bin            ->  /usr/lib/YaST2/bin       (lib, even if lib64 exists)
+    ├── servers_non_y2 ->  /usr/lib/YaST2/servers_non_y2
+    ├── clients        ->  /usr/share/YaST2/clients
+    ├── data           ->  /usr/share/YaST2/data
+    ├── include        ->  /usr/share/YaST2/include
+    ├── modules        ->  /usr/share/YaST2/modules
+    ├── scrconf        ->  /usr/share/YaST2/scrconf
+    ├── autoyast-rnc   ->  /usr/share/YaST2/schema/autoyast/rnc
+    ├── control-rnc    ->  /usr/share/YaST2/schema/control/rnc
+    ├── desktop        ->  /usr/share/applications/YaST2
+    └── fillup         ->  /var/adm/fillup-templates
+```
+
+Other directories, like `doc` and `testsuite`, are not restructured now
+and keep their existing Makefiles.
