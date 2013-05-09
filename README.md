@@ -90,6 +90,14 @@ things get gemified, packaged, etc.
                                                   # a C part, so let's use
                                                   # already built one)
 
+     Install packages needed to build YaST modules in general:
+
+         $ sudo zypper in yast2-devtools          # Needed to create pacakge source
+         $ sudo zypper in osc                     # Needed to create pacakge source
+         $ sudo zypper in libtool                 # Needed to create pacakge source
+         $ sudo zypper in expect                  # Needed by tests
+         $ sudo zypper in dejagnu                 # Needed by tests
+
      Clone YCP Killer's repository and install Gem dependencies:
 
          $ git clone git://github.com/yast/ycp-killer.git
