@@ -98,6 +98,24 @@ things get gemified, packaged, etc.
          $ sudo zypper in expect                  # Needed by tests
          $ sudo zypper in dejagnu                 # Needed by tests
 
+     Install packages needed to build specific YaST modules:
+
+         $ sudo zypper in openslp-devel             # Needed by slp
+         $ sudo zypper in swig                      # Needed by storage
+         $ sudo zypper in dia                       # Needed by nfs-client
+         $ sudo zypper in docbook-xsl-stylesheets   # Needed by dbus-server
+         $ sudo zypper in dbus-1-devel              # Needed by dbus-server
+         $ sudo zypper in polkit-devel              # Needed by dbus-server
+         $ sudo zypper in yast2-core-devel          # Needed by installation
+         $ sudo zypper in trang                     # Needed by installation
+         $ sudo zypper in rubygem-racc              # Needed by drbd
+         $ sudo zypper in libldap-cpp-devel         # Needed by ldap-server
+         $ sudo zypper in boost-devel               # Needed by ldap-server
+         $ sudo zypper in xorg-x11-libX11-devel     # Needed by printer
+         $ sudo zypper in alsa-devel                # Needed by sound
+         $ sudo zypper in libyui-devel              # Needed by ycp-ui-bindings
+         $ sudo zypper in ImageMagick               # Needed by nis-server
+
      Clone YCP Killer's repository and install Gem dependencies:
 
          $ git clone git://github.com/yast/ycp-killer.git
