@@ -77,11 +77,15 @@ module Commands
     #
     #   # here is the original ENV restored
     def save_env
+      # ENV isn't a Hash, but a weird Hash-like object. Calling #to_hash on it
+      # will copy its items into a newly created Hash instance, which then can
+      # be fed into #replace. This approach ensures that any modifications of
+      # ENV in the passed block won't affect the stored value.
+      saved_env = ENV.to_hash
       begin
-        env_old = ENV
         yield
       ensure
-        ENV.replace env_old
+        ENV.replace saved_env
       end
     end
   end
