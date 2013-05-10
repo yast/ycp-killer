@@ -8,10 +8,9 @@ module Commands
     def apply(mod)
       action "Packaging" do
         Dir.chdir mod.result_dir do
-          save_env do
-            # unset RUBYOPT (set by bundler) to not check for configured
-            # rubygems in external ruby scripts called during packaging
-            ENV.delete "RUBYOPT"
+          # do not check for configured
+          # rubygems in external ruby scripts called during packaging
+          disable_bundler do
             Cheetah.run "make", "-f", "Makefile.cvs" # TODO will not work for cmake based ones
             Cheetah.run "make", "package-local", "CHECK_SYNTAX=false"
           end
