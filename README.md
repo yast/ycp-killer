@@ -100,7 +100,7 @@ things get gemified, packaged, etc.
          $ sudo zypper in yast2-core-devel          # Needed by installation
          $ sudo zypper in trang                     # Needed by installation
          $ sudo zypper in rubygem-racc              # Needed by drbd
-         $ sudo zypper in libldap-cpp-devel         # Needed by ldap-server
+         $ sudo zypper in libldapcpp-devel          # Needed by ldap-server
          $ sudo zypper in boost-devel               # Needed by ldap-server
          $ sudo zypper in xorg-x11-libX11-devel     # Needed by printer
          $ sudo zypper in alsa-devel                # Needed by sound
