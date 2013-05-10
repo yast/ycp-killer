@@ -86,6 +86,7 @@ things get gemified, packaged, etc.
          $ sudo zypper in yast2-devtools            # Needed to create package source
          $ sudo zypper in osc                       # Needed to create package source
          $ sudo zypper in libtool                   # Needed to create package source
+         $ sudo zypper in ca-certificates-mozilla   # Needed to create package source
          $ sudo zypper in expect                    # Needed by tests
          $ sudo zypper in dejagnu                   # Needed by tests
 
