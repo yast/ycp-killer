@@ -107,6 +107,10 @@ things get gemified, packaged, etc.
          $ sudo zypper in libyui-devel              # Needed by ycp-ui-bindings
          $ sudo zypper in ImageMagick               # Needed by nis-server
 
+     Install packages needed to build YaST module packages:
+
+         $ sudo zypper in build                     # Needed by "osc build"
+
      Clone YCP Killer's repository and install Gem dependencies:
 
          $ git clone git://github.com/yast/ycp-killer.git
