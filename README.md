@@ -112,6 +112,10 @@ things get gemified, packaged, etc.
 
          $ sudo zypper in build                     # Needed by "osc build"
 
+     Install packages needed to submit specific YaST modules into OBS:
+
+         $ sudo zypper in obs-service-format_spec_file   # Needed by perl-bindings
+
      Clone YCP Killer's repository and install Gem dependencies:
 
          $ git clone git://github.com/yast/ycp-killer.git
