@@ -82,10 +82,10 @@ module Commands
         # will copy its items into a newly created Hash instance, which then can
         # be fed into #replace. This approach ensures that any modifications of
         # ENV in the passed block won't affect the stored value.
-        env_old = ENV.to_hash
+        saved_env = ENV.to_hash
         yield
       ensure
-        ENV.replace env_old
+        ENV.replace saved_env
       end
     end
   end
