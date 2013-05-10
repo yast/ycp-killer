@@ -46,71 +46,71 @@ things get gemified, packaged, etc.
 
      Install Y2R's dependencies:
 
-         $ sudo zypper in gcc-c++                   # Needed by Nokogiri
-         $ sudo zypper in make                      # Needed by Nokogiri
-         $ sudo zypper in libxml2-devel             # Needed by Nokogiri
-         $ sudo zypper in libxslt-devel             # Needed by Nokogiri
+         $ sudo zypper in gcc-c++                        # Needed by Nokogiri
+         $ sudo zypper in make                           # Needed by Nokogiri
+         $ sudo zypper in libxml2-devel                  # Needed by Nokogiri
+         $ sudo zypper in libxslt-devel                  # Needed by Nokogiri
 
      Install packages needed to convert YaST modules into Ruby in general:
 
-         $ sudo zypper in yast2-ycp-ui-bindings     # Implements UI::*
-         $ sudo zypper in yast2-pkg-bindings        # Implements Pkg::*
-         $ sudo zypper in yast2-perl-bindings       # Makes Perl modules work
+         $ sudo zypper in yast2-ycp-ui-bindings          # Implements UI::*
+         $ sudo zypper in yast2-pkg-bindings             # Implements Pkg::*
+         $ sudo zypper in yast2-perl-bindings            # Makes Perl modules work
 
      Install packages needed to convert specific YaST modules:
 
-         $ sudo zypper in cracklib-devel            # Needed by users
-         $ sudo zypper in limal-perl                # Needed by bootloader
-         $ sudo zypper in perl-Crypt-SmbHash        # Needed by samba-server
-         $ sudo zypper in perl-Date-Calc            # Needed by ca-management
-         $ sudo zypper in perl-Digest-SHA1          # Needed by ftp-server,
-                                                    # phone-services,
-                                                    # profile-manager and s390
-         $ sudo zypper in perl-JSON                 # Needed by crowbar
-         $ sudo zypper in perl-NetxAP               # Needed by mail
-         $ sudo zypper in perl-X500-DN              # Needed by ldap-server
-         $ sudo zypper in perl-camgm                # Needed by ca-management
-         $ sudo zypper in sablotron                 # Needed by storage
-         $ sudo zypper in suseRegister              # Needed by registration
-         $ sudo zypper in yast2-ldap                # Needed by dns-server and
-                                                    # dhcp-server (they need Perl
-                                                    # modules which are not
-                                                    # available otherwise as we
-                                                    # don't translate ldap)
-         $ sudo zypper in yast2-storage             # Needed by storage (it needs
-                                                    # a C part, so let's use
-                                                    # already built one)
+         $ sudo zypper in cracklib-devel                 # Needed by users
+         $ sudo zypper in limal-perl                     # Needed by bootloader
+         $ sudo zypper in perl-Crypt-SmbHash             # Needed by samba-server
+         $ sudo zypper in perl-Date-Calc                 # Needed by ca-management
+         $ sudo zypper in perl-Digest-SHA1               # Needed by ftp-server,
+                                                         # phone-services,
+                                                         # profile-manager and s390
+         $ sudo zypper in perl-JSON                      # Needed by crowbar
+         $ sudo zypper in perl-NetxAP                    # Needed by mail
+         $ sudo zypper in perl-X500-DN                   # Needed by ldap-server
+         $ sudo zypper in perl-camgm                     # Needed by ca-management
+         $ sudo zypper in sablotron                      # Needed by storage
+         $ sudo zypper in suseRegister                   # Needed by registration
+         $ sudo zypper in yast2-ldap                     # Needed by dns-server and
+                                                         # dhcp-server (they need Perl
+                                                         # modules which are not
+                                                         # available otherwise as we
+                                                         # don't translate ldap)
+         $ sudo zypper in yast2-storage                  # Needed by storage (it needs
+                                                         # a C part, so let's use
+                                                         # already built one)
 
      Install packages needed to build YaST modules in general:
 
-         $ sudo zypper in yast2-devtools            # Needed to create package source
-         $ sudo zypper in osc                       # Needed to create package source
-         $ sudo zypper in libtool                   # Needed to create package source
-         $ sudo zypper in ca-certificates-mozilla   # Needed to create package source
-         $ sudo zypper in expect                    # Needed by tests
-         $ sudo zypper in dejagnu                   # Needed by tests
+         $ sudo zypper in yast2-devtools                 # Needed to create package source
+         $ sudo zypper in osc                            # Needed to create package source
+         $ sudo zypper in libtool                        # Needed to create package source
+         $ sudo zypper in ca-certificates-mozilla        # Needed to create package source
+         $ sudo zypper in expect                         # Needed by tests
+         $ sudo zypper in dejagnu                        # Needed by tests
 
      Install packages needed to build specific YaST modules:
 
-         $ sudo zypper in openslp-devel             # Needed by slp
-         $ sudo zypper in swig                      # Needed by storage
-         $ sudo zypper in dia                       # Needed by nfs-client
-         $ sudo zypper in docbook-xsl-stylesheets   # Needed by dbus-server
-         $ sudo zypper in dbus-1-devel              # Needed by dbus-server
-         $ sudo zypper in polkit-devel              # Needed by dbus-server
-         $ sudo zypper in yast2-core-devel          # Needed by installation
-         $ sudo zypper in trang                     # Needed by installation
-         $ sudo zypper in rubygem-racc              # Needed by drbd
-         $ sudo zypper in libldapcpp-devel          # Needed by ldap-server
-         $ sudo zypper in boost-devel               # Needed by ldap-server
-         $ sudo zypper in xorg-x11-libX11-devel     # Needed by printer
-         $ sudo zypper in alsa-devel                # Needed by sound
-         $ sudo zypper in libyui-devel              # Needed by ycp-ui-bindings
-         $ sudo zypper in ImageMagick               # Needed by nis-server
+         $ sudo zypper in openslp-devel                  # Needed by slp
+         $ sudo zypper in swig                           # Needed by storage
+         $ sudo zypper in dia                            # Needed by nfs-client
+         $ sudo zypper in docbook-xsl-stylesheets        # Needed by dbus-server
+         $ sudo zypper in dbus-1-devel                   # Needed by dbus-server
+         $ sudo zypper in polkit-devel                   # Needed by dbus-server
+         $ sudo zypper in yast2-core-devel               # Needed by installation
+         $ sudo zypper in trang                          # Needed by installation
+         $ sudo zypper in rubygem-racc                   # Needed by drbd
+         $ sudo zypper in libldapcpp-devel               # Needed by ldap-server
+         $ sudo zypper in boost-devel                    # Needed by ldap-server
+         $ sudo zypper in xorg-x11-libX11-devel          # Needed by printer
+         $ sudo zypper in alsa-devel                     # Needed by sound
+         $ sudo zypper in libyui-devel                   # Needed by ycp-ui-bindings
+         $ sudo zypper in ImageMagick                    # Needed by nis-server
 
      Install packages needed to build YaST module packages:
 
-         $ sudo zypper in build                     # Needed by "osc build"
+         $ sudo zypper in build                          # Needed by "osc build"
 
      Install packages needed to submit specific YaST modules into OBS:
 
