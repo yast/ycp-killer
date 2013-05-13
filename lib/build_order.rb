@@ -91,7 +91,7 @@ class BuildOrder
     modules = {}
 
     source_dirs.each do |dir|
-      Dir["#{dir}/modules/**/*.ycp"].each do |file|
+      Dir["#{dir}/modules/**/*.ycp"].sort.each do |file|
         relative_path = file.sub(/#{Regexp.escape(dir)}\/modules\//, "")
         module_name = relative_path.sub(/\.ycp$/, "")
 
@@ -106,7 +106,7 @@ class BuildOrder
     includes = {}
 
     source_dirs.each do |dir|
-      Dir["#{dir}/include/**/*.y{cp,h}"].each do |file|
+      Dir["#{dir}/include/**/*.y{cp,h}"].sort.each do |file|
         relative_path = file.sub(/#{Regexp.escape(dir)}\/include\//, "")
         include_name = relative_path.sub(/\.y(cp|h)$/, "")
 
