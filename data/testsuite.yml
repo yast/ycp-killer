@@ -3,3 +3,5 @@ moves:
     to: "src/modules/"
   - from: "src/testsuite.ycp"
     to: "src/include/"
+excluded:
+  - src/modules/Pkg.ycp
