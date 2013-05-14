@@ -6,7 +6,7 @@ class YastModule
 
   WORK_DIR   = "work"
   RESULT_DIR = "result"
-  OBS_DIR = "build_service"
+  OBS_DIR = "obs"
   OBS_PROJECT = "YaST:Head:ruby"
 
   attr_reader :name,

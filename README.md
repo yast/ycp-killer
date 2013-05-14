@@ -174,7 +174,7 @@ YCP Killer stores its data in `$XDG_DATA_HOME/ycp-killer` (usually
        │  ├─ add-on-creator
        │  ├─ ...
        │  └─ ycp-ui-bindings
-       └─ build_service
+       └─ obs
           └─ YaST:Head:ruby
              ├─ autoyast2
              ├─ ...
@@ -191,7 +191,7 @@ For each YaST module, YCP Killer creates three directories:
 
     Contains module source code after translation into Ruby.
 
-  * **OBS directory** (`$XDG_DATA_HOME/ycp-killer/yast/build_service/YaST:Head:ruby/<module-package-name>`)
+  * **OBS directory** (`$XDG_DATA_HOME/ycp-killer/yast/obs/YaST:Head:ruby/<module-package-name>`)
 
     Contains translated module package source, ready to be built locally or
     submitted to OBS. Techically, this directory is an OBS package checkout as
