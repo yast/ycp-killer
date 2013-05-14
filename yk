@@ -37,6 +37,7 @@ require_relative "lib/commands/build_command"
 require_relative "lib/commands/submit_command"
 require_relative "lib/commands/package_command"
 require_relative "lib/commands/pull_command"
+require_relative "lib/commands/test_command"
 
 class CLI < Thor
 
@@ -158,6 +159,13 @@ class CLI < Thor
     modules = modules_from_names(module_names)
     with_modules modules do |mod|
       Commands::SubmitCommand.new.apply(mod)
+    end
+  end
+
+  desc "test <module>...", "Run upstream tests for module(s)"
+  def test(*module_names)
+    report_results(module_names) do |mod|
+      Commands::TestCommand.new.apply(mod)
     end
   end
 
