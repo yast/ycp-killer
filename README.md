@@ -223,6 +223,7 @@ Tasks:
   yk reset <module>...        # Revert module(s) work directory to clean state
   yk restructure <module>...  # Change module(s) work directory structure to fit the Y2DIR scheme
   yk ruby <module>...         # Convert module(s) to Ruby
+  yk test <module>...         # Run upstream tests for module(s)
   yk submit <module>...       # Submit source files to build service for module(s)
   yk ybc <module>...          # Compile module(s) to ybc
 
@@ -376,6 +377,11 @@ Generates Makefile.am for exported directories of module(s)
 
 Creates packages for module(s) in the build service directory, which is a
 third tree alongside the *working* and *result* ones.
+
+#### yk test
+
+Runs the testsuite of the module(s). It runs in the *result* tree
+and needs makefiles, so `yk convert` should have been run already.
 
 ### Module Metadata
 

@@ -57,7 +57,10 @@ module Commands
         f.puts "-" * header.size
         f.puts
         if e.is_a?(Cheetah::ExecutionFailed)
+          f.puts "STDERR:"
           f.puts e.stderr
+          f.puts "STDOUT:"
+          f.puts e.stdout
         else
           f.puts e.message
           e.backtrace.each { |l| f.puts l }
@@ -86,6 +89,14 @@ module Commands
         yield
       ensure
         ENV.replace saved_env
+      end
+    end
+
+    # For running commands that want to find gems without Bundler
+    def disable_bundler
+      save_env do
+        ENV.delete "RUBYOPT"
+        yield
       end
     end
   end
