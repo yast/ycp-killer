@@ -223,12 +223,12 @@ class CLI < Thor
       $yast_modules[name] = YastModule.new(
         name,
         YAML.load_file(file) || {},
-        yast_dir
+        data_dir
       )
     end
   end
 
-  def yast_dir
+  def data_dir
     # XDG Base Directory Specification, version 0.7:
     #
     #   $XDG_DATA_HOME defines the base directory relative to which user
@@ -243,7 +243,7 @@ class CLI < Thor
       raise "Don't know where to store data, both $XDG_DATA_HOME and $HOME are not set or empty."
     end
 
-    yast_dir = "#{data_dir}/ycp-killer/yast"
+    yast_dir = "#{data_dir}/ycp-killer"
   end
 
   def module_from_cwd
