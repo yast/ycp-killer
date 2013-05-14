@@ -61,6 +61,10 @@ class YastModule
     "#{PATCHES_DIR}/#@name.patch"
   end
 
+  def result_exports
+    exports.map { |e| "#{result_dir}/#{e}" }
+  end
+
   def exported_module_paths
     exports.map { |e| "#{work_dir}/#{e}/modules" }
   end
