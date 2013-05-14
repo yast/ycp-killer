@@ -17,11 +17,11 @@ class YastModule
     :excluded,
     :moves
 
-  def initialize(name, data, yast_dir)
+  def initialize(name, data, data_dir)
     @name           = name
-    @work_dir       = "#{yast_dir}/#{WORK_DIR}/#@name"
-    @result_dir     = "#{yast_dir}/#{RESULT_DIR}/#@name"
-    @obs_base_dir   = "#{yast_dir}/#{OBS_DIR}"
+    @work_dir       = "#{data_dir}/#{WORK_DIR}/#@name"
+    @result_dir     = "#{data_dir}/#{RESULT_DIR}/#@name"
+    @obs_base_dir   = "#{data_dir}/#{OBS_DIR}"
     @ybc_dep_names  = data.delete("ybc_deps") || []
     @ruby_dep_names = data.delete("ruby_deps") || []
     @exports        = data.delete("exports") || ["src"]
