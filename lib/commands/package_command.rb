@@ -20,6 +20,9 @@ module Commands
         Dir.chdir mod.obs_base_dir do
           create_obs_package_dir!(mod.package_name) unless File.exists?(mod.obs_dir)
 
+          # remove all - get rid of obsoleted files before copying new ones
+          FileUtils.rm Dir["#{mod.obs_dir}/*"]
+
           Dir["#{mod.result_dir}/package/*"].each do |file|
             # for last three arguments keep defaults except last that we switch to
             # overwrite file in destrination
