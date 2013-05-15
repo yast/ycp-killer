@@ -239,6 +239,10 @@ the *result* tree.
 The module name can be omitted if it is the current working directory in the
 *working* tree.
 
+#### yk build
+
+TODO
+
 #### yk clone
 
 Clones repositories of specified modules into subdirectories of a directory
@@ -376,6 +380,10 @@ Total ERROR(y2r):   0
 Total ERROR(ruby):  0
 Total ERROR(other): 0
 ```
+
+#### yk submit
+
+TODO
 
 #### yk test
 
