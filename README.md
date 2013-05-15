@@ -239,10 +239,6 @@ the *result* tree.
 The module name can be omitted if it is the current working directory in the
 *working* tree.
 
-#### yk convert
-
-Does everything at once: `clone`, `restructure`, `patch`, `compile`, `makefile`, `package`.
-
 #### yk clone
 
 Clones repositories of specified modules into subdirectories of a directory
@@ -255,6 +251,49 @@ $ ./yk clone testsuite
 [1/1] Processing testsuite:
   * Cloning...
 ```
+
+#### yk convert
+
+Does everything at once: `clone`, `restructure`, `patch`, `compile`, `makefile`, `package`.
+
+#### yk genpatch
+
+Stores changes from the working directory
+into a patch in the `patches` directory.
+
+**Any existing patch for the module is removed**.
+
+```
+$ ./yk genpatch testsuite
+[1/1] Processing testsuite:
+  * Generating patch...
+```
+
+#### yk makefile
+
+Generates Makefile.am for exported directories of module(s)
+
+#### yk package
+
+Creates packages for module(s) in the build service directory, which is a
+third tree alongside the *working* and *result* ones.
+
+#### yk patch
+
+Applies patches for specified modules from the `patches` directory to their
+checkouts. If a module doesn't have a patch, this command does not do anything.
+
+```
+$ ./yk patch testsuite
+[1/1] Processing testsuite:
+  * Patching...
+```
+
+#### yk pull
+
+Pulls changes from the upstream YaST Git repository. If the changes cannot be
+merged (e.g. because of changes done by restructuring or by patching)
+you need to run `yk reset` and try it again.
 
 #### yk reset
 
@@ -272,12 +311,6 @@ $ ./yk reset testsuite
   * Resetting...
 ```
 
-#### yk pull
-
-Pulls changes from the upstream YaST Git repository. If the changes cannot be
-merged (e.g. because of changes done by restructuring or by patching)
-you need to run `yk reset` and try it again.
-
 #### yk restructure
 
 Changes the working directory structure to fit the Y2DIR scheme.
@@ -293,17 +326,6 @@ to ensure that `yk genpatch` diffs properly against the new structure.
 $ ./yk restructure testsuite
 [1/1] Processing testsuite:
   * Restructuring...
-```
-
-#### yk patch
-
-Applies patches for specified modules from the `patches` directory to their
-checkouts. If a module doesn't have a patch, this command does not do anything.
-
-```
-$ ./yk patch testsuite
-[1/1] Processing testsuite:
-  * Patching...
 ```
 
 #### yk ruby
@@ -354,28 +376,6 @@ Total ERROR(y2r):   0
 Total ERROR(ruby):  0
 Total ERROR(other): 0
 ```
-
-#### yk genpatch
-
-Stores changes from the working directory
-into a patch in the `patches` directory.
-
-**Any existing patch for the module is removed**.
-
-```
-$ ./yk genpatch testsuite
-[1/1] Processing testsuite:
-  * Generating patch...
-```
-
-#### yk makefile
-
-Generates Makefile.am for exported directories of module(s)
-
-#### yk package
-
-Creates packages for module(s) in the build service directory, which is a
-third tree alongside the *working* and *result* ones.
 
 #### yk test
 
