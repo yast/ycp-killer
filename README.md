@@ -382,7 +382,8 @@ third tree alongside the *working* and *result* ones.
 Runs the testsuite of the module(s). It runs in the *result* tree
 and needs makefiles, so `yk convert` should have been run already.
 
-### Module Metadata
+Module Metadata
+---------------
 
 Modules have metadata files placed in `data/foo.yml`, in the [YAML][yaml]
 format.
