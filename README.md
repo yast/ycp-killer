@@ -12,6 +12,29 @@ To do the actual translation, YCP Killer uses
 
 **YCP Killer is still work in progress.**
 
+Contents
+--------
+
+  * [Installation](#installation)
+  * [Overview](#overview)
+  * [Usage](#usage)
+    * [Commands](#commands)
+      * [yk build](#yk-build)
+      * [yk clone](#yk-clone)
+      * [yk convert](#yk-convert)
+      * [yk genpatch](#yk-genpatch)
+      * [yk makefile](#yk-makefile)
+      * [yk package](#yk-package)
+      * [yk patch](#yk-patch)
+      * [yk pull](#yk-pull)
+      * [yk reset](#yk-reset)
+      * [yk restructure](#yk-restructure)
+      * [yk ruby](#yk-ruby)
+      * [yk submit](#yk-submit)
+      * [yk test](#yk-test)
+  * [Module Metadata](#module-metadata)
+  * [New YaST Module Structure](#new-yast-module-structure)
+
 Installation
 ------------
 
