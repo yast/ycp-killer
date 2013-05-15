@@ -225,43 +225,40 @@ gigabytes, so make sure you have enough free space.
 Usage
 -----
 
-YCP Killer is a command line tool. It's entry point is the `yk` script, which
-accepts subcommands (like `git` or `bundler`). Each subcommand can be applied to
-a set of YaST modules passed as arguments. A special value `all` will apply a
-command to all YaST modules.
+The entry point to YCP Killer is the `yk` script. It accepts commands (like
+`git` or `bundler`).
 
-```
-$ ./yk help
-Tasks:
-  yk build <module>...        # Build package(s) for module(s) locally
-  yk clone <module>...        # Clone module(s)
-  yk convert <module>...      # Convert module(s)
-  yk genpatch <module>...     # Store changes from work directory of module(s) into a patch
-  yk help [TASK]              # Describe available tasks or one specific task
-  yk makefile <module>...     # Generates Makefile.am for exported dirs of module(s)
-  yk package <module>...      # Create packages in build service directory for module(s)
-  yk patch <module>...        # Patch module(s)
-  yk pull <module>...         # Update the module(s) work directory to the latest state (git pull)
-  yk reset <module>...        # Revert module(s) work directory to clean state
-  yk restructure <module>...  # Change module(s) work directory structure to fit the Y2DIR scheme
-  yk ruby <module>...         # Convert module(s) to Ruby
-  yk submit <module>...       # Submit source files to build service for module(s)
-  yk test <module>...         # Run upstream tests for module(s)
-  yk ybc <module>...          # Compile module(s) to ybc
+Each command (except `help`) can be applied to a set of YaST modules passed as
+arguments. A special value `all` will apply a command to all YaST modules. If
+you don't specify any module name and you are in a work directory of some
+module, the command is applied to that module.
 
-Options:
-  [--debug]      # verbosely log what commands are run
-  [--with-deps]  # also include module dependencies in operations
-  [--threads=N]  # limit the number of threads in parallel tasks (default: all detected CPUs)
-```
+The `help` command can be used to display a short overview of available commands:
+
+    $ ./yk help
+    Tasks:
+      yk build <module>...        # Build package(s) for module(s) locally
+      yk clone <module>...        # Clone module(s)
+      yk convert <module>...      # Convert module(s)
+      yk genpatch <module>...     # Store changes from work directory of module(s) into a patch
+      yk help [TASK]              # Describe available tasks or one specific task
+      yk makefile <module>...     # Generates Makefile.am for exported dirs of module(s)
+      yk package <module>...      # Create packages in build service directory for module(s)
+      yk patch <module>...        # Patch module(s)
+      yk pull <module>...         # Update the module(s) work directory to the latest state (git pull)
+      yk reset <module>...        # Revert module(s) work directory to clean state
+      yk restructure <module>...  # Change module(s) work directory structure to fit the Y2DIR scheme
+      yk ruby <module>...         # Convert module(s) to Ruby
+      yk submit <module>...       # Submit source files to build service for module(s)
+      yk test <module>...         # Run upstream tests for module(s)
+      yk ybc <module>...          # Compile module(s) to ybc
+
+    Options:
+      [--debug]      # verbosely log what commands are run
+      [--with-deps]  # also include module dependencies in operations
+    [--threads=N]  # limit the number of threads in parallel tasks (default: all detected CPUs)
 
 ### Commands
-
-The commands operate on two distinct directory trees: the *working* tree and
-the *result* tree.
-
-The module name can be omitted if it is the current working directory in the
-*working* tree.
 
 #### yk build
 
