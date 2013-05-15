@@ -245,13 +245,14 @@ Tasks:
   yk reset <module>...        # Revert module(s) work directory to clean state
   yk restructure <module>...  # Change module(s) work directory structure to fit the Y2DIR scheme
   yk ruby <module>...         # Convert module(s) to Ruby
-  yk test <module>...         # Run upstream tests for module(s)
   yk submit <module>...       # Submit source files to build service for module(s)
+  yk test <module>...         # Run upstream tests for module(s)
   yk ybc <module>...          # Compile module(s) to ybc
 
 Options:
   [--debug]      # verbosely log what commands are run
   [--with-deps]  # also include module dependencies in operations
+  [--threads=N]  # limit the number of threads in parallel tasks (default: all detected CPUs)
 ```
 
 ### Commands
