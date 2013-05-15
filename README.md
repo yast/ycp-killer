@@ -12,6 +12,29 @@ To do the actual translation, YCP Killer uses
 
 **YCP Killer is still work in progress.**
 
+Contents
+--------
+
+  * [Installation](#installation)
+  * [Overview](#overview)
+  * [Usage](#usage)
+    * [Commands](#commands)
+      * [yk build](#yk-build)
+      * [yk clone](#yk-clone)
+      * [yk convert](#yk-convert)
+      * [yk genpatch](#yk-genpatch)
+      * [yk makefile](#yk-makefile)
+      * [yk package](#yk-package)
+      * [yk patch](#yk-patch)
+      * [yk pull](#yk-pull)
+      * [yk reset](#yk-reset)
+      * [yk restructure](#yk-restructure)
+      * [yk ruby](#yk-ruby)
+      * [yk submit](#yk-submit)
+      * [yk test](#yk-test)
+  * [Module Metadata](#module-metadata)
+  * [New YaST Module Structure](#new-yast-module-structure)
+
 Installation
 ------------
 
@@ -239,9 +262,9 @@ the *result* tree.
 The module name can be omitted if it is the current working directory in the
 *working* tree.
 
-#### yk convert
+#### yk build
 
-Does everything at once: `clone`, `restructure`, `patch`, `compile`, `makefile`, `package`.
+TODO
 
 #### yk clone
 
@@ -255,6 +278,49 @@ $ ./yk clone testsuite
 [1/1] Processing testsuite:
   * Cloning...
 ```
+
+#### yk convert
+
+Does everything at once: `clone`, `restructure`, `patch`, `compile`, `makefile`, `package`.
+
+#### yk genpatch
+
+Stores changes from the working directory
+into a patch in the `patches` directory.
+
+**Any existing patch for the module is removed**.
+
+```
+$ ./yk genpatch testsuite
+[1/1] Processing testsuite:
+  * Generating patch...
+```
+
+#### yk makefile
+
+Generates Makefile.am for exported directories of module(s)
+
+#### yk package
+
+Creates packages for module(s) in the build service directory, which is a
+third tree alongside the *working* and *result* ones.
+
+#### yk patch
+
+Applies patches for specified modules from the `patches` directory to their
+checkouts. If a module doesn't have a patch, this command does not do anything.
+
+```
+$ ./yk patch testsuite
+[1/1] Processing testsuite:
+  * Patching...
+```
+
+#### yk pull
+
+Pulls changes from the upstream YaST Git repository. If the changes cannot be
+merged (e.g. because of changes done by restructuring or by patching)
+you need to run `yk reset` and try it again.
 
 #### yk reset
 
@@ -272,12 +338,6 @@ $ ./yk reset testsuite
   * Resetting...
 ```
 
-#### yk pull
-
-Pulls changes from the upstream YaST Git repository. If the changes cannot be
-merged (e.g. because of changes done by restructuring or by patching)
-you need to run `yk reset` and try it again.
-
 #### yk restructure
 
 Changes the working directory structure to fit the Y2DIR scheme.
@@ -293,17 +353,6 @@ to ensure that `yk genpatch` diffs properly against the new structure.
 $ ./yk restructure testsuite
 [1/1] Processing testsuite:
   * Restructuring...
-```
-
-#### yk patch
-
-Applies patches for specified modules from the `patches` directory to their
-checkouts. If a module doesn't have a patch, this command does not do anything.
-
-```
-$ ./yk patch testsuite
-[1/1] Processing testsuite:
-  * Patching...
 ```
 
 #### yk ruby
@@ -355,34 +404,17 @@ Total ERROR(ruby):  0
 Total ERROR(other): 0
 ```
 
-#### yk genpatch
+#### yk submit
 
-Stores changes from the working directory
-into a patch in the `patches` directory.
-
-**Any existing patch for the module is removed**.
-
-```
-$ ./yk genpatch testsuite
-[1/1] Processing testsuite:
-  * Generating patch...
-```
-
-#### yk makefile
-
-Generates Makefile.am for exported directories of module(s)
-
-#### yk package
-
-Creates packages for module(s) in the build service directory, which is a
-third tree alongside the *working* and *result* ones.
+TODO
 
 #### yk test
 
 Runs the testsuite of the module(s). It runs in the *result* tree
 and needs makefiles, so `yk convert` should have been run already.
 
-### Module Metadata
+Module Metadata
+---------------
 
 Modules have metadata files placed in `data/foo.yml`, in the [YAML][yaml]
 format.
