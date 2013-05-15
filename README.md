@@ -271,12 +271,6 @@ specified by the `yast_dir` setting in `config.yml`.
 
 **Removes the working tree for the module beforehand.**
 
-```
-$ ./yk clone testsuite
-[1/1] Processing testsuite:
-  * Cloning...
-```
-
 #### yk convert
 
 Does everything at once: `clone`, `restructure`, `patch`, `compile`, `makefile`, `package`.
@@ -287,12 +281,6 @@ Stores changes from the working directory
 into a patch in the `patches` directory.
 
 **Any existing patch for the module is removed**.
-
-```
-$ ./yk genpatch testsuite
-[1/1] Processing testsuite:
-  * Generating patch...
-```
 
 #### yk makefile
 
@@ -307,12 +295,6 @@ third tree alongside the *working* and *result* ones.
 
 Applies patches for specified modules from the `patches` directory to their
 checkouts. If a module doesn't have a patch, this command does not do anything.
-
-```
-$ ./yk patch testsuite
-[1/1] Processing testsuite:
-  * Patching...
-```
 
 #### yk pull
 
@@ -330,12 +312,6 @@ Use `yk genpatch` beforehand to save them.
 The command also checks if the current Git checkout is up to date with the original YaST
 repository and prints a warning it not (see `yk pull` command).
 
-```
-$ ./yk reset testsuite
-[1/1] Processing testsuite:
-  * Resetting...
-```
-
 #### yk restructure
 
 Changes the working directory structure to fit the Y2DIR scheme.
@@ -346,12 +322,6 @@ This means you can use `git status` or `git diff --cached`
 inside the work directory to see what moved where.
 The main purpose however is
 to ensure that `yk genpatch` diffs properly against the new structure.
-
-```
-$ ./yk restructure testsuite
-[1/1] Processing testsuite:
-  * Restructuring...
-```
 
 #### yk ruby
 
@@ -378,29 +348,6 @@ created in the **result** tree (e.g. compiling `Sysconfig.ycp` will produce
 
 In case of `ERROR(y2r)` and `ERROR(ruby)`, details of the error are logged into
 the `error.log` file in the YCP Killer directory.
-
-```
-$ ./yk ruby testsuite
-[1/1] Processing testsuite:
-  * Creating result directory...
-  * Converting src/modules/Pkg.ycp...
-  * Checking src/modules/Pkg.ycp...
-  * Converting src/modules/Testsuite.ycp...
-  * Checking src/modules/Testsuite.ycp...
-  * Converting src/include/testsuite.ycp...
-  * Checking src/include/testsuite.ycp...
-  * Converting testsuite/test.ycp...
-  * Checking testsuite/test.ycp...
-
------
-
-Total OK:           8
-Total EXCLUDED:     0
-Total ERROR(ybc):   0
-Total ERROR(y2r):   0
-Total ERROR(ruby):  0
-Total ERROR(other): 0
-```
 
 #### yk submit
 
