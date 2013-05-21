@@ -6,10 +6,10 @@ index 922f4d3..ea3a6ee 100644
 -agents doc permissions src users-plugin
 +agents doc permissions src users-plugin schema
 diff --git a/agents/Makefile.am b/agents/Makefile.am
-index ea86233..fd6424b 100644
+index 5a6dbe5..fd6424b 100644
 --- a/agents/Makefile.am
 +++ b/agents/Makefile.am
-@@ -4,40 +4,6 @@
+@@ -4,38 +4,6 @@
  # $Id$
  #
  
@@ -18,7 +18,6 @@ index ea86233..fd6424b 100644
 -		ag_mailtable \
 -		setup_dkim_verifying.pl \
 -		ag_mailconfig \
--		ag_postfix_mastercf \
 -		MasterCFParser.pm \
 -		ag_mail_ldaptable \
 -                ag_cyrus_conf \
@@ -40,7 +39,6 @@ index ea86233..fd6424b 100644
 -	\
 -	mail_maincf.scr \
 -	mail_saslpasswd.scr \
--	mail_mastercf.scr \
 -	etc_imapd_conf.scr \
 -        mail_ldaptable.scr \
 -	mail_cyrusconf.scr \
@@ -50,7 +48,7 @@ index ea86233..fd6424b 100644
  
  # ag_fetchmailrc is tested in testsuite dir
  TESTS = test-mailtable
-@@ -50,4 +16,4 @@ testdata = \
+@@ -48,4 +16,4 @@ testdata = \
  	test-mailtable-4.in test-mailtable-4.out \
  	test-mailtable-18487.in test-mailtable-18487.out
  
@@ -68,7 +66,7 @@ index df3ffca..9de7be0 100644
 +
 +#include $(top_srcdir)/autodocs-ycp.ami
 diff --git a/schema/Makefile.am b/schema/Makefile.am
-index aba8ca0..749104b 100644
+index 5093469..749104b 100644
 --- a/schema/Makefile.am
 +++ b/schema/Makefile.am
 @@ -4,51 +4,10 @@
@@ -86,9 +84,9 @@ index aba8ca0..749104b 100644
 -        mail-standard.ycp       \
 -        mail-advanced.ycp       \
 -        mail-server_auto.ycp    \
+-	mail-server_ldap-setup.ycp \
 -        mail-server_proposal.ycp \
--	mail-server_ldap-setup.ycp
--
+-	mail-server_update.ycp
 -
 -myynclude_DATA =		\
 -	helps.ycp		\
@@ -148,10 +146,10 @@ index 1aa3e3b..05d8c27 100644
  boolean ReallyAbort() {
      return !MailServer::Modified() || Popup::ReallyAbort(true);
 diff --git a/yast2-mail.spec.in b/yast2-mail.spec.in
-index d0f7ef7..0620e48 100644
+index b85d006..b98bc01 100644
 --- a/yast2-mail.spec.in
 +++ b/yast2-mail.spec.in
-@@ -61,11 +61,9 @@ configuration.
+@@ -62,11 +62,9 @@ cp agents/MasterCFParser.pm src
  %dir @clientdir@
  @clientdir@/mail*
  %dir @moduledir@
