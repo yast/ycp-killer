@@ -60,7 +60,7 @@ class CLI < Thor
     load_module_data
   end
 
-  desc "clone <module>...", "Clone module(s)"
+  desc "clone <module>...", "Clone module source from Git repository"
   def clone(*module_names)
     modules = modules_from_names(module_names)
     with_modules modules do |mod|
@@ -68,14 +68,14 @@ class CLI < Thor
     end
   end
 
-  desc "convert <module>...", "Convert module(s)"
+  desc "convert <module>...", "Run all conversion-related tasks for module"
   def convert(*module_names)
     report_results(module_names) do |mod|
       Commands::ConvertCommand.new.apply(mod)
     end
   end
 
-  desc "genpatch <module>...", "Store changes from work directory of module(s) into a patch"
+  desc "genpatch <module>...", "Generate module's patch from changes in its work directory"
   def genpatch(*module_names)
     modules = modules_from_names(module_names)
     with_modules modules do |mod|
@@ -115,14 +115,14 @@ class CLI < Thor
     end
   end
 
-  desc "ybc <module>...", "Compile module(s) to ybc"
+  desc "ybc <module>...", "Compile module's YCP modules into YCP bytecode"
   def ybc(*module_names)
     report_results(module_names) do |mod|
       Commands::YbcCommand.new.apply(mod)
     end
   end
 
-  desc "ruby <module>...", "Convert module(s) to Ruby"
+  desc "ruby <module>...", "Convert module's YCP files into Ruby"
   def ruby(*module_names)
     report_results(module_names) do |mod|
       Commands::RubyCommand.new.apply(mod)
@@ -130,7 +130,7 @@ class CLI < Thor
   end
 
 
-  desc "makefile <module>...", "Generates Makefile.am for exported dirs of module(s)"
+  desc "makefile <module>...", "Generate Makefile.am file(s) for converted module"
   def makefile(*module_names)
     modules = modules_from_names(module_names)
     with_modules modules do |mod|
@@ -138,7 +138,7 @@ class CLI < Thor
     end
   end
 
-  desc "package <module>...", "Create packages in build service directory for module(s)"
+  desc "package <module>...", "Create package source for converted module"
   def package(*module_names)
     modules = modules_from_names(module_names)
     with_modules modules do |mod|
@@ -146,7 +146,7 @@ class CLI < Thor
     end
   end
 
-  desc "build <module>...", "Build package(s) for module(s) locally"
+  desc "build <module>...", "Build package for converted module locally"
   def build(*module_names)
     modules = modules_from_names(module_names)
     with_modules modules do |mod|
@@ -154,7 +154,7 @@ class CLI < Thor
     end
   end
 
-  desc "submit <module>...", "Submit source files to build service for module(s)"
+  desc "submit <module>...", "Submit converted module package source to OBS"
   def submit(*module_names)
     modules = modules_from_names(module_names)
     with_modules modules do |mod|
@@ -162,7 +162,7 @@ class CLI < Thor
     end
   end
 
-  desc "test <module>...", "Run upstream tests for module(s)"
+  desc "test <module>...", "Run tests for converted module"
   def test(*module_names)
     report_results(module_names) do |mod|
       Commands::TestCommand.new.apply(mod)
