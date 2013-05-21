@@ -237,126 +237,170 @@ The `help` command can be used to display a short overview of available commands
 
     $ ./yk help
     Tasks:
-      yk build <module>...        # Build package(s) for module(s) locally
-      yk clone <module>...        # Clone module(s)
-      yk convert <module>...      # Convert module(s)
-      yk genpatch <module>...     # Store changes from work directory of module(s) into a patch
+      yk build <module>...        # Build package for converted module locally
+      yk clone <module>...        # Clone module source from Git repository
+      yk convert <module>...      # Run all conversion-related tasks for module
+      yk genpatch <module>...     # Generate module's patch from changes in its work directory
       yk help [TASK]              # Describe available tasks or one specific task
-      yk makefile <module>...     # Generates Makefile.am for exported dirs of module(s)
-      yk package <module>...      # Create packages in build service directory for module(s)
+      yk makefile <module>...     # Generate Makefile.am file(s) for converted module
+      yk package <module>...      # Create package source for converted module
       yk patch <module>...        # Patch module(s)
       yk pull <module>...         # Update the module(s) work directory to the latest state (git pull)
       yk reset <module>...        # Revert module(s) work directory to clean state
       yk restructure <module>...  # Change module(s) work directory structure to fit the Y2DIR scheme
-      yk ruby <module>...         # Convert module(s) to Ruby
-      yk submit <module>...       # Submit source files to build service for module(s)
-      yk test <module>...         # Run upstream tests for module(s)
-      yk ybc <module>...          # Compile module(s) to ybc
+      yk ruby <module>...         # Convert module's YCP files into Ruby
+      yk submit <module>...       # Submit converted module package source to OBS
+      yk test <module>...         # Run tests for converted module
+      yk ybc <module>...          # Compile module's YCP modules into YCP bytecode
 
     Options:
       [--debug]      # verbosely log what commands are run
       [--with-deps]  # also include module dependencies in operations
-    [--threads=N]  # limit the number of threads in parallel tasks (default: all detected CPUs)
+      [--threads=N]  # limit the number of threads in parallel tasks (default: all detected CPUs)
 
 ### Commands
 
 #### yk build
 
-TODO
+Builds package for each specified module locally using `osc build`. The module
+must be already converted to Ruby and it's package source must be created. The
+package is built from converted module's package source in module's OBS
+directory.
 
 #### yk clone
 
-Clones repositories of specified modules into subdirectories of a directory
-specified by the `yast_dir` setting in `config.yml`.
-
-**Removes the working tree for the module beforehand.**
+Clones module source from Git repository for each specified module using `git
+clone`. The clone is placed into module's work directory. If the work directory
+already exists, it is deleted before cloning.
 
 #### yk convert
 
-Does everything at once: `clone`, `restructure`, `patch`, `compile`, `makefile`, `package`.
+Runs all conversion-related tasks for each specified module. Rough equivalent of
+running `yk clone` (or `yk pull` if module's work directory exists), `yk
+restructure`, `yk patch`, `yk ybc`, `yk ruby`, `yk makefile` and `yk package`.
 
 #### yk genpatch
 
-Stores changes from the working directory
-into a patch in the `patches` directory.
-
-**Any existing patch for the module is removed**.
+Generates patch for each specified module from changes in its work directory
+using `git diff`. The patch is stored in YCP Killer's `patches` directory. If
+the patch already exists, it is overwritten.
 
 #### yk makefile
 
-Generates Makefile.am for exported directories of module(s)
+Generates `Makefile.am` file(s) for each specified module. The module must be
+already converted to Ruby.
+
+The `Makefile.am` files are created in all exported directories (as specified by
+[module metadata](#module-metadata)) in module's result directory. All existing
+`Makefile.am` files in exported directories are deleted.
+
+Content of each `Makefile.am` file is determined by contents of the exported
+directory it is created in.
 
 #### yk package
 
-Creates packages for module(s) in the build service directory, which is a
-third tree alongside the *working* and *result* ones.
+Creates package source for each specified module using `make package-local`. The
+module must be already converted to Ruby.
+
+The package source is created from converted source in module's result directory
+and placed in module's OBS directory. All previously existing files in the OBS
+directory are deleted. If no OBS directory exists, it is created using `obs co`.
 
 #### yk patch
 
-Applies patches for specified modules from the `patches` directory to their
-checkouts. If a module doesn't have a patch, this command does not do anything.
+Applies patch of each specified module to its source using `git apply`. The
+patch is stored in the YCP Killer's `patches` directory. If a module doesn't
+have a patch, nothing happens.
 
 #### yk pull
 
-Pulls changes from the upstream YaST Git repository. If the changes cannot be
-merged (e.g. because of changes done by restructuring or by patching)
-you need to run `yk reset` and try it again.
+Updates module source from Git repository for each specified module using `git
+pull`.
+
+Before running this command, module's work directory needs to be in clean state
+(without any restructuring, patching, etc.). Use `yk reset` to put it into that
+state.
 
 #### yk reset
 
-Reverts the working directory to a clean state.
-It is a local variant of `yk clone`
-in that it **removes all modifications in the working tree**.
-Use `yk genpatch` beforehand to save them.
+Reverts work directory of each specified module into clean state (in which it
+was right after cloning) using `git reset`.
 
-The command also checks if the current Git checkout is up to date with the original YaST
-repository and prints a warning it not (see `yk pull` command).
+This commands also checks if module source is up-to-date with the Git repository
+using `git fetch` and `git status`. It prints a warning if it is not.
 
 #### yk restructure
 
-Changes the working directory structure to fit the Y2DIR scheme.
-See [`moves`](#module-metadata) in Module Metadata below.
+Restructures work directory of each specified module to fit the [new
+structure](#yast-module-new-structure).
 
-Results of the operation are saved into git index.
-This means you can use `git status` or `git diff --cached`
-inside the work directory to see what moved where.
-The main purpose however is
-to ensure that `yk genpatch` diffs properly against the new structure.
+Restructuring is driven by the `moves` section in [module
+metadata](#module-metadata). The command goes through items specified in the
+`moves` section sequentially. For each item, it moves all files specified by a
+glob in the `from` key into a directory specified by the `to` key. It prints a
+warning if the glob does not match any file.
+
+All moves are done using `git mv` and thus are stored in Git index. This makes
+work with patches easier, because changes done by patching can be distinguished
+from changes done by restructuring.
 
 #### yk ruby
 
-Compiles YCP files of specified modules to Ruby, placing the result in the
-*result* tree.
-The compilation is driven by
-module descriptions stored in the `data` directory. It uses `ycpc` and `y2r`
-(see `y2r` setting in `config.xml`).
+Converts YCP files of each specified module into Ruby using
+[Y2R](https://github.com/yast/y2r).
 
-The compilation of each file can pass or may fail with one of the following error:
+Before the conversion, module's work directory is copied into its result
+directory and all *.ybc files inside (typically a result of running `yk ybc`)
+are deleted. If the result directory already exists, it is deleted. All *.ycp
+and *.yh files in the result directory are then replaced with converted *.rb
+files. All files specified in the `excluded` section in [module
+metadata](#module-metadata) are excluded from compilation and kept intact.
 
-  * **ERROR(ybc)** – the compilation failed when running `ycpc`
-    on the module code
+Compilation of each file can pass or fail with one of the following error:
+
   * **ERROR(y2r)** – the compilation failed when running `y2r`
     on the module code
   * **ERROR(ruby)** – the compilation failed because it produced a result which
     was invalid Ruby (as determined by `ruby -c`)
   * **ERROR(other)** – the compilation failed for some other reason
 
-If the compilation is successful, all YCP files defined in the module
-description will be compiled by `ycp` and will have an eqivalent Ruby file
-created in the **result** tree (e.g. compiling `Sysconfig.ycp` will produce
-`Sysconfig.rb` file).
-
-In case of `ERROR(y2r)` and `ERROR(ruby)`, details of the error are logged into
-the `error.log` file in the YCP Killer directory.
+Errors are not fatal and their details are logged in the `error.log` file in the
+YCP Killer directory. When the command finishes, it prints a short summary.
 
 #### yk submit
 
-TODO
+Submits package source of each specified module to OBS using `osc commit`. The
+module must be already converted to Ruby and it's package source must be
+created. Submitted package source is taken from module's OBS directory.
 
 #### yk test
 
-Runs the testsuite of the module(s). It runs in the *result* tree
-and needs makefiles, so `yk convert` should have been run already.
+Runs tests for each specified module using `make check`. The module must be
+already converted to Ruby. The tests are executed on converted source in
+module's result directory.
+
+#### yk ybc
+
+Compiles YCP modules of each specified module into YCP bytecode using `ycpc`.
+
+The YCP modules to compile are looked up in module's work directory. More
+specifically, all `modules` subdirectories in all exported directories (as
+specified by [module metadata](#module-metadata)) are searched for *.ycp files.
+Compiled *.ybc files are written next to the source files. The order of
+compilation is determined automatically by module dependencies (including
+indirect ones via include files).
+
+Compilation of each file can pass or fail with one of the following error:
+
+  * **ERROR(ybc)** – the compilation failed when running `ycpc`
+    on the module code
+  * **ERROR(other)** – the compilation failed for some other reason
+
+Errors are not fatal and their details are logged in the `error.log` file in the
+YCP Killer directory. When the command finishes, it prints a short summary.
+
+Compiling YCP modules is necessary because otherwise these module couldn't be
+imported by other modules during conversion to Ruby.
 
 Module Metadata
 ---------------
