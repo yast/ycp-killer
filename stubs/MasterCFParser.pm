@@ -5,5 +5,7 @@
 #   syntax error at /usr/lib/YaST2/servers_non_y2/MasterCFParser.pm line 406, near "{command :"
 #   Missing right curly or square bracket at /usr/lib/YaST2/servers_non_y2/MasterCFParser.pm line 499, at end of line
 #   /usr/lib/YaST2/servers_non_y2/MasterCFParser.pm had compilation errors.
+#
+# See bnc#800788.
 
 1;
