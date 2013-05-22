@@ -318,7 +318,7 @@ Updates module source from Git repository for each specified module using `git
 pull`.
 
 Before running this command, module's work directory needs to be in clean state
-(without any restrcturing, patching, etc.). Use `yk reset` to put it into that
+(without any restructuring, patching, etc.). Use `yk reset` to put it into that
 state.
 
 #### yk reset
@@ -352,7 +352,7 @@ Converts YCP files of each specified module into Ruby using
 Before the conversion, module's work directory is copied into its result
 directory and all *.ybc files inside (typically a result of running `yk ybc`)
 are deleted. If the result directory already exists, it is deleted. All *.ycp
-and *.yh files in the result directory are then replaced with compiled *.rb
+and *.yh files in the result directory are then replaced with converted *.rb
 files. All files specified in the `excluded` section in [module
 metadata](#module-metadata) are excluded from compilation and kept intact.
 
@@ -378,6 +378,29 @@ created. Submitted package source is taken from module's OBS directory.
 Runs tests for each specified module using `make check`. The module must be
 already converted to Ruby. The tests are executed on converted source in
 module's result directory.
+
+#### yk ybc
+
+Compiles YCP modules of each specified module into YCP bytecode using `ycpc`.
+
+The YCP modules to compile are looked up in module's work directory. More
+specifically, all `modules` subdirectories in all exported directories (as
+specified by [module metadata](#module-metadata)) are searched for *.ycp files.
+Compiled *.ybc files are written next to the source files. The order of
+compilation is determined automatically by module dependencies (including
+indirect ones via include files).
+
+Compilation of each file can pass or fail with one of the following error:
+
+  * **ERROR(ybc)** – the compilation failed when running `ycpc`
+    on the module code
+  * **ERROR(other)** – the compilation failed for some other reason
+
+Errors are not fatal and their details are logged in the `error.log` file in the
+YCP Killer directory. When the command finishes, it prints a short summary.
+
+Compiling YCP modules is necessary because otherwise these module couldn't be
+imported by other modules during conversion to Ruby.
 
 Module Metadata
 ---------------
