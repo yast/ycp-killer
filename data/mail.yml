@@ -19,7 +19,7 @@ moves:
     to:   src/autoyast-rnc
   - from: agents/*.scr
     to:   src/scrconf
-  - from: agents/{ag_fetchmailrc,ag_smtp_auth,ag_mailtable,setup_dkim_verifying.pl,ag_postfix_mastercf,ag_mailconfig,MasterCFParser.pm,ag_mail_ldaptable,ag_cyrus_conf,CyrusConfParser.pm}
+  - from: agents/{ag_fetchmailrc,ag_smtp_auth,ag_mailtable,setup_dkim_verifying.pl,ag_mailconfig,MasterCFParser.pm,ag_mail_ldaptable,ag_cyrus_conf,CyrusConfParser.pm}
     to:   src/servers_non_y2
   - from: agents/sysconfig.mail
     to:   src/fillup
