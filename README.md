@@ -491,18 +491,18 @@ files contained there will be installed.
 
 ```
 tictactoe-server
-└── src
-    ├── bin            ->  /usr/lib/YaST2/bin
-    ├── servers_non_y2 ->  /usr/lib/YaST2/servers_non_y2
-    ├── clients        ->  /usr/share/YaST2/clients
-    ├── data           ->  /usr/share/YaST2/data
-    ├── include        ->  /usr/share/YaST2/include
-    ├── modules        ->  /usr/share/YaST2/modules
-    ├── scrconf        ->  /usr/share/YaST2/scrconf
-    ├── autoyast-rnc   ->  /usr/share/YaST2/schema/autoyast/rnc
-    ├── control-rnc    ->  /usr/share/YaST2/schema/control/rnc
-    ├── desktop        ->  /usr/share/applications/YaST2
-    └── fillup         ->  /var/adm/fillup-templates
+└─ src
+   ├─ bin              ->   /usr/lib/YaST2/bin
+   ├─ servers_non_y2   ->   /usr/lib/YaST2/servers_non_y2
+   ├─ clients          ->   /usr/share/YaST2/clients
+   ├─ data             ->   /usr/share/YaST2/data
+   ├─ include          ->   /usr/share/YaST2/include
+   ├─ modules          ->   /usr/share/YaST2/modules
+   ├─ scrconf          ->   /usr/share/YaST2/scrconf
+   ├─ autoyast-rnc     ->   /usr/share/YaST2/schema/autoyast/rnc
+   ├─ control-rnc      ->   /usr/share/YaST2/schema/control/rnc
+   ├─ desktop          ->   /usr/share/applications/YaST2
+   └─ fillup           ->   /var/adm/fillup-templates
 ```
 
 (Note that `/usr/lib/*` will be used even on 64-bit machines, where
