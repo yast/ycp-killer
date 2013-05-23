@@ -2,7 +2,7 @@ ybc_deps:
   - testsuite
 exports:
   - library/types/src
-  - src
+  - library/general/src
   - library/runlevel/src
   - library/sequencer/src
   - library/xml/src
@@ -21,8 +21,10 @@ exports:
 moves:
   # move it to separate dir, otherwise it break Y2DIR scheme as there will
   # be more directories than expected
-  - from: "library/modules"
-    to: src
+  - from: "library/modules/testsuite"
+    to: library/general/testsuite
+  - from: "library/modules/*.{pm,ycp,ycp.in}"
+    to: library/general/src/modules
   - from: "library/agents/*.scr"
     to: src/scrconf
   - from: "library/agents/ag_*"
