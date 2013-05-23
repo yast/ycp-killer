@@ -27,9 +27,12 @@ module Commands
             work_file = "#{mod.work_dir}/#{file}"
             FileUtils.rm "#{mod.result_dir}/#{file}"
             result_file = "#{mod.result_dir}/#{file}".sub(/\.y(cp|h)$/, ".rb")
+            is_include = mod.exports.any? do |export|
+              file.start_with?("#{export}/include")
+            end
 
             file_action "Converting", :y2r, mod, file do
-              create_rb mod, work_file, result_file
+              create_rb mod, work_file, result_file, is_include
             end
 
             next unless File.exists?(result_file)
@@ -57,7 +60,7 @@ module Commands
       end
     end
 
-    def create_rb(mod, file, output_file)
+    def create_rb(mod, file, output_file, is_include)
       cmd = ["y2r"]
 
       mod.ruby_module_paths(file).each do |module_path|
@@ -67,6 +70,8 @@ module Commands
       mod.ruby_include_paths(file).each do |include_path|
         cmd << "--include-path" << include_path
       end
+
+      cmd << "--as-include-file" if is_include
 
       cmd << file
       cmd << output_file
