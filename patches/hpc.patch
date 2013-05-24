@@ -32,10 +32,10 @@ index 2129f06..a2999af 100644
  
  
 diff --git a/yast2-hpc.spec.in b/yast2-hpc.spec.in
-index 3a404d6..c6ee79a 100644
+index 3a404d6..5a3c22f 100644
 --- a/yast2-hpc.spec.in
 +++ b/yast2-hpc.spec.in
-@@ -1,6 +1,11 @@
+@@ -1,10 +1,17 @@
  @HEADER-COMMENT@
  
 -# neededforbuild  yast2-devel-packages yast2 gpp libgpp
@@ -48,7 +48,13 @@ index 3a404d6..c6ee79a 100644
  
  @HEADER@
  Requires:	yast2
-@@ -23,8 +28,9 @@ Summary:	-
+ 
++Requires:       yast2-ruby-bindings >= 1.0.0
++
+ Summary:	-
+ 
+ %description
+@@ -23,8 +30,9 @@ Summary:	-
  @moduledir@/*
  %dir @yncludedir@/hpc
  @yncludedir@/hpc/*

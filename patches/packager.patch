@@ -15,10 +15,26 @@ index f8be896..87a7241 100644
 +#AUTODOCS_PM  = $(wildcard $(srcdir)/../../src/*/*.pm)
 +#include $(top_srcdir)/autodocs-ycp.ami
 diff --git a/yast2-packager.spec.in b/yast2-packager.spec.in
-index 6510846..076ab12 100644
+index 6510846..3777b63 100644
 --- a/yast2-packager.spec.in
 +++ b/yast2-packager.spec.in
-@@ -87,11 +87,10 @@ This package contains a client for searching packages in online repositories
+@@ -58,11 +58,15 @@ Obsoletes:	y2t_spkg y2t_inst-packages y2pkginf y2c_spkg
+ Provides:	yast2-trans-package-manager yast2-trans-inst-packages
+ Obsoletes:	yast2-trans-package-manager yast2-trans-inst-packages
+ 
++Requires:       yast2-ruby-bindings >= 1.0.0
++
+ Summary:	YaST2 - Package Library
+ 
+ %package webpin
+ 
+ Group:		System/YaST
++Requires:       yast2-ruby-bindings >= 1.0.0
++
+ Summary:	YaST2 - Webpin package search client
+ 
+ %description
+@@ -87,11 +91,10 @@ This package contains a client for searching packages in online repositories
  %dir @yncludedir@/packager
  @yncludedir@/checkmedia/*
  @yncludedir@/packager/*
@@ -33,7 +49,7 @@ index 6510846..076ab12 100644
  @desktopdir@/*.desktop
  @scrconfdir@/*
  @execcompdir@/servers_non_y2/ag_*
-@@ -99,6 +98,6 @@ This package contains a client for searching packages in online repositories
+@@ -99,6 +102,6 @@ This package contains a client for searching packages in online repositories
  
  %files webpin
  %defattr(-,root,root)

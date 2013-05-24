@@ -10,3 +10,16 @@ index 2c8851b..4c23223 100644
 +# TODO FIXME: temporarily disabled
 +
 +#include $(top_srcdir)/autodocs-ycp.ami
+diff --git a/yast2-pam.spec.in b/yast2-pam.spec.in
+index 10ada1a..b70d3df 100644
+--- a/yast2-pam.spec.in
++++ b/yast2-pam.spec.in
+@@ -15,6 +15,8 @@ Obsoletes:	yast2-agent-pam-devel
+ 
+ BuildArchitectures:     noarch
+ 
++Requires:       yast2-ruby-bindings >= 1.0.0
++
+ Summary:	YaST2 - PAM Agent
+ 
+ %description

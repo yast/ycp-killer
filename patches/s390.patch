@@ -25,10 +25,10 @@ index 7d55a84..7ce8d69 100644
 +#include $(top_srcdir)/autodocs-ycp.ami
  
 diff --git a/yast2-s390.spec.in b/yast2-s390.spec.in
-index 9f098e9..aa91cca 100644
+index 9f098e9..cb5012f 100644
 --- a/yast2-s390.spec.in
 +++ b/yast2-s390.spec.in
-@@ -5,7 +5,9 @@ Group:		System/YaST
+@@ -5,9 +5,13 @@ Group:		System/YaST
  License:        GPL-2.0
  BuildRequires:	docbook-xsl-stylesheets doxygen libxslt perl-XML-Writer sgml-skel update-desktop-files
  BuildRequires:	yast2 yast2-devtools yast2-testsuite yast2-users yast2-bootloader
@@ -38,8 +38,12 @@ index 9f098e9..aa91cca 100644
 +#ExclusiveArch:  s390 s390x
  Requires:       yast2 s390-tools
  
++Requires:       yast2-ruby-bindings >= 1.0.0
++
  Summary:	YaST2 - S/390 Specific Features Configuration
-@@ -26,7 +28,7 @@ S/390-specific features.
+ 
+ %description
+@@ -26,7 +30,7 @@ S/390-specific features.
  %defattr(-,root,root)
  %dir @yncludedir@/s390
  @yncludedir@/s390/*

@@ -31,10 +31,19 @@ index 6233695..96989d4 100644
 +
 +#include $(top_srcdir)/autodocs-ycp.ami
 diff --git a/yast2-fingerprint-reader.spec.in b/yast2-fingerprint-reader.spec.in
-index bcceba7..0788492 100644
+index bcceba7..e3a0b59 100644
 --- a/yast2-fingerprint-reader.spec.in
 +++ b/yast2-fingerprint-reader.spec.in
-@@ -28,8 +28,8 @@ thinkfinger library.
+@@ -10,6 +10,8 @@ BuildRequires:	doxygen gcc-c++ yast2-core-devel perl-XML-Writer update-desktop-f
+ 
+ Conflicts:	yast2-hardware-detection < 2.15.7
+ 
++Requires:       yast2-ruby-bindings >= 1.0.0
++
+ Summary:	YaST2 - Fingerprint Reader Configuration
+ 
+ %description
+@@ -28,8 +30,8 @@ thinkfinger library.
  %defattr(-,root,root)
  %dir @yncludedir@/fingerprint-reader
  @yncludedir@/fingerprint-reader/*

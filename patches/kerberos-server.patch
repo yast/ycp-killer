@@ -35,10 +35,19 @@ index 64a5036..74b6629 100644
  import "Confirm";
  import "KerberosServer";
 diff --git a/yast2-kerberos-server.spec.in b/yast2-kerberos-server.spec.in
-index 1c43fd4..98e22c3 100644
+index 1c43fd4..c8743f0 100644
 --- a/yast2-kerberos-server.spec.in
 +++ b/yast2-kerberos-server.spec.in
-@@ -28,7 +28,7 @@ Control Center.
+@@ -10,6 +10,8 @@ BuildRequires:	perl-XML-Writer update-desktop-files yast2 yast2-devtools yast2-t
+ 
+ BuildArchitectures:	noarch
+ 
++Requires:       yast2-ruby-bindings >= 1.0.0
++
+ Summary:	YaST2 - Kerberos Server Configuration
+ 
+ %description
+@@ -28,7 +30,7 @@ Control Center.
  %defattr(-,root,root)
  %dir @yncludedir@/kerberos-server
  @yncludedir@/kerberos-server/*

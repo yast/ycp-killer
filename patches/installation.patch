@@ -121,10 +121,19 @@ index 0689035..66b2263 100644
      });
  
 diff --git a/yast2-installation.spec.in b/yast2-installation.spec.in
-index 2ff4767..fb583a0 100644
+index 2ff4767..adb6c00 100644
 --- a/yast2-installation.spec.in
 +++ b/yast2-installation.spec.in
-@@ -167,9 +167,8 @@ install -m 644 %{SOURCE2} %{buildroot}%{_unitdir}
+@@ -3,6 +3,8 @@
+ @HEADER@
+ Group:          System/YaST
+ License:        GPL-2.0
++Requires:       yast2-ruby-bindings >= 1.0.0
++
+ Summary:        YaST2 - Installation Parts
+ 
+ Source1:	YaST2-Second-Stage.service
+@@ -167,9 +169,8 @@ install -m 644 %{SOURCE2} %{buildroot}%{_unitdir}
  %{_unitdir}/YaST2-Second-Stage.service
  %{_unitdir}/YaST2-Firstboot.service
  

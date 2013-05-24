@@ -61,10 +61,19 @@ index f1943dd..59885c1 100644
      textdomain "product-creator";
  
 diff --git a/yast2-product-creator.spec.in b/yast2-product-creator.spec.in
-index 87e9116..1d31e87 100644
+index 87e9116..47fdf27 100644
 --- a/yast2-product-creator.spec.in
 +++ b/yast2-product-creator.spec.in
-@@ -53,11 +53,10 @@ install -d $RPM_BUILD_ROOT/var/lib/YaST2/product-creator
+@@ -31,6 +31,8 @@ Recommends:	kiwi-config-openSUSE
+ 
+ BuildArchitectures:	noarch
+ 
++Requires:       yast2-ruby-bindings >= 1.0.0
++
+ Summary:	YaST2 - Module for Creating New Products
+ 
+ %description
+@@ -53,11 +55,10 @@ install -d $RPM_BUILD_ROOT/var/lib/YaST2/product-creator
  %defattr(-,root,root)
  %dir @yncludedir@/product-creator
  @yncludedir@/product-creator/*

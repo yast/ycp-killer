@@ -26,10 +26,19 @@ index f8be896..2c14eba 100644
 +# AUTODOCS_PM  = $(wildcard $(srcdir)/../../src/*/*.pm)
 +# include $(top_srcdir)/autodocs-ycp.ami
 diff --git a/yast2-dirinstall.spec.in b/yast2-dirinstall.spec.in
-index 23e001e..d6378d8 100644
+index 23e001e..c6e1a4b 100644
 --- a/yast2-dirinstall.spec.in
 +++ b/yast2-dirinstall.spec.in
-@@ -41,7 +41,7 @@ directory.
+@@ -23,6 +23,8 @@ Provides:	/usr/share/YaST2/clients/dirinstall.ycp
+ 
+ BuildArchitectures:	noarch
+ 
++Requires:       yast2-ruby-bindings >= 1.0.0
++
+ Summary:	YaST2 - Installation into Directory
+ 
+ %description
+@@ -41,7 +43,7 @@ directory.
  %defattr(-,root,root)
  %dir @yncludedir@/dirinstall
  @yncludedir@/dirinstall/*

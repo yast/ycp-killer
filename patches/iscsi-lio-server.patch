@@ -60,10 +60,19 @@ index 5539378..8f476e9 100644
  string curr_target = "";
  integer curr_tpg = 1;
 diff --git a/yast2-iscsi-lio-server.spec.in b/yast2-iscsi-lio-server.spec.in
-index 0df1e82..8d1c915 100644
+index 0df1e82..b2ff62e 100644
 --- a/yast2-iscsi-lio-server.spec.in
 +++ b/yast2-iscsi-lio-server.spec.in
-@@ -31,8 +31,8 @@ This package contains configuration of iSCSI LIO target
+@@ -14,6 +14,8 @@ Requires:       yast2 >= 2.21.22
+ 
+ BuildArchitectures:	noarch
+ 
++Requires:       yast2-ruby-bindings >= 1.0.0
++
+ Summary:	Configuration of iSCSI LIO target
+ 
+ %description
+@@ -31,8 +33,8 @@ This package contains configuration of iSCSI LIO target
  %defattr(-,root,root)
  %dir @yncludedir@/iscsi-lio-server
  @yncludedir@/iscsi-lio-server/*

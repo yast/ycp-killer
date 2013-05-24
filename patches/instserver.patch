@@ -20,10 +20,19 @@ index 93ce8ad..1d261db 100644
 +
  EXTRA_DIST = $(apacheconf_DATA) 
 diff --git a/yast2-instserver.spec.in b/yast2-instserver.spec.in
-index e452ea7..7502c98 100644
+index e452ea7..d8f6f7d 100644
 --- a/yast2-instserver.spec.in
 +++ b/yast2-instserver.spec.in
-@@ -31,7 +31,7 @@ NFS sources are supported.
+@@ -12,6 +12,8 @@ Requires:	yast2-slp
+ 
+ BuildArchitectures:	noarch
+ 
++Requires:       yast2-ruby-bindings >= 1.0.0
++
+ Summary:	YaST2 - Installation Server Configuration and Management
+ 
+ %description
+@@ -31,7 +33,7 @@ NFS sources are supported.
  %defattr(-,root,root)
  %dir @yncludedir@/instserver
  @yncludedir@/instserver/*

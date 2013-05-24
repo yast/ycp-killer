@@ -81,10 +81,19 @@ index 1141380..b2aee43 100644
  import "Wizard";
  
 diff --git a/yast2-iscsi-server.spec.in b/yast2-iscsi-server.spec.in
-index 94a45c6..7f968a1 100644
+index 94a45c6..743862d 100644
 --- a/yast2-iscsi-server.spec.in
 +++ b/yast2-iscsi-server.spec.in
-@@ -30,8 +30,8 @@ Configuration of iSCSI target
+@@ -13,6 +13,8 @@ Requires:       yast2 >= 2.21.22
+ 
+ BuildArchitectures:	noarch
+ 
++Requires:       yast2-ruby-bindings >= 1.0.0
++
+ Summary:	YaST2 - Configuration of iSCSI target
+ 
+ %description
+@@ -30,8 +32,8 @@ Configuration of iSCSI target
  %defattr(-,root,root)
  %dir @yncludedir@/iscsi-server
  @yncludedir@/iscsi-server/*

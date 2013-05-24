@@ -10,10 +10,19 @@ index c6064ce..37172fc 100644
 +
 +#include $(top_srcdir)/autodocs-ycp.ami
 diff --git a/yast2-fcoe-client.spec.in b/yast2-fcoe-client.spec.in
-index 44e9242..9c6e173 100644
+index 44e9242..876ab50 100644
 --- a/yast2-fcoe-client.spec.in
 +++ b/yast2-fcoe-client.spec.in
-@@ -26,9 +26,9 @@ Ethernet (FCoE) configuration.
+@@ -8,6 +8,8 @@ BuildRequires:	perl-XML-Writer update-desktop-files yast2 yast2-devtools yast2-t
+ 
+ BuildArchitectures:	noarch
+ 
++Requires:       yast2-ruby-bindings >= 1.0.0
++
+ Summary:	YaST2 - Configuration of Fibre Channel over Ethernet
+ 
+ %description
+@@ -26,9 +28,9 @@ Ethernet (FCoE) configuration.
  %defattr(-,root,root)
  %dir @yncludedir@/fcoe-client
  @yncludedir@/fcoe-client/*

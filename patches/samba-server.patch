@@ -446,10 +446,19 @@ index 71a7009..e69de29 100644
 -
 -include $(top_srcdir)/Makefile.am.common
 diff --git a/yast2-samba-server.spec.in b/yast2-samba-server.spec.in
-index 025c57d..2b064cf 100644
+index 025c57d..780108a 100644
 --- a/yast2-samba-server.spec.in
 +++ b/yast2-samba-server.spec.in
-@@ -41,8 +41,8 @@ configuration.
+@@ -23,6 +23,8 @@ Supplements:	samba
+ 
+ BuildArchitectures:	noarch
+ 
++Requires:       yast2-ruby-bindings >= 1.0.0
++
+ Summary:	YaST2 - Samba Server Configuration
+ 
+ %description
+@@ -41,8 +43,8 @@ configuration.
  %defattr(-,root,root)
  %dir @yncludedir@/samba-server
  @yncludedir@/samba-server/*

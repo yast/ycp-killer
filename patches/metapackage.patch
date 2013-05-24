@@ -1,8 +1,17 @@
 diff --git a/yast2-metapackage-handler.spec.in b/yast2-metapackage-handler.spec.in
-index ba8e259..dba910c 100644
+index ba8e259..1b676b7 100644
 --- a/yast2-metapackage-handler.spec.in
 +++ b/yast2-metapackage-handler.spec.in
-@@ -88,10 +88,9 @@ fi
+@@ -35,6 +35,8 @@ Requires:	/usr/bin/xdg-su
+ 
+ BuildArchitectures:	noarch
+ 
++Requires:       yast2-ruby-bindings >= 1.0.0
++
+ Summary:			YaST2 - Easy Installation of Add-on RPMs using Metapackages
+ 
+ %description
+@@ -88,10 +90,9 @@ fi
  /sbin/OneClickInstallCLI
  /sbin/OCICLI
  %dir @clientdir@

@@ -43,10 +43,19 @@ index 105e952..a3adbed 100644
  any OverviewDialog(){
  
 diff --git a/yast2-support.spec.in b/yast2-support.spec.in
-index 41404e7..ca203a6 100644
+index 41404e7..2e15828 100644
 --- a/yast2-support.spec.in
 +++ b/yast2-support.spec.in
-@@ -26,8 +26,8 @@ support in a standardized format.
+@@ -8,6 +8,8 @@ BuildRequires:	perl-XML-Writer update-desktop-files yast2 yast2-devtools yast2-t
+ 
+ BuildArchitectures:	noarch
+ 
++Requires:       yast2-ruby-bindings >= 1.0.0
++
+ Summary:	YaST2 - Support Inquiries
+ 
+ %description
+@@ -26,8 +28,8 @@ support in a standardized format.
  %defattr(-,root,root)
  %dir @yncludedir@/support
  @yncludedir@/support/*

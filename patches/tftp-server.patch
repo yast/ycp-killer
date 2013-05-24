@@ -10,10 +10,19 @@ index 2a6f678..9de7be0 100644
 +
 +#include $(top_srcdir)/autodocs-ycp.ami
 diff --git a/yast2-tftp-server.spec.in b/yast2-tftp-server.spec.in
-index 96e62f9..2f20712 100644
+index 96e62f9..9b2e3b6 100644
 --- a/yast2-tftp-server.spec.in
 +++ b/yast2-tftp-server.spec.in
-@@ -33,7 +33,7 @@ network.
+@@ -14,6 +14,8 @@ Requires:	lsof
+ 
+ BuildArchitectures:	noarch
+ 
++Requires:       yast2-ruby-bindings >= 1.0.0
++
+ Summary:	YaST2 - TFTP Server Configuration
+ 
+ %description
+@@ -33,7 +35,7 @@ network.
  %defattr(-,root,root)
  %dir @yncludedir@/tftp-server
  @yncludedir@/tftp-server/*

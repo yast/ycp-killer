@@ -20,10 +20,19 @@ index 243cd8d..99807b9 100644
 +
 +#include $(top_srcdir)/autodocs-ycp.ami
 diff --git a/yast2-audit-laf.spec.in b/yast2-audit-laf.spec.in
-index b25e33e..b7938c5 100644
+index b25e33e..aa24892 100644
 --- a/yast2-audit-laf.spec.in
 +++ b/yast2-audit-laf.spec.in
-@@ -28,8 +28,8 @@ add rules for the audit subsystem.
+@@ -9,6 +9,8 @@ BuildRequires:	perl-XML-Writer update-desktop-files yast2 yast2-devtools yast2-t
+ 
+ BuildArchitectures:	noarch
+ 
++Requires:       yast2-ruby-bindings >= 1.0.0
++
+ Summary:	YaST2 - Configuration of Linux Auditing (LAF)
+ 
+ %description
+@@ -28,8 +30,8 @@ add rules for the audit subsystem.
  %dir @yncludedir@/audit-laf
  @yncludedir@/audit-laf/*
  %dir @clientdir@

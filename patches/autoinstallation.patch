@@ -15,10 +15,28 @@ index 4110426..e69de29 100644
 -
 -EXTRA_DIST = $(scrconf_DATA)  $(agent_SCRIPTS)
 diff --git a/autoyast2.spec.in b/autoyast2.spec.in
-index c7196fd..3f5d91a 100644
+index c7196fd..bb38ea3 100644
 --- a/autoyast2.spec.in
 +++ b/autoyast2.spec.in
-@@ -110,31 +110,32 @@ rmdir $RPM_BUILD_ROOT/@docdir@/html/autoyast
+@@ -27,6 +27,8 @@ PreReq:		%insserv_prereq %fillup_prereq
+ 
+ BuildArchitectures:	noarch
+ 
++Requires:       yast2-ruby-bindings >= 1.0.0
++
+ Summary:	YaST2 - Automated Installation
+ 
+ %description
+@@ -40,6 +42,8 @@ This file contains YaST2-independent files needed to create
+ installation sources.
+ 
+ %package installation
++Requires:       yast2-ruby-bindings >= 1.0.0
++
+ Summary:	YaST2 - Auto Installation Modules
+ Group:		System/YaST
+ # API for Disabled Modules (ProductControl)
+@@ -110,31 +114,32 @@ rmdir $RPM_BUILD_ROOT/@docdir@/html/autoyast
  
  @desktopdir@/autoyast.desktop
  /usr/share/autoinstall/modules/*.desktop
@@ -69,7 +87,7 @@ index c7196fd..3f5d91a 100644
  @agentdir@/ag_ksimport
  
  
-@@ -168,58 +169,58 @@ rmdir $RPM_BUILD_ROOT/@docdir@/html/autoyast
+@@ -168,58 +173,58 @@ rmdir $RPM_BUILD_ROOT/@docdir@/html/autoyast
  /usr/share/autoinstall/xslt/merge.xslt
  # config file
  

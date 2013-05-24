@@ -37,10 +37,19 @@ index f5c46d3..5e7eb23 100644
  		"startup_conf",
  		"global_conf",
 diff --git a/yast2-drbd.spec.in b/yast2-drbd.spec.in
-index 70d1f7b..c79b0e1 100644
+index 70d1f7b..878b2e3 100644
 --- a/yast2-drbd.spec.in
 +++ b/yast2-drbd.spec.in
-@@ -30,7 +30,7 @@ Authors:
+@@ -6,6 +6,8 @@ Group:          System/YaST
+ BuildRequires:  perl-XML-Writer ruby rubygem-racc update-desktop-files yast2 yast2-devtools yast2-testsuite
+ Requires:       yast2 
+ BuildArch:      noarch
++Requires:       yast2-ruby-bindings >= 1.0.0
++
+ Summary:        YaST2 - DRBD Configuration
+ 
+ %description
+@@ -30,7 +32,7 @@ Authors:
  %files
  %defattr(-,root,root)
  @yncludedir@/drbd/

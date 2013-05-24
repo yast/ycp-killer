@@ -10,10 +10,19 @@ index 10187ee..7ec4a56 100644
 +# AUTODOCS_YCP=$(srcdir)/../../src/*.ycp $(srcdir)/../../src/*/*.ycp
 +# include $(top_srcdir)/autodocs-ycp.ami
 diff --git a/yast2-mouse.spec.in b/yast2-mouse.spec.in
-index 441235f..145a434 100644
+index 441235f..023bad4 100644
 --- a/yast2-mouse.spec.in
 +++ b/yast2-mouse.spec.in
-@@ -41,7 +41,7 @@ rm -f $RPM_BUILD_ROOT@desktopdir@/mouse.desktop
+@@ -19,6 +19,8 @@ Provides:       y2t_inst-mouse
+ Obsoletes:      y2t_inst-mouse
+ # Mouse-related installation scripts were moved here
+ Conflicts:      yast2-installation < 2.18.2
++Requires:       yast2-ruby-bindings >= 1.0.0
++
+ Summary:        YaST2 - Mouse Configuration
+ 
+ %description
+@@ -41,7 +43,7 @@ rm -f $RPM_BUILD_ROOT@desktopdir@/mouse.desktop
  %dir @yncludedir@/mouse
  @yncludedir@/mouse/*
  @moduledir@/*

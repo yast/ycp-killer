@@ -35,10 +35,19 @@ index ed7a5a6..3be59d2 100644
 +
 +#CLEANFILES = $(html_DATA)
 diff --git a/yast2-boot-server.spec.in b/yast2-boot-server.spec.in
-index 4c884ee..95ad3d0 100644
+index 4c884ee..ed28286 100644
 --- a/yast2-boot-server.spec.in
 +++ b/yast2-boot-server.spec.in
-@@ -24,7 +24,7 @@ YaST2 module for network booting and Wake-On-Lan.
+@@ -8,6 +8,8 @@ Requires:	yast2
+ 
+ BuildArchitectures:	noarch
+ 
++Requires:       yast2-ruby-bindings >= 1.0.0
++
+ Summary:	YaST2 - Network Booting and Wake-On-Lan Configuration
+ 
+ %description
+@@ -24,7 +26,7 @@ YaST2 module for network booting and Wake-On-Lan.
  
  %files
  %defattr(-,root,root)

@@ -183,10 +183,19 @@ index b9bce1d..e8a30cf 100644
 -
 +}
 diff --git a/yast2-multipath.spec.in b/yast2-multipath.spec.in
-index 07a0732..cf40490 100644
+index 07a0732..6b4e689 100644
 --- a/yast2-multipath.spec.in
 +++ b/yast2-multipath.spec.in
-@@ -29,11 +29,11 @@ You can configure your multipathed devices with this module.
+@@ -9,6 +9,8 @@ BuildRequires:	yast2-storage
+ 
+ BuildArchitectures:	noarch
+ 
++Requires:       yast2-ruby-bindings >= 1.0.0
++
+ Summary: YaST2 - Multipath Configuration
+ 
+ %description
+@@ -29,11 +31,11 @@ You can configure your multipathed devices with this module.
  
  %files
  %defattr(-,root,root)

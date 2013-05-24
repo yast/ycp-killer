@@ -1105,10 +1105,19 @@ index f756b6c..5659a4f 100644
  import "Linuxrc";
  
 diff --git a/yast2-bootloader.spec.in b/yast2-bootloader.spec.in
-index dac4bd0..325d018 100644
+index dac4bd0..6db7cfa 100644
 --- a/yast2-bootloader.spec.in
 +++ b/yast2-bootloader.spec.in
-@@ -66,9 +66,9 @@ This package contains the YaST2 component for bootloader configuration.
+@@ -36,6 +36,8 @@ Obsoletes:	y2c_boot y2t_boot
+ Provides:	y2t_inst-bootloader yast2-agent-liloconf-devel yast2-agent-prom-devel
+ Obsoletes:	y2t_inst-bootloader yast2-agent-liloconf-devel yast2-agent-prom-devel
+ 
++Requires:       yast2-ruby-bindings >= 1.0.0
++
+ Summary:	YaST2 - Bootloader Configuration
+ 
+ %description
+@@ -66,9 +68,9 @@ This package contains the YaST2 component for bootloader configuration.
  %dir @yncludedir@/bootloader
  @yncludedir@/bootloader/*
  @moduledir@/*

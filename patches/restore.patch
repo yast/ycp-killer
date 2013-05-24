@@ -24,10 +24,19 @@ index 2a6f678..9de7be0 100644
 +
 +#include $(top_srcdir)/autodocs-ycp.ami
 diff --git a/yast2-restore.spec.in b/yast2-restore.spec.in
-index 15010fc..f7be7a6 100644
+index 15010fc..b1a0d4c 100644
 --- a/yast2-restore.spec.in
 +++ b/yast2-restore.spec.in
-@@ -35,10 +35,9 @@ Backup module.
+@@ -16,6 +16,8 @@ Requires:	yast2-bootloader
+ 
+ BuildArchitectures:	noarch
+ 
++Requires:       yast2-ruby-bindings >= 1.0.0
++
+ Summary:	YaST2 - System Restore
+ 
+ %description
+@@ -35,10 +37,9 @@ Backup module.
  
  %dir @yncludedir@/restore
  @yncludedir@/restore/*

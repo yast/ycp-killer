@@ -61,10 +61,10 @@ index 71b4c62..3fd9c7d 100644
  	string statusmsg = _("Current Status: %1");
  
 diff --git a/yast2-certify.spec.in b/yast2-certify.spec.in
-index 526f418..871867c 100644
+index 526f418..35192b0 100644
 --- a/yast2-certify.spec.in
 +++ b/yast2-certify.spec.in
-@@ -1,8 +1,10 @@
+@@ -1,12 +1,16 @@
  @HEADER-COMMENT@
 -# neededforbuild yast2-devel-packages
  
@@ -76,7 +76,13 @@ index 526f418..871867c 100644
  Provides:	y2m_certify yast2-module-certify
  Obsoletes:	y2m_certify yast2-module-certify
  BuildArchitectures:	noarch
-@@ -24,7 +26,7 @@ Summary:	Self certification
+ 
++Requires:       yast2-ruby-bindings >= 1.0.0
++
+ Summary:	Self certification
+ 
+ %description
+@@ -24,7 +28,7 @@ Summary:	Self certification
  %defattr(-,root,root)
  %dir @yncludedir@/certify
  @yncludedir@/certify/*

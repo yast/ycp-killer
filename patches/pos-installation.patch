@@ -1,8 +1,30 @@
+diff --git a/pos-installation/yast2-pos-installation.spec.in b/pos-installation/yast2-pos-installation.spec.in
+index 3ec00b7..53e7eea 100644
+--- a/pos-installation/yast2-pos-installation.spec.in
++++ b/pos-installation/yast2-pos-installation.spec.in
+@@ -6,6 +6,8 @@ BuildRequires:	perl-XML-Writer update-desktop-files yast2 yast2-devtools yast2-t
+ 
+ BuildArchitectures:	noarch
+ 
++Requires:       yast2-ruby-bindings >= 1.0.0
++
+ Summary:	POS Installation and Upgrade
+ 
+ %description
 diff --git a/yast2-pos-installation.spec.in b/yast2-pos-installation.spec.in
-index 3ec00b7..4425a0d 100644
+index 3ec00b7..9e8d79f 100644
 --- a/yast2-pos-installation.spec.in
 +++ b/yast2-pos-installation.spec.in
-@@ -23,9 +23,8 @@ mkdir -p "$RPM_BUILD_ROOT"/etc/SLEPOS
+@@ -6,6 +6,8 @@ BuildRequires:	perl-XML-Writer update-desktop-files yast2 yast2-devtools yast2-t
+ 
+ BuildArchitectures:	noarch
+ 
++Requires:       yast2-ruby-bindings >= 1.0.0
++
+ Summary:	POS Installation and Upgrade
+ 
+ %description
+@@ -23,9 +25,8 @@ mkdir -p "$RPM_BUILD_ROOT"/etc/SLEPOS
  
  %files
  %defattr(-,root,root)
