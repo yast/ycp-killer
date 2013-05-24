@@ -10,10 +10,19 @@ index 2a6f678..9de7be0 100644
 +
 +#include $(top_srcdir)/autodocs-ycp.ami
 diff --git a/yast2-scanner.spec.in b/yast2-scanner.spec.in
-index 625ac90..5dcb128 100644
+index 625ac90..6f09d12 100644
 --- a/yast2-scanner.spec.in
 +++ b/yast2-scanner.spec.in
-@@ -42,7 +42,7 @@ chmod 755 %{my_requires}
+@@ -8,6 +8,8 @@ Requires:	yast2
+ # which are pulled in by Autoreqprov because of the displaytest tool:
+ %define my_requires /tmp/my-requires
+ 
++Requires:       yast2-ruby-bindings >= 1.0.0
++
+ Summary:	YaST2 - Scanner Configuration
+ License:        GPL-2.0
+ 
+@@ -42,7 +44,7 @@ chmod 755 %{my_requires}
  %defattr(-,root,root)
  %dir @yncludedir@/scanner
  @yncludedir@/scanner/*

@@ -10,10 +10,19 @@ index 2a6f678..4cb582c 100644
 +
 +# include $(top_srcdir)/autodocs-ycp.ami
 diff --git a/yast2-online-update.spec.in b/yast2-online-update.spec.in
-index 12e1cd3..b7e86da 100644
+index 12e1cd3..3e84f0d 100644
 --- a/yast2-online-update.spec.in
 +++ b/yast2-online-update.spec.in
-@@ -40,12 +40,11 @@ YaST control center.
+@@ -17,6 +17,8 @@ Provides:	yast2-trans-online-update y2t_online_update
+ Obsoletes:	yast2-trans-online-update y2t_online_update
+ BuildArchitectures:     noarch
+ 
++Requires:       yast2-ruby-bindings >= 1.0.0
++
+ Summary:    	YaST2 - Online Update (YOU)
+ 
+ %description
+@@ -40,12 +42,11 @@ YaST control center.
  %files
  %defattr(-,root,root)
  @scrconfdir@/*.scr

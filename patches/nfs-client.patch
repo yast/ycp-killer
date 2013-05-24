@@ -13,10 +13,19 @@ index b3ffc5a..1fb0e86 100644
  htmldir = $(docdir)
  
 diff --git a/yast2-nfs-client.spec.in b/yast2-nfs-client.spec.in
-index 61316d7..73581a6 100644
+index facbd30..4ecb378 100644
 --- a/yast2-nfs-client.spec.in
 +++ b/yast2-nfs-client.spec.in
-@@ -46,13 +46,12 @@ file system access. It allows access to files on remote machines.
+@@ -26,6 +26,8 @@ Provides:       yast2-config-network:/usr/lib/YaST2/clients/lan_nfs_client.ycp
+ 
+ BuildArch:      noarch
+ 
++Requires:       yast2-ruby-bindings >= 1.0.0
++
+ Summary:        YaST2 - NFS Configuration
+ Url:            http://en.opensuse.org/Portal:YaST
+ 
+@@ -46,13 +48,12 @@ file system access. It allows access to files on remote machines.
  %dir @yncludedir@/nfs
  @yncludedir@/nfs/*
  %dir @clientdir@

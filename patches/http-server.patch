@@ -87,10 +87,19 @@ index ed077e7..42be13e 100644
     * Sequention used for determining on which ip adresses and port apache2 will listen and if firewall is enebled
     * whether to open firewall on this port.
 diff --git a/yast2-http-server.spec.in b/yast2-http-server.spec.in
-index 2821125..f6c5e17 100644
+index 2821125..bcf9798 100644
 --- a/yast2-http-server.spec.in
 +++ b/yast2-http-server.spec.in
-@@ -30,8 +30,8 @@ configuration.
+@@ -11,6 +11,8 @@ Requires:       yast2 >= 2.21.22
+ 
+ BuildArchitectures:	noarch
+ 
++Requires:       yast2-ruby-bindings >= 1.0.0
++
+ Summary:	YaST2 - HTTP Server Configuration
+ 
+ %description
+@@ -30,8 +32,8 @@ configuration.
  %dir @yncludedir@/http-server
  @schemadir@/autoyast/rnc/http-server.rnc
  @yncludedir@/http-server/*

@@ -670,10 +670,19 @@ index 285ec51..7278154 100644
  
      map aliases = $[
 diff --git a/yast2-dhcp-server.spec.in b/yast2-dhcp-server.spec.in
-index 90af475..34eff11 100644
+index 90af475..ca4dbee 100644
 --- a/yast2-dhcp-server.spec.in
 +++ b/yast2-dhcp-server.spec.in
-@@ -33,8 +33,8 @@ configuration.
+@@ -15,6 +15,8 @@ Requires: yast2-dns-server >= 2.13.16
+ 
+ BuildArchitectures:	noarch
+ 
++Requires:       yast2-ruby-bindings >= 1.0.0
++
+ Summary:	YaST2 - DHCP Server Configuration
+ 
+ %description
+@@ -33,8 +35,8 @@ configuration.
  %defattr(-,root,root)
  %dir @yncludedir@/dhcp-server
  @yncludedir@/dhcp-server/*

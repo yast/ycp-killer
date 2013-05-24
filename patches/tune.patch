@@ -64,10 +64,19 @@ index 204e23b..e69de29 100644
 -
 -include $(top_srcdir)/Makefile.am.common
 diff --git a/yast2-tune.spec.in b/yast2-tune.spec.in
-index d6f2256..4f6b49b 100644
+index d6f2256..a808c2d 100644
 --- a/yast2-tune.spec.in
 +++ b/yast2-tune.spec.in
-@@ -37,10 +37,9 @@ fi
+@@ -14,6 +14,8 @@ Obsoletes:	yast2-config-hwinfo yast2-tune-idedma yast2-trans-tune
+ Provides:	yast2-trans-hwinfo yast2-trans-idedma y2c_tune y2t_tune yast2-config-tune
+ Obsoletes:	yast2-trans-hwinfo yast2-trans-idedma y2c_tune y2t_tune yast2-config-tune
+ 
++Requires:       yast2-ruby-bindings >= 1.0.0
++
+ Summary:	YaST2 - Hardware Tuning
+ 
+ %description
+@@ -37,10 +39,9 @@ fi
  %defattr(-,root,root)
  
  @yncludedir@/hwinfo/*

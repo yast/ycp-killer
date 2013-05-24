@@ -136,10 +136,19 @@ index 671b84b..0000000
 -    return ret;
 -}
 diff --git a/yast2-firstboot.spec.in b/yast2-firstboot.spec.in
-index b0a1cd5..a2dab07 100644
+index b0a1cd5..8a44fb3 100644
 --- a/yast2-firstboot.spec.in
 +++ b/yast2-firstboot.spec.in
-@@ -53,10 +53,10 @@ mkdir -p $RPM_BUILD_ROOT/usr/share/firstboot/scripts
+@@ -20,6 +20,8 @@ Requires:	yast2-installation >= 2.19.0
+ 
+ BuildArchitectures:	noarch
+ 
++Requires:       yast2-ruby-bindings >= 1.0.0
++
+ Summary:	YaST2 - Initial System Configuration
+ PreReq:         %fillup_prereq
+ 
+@@ -53,10 +55,10 @@ mkdir -p $RPM_BUILD_ROOT/usr/share/firstboot/scripts
  %dir @ystartupdir@/startup/Firstboot-Stage
  @ystartupdir@/startup/Firstboot-Stage/*
  @ystartupdir@/startup/YaST2.Firstboot

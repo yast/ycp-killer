@@ -59,3 +59,16 @@ index ccbb1a4..039e8a9 100644
  
      include "firewall/helps.ycp";
  
+diff --git a/yast2-firewall.spec.in b/yast2-firewall.spec.in
+index d1c1669..c9097f0 100644
+--- a/yast2-firewall.spec.in
++++ b/yast2-firewall.spec.in
+@@ -20,6 +20,8 @@ Obsoletes:	yast2-trans-firewall
+ 
+ BuildArchitectures:	noarch
+ 
++Requires:       yast2-ruby-bindings >= 1.0.0
++
+ Summary:	YaST2 - Firewall Configuration
+ 
+ %description

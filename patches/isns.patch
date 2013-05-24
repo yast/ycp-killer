@@ -34,7 +34,7 @@ index 309ade0..244253d 100644
  // store current here
  string current_tab = "service";
 diff --git a/src/include/isns/widgets.ycp b/src/include/isns/widgets.ycp
-index 8402786..5017864 100644
+index 3cbab5e..2e5d255 100644
 --- a/src/include/isns/widgets.ycp
 +++ b/src/include/isns/widgets.ycp
 @@ -5,6 +5,7 @@ import "Label";
@@ -46,10 +46,19 @@ index 8402786..5017864 100644
  string address = "";  //global
  
 diff --git a/yast2-isns.spec.in b/yast2-isns.spec.in
-index 6803626..08f3dd8 100644
+index 6803626..c46af21 100644
 --- a/yast2-isns.spec.in
 +++ b/yast2-isns.spec.in
-@@ -24,10 +24,9 @@ Summary:	Configuration of isns
+@@ -7,6 +7,8 @@ BuildRequires:	perl-XML-Writer update-desktop-files yast2 yast2-devtools yast2-t
+ 
+ BuildArchitectures:	noarch
+ 
++Requires:       yast2-ruby-bindings >= 1.0.0
++
+ Summary:	Configuration of isns
+ 
+ %description
+@@ -24,10 +26,9 @@ Summary:	Configuration of isns
  %defattr(-,root,root)
  %dir @yncludedir@/isns
  @yncludedir@/isns/*

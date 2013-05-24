@@ -36,10 +36,19 @@ index 0764d69..9ef8dbb 100644
 -SUBDIRS = doc src testsuite agents config
 +SUBDIRS =
 diff --git a/yast2-sound.spec.in b/yast2-sound.spec.in
-index 1b9ba31..a127a87 100644
+index 1b9ba31..c7ffd5f 100644
 --- a/yast2-sound.spec.in
 +++ b/yast2-sound.spec.in
-@@ -42,9 +42,9 @@ fi
+@@ -17,6 +17,8 @@ Obsoletes:	yast2-trans-sound yast2-trans-soundd y2c_snd y2t_snd y2t_sndd
+ Provides:	y2c_sparc y2c_sprc yast2-db-sound y2d_snd
+ Obsoletes:	y2c_sparc y2c_sprc yast2-db-sound y2d_snd
+ 
++Requires:       yast2-ruby-bindings >= 1.0.0
++
+ Summary:	YaST2 - Sound Configuration
+ 
+ %description
+@@ -42,9 +44,9 @@ fi
  
  # sound
  %dir @yncludedir@/sound
@@ -52,7 +61,7 @@ index 1b9ba31..a127a87 100644
  @desktopdir@/sound.desktop
  @desktopdir@/joystick.desktop
  @ybindir@/copyfonts
-@@ -57,7 +57,7 @@ fi
+@@ -57,7 +59,7 @@ fi
  
  # database
  @ydatadir@/sndcards.ycp

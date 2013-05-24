@@ -79,3 +79,16 @@ index 0d6a829..1796a59 100644
  
  string modeHelp = _("<p><b>Profile Mode Configuration</b><br>This tool allows 
  you to set AppArmor profiles to either complain or enforce mode.</p>") +
+diff --git a/yast2-apparmor.spec.in b/yast2-apparmor.spec.in
+index 4da1fd4..19fd342 100644
+--- a/yast2-apparmor.spec.in
++++ b/yast2-apparmor.spec.in
+@@ -4,6 +4,8 @@
+ Group:	Productivity/Security
+ License: GPL-2.0
+ 
++Requires:       yast2-ruby-bindings >= 1.0.0
++
+ Summary: YaST2 - Plugins for AppArmor Profile Management
+ 
+ Requires: yast2 

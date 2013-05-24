@@ -36,10 +36,19 @@ index 2cbc75e..17633f0 100644
 +
 +#include $(top_srcdir)/autodocs-ycp.ami
 diff --git a/yast2-snapper.spec.in b/yast2-snapper.spec.in
-index c91664f..570f4a7 100644
+index c91664f..c91c855 100644
 --- a/yast2-snapper.spec.in
 +++ b/yast2-snapper.spec.in
-@@ -25,7 +25,7 @@ YaST module for accessing and managing btrfs system snapshots
+@@ -8,6 +8,8 @@ BuildRequires:	libsnapper-devel >= 0.0.11
+ BuildRequires:	yast2-core-devel >= 2.23.1
+ BuildRequires:	libtool doxygen gcc-c++ perl-XML-Writer
+ 
++Requires:       yast2-ruby-bindings >= 1.0.0
++
+ Summary:	YaST - file system snapshots review
+ 
+ %description
+@@ -25,7 +27,7 @@ YaST module for accessing and managing btrfs system snapshots
  %defattr(-,root,root)
  %dir @yncludedir@/snapper
  @yncludedir@/snapper/*

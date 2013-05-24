@@ -34,10 +34,28 @@ index 9a2350a..b464f78 100644
 +#AUTODOCS_YCP=$(top_srcdir)/src/*/*.ycp
 +#include $(top_srcdir)/autodocs-ycp.ami
 diff --git a/yast2-update.spec.in b/yast2-update.spec.in
-index 07df4cc..b8884b0 100644
+index 07df4cc..9283ea3 100644
 --- a/yast2-update.spec.in
 +++ b/yast2-update.spec.in
-@@ -71,19 +71,19 @@ Use this component if you wish to update your system.
+@@ -39,6 +39,8 @@ Conflicts:	yast2-pkg-bindings < 2.15.11
+ # Storage::DeviceMatchFstab (#244117)
+ Conflicts:	yast2-storage < 2.15.4
+ 
++Requires:       yast2-ruby-bindings >= 1.0.0
++
+ Summary:	YaST2 - Update
+ 
+ %package FACTORY
+@@ -50,6 +52,8 @@ Requires:	yast2-update yast2
+ # to remove dependency on yast2-storage
+ Provides:	yast2-update:/usr/share/YaST2/clients/update.ycp
+ 
++Requires:       yast2-ruby-bindings >= 1.0.0
++
+ Summary:	YaST2 - Update
+ 
+ %description
+@@ -71,19 +75,19 @@ Use this component if you wish to update your system.
  @ybindir@/*
  @moduledir@/*
  
@@ -68,7 +86,7 @@ index 07df4cc..b8884b0 100644
  
  %doc @docdir@
  
-@@ -92,5 +92,5 @@ Use this component if you wish to update your system.
+@@ -92,5 +96,5 @@ Use this component if you wish to update your system.
  @desktopdir@/update.desktop
  %dir /usr/share/YaST2/control
  /usr/share/YaST2/control/update.xml

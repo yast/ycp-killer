@@ -25,10 +25,19 @@ index 27bbcac..f6daf89 100644
  import "OpenvasSecurityScanner";
  
 diff --git a/yast2-openvas-security-scanner.spec.in b/yast2-openvas-security-scanner.spec.in
-index 7abed8e..4f07978 100644
+index 7abed8e..f488df5 100644
 --- a/yast2-openvas-security-scanner.spec.in
 +++ b/yast2-openvas-security-scanner.spec.in
-@@ -23,7 +23,7 @@ Summary:	Configuration of openvas-security-scanner
+@@ -6,6 +6,8 @@ BuildRequires:	perl-XML-Writer update-desktop-files yast2 yast2-devtools yast2-t
+ 
+ BuildArchitectures:	noarch
+ 
++Requires:       yast2-ruby-bindings >= 1.0.0
++
+ Summary:	Configuration of openvas-security-scanner
+ 
+ %description
+@@ -23,7 +25,7 @@ Summary:	Configuration of openvas-security-scanner
  %defattr(-,root,root)
  %dir @yncludedir@/openvas-security-scanner
  @yncludedir@/openvas-security-scanner/*

@@ -34,10 +34,27 @@ index 83bbbd9..464185d 100644
  /**
   * Configure dialog
 diff --git a/yast2-reipl.spec.in b/yast2-reipl.spec.in
-index 490276d..8c2cfa3 100644
+index 490276d..45c35f6 100644
 --- a/yast2-reipl.spec.in
 +++ b/yast2-reipl.spec.in
-@@ -48,9 +48,8 @@ Module for loading IPL from running system on S/390
+@@ -21,14 +21,12 @@ PreReq:         %fillup_prereq
+ 
+ BuildArch:      noarch
+ 
++Requires:       yast2-ruby-bindings >= 1.0.0
++
+ Summary:        YaST2 - IPL loader
+ License:        GPL-2.0
+ Group:          System/YaST
+ 
+-PreReq:         %fillup_prereq
+-
+-Summary:        YaST2 - IPL loader
+-Group:          System/YaST
+ 
+ %description
+ Module for loading IPL from running system on S/390
+@@ -48,9 +46,8 @@ Module for loading IPL from running system on S/390
  
  %files
  %defattr(-,root,root)

@@ -42,3 +42,16 @@ index 5596f82..f86f329 100644
  
  map READ = $[ "read" : $[ "path" : "read_result" ] ];
  map WRITE = $[ "write" : $[ "path" : true ] ];
+diff --git a/yast2-testsuite.spec.in b/yast2-testsuite.spec.in
+index 9c5c8b6..83e4fae 100644
+--- a/yast2-testsuite.spec.in
++++ b/yast2-testsuite.spec.in
+@@ -7,6 +7,8 @@ BuildRequires:	openslp-devel perl-XML-Writer popt-devel yast2-core-devel yast2-d
+ Requires:	expect dejagnu
+ # y2base -I includepath -M modulepath
+ Requires:	yast2-core >= 2.19.0
++Requires:       yast2-ruby-bindings >= 1.0.0
++
+ Summary:	YaST2 - Testsuite
+ 
+ BuildArchitectures: noarch

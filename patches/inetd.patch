@@ -24,10 +24,19 @@ index 8e1465e..e9aa7f9 100644
    $[
      "comment" : " admind: admin daemon for thin clients\n uses ident and host name lookups for authentication\n security: weak authentication, just enough for thin clients\n client: adminc.pl\n default config file: /etc/opt/SLES/POS/admind.conf\n",
 diff --git a/yast2-inetd.spec.in b/yast2-inetd.spec.in
-index 74e1dd3..9274beb 100644
+index 74e1dd3..5389b0e 100644
 --- a/yast2-inetd.spec.in
 +++ b/yast2-inetd.spec.in
-@@ -35,10 +35,9 @@ The YaST2 component for configuring the inetd and xinetd daemons.
+@@ -18,6 +18,8 @@ Obsoletes:	yast2-trans-inet y2t_inet
+ 
+ BuildArchitectures:	noarch
+ 
++Requires:       yast2-ruby-bindings >= 1.0.0
++
+ Summary:	YaST2 - Network Services Configuration
+ 
+ %description
+@@ -35,10 +37,9 @@ The YaST2 component for configuring the inetd and xinetd daemons.
  %defattr(-,root,root)
  %dir @yncludedir@/inetd
  @yncludedir@/inetd/*

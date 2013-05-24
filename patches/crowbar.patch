@@ -24,10 +24,19 @@ index e7ddf79..14c6419 100644
 +#AUTODOCS_YCP=$(srcdir)/../../src/*.ycp
 +#include $(top_srcdir)/autodocs-ycp.ami
 diff --git a/yast2-crowbar.spec.in b/yast2-crowbar.spec.in
-index 6eb4ea3..d331b87 100644
+index 6eb4ea3..84b06a9 100644
 --- a/yast2-crowbar.spec.in
 +++ b/yast2-crowbar.spec.in
-@@ -23,8 +23,8 @@ Summary:	Configuration of crowbar
+@@ -6,6 +6,8 @@ BuildRequires:	perl-XML-Writer update-desktop-files yast2 yast2-devtools yast2-t
+ 
+ BuildArchitectures:	noarch
+ 
++Requires:       yast2-ruby-bindings >= 1.0.0
++
+ Summary:	Configuration of crowbar
+ 
+ %description
+@@ -23,8 +25,8 @@ Summary:	Configuration of crowbar
  %defattr(-,root,root)
  %dir @yncludedir@/crowbar
  @yncludedir@/crowbar/*

@@ -26,10 +26,19 @@ index d0e5f35..56cb5d0 100644
 +
 +#include $(top_srcdir)/autodocs-ycp.ami
 diff --git a/yast2-squidguard.spec.in b/yast2-squidguard.spec.in
-index 5a0cf74..9b728ea 100644
+index 5a0cf74..bf97fd4 100644
 --- a/yast2-squidguard.spec.in
 +++ b/yast2-squidguard.spec.in
-@@ -23,9 +23,11 @@ Summary:	Configuration of squidguard
+@@ -6,6 +6,8 @@ BuildRequires:	perl-XML-Writer update-desktop-files yast2 yast2-devtools yast2-t
+ Requires:       squidGuard
+ BuildArchitectures:	noarch
+ 
++Requires:       yast2-ruby-bindings >= 1.0.0
++
+ Summary:	Configuration of squidguard
+ 
+ %description
+@@ -23,9 +25,11 @@ Summary:	Configuration of squidguard
  %defattr(-,root,root)
  %dir @yncludedir@/squidguard
  @yncludedir@/squidguard/*

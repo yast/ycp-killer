@@ -21,10 +21,19 @@ index b54cdda..7b53634 100644
  /**
   * Adduser dialog
 diff --git a/yast2-security.spec.in b/yast2-security.spec.in
-index a60270e..1a9d44c 100644
+index a60270e..53cfa05 100644
 --- a/yast2-security.spec.in
 +++ b/yast2-security.spec.in
-@@ -43,8 +43,8 @@ fi
+@@ -19,6 +19,8 @@ Obsoletes:	yast2-trans-security y2t_sec
+ 
+ BuildArchitectures: noarch
+ 
++Requires:       yast2-ruby-bindings >= 1.0.0
++
+ Summary:	YaST2 - Security Configuration
+ 
+ %description
+@@ -43,8 +45,8 @@ fi
  %dir @yncludedir@/security
  @yncludedir@/security/*
  @desktopdir@/security.desktop

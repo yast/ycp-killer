@@ -69,3 +69,16 @@ index 78aebd5..f8da694 100644
 -EXTRA_DIST = *.ycp *.out *.err runtest.sh
 +EXTRA_DIST = *.rb *.out *.err runtest.sh
  
+diff --git a/yast2-hardware-detection.spec.in b/yast2-hardware-detection.spec.in
+index 3f57467..baabf59 100644
+--- a/yast2-hardware-detection.spec.in
++++ b/yast2-hardware-detection.spec.in
+@@ -22,6 +22,8 @@ BuildRequires:	openssl-devel
+ BuildRequires:	hwinfo-devel
+ # we check for hwinfo
+ BuildRequires:	pkg-config
++Requires:       yast2-ruby-bindings >= 1.0.0
++
+ Summary:	YaST2 - Hardware Detection Interface
+ # hwinfo-13.38: hw_fingerprint
+ Requires:       hwinfo >= 13.38

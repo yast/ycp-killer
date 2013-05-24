@@ -11,10 +11,19 @@ index 36b4715..3897b5d 100644
  // module title
  string moduleTitle = _("Online Update Configuration");
 diff --git a/yast2-online-update-configuration.spec.in b/yast2-online-update-configuration.spec.in
-index 88dbcc1..b5e1488 100644
+index 88dbcc1..4d6976b 100644
 --- a/yast2-online-update-configuration.spec.in
 +++ b/yast2-online-update-configuration.spec.in
-@@ -55,9 +55,8 @@ Allows to configure automatic online update.
+@@ -34,6 +34,8 @@ BuildRequires:  yast2-pkg-bindings >= 2.17.20
+ BuildArch:      noarch
+ 
+ 
++Requires:       yast2-ruby-bindings >= 1.0.0
++
+ Summary:        Configuration of Online Update
+ 
+ %description
+@@ -55,9 +57,8 @@ Allows to configure automatic online update.
  %doc @docdir@
  %dir @yncludedir@/online-update-configuration
  @yncludedir@/online-update-configuration/*

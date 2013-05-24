@@ -29,10 +29,19 @@ index 2a6f678..9de7be0 100644
 +
 +#include $(top_srcdir)/autodocs-ycp.ami
 diff --git a/yast2-nfs-server.spec.in b/yast2-nfs-server.spec.in
-index 80a0e70..ed328ce 100644
+index 1949add..1a14d0d 100644
 --- a/yast2-nfs-server.spec.in
 +++ b/yast2-nfs-server.spec.in
-@@ -42,11 +42,10 @@ Requires:       limal-nfs-server-perl
+@@ -14,6 +14,8 @@ Recommends:     nfs-kernel-server
+ 
+ BuildArchitectures:	noarch
+ 
++Requires:       yast2-ruby-bindings >= 1.0.0
++
+ Summary:	YaST2 - NFS Server Configuration
+ 
+ %description
+@@ -42,11 +44,10 @@ Requires:       limal-nfs-server-perl
  %defattr(-,root,root)
  %dir @yncludedir@/nfs_server
  @yncludedir@/nfs_server/*

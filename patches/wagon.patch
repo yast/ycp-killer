@@ -43,10 +43,19 @@ index 0400e31..7716974 100644
 +#AUTODOCS_YCP=$(top_srcdir)/src/*/*.ycp
 +#include $(top_srcdir)/autodocs-ycp.ami
 diff --git a/yast2-wagon.spec.in b/yast2-wagon.spec.in
-index 12d22e6..a6b9517 100644
+index 12d22e6..7c33d6f 100644
 --- a/yast2-wagon.spec.in
 +++ b/yast2-wagon.spec.in
-@@ -62,11 +62,10 @@ rm -rf %{buildroot}%%{_datadir}/YaST2/control/online_migration.xml
+@@ -39,6 +39,8 @@ Requires:	wagon-control-file
+ 
+ BuildArchitectures:	noarch
+ 
++Requires:       yast2-ruby-bindings >= 1.0.0
++
+ Summary: YaST2 - Migration Tool for Service Packs
+ 
+ %description
+@@ -62,11 +64,10 @@ rm -rf %{buildroot}%%{_datadir}/YaST2/control/online_migration.xml
  %files
  %defattr(-,root,root)
  %{_prefix}/sbin/wagon

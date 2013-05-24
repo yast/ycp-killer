@@ -434,10 +434,19 @@ index 7cf268b..329d1e9 100644
      // help for timezone screen
      string help_text = _("
 diff --git a/yast2-country.spec.in b/yast2-country.spec.in
-index 2361cda..b123c13 100644
+index 2361cda..b6eebe8 100644
 --- a/yast2-country.spec.in
 +++ b/yast2-country.spec.in
-@@ -74,13 +74,13 @@ install -m 0644 %SOURCE2 $RPM_BUILD_ROOT/usr/share/polkit-1/actions/
+@@ -50,6 +50,8 @@ Obsoletes:	y2t_inst-language
+ Provides:	y2t_inst-environment
+ Obsoletes:	y2t_inst-environment
+ 
++Requires:       yast2-ruby-bindings >= 1.0.0
++
+ Summary:	YaST2 - Country Settings (Language, Keyboard, and Timezone)
+ 
+ %description
+@@ -74,13 +76,13 @@ install -m 0644 %SOURCE2 $RPM_BUILD_ROOT/usr/share/polkit-1/actions/
  %defattr(-,root,root)
  %doc @docdir@
  %doc COPYING
@@ -455,7 +464,16 @@ index 2361cda..b123c13 100644
  @ydatadir@/*.ycp
  @yncludedir@/keyboard/
  @yncludedir@/timezone/
-@@ -105,4 +105,4 @@ functions (Language module)
+@@ -94,6 +96,8 @@ install -m 0644 %SOURCE2 $RPM_BUILD_ROOT/usr/share/polkit-1/actions/
+ %attr(644,root,root) %config /usr/share/polkit-1/actions/org.opensuse.yast.modules.yapi.*.policy
+ 
+ %package data
++Requires:       yast2-ruby-bindings >= 1.0.0
++
+ Summary:	YaST2 - Data files for Country settings
+ Group:          System/YaST
+ 
+@@ -105,4 +109,4 @@ functions (Language module)
  %defattr(-,root,root)
  %dir @ydatadir@/languages
  @ydatadir@/languages/*.ycp

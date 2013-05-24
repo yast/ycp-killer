@@ -49,10 +49,19 @@ index 5c90780..e70ce9c 100644
 +
 +# include $(top_srcdir)/autodocs-ycp.ami
 diff --git a/yast2-squid.spec.in b/yast2-squid.spec.in
-index 7837bae..6476be6 100644
+index 7837bae..4080d13 100644
 --- a/yast2-squid.spec.in
 +++ b/yast2-squid.spec.in
-@@ -28,8 +28,8 @@ rm -rf %{buildroot}/@plugindir@/libpy2ag_squid.la
+@@ -9,6 +9,8 @@ BuildRequires: yast2-testsuite yast2-core-devel boost-devel gcc-c++ libtool
+ 
+ #BuildArchitectures:	noarch
+ 
++Requires:       yast2-ruby-bindings >= 1.0.0
++
+ Summary:	Configuration of squid
+ 
+ %description
+@@ -28,8 +30,8 @@ rm -rf %{buildroot}/@plugindir@/libpy2ag_squid.la
  %dir @yncludedir@/squid
  %config /etc/sysconfig/SuSEfirewall2.d/services/squid
  @yncludedir@/squid/*

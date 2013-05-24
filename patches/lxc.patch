@@ -22,10 +22,19 @@ index a58f723..4206737 100644
  include "lxc/helps.ycp";
  
 diff --git a/yast2-lxc.spec.in b/yast2-lxc.spec.in
-index 11e214c..844928a 100644
+index 11e214c..4b69d95 100644
 --- a/yast2-lxc.spec.in
 +++ b/yast2-lxc.spec.in
-@@ -23,7 +23,7 @@ Graphical management tool for Linux Containers (LXC)
+@@ -6,6 +6,8 @@ BuildRequires:	perl-XML-Writer update-desktop-files yast2 yast2-devtools yast2-t
+ 
+ BuildArchitectures:	noarch
+ 
++Requires:       yast2-ruby-bindings >= 1.0.0
++
+ Summary:	Management tool for Linux Containers (LXC)
+ 
+ %description
+@@ -23,7 +25,7 @@ Graphical management tool for Linux Containers (LXC)
  %defattr(-,root,root)
  %dir @yncludedir@/lxc
  @yncludedir@/lxc/*

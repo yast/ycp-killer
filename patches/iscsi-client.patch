@@ -70,10 +70,19 @@ index 8c49b17..52fb8e9 100644
  		// delete (logout from) connected target
  		record = setRecord();
 diff --git a/yast2-iscsi-client.spec.in b/yast2-iscsi-client.spec.in
-index d945497..f4475c1 100644
+index d945497..c67d5a1 100644
 --- a/yast2-iscsi-client.spec.in
 +++ b/yast2-iscsi-client.spec.in
-@@ -35,9 +35,9 @@ client.
+@@ -17,6 +17,8 @@ Requires:       yast2 >= 2.21.22
+ 
+ BuildArchitectures:	noarch
+ 
++Requires:       yast2-ruby-bindings >= 1.0.0
++
+ Summary:	YaST2 - iSCSI Client Configuration
+ 
+ %description
+@@ -35,9 +37,9 @@ client.
  %defattr(-,root,root)
  %dir @yncludedir@/iscsi-client
  @yncludedir@/iscsi-client/*

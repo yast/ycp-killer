@@ -22,10 +22,19 @@ index 2a6f678..9de7be0 100644
 +
 +#include $(top_srcdir)/autodocs-ycp.ami
 diff --git a/yast2-backup.spec.in b/yast2-backup.spec.in
-index 3f5b8fc..8e60dce 100644
+index 3f5b8fc..c09f5f2 100644
 --- a/yast2-backup.spec.in
 +++ b/yast2-backup.spec.in
-@@ -65,10 +65,9 @@ backs them up.
+@@ -4,6 +4,8 @@
+ Group:          System/YaST
+ License:        GPL-2.0
+ 
++Requires:       yast2-ruby-bindings >= 1.0.0
++
+ Summary:		YaST2 - System Backup
+ BuildArchitectures:	noarch
+ 
+@@ -65,10 +67,9 @@ backs them up.
  @agentdir@/ag_file_append
  @scrconfdir@/cfg_backup.scr
  @yncludedir@/backup/*

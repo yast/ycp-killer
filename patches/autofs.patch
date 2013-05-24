@@ -265,10 +265,19 @@ index f230f4d..52cdd7f 100644
  
  /**
 diff --git a/yast2-autofs.spec.in b/yast2-autofs.spec.in
-index e157043..11b4227 100644
+index e157043..298370e 100644
 --- a/yast2-autofs.spec.in
 +++ b/yast2-autofs.spec.in
-@@ -29,8 +29,8 @@ under ou=AUTOFS,$LDAPBASE.
+@@ -9,6 +9,8 @@ BuildRequires:	perl-XML-Writer update-desktop-files yast2 yast2-devtools yast2-t
+ 
+ BuildArchitectures:	noarch
+ 
++Requires:       yast2-ruby-bindings >= 1.0.0
++
+ Summary:	YaST2 - Module to Create and Manage autofs Entries in LDAP
+ 
+ %description
+@@ -29,8 +31,8 @@ under ou=AUTOFS,$LDAPBASE.
  %defattr(-,root,root)
  %dir @yncludedir@/autofs
  @yncludedir@/autofs/*

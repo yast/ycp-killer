@@ -92,10 +92,19 @@ index 223f310..5882646 100644
      // Description of the current Request
      map currentRequestMap = $[];
 diff --git a/yast2-ca-management.spec.in b/yast2-ca-management.spec.in
-index 05afd3f..4c8d80b 100644
+index 05afd3f..04a8c8e 100644
 --- a/yast2-ca-management.spec.in
 +++ b/yast2-ca-management.spec.in
-@@ -45,14 +45,14 @@ Managing CAs, Certificates and Requests in an understanding way.
+@@ -27,6 +27,8 @@ Requires:       perl-gettext
+ Requires:       yast2 >= 2.21.22
+ Requires:       yast2-perl-bindings
+ BuildArch:      noarch
++Requires:       yast2-ruby-bindings >= 1.0.0
++
+ Summary:        YaST2 - CAs, Certificates and Requests Management
+ 
+ %description
+@@ -45,14 +47,14 @@ Managing CAs, Certificates and Requests in an understanding way.
  %dir @moduledir@/YaPI
  %dir @moduledir@/YaST
  @yncludedir@/ca-management/*

@@ -39,10 +39,19 @@ index 2a6f678..4cb582c 100644
 +
 +# include $(top_srcdir)/autodocs-ycp.ami
 diff --git a/yast2-nis-client.spec.in b/yast2-nis-client.spec.in
-index 8a34023..c31cb81 100644
+index 8a34023..0afab19 100644
 --- a/yast2-nis-client.spec.in
 +++ b/yast2-nis-client.spec.in
-@@ -35,10 +35,10 @@ yellow pages.
+@@ -18,6 +18,8 @@ Provides:	yast2-trans-nis
+ Obsoletes:	yast2-trans-nis
+ Provides:	yast2-config-network:/usr/lib/YaST2/clients/lan_ypclient.ycp
+ 
++Requires:       yast2-ruby-bindings >= 1.0.0
++
+ Summary:	YaST2 - Network Information Services (NIS, YP) Configuration
+ 
+ %description
+@@ -35,10 +37,10 @@ yellow pages.
  %files
  %defattr(-,root,root)
  %dir @yncludedir@/nis

@@ -22,10 +22,19 @@ index 2a6f678..6c072bd 100644
 +# TODO autodocs temporarily off
 +# include $(top_srcdir)/autodocs-ycp.ami
 diff --git a/yast2-irda.spec.in b/yast2-irda.spec.in
-index 6390d36..9856e2f 100644
+index 6390d36..a00744e 100644
 --- a/yast2-irda.spec.in
 +++ b/yast2-irda.spec.in
-@@ -28,7 +28,7 @@ stack.
+@@ -10,6 +10,8 @@ Requires:	yast2 >= 2.21.22
+ 
+ BuildArchitectures:	noarch
+ 
++Requires:       yast2-ruby-bindings >= 1.0.0
++
+ Summary:	YaST2 - Infra-Red (IrDA) Access Configuration
+ 
+ %description
+@@ -28,7 +30,7 @@ stack.
  %defattr(-,root,root)
  %dir @yncludedir@/irda
  @yncludedir@/irda/*
