@@ -52,10 +52,19 @@ index b6bc8cc..1412807 100644
  htmldir = @docdir@
  
 diff --git a/yast2-users.spec.in b/yast2-users.spec.in
-index dda3d5f..d6676a8 100644
+index dda3d5f..b946d47 100644
 --- a/yast2-users.spec.in
 +++ b/yast2-users.spec.in
-@@ -38,10 +38,10 @@ This package provides GUI for maintenance of linux users and groups.
+@@ -21,6 +21,8 @@ Requires:       yast2 >= 2.23.7
+ # cryptsha256, cryptsha516
+ Requires:       yast2-core >= 2.21.0
+ 
++Requires:       yast2-ruby-bindings >= 1.0.0
++
+ Summary:	YaST2 - User and Group Configuration
+ 
+ %description
+@@ -38,10 +40,10 @@ This package provides GUI for maintenance of linux users and groups.
  %defattr(-,root,root)
  %dir @yncludedir@/users
  %dir @moduledir@/YaPI

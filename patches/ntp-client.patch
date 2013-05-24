@@ -38,10 +38,19 @@ index 2a6f678..4cb582c 100644
 +
 +# include $(top_srcdir)/autodocs-ycp.ami
 diff --git a/yast2-ntp-client.spec.in b/yast2-ntp-client.spec.in
-index 4b69c82..39f7e06 100644
+index 4b69c82..f479a2a 100644
 --- a/yast2-ntp-client.spec.in
 +++ b/yast2-ntp-client.spec.in
-@@ -34,11 +34,11 @@ This package contains the YaST2 component for NTP client configuration.
+@@ -17,6 +17,8 @@ Requires:       yast2-country-data
+ 
+ BuildArch:      noarch
+ 
++Requires:       yast2-ruby-bindings >= 1.0.0
++
+ Summary:        YaST2 - NTP Client Configuration
+ 
+ %description
+@@ -34,11 +36,11 @@ This package contains the YaST2 component for NTP client configuration.
  %defattr(-,root,root)
  %dir @yncludedir@/ntp-client
  @yncludedir@/ntp-client/*

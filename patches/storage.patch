@@ -2104,10 +2104,19 @@ index 39df374..c751218 100644
 +    include "helper1b.yh";
  }
 diff --git a/yast2-storage.spec.in b/yast2-storage.spec.in
-index 8ae9071..408d91a 100644
+index 8ae9071..4ab9e67 100644
 --- a/yast2-storage.spec.in
 +++ b/yast2-storage.spec.in
-@@ -47,26 +47,27 @@ rm -f $RPM_BUILD_ROOT/@plugindir@/libpy2StorageCallbacks.so
+@@ -23,6 +23,8 @@ Provides:	yast2-trans-inst-partitioning
+ Obsoletes:	yast2-trans-inst-partitioning
+ Provides:	y2t_inst-partitioning
+ Obsoletes:	y2t_inst-partitioning
++Requires:       yast2-ruby-bindings >= 1.0.0
++
+ Summary:	YaST2 - Storage Configuration
+ 
+ %description
+@@ -47,26 +49,27 @@ rm -f $RPM_BUILD_ROOT/@plugindir@/libpy2StorageCallbacks.so
  
  # storage
  %dir @yncludedir@/partitioning
@@ -2150,7 +2159,15 @@ index 8ae9071..408d91a 100644
  
  %doc %dir @docdir@
  %doc @docdir@/README*
-@@ -100,5 +101,6 @@ to develop a program using libstorage.
+@@ -91,6 +94,7 @@ rm -f $RPM_BUILD_ROOT/@plugindir@/libpy2StorageCallbacks.so
+ %package devel
+ Requires:	libstorage-devel = %(echo `rpm -q --queryformat '%{VERSION}' libstorage-devel`)
+ Requires:       libstdc++-devel yast2-storage = %version
++
+ Summary:        YaST2 - Storage Library Headers and Documentation
+ Group:          Development/Libraries/YaST
+ 
+@@ -100,5 +104,6 @@ to develop a program using libstorage.
  
  %files devel
  %defattr(-,root,root)

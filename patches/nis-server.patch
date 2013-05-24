@@ -22,10 +22,19 @@ index 2a6f678..9de7be0 100644
 +
 +#include $(top_srcdir)/autodocs-ycp.ami
 diff --git a/yast2-nis-server.spec.in b/yast2-nis-server.spec.in
-index 67be058..8e6d83a 100644
+index 67be058..992b216 100644
 --- a/yast2-nis-server.spec.in
 +++ b/yast2-nis-server.spec.in
-@@ -44,14 +44,13 @@ This package contains documentation for yast2-nis-server
+@@ -18,6 +18,8 @@ Obsoletes:	yast2-trans-nis-server
+ 
+ BuildArchitectures:	noarch
+ 
++Requires:       yast2-ruby-bindings >= 1.0.0
++
+ Summary:	YaST2 - Network Information Services (NIS) Server Configuration
+ 
+ %package devel-doc
+@@ -44,14 +46,13 @@ This package contains documentation for yast2-nis-server
  %files
  %defattr(-,root,root)
  %dir @yncludedir@/nis_server

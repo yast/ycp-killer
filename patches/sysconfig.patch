@@ -13,10 +13,19 @@ index fbc0358..e11ea30 100644
  htmldir = $(docdir)
  
 diff --git a/yast2-sysconfig.spec.in b/yast2-sysconfig.spec.in
-index 88bf07f..6b98a3e 100644
+index 88bf07f..595dc29 100644
 --- a/yast2-sysconfig.spec.in
 +++ b/yast2-sysconfig.spec.in
-@@ -33,10 +33,9 @@ information.
+@@ -15,6 +15,8 @@ Obsoletes:	y2c_rc_config yast2-config-rcconfig yast2-config-sysconfig
+ Provides:	yast2-trans-sysconfig yast2-trans-rcconfig y2t_rc_config
+ Obsoletes:	yast2-trans-sysconfig yast2-trans-rcconfig y2t_rc_config
+ 
++Requires:       yast2-ruby-bindings >= 1.0.0
++
+ Summary:	YaST2 - Sysconfig Editor
+ 
+ %description
+@@ -33,10 +35,9 @@ information.
  %defattr(-,root,root)
  %dir @yncludedir@/sysconfig
  @yncludedir@/sysconfig/*

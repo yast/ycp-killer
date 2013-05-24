@@ -256,10 +256,19 @@ index 8fc5f60..540d97a 100644
                   if (Service::Enabled("vsftpd"))
                      Service::Disable("vsftpd");
 diff --git a/yast2-ftp-server.spec.in b/yast2-ftp-server.spec.in
-index 896a8c7..a3a401d 100644
+index 896a8c7..b5486fd 100644
 --- a/yast2-ftp-server.spec.in
 +++ b/yast2-ftp-server.spec.in
-@@ -28,8 +28,8 @@ configure two daemons: pure-ftpd and vsftpd.
+@@ -10,6 +10,8 @@ BuildRequires:	perl-XML-Writer update-desktop-files yast2 yast2-devtools yast2-t
+ 
+ BuildArchitectures:	noarch
+ 
++Requires:       yast2-ruby-bindings >= 1.0.0
++
+ Summary:	YaST2 - FTP configuration
+ 
+ %description
+@@ -28,8 +30,8 @@ configure two daemons: pure-ftpd and vsftpd.
  %defattr(-,root,root)
  %dir @yncludedir@/ftp-server
  @yncludedir@/ftp-server/*

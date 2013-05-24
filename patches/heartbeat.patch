@@ -57,10 +57,10 @@ index 4d29b98..c049388 100644
  include "heartbeat/helps.ycp";
  include "heartbeat/common.ycp";
 diff --git a/src/include/heartbeat/log_conf.ycp b/src/include/heartbeat/log_conf.ycp
-index 1302d3a..8b2d23c 100644
+index 1302d3a..e15de3c 100644
 --- a/src/include/heartbeat/log_conf.ycp
 +++ b/src/include/heartbeat/log_conf.ycp
-@@ -93,7 +92,9 @@ term timeouts_conf_getDialog()
+@@ -93,7 +93,9 @@ term timeouts_conf_getDialog()
  
  any ConfigureTimeoutsDialog () {
  
@@ -71,7 +71,7 @@ index 1302d3a..8b2d23c 100644
      
      my_SetContents("timeouts_conf", timeouts_conf_getDialog());
      
-@@ -119,7 +120,9 @@ any ConfigureTimeoutsDialog () {
+@@ -119,7 +121,9 @@ any ConfigureTimeoutsDialog () {
  
  	if (ret == `next || ret == `back || contains(DIALOG, (string)ret)) {
  	
@@ -107,10 +107,19 @@ index ba90cfe..01014ae 100644
  include "heartbeat/helps.ycp";
  include "heartbeat/common.ycp";
 diff --git a/yast2-heartbeat.spec.in b/yast2-heartbeat.spec.in
-index 6193558..f3044f6 100644
+index 6193558..77ab24d 100644
 --- a/yast2-heartbeat.spec.in
 +++ b/yast2-heartbeat.spec.in
-@@ -25,8 +25,7 @@ YaST-Module to configure heartbeat
+@@ -8,6 +8,8 @@ Requires:	yast2 >= 2.21.22
+ 
+ BuildArchitectures:	noarch
+ 
++Requires:       yast2-ruby-bindings >= 1.0.0
++
+ Summary:	YaST2 - High Availability Configuration
+ 
+ %description
+@@ -25,8 +27,7 @@ YaST-Module to configure heartbeat
  %defattr(-,root,root)
  %dir @yncludedir@/heartbeat
  @yncludedir@/heartbeat/*

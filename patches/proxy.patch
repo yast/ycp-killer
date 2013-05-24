@@ -21,10 +21,19 @@ index 5b3470c..d5925e8 100644
  
      Wizard::CreateDialog();
 diff --git a/yast2-proxy.spec.in b/yast2-proxy.spec.in
-index 09b83c7..53d134d 100644
+index 09b83c7..c2c852e 100644
 --- a/yast2-proxy.spec.in
 +++ b/yast2-proxy.spec.in
-@@ -33,9 +33,8 @@ This package contains the YaST2 component for proxy configuration.
+@@ -17,6 +17,8 @@ Conflicts:      yast2-network < 2.22.6
+ PreReq:         /bin/rm
+ BuildArch:      noarch
+ 
++Requires:       yast2-ruby-bindings >= 1.0.0
++
+ Summary:        YaST2 - Proxy Configuration
+ Url:            http://en.opensuse.org/Portal:YaST
+ 
+@@ -33,9 +35,8 @@ This package contains the YaST2 component for proxy configuration.
  
  %files
  %defattr(-,root,root)

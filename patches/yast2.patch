@@ -965,7 +965,7 @@ index d4ecbd3..e69de29 100644
 -
 -include $(top_srcdir)/Makefile.am.common
 diff --git a/yast2.spec.in b/yast2.spec.in
-index 68b9f1a..2332317 100644
+index 68b9f1a..c8e7ff9 100644
 --- a/yast2.spec.in
 +++ b/yast2.spec.in
 @@ -78,6 +78,7 @@ Provides:       yast2-trans-menu y2t_menu
@@ -976,7 +976,16 @@ index 68b9f1a..2332317 100644
  Provides:       yast2-installation:/usr/share/YaST2/modules/Installation.ycp
  Provides:       yast2-installation:/usr/share/YaST2/modules/Product.ycp
  Provides:       yast2-installation:/usr/share/YaST2/modules/Hotplug.ycp
-@@ -180,15 +181,15 @@ mkdir -p "$RPM_BUILD_ROOT"/etc/YaST2
+@@ -87,6 +88,8 @@ Provides:       yast2-packager:/usr/lib/YaST2/servers_non_y2/ag_anyxml
+ Provides:       yast2-dns-server:/usr/share/YaST2/modules/DnsServerAPI.pm
+ Provides:       yast2-mail-aliases
+ 
++Requires:       yast2-ruby-bindings >= 1.0.0
++
+ Summary:        YaST2 - Main Package
+ 
+ %description
+@@ -180,15 +183,15 @@ mkdir -p "$RPM_BUILD_ROOT"/etc/YaST2
  
  # wizard
  %dir @yncludedir@/wizard
@@ -995,7 +1004,7 @@ index 68b9f1a..2332317 100644
  @desktopdir@/messages.desktop
  
  # documentation
-@@ -198,19 +199,19 @@ mkdir -p "$RPM_BUILD_ROOT"/etc/YaST2
+@@ -198,19 +201,19 @@ mkdir -p "$RPM_BUILD_ROOT"/etc/YaST2
  
  %doc @docdir@/autodocs
  %doc @docdir@/commandline

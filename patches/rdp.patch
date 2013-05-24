@@ -40,10 +40,19 @@ index 2189d55..7fe38e7 100644
      string caption = _("Remote Administration");
  
 diff --git a/yast2-rdp.spec.in b/yast2-rdp.spec.in
-index 3e26290..0090126 100644
+index 3e26290..4645afb 100644
 --- a/yast2-rdp.spec.in
 +++ b/yast2-rdp.spec.in
-@@ -23,8 +23,8 @@ Summary:	Configuration of rdp
+@@ -6,6 +6,8 @@ BuildRequires:	perl-XML-Writer update-desktop-files yast2 yast2-devtools yast2-t
+ 
+ BuildArchitectures:	noarch
+ 
++Requires:       yast2-ruby-bindings >= 1.0.0
++
+ Summary:	Configuration of rdp
+ 
+ %description
+@@ -23,8 +25,8 @@ Summary:	Configuration of rdp
  %defattr(-,root,root)
  %dir @yncludedir@/rdp
  @yncludedir@/rdp/*

@@ -25,10 +25,19 @@ index 1ec3fcb..6bae5a9 100644
  htmldir = $(docdir)
  
 diff --git a/yast2-vm.spec.in b/yast2-vm.spec.in
-index 9ee2661..32ef464 100644
+index 9ee2661..4d7511a 100644
 --- a/yast2-vm.spec.in
 +++ b/yast2-vm.spec.in
-@@ -28,10 +28,10 @@ rm -f $RPM_BUILD_ROOT/usr/share/applications/YaST2/relocation-server.desktop
+@@ -7,6 +7,8 @@ BuildRequires:	perl-XML-Writer update-desktop-files yast2 yast2-devtools yast2-t
+ License:        GPL-2.0
+ Requires:	yast2 >= 2.21.22
+ 
++Requires:       yast2-ruby-bindings >= 1.0.0
++
+ Summary:	Configure Hypervisor and Tools for Xen and KVM
+ 
+ %description
+@@ -28,10 +30,10 @@ rm -f $RPM_BUILD_ROOT/usr/share/applications/YaST2/relocation-server.desktop
  %defattr(-,root,root)
  %dir @scrconfdir@
  %dir @yncludedir@

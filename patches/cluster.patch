@@ -64,10 +64,19 @@ index ce438f1..9623c97 100644
  list<string> csync2_suggest_files = ["/etc/corosync/corosync.conf",
  	"/etc/corosync/authkey", "/etc/sysconfig/pacemaker",
 diff --git a/yast2-cluster.spec.in b/yast2-cluster.spec.in
-index 6063b4e..3ca9ef3 100644
+index 6063b4e..8c80699 100644
 --- a/yast2-cluster.spec.in
 +++ b/yast2-cluster.spec.in
-@@ -23,12 +23,10 @@ Summary:	Configuration of cluster
+@@ -6,6 +6,8 @@ BuildRequires:	perl-XML-Writer update-desktop-files yast2 yast2-devtools yast2-t
+ 
+ BuildArchitectures:	noarch
+ 
++Requires:       yast2-ruby-bindings >= 1.0.0
++
+ Summary:	Configuration of cluster
+ 
+ %description
+@@ -23,12 +25,10 @@ Summary:	Configuration of cluster
  %defattr(-,root,root)
  %dir @yncludedir@/cluster
  @yncludedir@/cluster/*

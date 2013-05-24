@@ -1,5 +1,5 @@
 diff --git a/doc/Makefile.am b/doc/Makefile.am
-index f85d6ff..f30ecf6 100644
+index f85d6ff..ed7906a 100644
 --- a/doc/Makefile.am
 +++ b/doc/Makefile.am
 @@ -1,6 +1,7 @@
@@ -27,10 +27,19 @@ index 28e831e..af311ca 100644
  
  /* Finish */
 diff --git a/yast2-sshd.spec.in b/yast2-sshd.spec.in
-index 3cd820b..7c48733 100644
+index 3cd820b..5cf8ddf 100644
 --- a/yast2-sshd.spec.in
 +++ b/yast2-sshd.spec.in
-@@ -26,10 +26,9 @@ This package contains the YaST2 component for SSH server configuration.
+@@ -9,6 +9,8 @@ BuildRequires:	perl-XML-Writer update-desktop-files yast2 yast2-devtools yast2-t
+ 
+ BuildArchitectures:	noarch
+ 
++Requires:       yast2-ruby-bindings >= 1.0.0
++
+ Summary:	YaST2 - SSH Server Configuration
+ 
+ %description
+@@ -26,10 +28,9 @@ This package contains the YaST2 component for SSH server configuration.
  %defattr(-,root,root)
  %dir @yncludedir@/sshd
  @yncludedir@/sshd/*

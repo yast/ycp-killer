@@ -27,10 +27,19 @@ index 86f42b0..ddde8e7 100644
 +#include $(top_srcdir)/autodocs-ycp.ami
  
 diff --git a/yast2-profile-manager.spec.in b/yast2-profile-manager.spec.in
-index b8e6a4e..ada8309 100644
+index b8e6a4e..f5c6375 100644
 --- a/yast2-profile-manager.spec.in
 +++ b/yast2-profile-manager.spec.in
-@@ -28,10 +28,9 @@ profiles of your system configuration and switch between them.
+@@ -9,6 +9,8 @@ Requires:	yast2 >= 2.21.22
+ Requires:	 yast2-users
+ Requires:	scpm >= 0.9.4
+ 
++Requires:       yast2-ruby-bindings >= 1.0.0
++
+ Summary:	YaST2 - Profile Configuration
+ 
+ %description
+@@ -28,10 +30,9 @@ profiles of your system configuration and switch between them.
  %defattr(-,root,root)
  %dir @yncludedir@/profile-manager
  @yncludedir@/profile-manager/*

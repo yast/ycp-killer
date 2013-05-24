@@ -53,10 +53,19 @@ index 0c65120..9377ff3 100644
  		}
  		else if (`clear_all == ret)
 diff --git a/yast2-runlevel.spec.in b/yast2-runlevel.spec.in
-index db65ebd..9b0fa86 100644
+index d8fdbd1..cd2b68a 100644
 --- a/yast2-runlevel.spec.in
 +++ b/yast2-runlevel.spec.in
-@@ -37,11 +37,10 @@ boot.
+@@ -16,6 +16,8 @@ Obsoletes:	yast2-config-runlevel
+ Provides:	yast2-trans-runlevel
+ Obsoletes:	yast2-trans-runlevel
+ BuildArchitectures:     noarch
++Requires:       yast2-ruby-bindings >= 1.0.0
++
+ Summary:	YaST2 - Runlevel Editor
+ 
+ %description
+@@ -37,11 +39,10 @@ boot.
  %dir @scrconfdir@
  @scrconfdir@/*.scr
  %dir @clientdir@

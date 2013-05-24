@@ -2893,10 +2893,19 @@ index 5698a69..0000000
 -/* EOF */
 -}
 diff --git a/yast2-dns-server.spec.in b/yast2-dns-server.spec.in
-index cc654b2..12c59ac 100644
+index cc654b2..ff4f7b7 100644
 --- a/yast2-dns-server.spec.in
 +++ b/yast2-dns-server.spec.in
-@@ -50,8 +50,8 @@ This package contains the YaST2 component for DNS server configuration.
+@@ -33,6 +33,8 @@ Requires:	yast2 >= 2.17.8
+ 
+ BuildArchitectures:	noarch
+ 
++Requires:       yast2-ruby-bindings >= 1.0.0
++
+ Summary:	YaST2 - DNS Server Configuration
+ 
+ %description
+@@ -50,8 +52,8 @@ This package contains the YaST2 component for DNS server configuration.
  %defattr(-,root,root)
  %dir @yncludedir@/dns-server
  @yncludedir@/dns-server/*

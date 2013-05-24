@@ -94,10 +94,19 @@ index e01a5cf..9ada241 100644
  // how to show and handle pattern keys
  map pattern_descr	= AddOnCreator::pattern_descr;
 diff --git a/yast2-add-on-creator.spec.in b/yast2-add-on-creator.spec.in
-index a4deceb..3691d5a 100644
+index a4deceb..653f268 100644
 --- a/yast2-add-on-creator.spec.in
 +++ b/yast2-add-on-creator.spec.in
-@@ -29,7 +29,7 @@ A wizard for creating your own Add-On product
+@@ -9,6 +9,8 @@ BuildRequires:	perl-XML-Writer update-desktop-files yast2 yast2-devtools yast2-t
+ 
+ BuildArchitectures:	noarch
+ 
++Requires:       yast2-ruby-bindings >= 1.0.0
++
+ Summary:	YaST2 - module for creating Add-On product
+ 
+ %description
+@@ -29,7 +31,7 @@ A wizard for creating your own Add-On product
  %defattr(-,root,root)
  %dir @yncludedir@/add-on-creator
  @yncludedir@/add-on-creator/*

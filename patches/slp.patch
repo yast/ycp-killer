@@ -10,10 +10,19 @@ index 2a6f678..9de7be0 100644
 +
 +#include $(top_srcdir)/autodocs-ycp.ami
 diff --git a/yast2-slp.spec.in b/yast2-slp.spec.in
-index bbb0628..947c071 100644
+index bbb0628..cbbab3f 100644
 --- a/yast2-slp.spec.in
 +++ b/yast2-slp.spec.in
-@@ -31,7 +31,7 @@ Additionally, it offers a simple browser of SLP registered services.
+@@ -11,6 +11,8 @@ Requires: openslp
+ # Wizard::SetDesktopTitleAndIcon
+ Requires: yast2 >= 2.21.22
+ 
++Requires:       yast2-ruby-bindings >= 1.0.0
++
+ Summary:	YaST2 - SLP Agent and Browser
+ 
+ %description
+@@ -31,7 +33,7 @@ Additionally, it offers a simple browser of SLP registered services.
  @plugindir@/libpy2ag_slp.so.*
  @plugindir@/libpy2ag_slp.so
  @plugindir@/libpy2ag_slp.la

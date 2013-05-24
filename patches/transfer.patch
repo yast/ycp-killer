@@ -27,3 +27,16 @@ index 35be7b7..e69de29 100644
 -EXTRA_DIST = $(module_DATA)
 -
 -include $(top_srcdir)/Makefile.am.common
+diff --git a/yast2-transfer.spec.in b/yast2-transfer.spec.in
+index 5a000da..4547ce7 100644
+--- a/yast2-transfer.spec.in
++++ b/yast2-transfer.spec.in
+@@ -7,6 +7,8 @@ BuildRequires:	curl-devel gcc-c++ perl-XML-Writer update-desktop-files yast2 yas
+ %if 0%{?suse_version} < 1220
+ BuildRequires:  libxcrypt-devel
+ %endif
++Requires:       yast2-ruby-bindings >= 1.0.0
++
+ Summary:	YaST2 - Agent for Various Transfer Protocols
+ Provides:	yast2-agent-curl yast2-agent-tftp yast2-agent-curl-devel yast2-agent-tftp-devel
+ Obsoletes:	yast2-agent-curl yast2-agent-tftp yast2-agent-curl-devel yast2-agent-tftp-devel

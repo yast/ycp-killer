@@ -739,10 +739,19 @@ index 76100cd..e4322d9 100644
  	}
  	if (result == `ok)
 diff --git a/yast2-ldap-client.spec.in b/yast2-ldap-client.spec.in
-index 32deeaf..0b9564c 100644
+index 32deeaf..23afbfe 100644
 --- a/yast2-ldap-client.spec.in
 +++ b/yast2-ldap-client.spec.in
-@@ -50,9 +50,9 @@ OpenLDAP server will be used for user authentication.
+@@ -27,6 +27,8 @@ Obsoletes:	yast2-trans-ldap_client
+ 
+ BuildArchitectures:	noarch
+ 
++Requires:       yast2-ruby-bindings >= 1.0.0
++
+ Summary:	YaST2 - LDAP Client Configuration
+ 
+ %description
+@@ -50,9 +52,9 @@ OpenLDAP server will be used for user authentication.
  @desktopdir@/ldap_browser.desktop
  %dir @yncludedir@/ldap
  @yncludedir@/ldap/*

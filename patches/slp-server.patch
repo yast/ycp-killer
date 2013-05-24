@@ -38,7 +38,7 @@ index 5004c0f..cc955c9 100644
  void initServerSettings(string key);
  symbol handleServerSettings(string key, map event );
 diff --git a/yast2-slp-server.spec.in b/yast2-slp-server.spec.in
-index 9d75923..f154f73 100644
+index 9d75923..5699f61 100644
 --- a/yast2-slp-server.spec.in
 +++ b/yast2-slp-server.spec.in
 @@ -4,7 +4,7 @@
@@ -50,7 +50,16 @@ index 9d75923..f154f73 100644
  
  # network needs Wizard::OpenCancelOKDialog()
  #  function from yast2-2.18.2
-@@ -31,8 +31,8 @@ SLP daemon.
+@@ -13,6 +13,8 @@ Requires:       yast2 >= 2.21.22
+ 
+ BuildArchitectures:	noarch
+ 
++Requires:       yast2-ruby-bindings >= 1.0.0
++
+ Summary:	YaST2 SLP Daemon Server Configuration
+ 
+ %description
+@@ -31,8 +33,8 @@ SLP daemon.
  %defattr(-,root,root)
  %dir @yncludedir@/slp-server
  @yncludedir@/slp-server/*

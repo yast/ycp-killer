@@ -26,10 +26,19 @@ index 2a519b9..4668e9b 100644
  htmldir = $(docdir)
  
 diff --git a/yast2-sudo.spec.in b/yast2-sudo.spec.in
-index 26b8cd0..5a28b96 100644
+index 26b8cd0..50df00a 100644
 --- a/yast2-sudo.spec.in
 +++ b/yast2-sudo.spec.in
-@@ -32,7 +32,7 @@ of users to run commands as root or other user.
+@@ -14,6 +14,8 @@ BuildRequires:	perl-XML-Writer update-desktop-files yast2 yast2-devtools yast2-t
+ 
+ BuildArchitectures:	noarch
+ 
++Requires:       yast2-ruby-bindings >= 1.0.0
++
+ Summary:	YaST2 - sudo configuration
+ 
+ %description
+@@ -32,7 +34,7 @@ of users to run commands as root or other user.
  %defattr(-,root,root)
  %dir @yncludedir@/sudo
  @yncludedir@/sudo/*

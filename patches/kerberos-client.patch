@@ -22,10 +22,19 @@ index 2a6f678..9de7be0 100644
 +
 +#include $(top_srcdir)/autodocs-ycp.ami
 diff --git a/yast2-kerberos-client.spec.in b/yast2-kerberos-client.spec.in
-index c63921e..a55237a 100644
+index c63921e..680b1c2 100644
 --- a/yast2-kerberos-client.spec.in
 +++ b/yast2-kerberos-client.spec.in
-@@ -30,16 +30,15 @@ Kerberos server will be used for user authentication.
+@@ -14,6 +14,8 @@ Requires:	yast2 >= 2.21.22
+ 
+ BuildArchitectures:	noarch
+ 
++Requires:       yast2-ruby-bindings >= 1.0.0
++
+ Summary:	YaST2 - Kerberos Client Configuration
+ 
+ %description
+@@ -30,16 +32,15 @@ Kerberos server will be used for user authentication.
  
  %files
  %defattr(-,root,root)

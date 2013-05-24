@@ -99,10 +99,19 @@ index fa64d62..5a5347e 100644
      import "Wizard";
  
 diff --git a/yast2-ldap-server.spec.in b/yast2-ldap-server.spec.in
-index f289990..56a6016 100644
+index f289990..12df00f 100644
 --- a/yast2-ldap-server.spec.in
 +++ b/yast2-ldap-server.spec.in
-@@ -36,9 +36,9 @@ rm -f $RPM_BUILD_ROOT/@plugindir@/libpy2ag_slapdconfig.so
+@@ -11,6 +11,8 @@ Requires:       yast2-users >= 2.22.3
+ 
+ # Wizard::SetDesktopTitleAndIcon
+ Requires:       yast2 >= 2.21.22
++Requires:       yast2-ruby-bindings >= 1.0.0
++
+ Summary:	YaST2 - OpenLDAP Server Configuration
+ 
+ %description
+@@ -36,9 +38,9 @@ rm -f $RPM_BUILD_ROOT/@plugindir@/libpy2ag_slapdconfig.so
  %dir @yncludedir@/ldap-server
  %dir @moduledir@/YaPI
  @yncludedir@/ldap-server/*

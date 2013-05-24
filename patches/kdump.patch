@@ -34,7 +34,7 @@ index 9454e58..35c4a63 100644
 +
 +# include $(top_srcdir)/autodocs-ycp.ami
 diff --git a/src/include/kdump/uifunctions.ycp b/src/include/kdump/uifunctions.ycp
-index 61fa93d..0b16eb8 100644
+index 61fa93d..8e02d7c 100644
 --- a/src/include/kdump/uifunctions.ycp
 +++ b/src/include/kdump/uifunctions.ycp
 @@ -17,6 +17,8 @@ import "Service";
@@ -47,10 +47,19 @@ index 61fa93d..0b16eb8 100644
      // EXAMPLE FUNCTIONS
  /*
 diff --git a/yast2-kdump.spec.in b/yast2-kdump.spec.in
-index 01bcdc8..9968a41 100644
+index 01bcdc8..1b74d21 100644
 --- a/yast2-kdump.spec.in
 +++ b/yast2-kdump.spec.in
-@@ -29,8 +29,8 @@ Configuration of kdump
+@@ -12,6 +12,8 @@ Recommends:     makedumpfile
+ BuildRequires:	yast2 >= 2.21.22
+ BuildRequires: yast2-packager >= 2.17.24
+ 
++Requires:       yast2-ruby-bindings >= 1.0.0
++
+ Summary:	Configuration of kdump
+ 
+ %description
+@@ -29,8 +31,8 @@ Configuration of kdump
  %defattr(-,root,root)
  %dir @yncludedir@/kdump
  @yncludedir@/kdump/*
