@@ -480,27 +480,33 @@ New YaST Module Structure
 -------------------------
 
 The existing directory tree layout of nearly all YaST modules is rather random
-and stupid. It is convenient to use the translation occasion to also move
-files to a more logical and uniform scheme, to enable exporting the working
-directory via `Y2DIR` and to unify Makefiles.
+and stupid. Translation into Ruby is a good opportunity to unify it. This is why
+YCP Killer contains the `yk restructure` command, which does exactly that, and
+the `yk makefile` command, which uses the unified structure to generate
+`Makefile.am` files.
 
-The following tree shows what gets installed where:
+The following scheme shows how exported directories (see [Module
+Metadata](#module-metadata)) of each YaST module should look like and where the
+files contained there will be installed.
 
 ```
 tictactoe-server
-└── src
-    ├── bin            ->  /usr/lib/YaST2/bin       (lib, even if lib64 exists)
-    ├── servers_non_y2 ->  /usr/lib/YaST2/servers_non_y2
-    ├── clients        ->  /usr/share/YaST2/clients
-    ├── data           ->  /usr/share/YaST2/data
-    ├── include        ->  /usr/share/YaST2/include
-    ├── modules        ->  /usr/share/YaST2/modules
-    ├── scrconf        ->  /usr/share/YaST2/scrconf
-    ├── autoyast-rnc   ->  /usr/share/YaST2/schema/autoyast/rnc
-    ├── control-rnc    ->  /usr/share/YaST2/schema/control/rnc
-    ├── desktop        ->  /usr/share/applications/YaST2
-    └── fillup         ->  /var/adm/fillup-templates
+└─ src
+   ├─ bin              ->   /usr/lib/YaST2/bin
+   ├─ servers_non_y2   ->   /usr/lib/YaST2/servers_non_y2
+   ├─ clients          ->   /usr/share/YaST2/clients
+   ├─ data             ->   /usr/share/YaST2/data
+   ├─ include          ->   /usr/share/YaST2/include
+   ├─ modules          ->   /usr/share/YaST2/modules
+   ├─ scrconf          ->   /usr/share/YaST2/scrconf
+   ├─ autoyast-rnc     ->   /usr/share/YaST2/schema/autoyast/rnc
+   ├─ control-rnc      ->   /usr/share/YaST2/schema/control/rnc
+   ├─ desktop          ->   /usr/share/applications/YaST2
+   └─ fillup           ->   /var/adm/fillup-templates
 ```
 
-Other directories, like `doc` and `testsuite`, are not restructured now
-and keep their existing Makefiles.
+(Note that `/usr/lib/*` will be used even on 64-bit machines, where
+`/usr/lib64/*` would be more appropriate.)
+
+Other directories, like `doc` and `testsuite`, are not restructured and keep
+their existing `Makefile.am` files.
