@@ -41,14 +41,14 @@ index 7dca6f8..98d0d0e 100644
 +# AUTODOCS_YCP=$(srcdir)/../../library/*/*.ycp
 +# include $(top_srcdir)/autodocs-ycp.ami
 diff --git a/library/Makefile.am b/library/Makefile.am
-index 5083c46..ec86614 100644
+index 5083c46..c85c318 100644
 --- a/library/Makefile.am
 +++ b/library/Makefile.am
 @@ -1,3 +1,3 @@
  # Makefile.am for yast2/library
  
 -SUBDIRS = agents types modules runlevel sequencer xml commandline desktop wizard control cwm log system packages cron network gpg
-+SUBDIRS = types runlevel sequencer xml commandline desktop wizard control cwm log system packages cron network gpg
++SUBDIRS = types runlevel sequencer xml commandline desktop wizard control cwm log system packages cron network gpg general
 diff --git a/library/agents/Makefile.am b/library/agents/Makefile.am
 index 88ef7de..e69de29 100644
 --- a/library/agents/Makefile.am
@@ -965,7 +965,7 @@ index d4ecbd3..e69de29 100644
 -
 -include $(top_srcdir)/Makefile.am.common
 diff --git a/yast2.spec.in b/yast2.spec.in
-index 68b9f1a..c8e7ff9 100644
+index 68b9f1a..72ef8e3 100644
 --- a/yast2.spec.in
 +++ b/yast2.spec.in
 @@ -78,6 +78,7 @@ Provides:       yast2-trans-menu y2t_menu
