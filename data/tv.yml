@@ -19,3 +19,8 @@ moves:
   - from: "src/*.desktop"
     to: src/desktop
 
+excluded:
+  - src/data/tv_cards-lirc_gpio.ycp
+  - src/data/tv_dvbcards.ycp
+  - src/data/tv_dvbfirmware.ycp
+
