@@ -22,17 +22,17 @@ moves:
   # move it to separate dir, otherwise it break Y2DIR scheme as there will
   # be more directories than expected
   - from: "library/modules/testsuite"
-    to: library/general/testsuite
+    to: library/general
   - from: "library/modules/*.{pm,ycp,ycp.in}"
     to: library/general/src/modules
   - from: "library/agents/*.scr"
-    to: src/scrconf
+    to: library/general/src/scrconf
   - from: "library/agents/ag_*"
-    to: src/servers_non_y2
+    to: library/general/src/servers_non_y2
   - from: "data/sysconfig.yast2"
-    to: src/fillup
+    to: library/general/src/fillup
   - from: "data/*.ycp"
-    to: src/data
+    to: library/general/src/data
   - from: "library/types/src/*.{ycp,pm}"
     to: library/types/src/modules
   - from: "library/runlevel/src/*.ycp"
@@ -97,7 +97,7 @@ moves:
     to: library/gpg/src/modules
   # TODO FIXME: the remote clients seem to obsolete, remove from upstream
   - from: "remote/*.ycp"
-    to: src/clients
+    to: library/general/src/clients
   # TODO FIXME "remote/*.desktop" are ignored, remove from upstream
 
 excluded:
@@ -116,6 +116,6 @@ excluded:
 
   # loaded via .target.ycp agent
   # do not convert (would fail at runtime)
-  - src/data/country.ycp
-  - src/data/country_long.ycp
+  - library/general/src/data/country.ycp
+  - library/general/src/data/country_long.ycp
 
