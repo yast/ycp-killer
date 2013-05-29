@@ -36,7 +36,7 @@ index 0764d69..9ef8dbb 100644
 -SUBDIRS = doc src testsuite agents config
 +SUBDIRS =
 diff --git a/yast2-sound.spec.in b/yast2-sound.spec.in
-index 1b9ba31..c7ffd5f 100644
+index 1b9ba31..3bce60f 100644
 --- a/yast2-sound.spec.in
 +++ b/yast2-sound.spec.in
 @@ -17,6 +17,8 @@ Obsoletes:	yast2-trans-sound yast2-trans-soundd y2c_snd y2t_snd y2t_sndd
@@ -61,12 +61,3 @@ index 1b9ba31..c7ffd5f 100644
  @desktopdir@/sound.desktop
  @desktopdir@/joystick.desktop
  @ybindir@/copyfonts
-@@ -57,7 +59,7 @@ fi
- 
- # database
- @ydatadir@/sndcards.ycp
--@ydatadir@/alsa_packages.ycp
-+@ydatadir@/alsa_packages.rb
- 
- # agents
- @plugindir@/libpy2ag_audio.so*
