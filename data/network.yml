@@ -51,3 +51,6 @@ excluded:
   - src/include/network/provider/wizards.ycp
   - src/include/network/provider/complex.ycp
   - src/include/network/devices.ycp
+  # keep the data in YCP format (loaded via .target.yast2)
+  - src/data/modem-t35-keys.ycp
+  - src/data/phone-codes.ycp
