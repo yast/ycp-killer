@@ -361,6 +361,17 @@ another file (called a *wrapper*). These include files and their wrappers need
 to be specified in the `include_wrappers` section in [module
 metadata](#module-metadata).
 
+You can recognize a non-standalone include file by compilation errors similar to
+this one:
+
+    /tmp/y2r20130530-20306-14322nv:770  [Parser] Undeclared identifier 'ChangeExistingSymbolsState'
+
+When the identifier is not declared in the include file itself, it means it is
+provided by some file the include file is included in. Little grepping around
+the module source usually reveals such a file, which can be then used as a
+wrapper. Note that sometimes includes are recursive, so you need to find a root
+of the whole chain.
+
 Compilation of each file can pass or fail with one of the following error:
 
   * **ERROR(y2r)** – the compilation failed when running `y2r`
