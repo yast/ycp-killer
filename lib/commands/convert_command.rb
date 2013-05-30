@@ -23,6 +23,7 @@ module Commands
       return @counts if result_failed?
 
       MakefileCommand.new.apply(mod)
+      UpdateVersionCommand.new.apply(mod)
       PackageCommand.new.apply(mod)
 
       @counts

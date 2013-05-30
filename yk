@@ -38,6 +38,7 @@ require_relative "lib/commands/submit_command"
 require_relative "lib/commands/package_command"
 require_relative "lib/commands/pull_command"
 require_relative "lib/commands/test_command"
+require_relative "lib/commands/update_version_command"
 
 class CLI < Thor
 
@@ -135,6 +136,14 @@ class CLI < Thor
     modules = modules_from_names(module_names)
     with_modules modules do |mod|
       Commands::MakefileCommand.new.apply(mod)
+    end
+  end
+
+  desc "update_version <module>...", "Update version of the module to 3.0.0"
+  def update_version(*module_names)
+    modules = modules_from_names(module_names)
+    with_modules modules do |mod|
+      Commands::UpdateVersionCommand.new.apply(mod)
     end
   end
 
