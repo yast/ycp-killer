@@ -22,3 +22,6 @@ moves:
   - from: "data/alsa_packages.ycp"
     to: src/data
 # TODO file data/sndcards.ycp is dynamically generated at build time
+
+excluded:
+  - src/data/alsa_packages.ycp
