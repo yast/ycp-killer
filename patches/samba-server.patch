@@ -9,6 +9,19 @@ index 2a6f678..4cb582c 100644
 +# TODO FIXME: temporarily disabled
 +
 +# include $(top_srcdir)/autodocs-ycp.ami
+diff --git a/src/modules/SambaBackendLDAP.pm b/src/modules/SambaBackendLDAP.pm
+index c23b5dc..fe2f2f1 100644
+--- a/src/modules/SambaBackendLDAP.pm
++++ b/src/modules/SambaBackendLDAP.pm
+@@ -460,7 +460,7 @@ BEGIN{$TYPEINFO{UpdateScripts}=["function","boolean","string","string"]}
+ sub UpdateScripts {
+     my ($self,$name,$location) = @_;
+     SambaConfig->GlobalSetMap({
+-	"add machine script" => "/sbin/yast /usr/share/YaST2/data/add_machine.ycp %m\$",
++	"add machine script" => "/sbin/yast /usr/share/YaST2/data/add_machine.rb %m\$",
+     });
+     return TRUE;
+ }
 diff --git a/testsuite/YaPI/tests/YaPI-AddSAM-2.ycp b/testsuite/YaPI/tests/YaPI-AddSAM-2.ycp
 index 49173d7..2ea5476 100644
 --- a/testsuite/YaPI/tests/YaPI-AddSAM-2.ycp
@@ -446,7 +459,7 @@ index 71a7009..e69de29 100644
 -
 -include $(top_srcdir)/Makefile.am.common
 diff --git a/yast2-samba-server.spec.in b/yast2-samba-server.spec.in
-index 025c57d..780108a 100644
+index 025c57d..1bd3af3 100644
 --- a/yast2-samba-server.spec.in
 +++ b/yast2-samba-server.spec.in
 @@ -23,6 +23,8 @@ Supplements:	samba
