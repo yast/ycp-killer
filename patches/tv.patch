@@ -32,7 +32,7 @@ index 2a6f678..4cb582c 100644
 +
 +# include $(top_srcdir)/autodocs-ycp.ami
 diff --git a/yast2-tv.spec.in b/yast2-tv.spec.in
-index 0656c33..c34b687 100644
+index 0656c33..71cfce2 100644
 --- a/yast2-tv.spec.in
 +++ b/yast2-tv.spec.in
 @@ -20,6 +20,8 @@ PreReq:		sed
@@ -44,7 +44,7 @@ index 0656c33..c34b687 100644
  Summary:	YaST2 - TV Configuration
  
  %description
-@@ -49,9 +51,10 @@ fi
+@@ -49,7 +51,7 @@ fi
  %defattr(-,root,root)
  %dir @yncludedir@/tv
  @yncludedir@/tv/*
@@ -53,6 +53,3 @@ index 0656c33..c34b687 100644
  @moduledir@/*.*
  @desktopdir@/*.desktop
  @scrconfdir@/*.scr
- @ydatadir@/*.ycp
-+@ydatadir@/*.rb
- %doc @docdir@
