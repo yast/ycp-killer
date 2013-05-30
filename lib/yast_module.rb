@@ -15,18 +15,20 @@ class YastModule
     :obs_base_dir,
     :exports,
     :excluded,
-    :moves
+    :moves,
+    :include_wrappers
 
   def initialize(name, data, data_dir)
-    @name           = name
-    @work_dir       = "#{data_dir}/#{WORK_DIR}/#@name"
-    @result_dir     = "#{data_dir}/#{RESULT_DIR}/#@name"
-    @obs_base_dir   = "#{data_dir}/#{OBS_DIR}"
-    @ybc_dep_names  = data.delete("ybc_deps") || []
-    @ruby_dep_names = data.delete("ruby_deps") || []
-    @exports        = data.delete("exports") || ["src"]
-    @excluded       = data.delete("excluded") || []
-    @moves          = data.delete("moves") || []
+    @name             = name
+    @work_dir         = "#{data_dir}/#{WORK_DIR}/#@name"
+    @result_dir       = "#{data_dir}/#{RESULT_DIR}/#@name"
+    @obs_base_dir     = "#{data_dir}/#{OBS_DIR}"
+    @ybc_dep_names    = data.delete("ybc_deps") || []
+    @ruby_dep_names   = data.delete("ruby_deps") || []
+    @exports          = data.delete("exports") || ["src"]
+    @excluded         = data.delete("excluded") || []
+    @moves            = data.delete("moves") || []
+    @include_wrappers = data.delete("include_wrappers") || {}
 
     if !data.empty?
       Messages.warning "Unknown keys in #{name}.yml: #{data.keys.join(", ")}."

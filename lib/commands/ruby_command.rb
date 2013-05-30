@@ -24,15 +24,23 @@ module Commands
           Threading.in_parallel Dir["**/*.y{cp,h}"] do |file|
             next if mod.excluded.include?(file)
 
-            work_file = "#{mod.work_dir}/#{file}"
+            converted_file = mod.include_wrappers[file] || file
+            work_file = "#{mod.work_dir}/#{converted_file}"
             FileUtils.rm "#{mod.result_dir}/#{file}"
             result_file = "#{mod.result_dir}/#{file}".sub(/\.y(cp|h)$/, ".rb")
+
             is_include = mod.exports.any? do |export|
               file.start_with?("#{export}/include")
             end
 
+            extracted_file = if mod.include_wrappers[file]
+              file.sub(/^.*\/include\//, "")
+            else
+              nil
+            end
+
             file_action "Converting", :y2r, mod, file do
-              create_rb mod, work_file, result_file, is_include
+              create_rb mod, work_file, result_file, is_include, extracted_file
             end
 
             next unless File.exists?(result_file)
@@ -60,7 +68,7 @@ module Commands
       end
     end
 
-    def create_rb(mod, file, output_file, is_include)
+    def create_rb(mod, file, output_file, is_include, extracted_file)
       cmd = ["y2r"]
 
       mod.ruby_module_paths(file).each do |module_path|
@@ -72,6 +80,7 @@ module Commands
       end
 
       cmd << "--as-include-file" if is_include
+      cmd << "--extract-file" << extracted_file if extracted_file
 
       cmd << file
       cmd << output_file
