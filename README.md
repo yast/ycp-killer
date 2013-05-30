@@ -356,6 +356,11 @@ and *.yh files in the result directory are then replaced with converted *.rb
 files. All files specified in the `excluded` section in [module
 metadata](#module-metadata) are excluded from compilation and kept intact.
 
+Some include files are not standalone and need to be compiled in context of
+another file (called a *wrapper*). These include files and their wrappers need
+to be specified in the `include_wrappers` section in [module
+metadata](#module-metadata).
+
 Compilation of each file can pass or fail with one of the following error:
 
   * **ERROR(y2r)** – the compilation failed when running `y2r`
@@ -457,6 +462,17 @@ excluded:
   - library/sequencer/doc/examples/example2.ycp
   # This include file is not self-contained and can't be converted now.
   - library/packages/src/include/packages/common.ycp
+
+# A hash that maps include files that are not standalone into files in whose
+# context they should be compiled in ("wrappers").
+#
+# All paths here are in the new structure.
+#
+# Default: {}
+include_wrappers:
+  src/include/network/isdn/config.ycp: src/modules/ISDN.ycp
+  src/include/network/lan/wireless.ycp: src/clients/lan.ycp
+  src/include/network/lan/bridge: src/clients/lan.ycp
 
 # A list of module's exported directories. These are added to include path and
 # module path of YaST modules that depend on this module when compiling them
