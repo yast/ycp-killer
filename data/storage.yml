@@ -41,6 +41,7 @@ excluded:
   - bindings/ycp/callback.ycp
   - bindings/ycp/example.ycp
   # TODO incomplete include files
+  - src/include/partitioning/custom_part_lib.ycp
   - src/include/partitioning/ep-lvm.ycp
   - src/include/partitioning/ep-lvm-lib.ycp
   - src/include/partitioning/ep-all.ycp
