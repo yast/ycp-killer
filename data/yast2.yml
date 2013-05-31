@@ -100,6 +100,9 @@ moves:
     to: library/general/src/clients
   # TODO FIXME "remote/*.desktop" are ignored, remove from upstream
 
+export_private:
+  - library/sequencer/src/modules/Sequencer.ycp
+
 excluded:
   # include stuff for testsuite
   - library/sequencer/testsuite/tests/Wizard.yh
@@ -118,4 +121,3 @@ excluded:
   # do not convert (would fail at runtime)
   - library/general/src/data/country.ycp
   - library/general/src/data/country_long.ycp
-

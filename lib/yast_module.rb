@@ -16,7 +16,8 @@ class YastModule
     :exports,
     :excluded,
     :moves,
-    :include_wrappers
+    :include_wrappers,
+    :export_private
 
   def initialize(name, data, data_dir)
     @name             = name
@@ -29,6 +30,7 @@ class YastModule
     @excluded         = data.delete("excluded") || []
     @moves            = data.delete("moves") || []
     @include_wrappers = data.delete("include_wrappers") || {}
+    @export_private   = data.delete("export_private") || []
 
     if !data.empty?
       Messages.warning "Unknown keys in #{name}.yml: #{data.keys.join(", ")}."
