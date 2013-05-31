@@ -26,6 +26,5 @@ moves:
   - from: "src/config/samba-server.rnc"
     to:   src/autoyast-rnc
 
-excluded:
-  # TODO: Include file, can't be compiled for now.
-  - src/include/samba-server/samba-options-local.ycp
+include_wrappers:
+  src/include/samba-server/samba-options-local.ycp: src/clients/samba-server.ycp
