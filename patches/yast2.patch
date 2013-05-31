@@ -1033,3 +1033,12 @@ index 68b9f1a..72ef8e3 100644
 -%doc @docdir@/xml
  
  %changelog
+diff --git a/library/general/Makefile.am b/library/general/Makefile.am
+new file mode 100644
+index 0000000..19a4533
+--- /dev/null
++++ b/library/general/Makefile.am
+@@ -0,0 +1,3 @@
++# Makefile.am for library/general
++
++SUBDIRS = src testsuite
