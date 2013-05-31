@@ -15,6 +15,5 @@ moves:
   - from: src/firewall.desktop
     to:   src/desktop
 
-excluded:
-  # Undeclared identifier 'AbortDialog'
-  - src/include/firewall/dialogs.ycp
+include_wrappers:
+  src/include/firewall/dialogs.ycp: src/include/firewall/wizards.ycp
