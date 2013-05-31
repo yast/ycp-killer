@@ -43,6 +43,8 @@ module Commands
               end
             end
 
+            options[:export_private] = mod.export_private.include?(file)
+
             file_action "Converting", :y2r, mod, file do
               create_rb mod, work_file, result_file, options
             end
@@ -85,6 +87,7 @@ module Commands
 
       cmd << "--as-include-file" if options[:is_include]
       cmd << "--extract-file" << extracted_file if options[:extracted_file]
+      cmd << "--export-private" if options[:export_private]
 
       cmd << file
       cmd << output_file

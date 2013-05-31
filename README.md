@@ -372,6 +372,11 @@ the module source usually reveals such a file, which can be then used as a
 wrapper. Note that sometimes includes are recursive, so you need to find a root
 of the whole chain.
 
+Some modules may need to be converted with their private symbols exported. These
+modules need to be specified in the `export_private` section in [module
+metadata](#module-metadata). Exporting private symbols is usually needed because
+the testsuite uses them.
+
 Compilation of each file can pass or fail with one of the following error:
 
   * **ERROR(y2r)** – the compilation failed when running `y2r`
@@ -484,6 +489,14 @@ include_wrappers:
   src/include/network/isdn/config.ycp: src/modules/ISDN.ycp
   src/include/network/lan/wireless.ycp: src/clients/lan.ycp
   src/include/network/lan/bridge: src/clients/lan.ycp
+
+# A list of modules that should be compiled with their private symbols exported.
+#
+# All paths here are in the new structure.
+#
+# Default: []
+export_private:
+  - library/sequencer/src/modules/Sequencer.ycp
 
 # A list of module's exported directories. These are added to include path and
 # module path of YaST modules that depend on this module when compiling them
