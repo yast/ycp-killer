@@ -86,7 +86,7 @@ module Commands
       end
 
       cmd << "--as-include-file" if options[:is_include]
-      cmd << "--extract-file" << extracted_file if options[:extracted_file]
+      cmd << "--extract-file" << options[:extracted_file] if options[:extracted_file]
       cmd << "--export-private" if options[:export_private]
 
       cmd << file
