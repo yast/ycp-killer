@@ -16,7 +16,6 @@ moves:
   - from: "agents/xend.scr"
     to:   src/scrconf
 
-excluded:
-  # TODO: Include files, can't be compiled for now.
-  - src/include/relocation-server/wizards.ycp
-  - src/include/relocation-server/complex.ycp
+include_wrappers:
+  src/include/relocation-server/complex.ycp: src/clients/relocation-server.ycp
+  src/include/relocation-server/wizards.ycp: src/clients/relocation-server.ycp
