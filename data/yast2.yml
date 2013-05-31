@@ -102,6 +102,8 @@ moves:
 
 export_private:
   - library/sequencer/src/modules/Sequencer.ycp
+  - library/network/src/modules/NetworkInterfaces.ycp
+  - library/commandline/src/modules/CommandLine.ycp
 
 excluded:
   # include stuff for testsuite
