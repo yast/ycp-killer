@@ -25,8 +25,7 @@ moves:
   - from: src/*.rnc
     to: src/autoyast-rnc
 
-excluded:
-  # Included files that is not complete
-  - src/include/users/dialogs.ycp
-  - src/include/users/routines.ycp
-  - src/include/users/cmdline.ycp
+include_wrappers:
+  src/include/users/dialogs.ycp: src/include/users/wizards.ycp
+  src/include/users/routines.ycp: src/include/users/wizards.ycp
+  src/include/users/cmdline.ycp: src/clients/users.ycp

@@ -51,8 +51,20 @@ index b6bc8cc..1412807 100644
  
  htmldir = @docdir@
  
+diff --git a/src/include/users/routines.ycp b/src/include/users/routines.ycp
+index 84686e4..c5e262b 100644
+--- a/src/include/users/routines.ycp
++++ b/src/include/users/routines.ycp
+@@ -29,6 +29,7 @@
+  */
+ {
+ import "Mode";
++import "Stage";
+ 
+ textdomain "users";
+ 
 diff --git a/yast2-users.spec.in b/yast2-users.spec.in
-index dda3d5f..b946d47 100644
+index dda3d5f..acf6d4c 100644
 --- a/yast2-users.spec.in
 +++ b/yast2-users.spec.in
 @@ -21,6 +21,8 @@ Requires:       yast2 >= 2.23.7
