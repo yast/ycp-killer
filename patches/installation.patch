@@ -105,6 +105,22 @@ index 3ef84e6..80773e2 100644
  	xmlns:xi="http://www.w3.org/2001/XInclude"/>
  
      </programlisting>
+diff --git a/src/clients/driver_update2_finish.ycp b/src/clients/driver_update2_finish.ycp
+index 909e81c..f9d3ae3 100644
+--- a/src/clients/driver_update2_finish.ycp
++++ b/src/clients/driver_update2_finish.ycp
+@@ -64,7 +64,10 @@ if (func == "Info")
+ else if (func == "Write")
+ {
+     Vendor::DriverUpdate2 ();
+-    if (WFM::Read (.local.size, "/usr/share/YaST2/clients/product_finish.ycp") > 0)
++    // product_finish client is provided by the driver update,
++    // support both YCP and Ruby clients
++    if (WFM::Read (.local.size, "/usr/share/YaST2/clients/product_finish.ycp") > 0
++      || WFM::Read (.local.size, "/usr/share/YaST2/clients/product_finish.rb") > 0)
+ 	WFM::CallFunction ("product_finish", [Mode::update ()]);
+ }
+ else
 diff --git a/src/clients/inst_automatic_configuration.ycp b/src/clients/inst_automatic_configuration.ycp
 index 0689035..66b2263 100644
 --- a/src/clients/inst_automatic_configuration.ycp
@@ -121,7 +137,7 @@ index 0689035..66b2263 100644
      });
  
 diff --git a/yast2-installation.spec.in b/yast2-installation.spec.in
-index 2ff4767..adb6c00 100644
+index 2ff4767..78d35a5 100644
 --- a/yast2-installation.spec.in
 +++ b/yast2-installation.spec.in
 @@ -3,6 +3,8 @@
