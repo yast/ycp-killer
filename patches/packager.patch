@@ -14,27 +14,201 @@ index f8be896..87a7241 100644
 +#AUTODOCS_YCP = $(wildcard $(srcdir)/../../src/*/*.ycp)
 +#AUTODOCS_PM  = $(wildcard $(srcdir)/../../src/*/*.pm)
 +#include $(top_srcdir)/autodocs-ycp.ami
+diff --git a/src/clients/sw_single.ycp b/src/clients/sw_single.ycp
+index f6685c5..04ce372 100644
+--- a/src/clients/sw_single.ycp
++++ b/src/clients/sw_single.ycp
+@@ -585,9 +585,9 @@ without having package %1 installed"), required_package));
+ 		}
+ 	       foreach (string package, packagelist,		// Yes: install them
+ 	       {
+-		   if (action == `install
++		   if (action == `install ||
+ 		       // TODO `update: tell the user if already up to date
+-		       || (action == `update && CanBeUpdated (package))) {
++		       (action == `update && CanBeUpdated (package))) {
+ 		       // select package for installation
+ 		       if (!Pkg::PkgInstall (package)) {
+ 			   // oops, package not found ? try capability
+diff --git a/src/modules/Packages.ycp b/src/modules/Packages.ycp
+index 414f0d7..b70b3c9 100644
+--- a/src/modules/Packages.ycp
++++ b/src/modules/Packages.ycp
+@@ -515,11 +515,11 @@ global map Summary (list<symbol> flags, boolean use_cache) {
+     if (! CheckDiskSize (! use_cache))
+     {
+ 	ret = $[
+-	    "warning" : ProductFeatures::GetFeature ("software","selection_type") == `fixed
++	    "warning" : ProductFeatures::GetFeature ("software","selection_type") == `fixed ?
+ 		// summary warning
+-		? _("Not enough disk space.")
++		_("Not enough disk space.") :
+ 		// summary warning
+-		: _("Not enough disk space. Remove some packages in the single selection."),
++		_("Not enough disk space. Remove some packages in the single selection."),
+ 	    "warning_level" : Mode::update() ? `warning : `blocker,
+ 	];
+     }
+diff --git a/src/modules/ProductLicense.ycp b/src/modules/ProductLicense.ycp
+index f2e105a..688ceac 100644
+--- a/src/modules/ProductLicense.ycp
++++ b/src/modules/ProductLicense.ycp
+@@ -925,12 +925,12 @@ symbol HandleLicenseDialogRet (map <string, string> & licenses, boolean base_pro
+ 		    break;
+ 		}
+ 		// text changed due to bug #162499
+-		string refuse_popup_text = base_product
++		string refuse_popup_text = base_product ?
+ 		    // text asking whether to refuse a license (Yes-No popup)
+-		    ? _("Refusing the license agreement cancels the installation.
+-Really refuse the agreement?")
++		    _("Refusing the license agreement cancels the installation.
++Really refuse the agreement?") :
+ 		    // text asking whether to refuse a license (Yes-No popup)
+-		    : _("Refusing the license agreement cancels the add-on
++		    _("Refusing the license agreement cancels the add-on
+ product installation. Really refuse the agreement?");
+ 		if (! Popup::YesNo(refuse_popup_text))
+ 		{
+diff --git a/src/modules/SourceDialogs.ycp b/src/modules/SourceDialogs.ycp
+index bb717c4..0df1db0 100644
+--- a/src/modules/SourceDialogs.ycp
++++ b/src/modules/SourceDialogs.ycp
+@@ -1120,9 +1120,9 @@ map<string,any> USBWidget ()
+ 	"widget" : `custom,
+ 	"custom_widget" : `VBox(
+ 	    // combobox title
+-	    `Left(`ComboBox(`id (`disk), /*`opt(`hstretch),*/ _("&USB Mass Storage Device")
++	    `Left(`ComboBox(`id (`disk), /*`opt(`hstretch),*/ _("&USB Mass Storage Device") +
+ 	    // the spacing is added to make the widget wider
+-	    + "                                                   ")),
++	    "                                                   ")),
+ 	    `Left(`ComboBox(`id (`fs), `opt(`editable), _("&File System"))),
+ 	    `Left(`InputField(`id(`dir), _("Dire&ctory"))),
+ 	    `Left(`CheckBox(`id(`ch_plain), _("&Plain RPM Directory")))
+@@ -1136,10 +1136,10 @@ If the path is omitted, the system will use the root directory of the disk.
+ If the directory contains only RPM packages without
+ any metadata (i.e. there is no product information), then check option
+ <b>Plain RPM Directory</b>.</p>
+-")
++") +
+ 
+ // 'auto' is a value in the combo box widget, do not translate it!
+-+ _("<p>The file system used on the device will be detected automatically
++_("<p>The file system used on the device will be detected automatically
+ if you select file system 'auto'. If the detection fails or you
+ want to use a certain file system, select it from the list.</p>
+ ")
+@@ -1207,10 +1207,10 @@ If the path is omitted, the system will use the root directory of the disk.
+ If the directory contains only RPM packages without
+ any metadata (i.e. there is no product information), then check option
+ <b>Plain RPM Directory</b>.</p>
+-")
++") +
+ 
+ // 'auto' is a value in the combo box widget, do not translate it!
+-+ _("<p>The file system used on the device will be detected automatically
++_("<p>The file system used on the device will be detected automatically
+ if you select file system 'auto'. If the detection fails or you
+ want to use a certain file system, select it from the list.</p>
+ ")
+@@ -1449,22 +1449,22 @@ symbol ServerHandle (string key, map event) {
+ 		(type == `http || type == `https) ?
+ 		    `HBox(`HSpacing(1), `HSquash(`InputField (`id (`port), _("&Port"), port)))
+ 		    : `Empty(),
+-	    type == `samba
++	    type == `samba ?
+ 		// text entry
+-		? `InputField (`id (`share), `opt (`hstretch), _("&Share"))
+-		: `Empty ()
++		`InputField (`id (`share), `opt (`hstretch), _("&Share")) :
++		`Empty ()
+ 	    ),
+-	    type == `samba
+-		? `VBox (
++	    type == `samba ?
++		`VBox (
+ 		    `InputField (`id (`dir), `opt (`hstretch),
+ 			// text entry
+ 			_("&Path to Directory or ISO Image"), dir),
+ 
+ 		    // checkbox label
+ 		    `Left (`CheckBox (`id (`ch_iso), _("ISO &Image")))
+-		)
++		) :
+ 		// text entry
+-		: `InputField (`id (`dir), `opt (`hstretch), _("&Directory on Server"), dir),
++		`InputField (`id (`dir), `opt (`hstretch), _("&Directory on Server"), dir),
+ 	    `HBox (
+ 		`HSpacing (0.5),
+ 		// frame
+@@ -1472,11 +1472,11 @@ symbol ServerHandle (string key, map event) {
+ 		    `Left (`CheckBox (`id (`anonymous), `opt (`notify),
+ 			// check box
+ 			_("&Anonymous"), anonymous)),
+-		    type == `samba
++		    type == `samba ?
+ 			// text entry
+-			? `InputField (`id (`workgroup), `opt (`hstretch),
+-			    _("&Workgroup or Domain"))
+-			: `Empty (),
++			`InputField (`id (`workgroup), `opt (`hstretch),
++			    _("&Workgroup or Domain")) :
++			`Empty (),
+ 		    // text entry
+ 		    `VSpacing(0.4),
+ 		    `HBox(
+@@ -1722,9 +1722,9 @@ For the SMB/CIFS repository, specify <b>Share</b> name and <b>Path to Directory
+ or ISO Image</b>. 
+ If the location is a file holding an ISO image
+ of the media, set <b>ISO Image</b>.</p>
+-")
++") +
+ // help text - server dialog, there is a "Port" widget
+-+ _("<p>It is possible to set the <b>Port</b> number for a HTTP/HTTPS repository.
++_("<p>It is possible to set the <b>Port</b> number for a HTTP/HTTPS repository.
+ Leave it empty to use the default port.</p>
+ ")
+ + multi_cd_help,
+diff --git a/src/modules/SourceManager.ycp b/src/modules/SourceManager.ycp
+index d26cb59..5297d3a 100644
+--- a/src/modules/SourceManager.ycp
++++ b/src/modules/SourceManager.ycp
+@@ -441,11 +441,11 @@ define string createItem( integer index, map source ) {
+     map generalData = Pkg::SourceGeneralData( id );
+     map productData = Pkg::SourceProductData( id );
+     string sitem = "";
+-    string status = source[ "enabled" ]:true
++    string status = source[ "enabled" ]:true ?
+ 	// status info, to be used inside summary
+-	? _("Enabled")
++	_("Enabled") :
+ 	// status info, to be used inside summary
+-	: _("Disabled");
++	_("Disabled");
+     string color = source[ "enabled" ]:true ? "#006600" : "#FF0000";
+     sitem = sitem + HTML::Colorize("["+status+"] ",
+             color);
+@@ -467,11 +467,11 @@ define term  createOverviewItem( integer index, map source ) {
+ 
+     term item = `item(
+ 		      `id(index ),
+-		      source[ "enabled" ]:true
++		      source[ "enabled" ]:true ?
+ 		      // corresponds to the "Enable/Disable" button
+-			? _("On")
++			_("On") :
+ 		      // corresponds to the "Enable/Disable" button
+-			: _("Off"),
++			_("Off"),
+ 		      productData[ "label" ]:generalData["type"]:_("Unknown"),
+ 		      generalData[ "url" ]:""
+ 		      );    
 diff --git a/yast2-packager.spec.in b/yast2-packager.spec.in
-index 6510846..3777b63 100644
+index 6510846..076ab12 100644
 --- a/yast2-packager.spec.in
 +++ b/yast2-packager.spec.in
-@@ -58,11 +58,15 @@ Obsoletes:	y2t_spkg y2t_inst-packages y2pkginf y2c_spkg
- Provides:	yast2-trans-package-manager yast2-trans-inst-packages
- Obsoletes:	yast2-trans-package-manager yast2-trans-inst-packages
- 
-+Requires:       yast2-ruby-bindings >= 1.0.0
-+
- Summary:	YaST2 - Package Library
- 
- %package webpin
- 
- Group:		System/YaST
-+Requires:       yast2-ruby-bindings >= 1.0.0
-+
- Summary:	YaST2 - Webpin package search client
- 
- %description
-@@ -87,11 +91,10 @@ This package contains a client for searching packages in online repositories
+@@ -87,11 +87,10 @@ This package contains a client for searching packages in online repositories
  %dir @yncludedir@/packager
  @yncludedir@/checkmedia/*
  @yncludedir@/packager/*
@@ -49,7 +223,7 @@ index 6510846..3777b63 100644
  @desktopdir@/*.desktop
  @scrconfdir@/*
  @execcompdir@/servers_non_y2/ag_*
-@@ -99,6 +102,6 @@ This package contains a client for searching packages in online repositories
+@@ -99,6 +98,6 @@ This package contains a client for searching packages in online repositories
  
  %files webpin
  %defattr(-,root,root)
