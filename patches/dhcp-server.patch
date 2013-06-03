@@ -23,6 +23,25 @@ index 2a6f678..6fade89 100644
 -include $(top_srcdir)/autodocs-ycp.ami
 +# FIXME autodocs temporarily disabled
 +# include $(top_srcdir)/autodocs-ycp.ami
+diff --git a/src/include/dhcp-server/commandline.ycp b/src/include/dhcp-server/commandline.ycp
+index e737474..edb7ba8 100644
+--- a/src/include/dhcp-server/commandline.ycp
++++ b/src/include/dhcp-server/commandline.ycp
+@@ -24,11 +24,11 @@ include "dhcp-server/misc.ycp";
+   * @return boolean true if settings have been changed
+   */
+ define boolean StatusHandler (map options) {
+-    CommandLine::Print (DhcpServer::GetStartService ()
++    CommandLine::Print (DhcpServer::GetStartService () ?
+ 	// status information for command line
+-	? _("DHCP server is enabled")
++	_("DHCP server is enabled") :
+ 	// status information for command line
+-	: _("DHCP server is disabled")
++	_("DHCP server is disabled")
+     );
+     return false;
+ }
 diff --git a/src/include/dhcp-server/dialogs.ycp b/src/include/dhcp-server/dialogs.ycp
 index 8643ffc..651d00f 100644
 --- a/src/include/dhcp-server/dialogs.ycp
@@ -255,6 +274,23 @@ index 32d79ea..e2a0900 100644
  	"contents" : tab_descr["contents"]:`VBox (),
  	"caption" :  caption,
  	"back_button" : Label::BackButton (),
+diff --git a/src/include/dhcp-server/helps.ycp b/src/include/dhcp-server/helps.ycp
+index 0a06613..8992515 100644
+--- a/src/include/dhcp-server/helps.ycp
++++ b/src/include/dhcp-server/helps.ycp
+@@ -54,10 +54,10 @@ enable <b>LDAP Support</b>.</p>"),
+ To modify an existing declaration, select it and click <b>Edit</b>.
+ To add a new declaration, select a declaration that should include
+ the new declaration and click <b>Add</b>.
+-To delete a declaration, select it and click <b>Delete</b>.</p>")
++To delete a declaration, select it and click <b>Delete</b>.</p>") +
+ 
+ 	// help text 5/5
+-	+ _("<p><b><big>Advanced Functions</big></b><br>
++	_("<p><b><big>Advanced Functions</big></b><br>
+ Use <b>Advanced</b> to display the log of the DHCP server,
+ change network interfaces to which the DHCP server listens,
+ or manage TSIG keys that can be used for authentication of 
 diff --git a/src/include/dhcp-server/options.ycp b/src/include/dhcp-server/options.ycp
 index 57b16f4..741ab04 100644
 --- a/src/include/dhcp-server/options.ycp
@@ -669,8 +705,30 @@ index 285ec51..7278154 100644
  any FirstRunSequence() {
  
      map aliases = $[
+diff --git a/testsuite/tests/Write.ycp b/testsuite/tests/Write.ycp
+index 63e595d..3366661 100644
+--- a/testsuite/tests/Write.ycp
++++ b/testsuite/tests/Write.ycp
+@@ -84,7 +84,7 @@
+     DUMP ("===============================");
+     TEST (``(DhcpServer::Import (
+ $["allowed_interfaces":["eth0", "eth2"], "chroot":"0", "other_options":"-p 111", "settings":[$["children":[], "comment_after":nil, "comment_before":nil, "directives":[], "id":"", "options":[$["comment_after":"", "comment_before":"# dhcpd.conf", "key":"domain-name", "type":"option", "value":"\"example.org\""], $["comment_after":"", "comment_before":"", "key":"domain-name-servers", "type":"option", "value":"ns1.example.org, ns2.example.org"], $["comment_after":"", "comment_before":"", "key":"policy-filter", "type":"option", "value":"{ a1, a2 }, { a1, a2 }, { a3, a4 }"]], "parent_id":"", "parent_type":"", "type":""]], "start_service":"0"]
+-/*
++)), [], 0); /*
+ 
+ $[
+ 	"allowed_interfaces":["0"],
+@@ -125,7 +125,7 @@ $[
+ 	    ]
+ 	],
+ 	"start_service":"0"
+-    ]*/)), [], 0);
++    ]*/
+     DUMP ("===============================");
+     TEST (``(DhcpServer::Write ()), [READ, WRITE, EXEC], 0);
+ 
 diff --git a/yast2-dhcp-server.spec.in b/yast2-dhcp-server.spec.in
-index 90af475..ca4dbee 100644
+index 90af475..2aedfae 100644
 --- a/yast2-dhcp-server.spec.in
 +++ b/yast2-dhcp-server.spec.in
 @@ -15,6 +15,8 @@ Requires: yast2-dns-server >= 2.13.16
