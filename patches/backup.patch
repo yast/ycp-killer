@@ -21,8 +21,333 @@ index 2a6f678..9de7be0 100644
 +# TODO FIXME: temporarily disabled
 +
 +#include $(top_srcdir)/autodocs-ycp.ami
+diff --git a/src/include/backup/functions.ycp b/src/include/backup/functions.ycp
+index c2d8cd3..517f97d 100644
+--- a/src/include/backup/functions.ycp
++++ b/src/include/backup/functions.ycp
+@@ -670,9 +670,9 @@ define boolean AbortConfirmation(symbol type) ``{
+     string detail_heading = _("Details:");
+ 
+     // header in email body
+-    string body = sformat(_("BACKUP REPORT for Profile %1"), cron_profile) + br + br + br
++    string body = sformat(_("BACKUP REPORT for Profile %1"), cron_profile) + br + br + br +
+ 	// header in email body followed by errors or warnings
+-	+ ((size(reported) > 0) ? _("Problems During Automatic Backup:") + br + reported + br + br : "")
++	((size(reported) > 0) ? _("Problems During Automatic Backup:") + br + reported + br + br : "")
+ 	+ summary_heading + br + CreateUnderLine(summary_heading, "=") + br + br + backup_result + br
+ 	+ ((size(ren_header) > 0) ? ren_header + br + br + renamed + br + br + removed + br + br : "")
+ 	+ detail_heading + br + CreateUnderLine(detail_heading, "=") + br + br + backup_details;
+diff --git a/src/include/backup/help_texts.ycp b/src/include/backup/help_texts.ycp
+index 62d6d6b..c070c66 100644
+--- a/src/include/backup/help_texts.ycp
++++ b/src/include/backup/help_texts.ycp
+@@ -29,16 +29,16 @@ textdomain "backup";
+     return _("<P><B><big>Backup</big></B><BR>To create a backup of your system,
+ enter the absolute path for the file in which to store the backup in 
+ <b>Filename</b>. To store the file on an NFS server, select <b>Network</b> 
+-as the location and enter the server details.")
++as the location and enter the server details.") +
+ 
+     // For translators: help text in archive setting dialog - part 2/3
+-    + _("<P>The backup module creates a tar archive with changed files and 
++    _("<P>The backup module creates a tar archive with changed files and 
+ an autoinstallation profile for easy and fast system reinstallation. 
+ To store only the names of detected files instead of creating an archive, 
+-select <B>Only Create List of Files Found</B>.</P>")
++select <B>Only Create List of Files Found</B>.</P>") +
+ 
+     // For translators: help text in archive setting dialog - part 3/3
+-    + _("<P>If you use ACLs (access control lists) for file access and 
++    _("<P>If you use ACLs (access control lists) for file access and 
+ want to back them up, select the subarchive type star.  To create a 
+ multivolume archive, for example, for storage on a fixed-size media 
+ like CDs, use <b>Options</b> to configure these settings.</P>");
+@@ -54,16 +54,16 @@ like CDs, use <b>Options</b> to configure these settings.</P>");
+     // For translators: help text in tar options dialog - part 1/3
+     return _("<P><B><BIG>Multivolume Archive</BIG></B><BR>
+ A backup archive can be divided into several smaller parts. This is useful 
+-if an archive is larger than the space available on the backup medium.</P>")
++if an archive is larger than the space available on the backup medium.</P>") +
+ 
+     // For translators: help text in tar options dialog - part 2/3
+-    + _("<P>To create a multivolume archive,  enable that option and 
++    _("<P>To create a multivolume archive,  enable that option and 
+ select your backup medium.  If your backup medium is not in the list, 
+-select <B>Custom</B>.  Then enter the volume size in <b>Custom Size</b>.</P>")
++select <B>Custom</B>.  Then enter the volume size in <b>Custom Size</b>.</P>") +
+ 
+     // For translators: help text in tar options dialog - part 3/3
+     // http://en.wikipedia.org/wiki/Byte
+-    + _("<P><B>Note:</B> 1 kB=1000 bytes, 1 KiB=1024 bytes, etc. 
++    _("<P><B>Note:</B> 1 kB=1000 bytes, 1 KiB=1024 bytes, etc. 
+ The entered volume size will be rounded down to a 
+ multiple of 2048 bytes.</P>");
+ }
+@@ -76,21 +76,21 @@ multiple of 2048 bytes.</P>");
+ 
+  define string backup_help_backup_setting() ``{
+     // For translators: help text in backup settings dialog - part 1
+-    return _("<P><B><BIG>Backup Options</BIG></B><BR>Here, select which parts of the system to search and back up. <B>Archive Description</B> is an optional description of the backup archive.</P>")
++    return _("<P><B><BIG>Backup Options</BIG></B><BR>Here, select which parts of the system to search and back up. <B>Archive Description</B> is an optional description of the backup archive.</P>") +
+ 
+     // For translators: help text in backup settings dialog - part 2
+-    + _("<P>The archive will contain files from packages that were changed since
++    _("<P>The archive will contain files from packages that were changed since
+ package installation or upgrade. Files that do not belong to any
+-package can be optionally added to the archive.</P>")
++package can be optionally added to the archive.</P>") +
+ 
+     // For translators: help text in backup settings dialog - part 3
+-    + _("<P>Check <B>Display List of Files</B> to show and edit a list of files found before creating the backup archive.</P>")
++    _("<P>Check <B>Display List of Files</B> to show and edit a list of files found before creating the backup archive.</P>") +
+ 
+     // For translators: help text in backup settings dialog - part 4
+-    + _("<P>If you select <b>Check MD5 Sum</b>, the MD5 sum is used to determine if the file was changed. It is more reliable than checking the size or modification time, but takes longer.</P>")
++    _("<P>If you select <b>Check MD5 Sum</b>, the MD5 sum is used to determine if the file was changed. It is more reliable than checking the size or modification time, but takes longer.</P>") +
+ 
+     // TRANSLATORS: help text in backup settings dialog - part 5
+-    + _("<p>Select <b>Backup Content of All Packages</b> to back up all files belonging
++    _("<p>Select <b>Backup Content of All Packages</b> to back up all files belonging
+ to all installed packages. This option is useful when creating an archive that
+ need not have the same installation repositories or the same packages
+ available in order to restore. It is faster not to use this option.</p>
+@@ -144,10 +144,10 @@ packages.</P>");
+ 
+  define string backup_help_file_selection() ``{
+     // For translators: help text in file dialog - part 1/2
+-    return _("<P><B><BIG>Detected Files</BIG></B><BR>This is a list of files found. Select which files to store in the archive.</P>")
++    return _("<P><B><BIG>Detected Files</BIG></B><BR>This is a list of files found. Select which files to store in the archive.</P>") +
+ 
+     // For translators: help text in file dialog - part 2/2
+-    + _("<P>A mark in the first column indicates that the file will be backed up.</P>");
++    _("<P>A mark in the first column indicates that the file will be backed up.</P>");
+ }
+ 
+ 
+@@ -184,22 +184,22 @@ of the backup. Click <B>Details</B> to see more information.</P>");
+     // For translators: help text in the automatic backup dialog (1/4)
+     return _("<P><B><BIG>Automatic Backup</BIG></B><BR>
+ The selected profile can be started automatically in the background without 
+-any user interaction.</P>")
++any user interaction.</P>") +
+ 
+     // For translators: help text in the automatic backup dialog (2/4)
+-    + _("<P>To start the backup automatically with the selected profile, 
++    _("<P>To start the backup automatically with the selected profile, 
+ check <b>Start Backup Automatically</b> and set how often and when the 
+-backup should be started. Use the 24-hour clock format for <b>Hour</b>.</P>")
++backup should be started. Use the 24-hour clock format for <b>Hour</b>.</P>") +
+ 
+     // For translators: help text in the automatic backup dialog (3/4)
+-    + _("<P>The previous full backup archive, if it exists, will be renamed by 
++    _("<P>The previous full backup archive, if it exists, will be renamed by 
+ putting the date in the form YYYYMMDDHHMMSS at the beginning of the 
+ filename. If the number of old archives is greater than the predefined 
+ value, the oldest archives are deleted. All archives are stored
+-as <b>full backups</b>.</P>")
++as <b>full backups</b>.</P>") +
+ 
+ 	// For translators: help text in automatic backup dialog (4/4)
+-     + _("<p>For the root user to receive information about the backup, 
++     _("<p>For the root user to receive information about the backup, 
+ select <b>Send Summary Mail to User root</b>.  This summary contains 
+ information about the files included in the backup and any errors that 
+ occur.</p>");
+@@ -218,20 +218,20 @@ occur.</p>");
+ This backup tool searches files on your system and creates a backup 
+ archive from them. It is a small, easy-to-use backup program. 
+ If you need advanced features, such as incremental backup or 
+-network backup, you should use an expert tool.</P>")
++network backup, you should use an expert tool.</P>") +
+ 
+ 	//For translators: help text in profile management dialog - part 2/4
+-	+ _("<P>This dialog shows the list of currently stored backup 
++	_("<P>This dialog shows the list of currently stored backup 
+ profiles. A backup profile is used to name a group of different settings, 
+-such as the name of an archive and how to search for files.</P>")
++such as the name of an archive and how to search for files.</P>") +
+ 	// For translators: help text in profile management dialog - part 3/4
+-	+ _("<P>You can have a number of profiles, each with a unique name. 
++	_("<P>You can have a number of profiles, each with a unique name. 
+ Using the actions in <B>Profile Management</B>, you can add a new profile 
+ based on default values, duplicate an existing profile, change the settings 
+ stored in a profile, or delete a profile. Use the <b>Automatic Backup</b> 
+-option to configure routine backups of the selected profile.</P>")
++option to configure routine backups of the selected profile.</P>") +
+ 	// For translators: help text in profile management dialog - part 4/4
+-	+ _("<P>Press <B>Create Backup</B> to start the backup using 
++	_("<P>Press <B>Create Backup</B> to start the backup using 
+ settings stored in the currently selected profile. Press 
+ <B>Back Up Manually</B> to use default settings that can be 
+ modified before starting the backup process.</P>");
+@@ -247,11 +247,11 @@ modified before starting the backup process.</P>");
+ 
+ 	// For translators: help text in backup expert options dialog - part 1/3
+     return _("<P><BIG><B>Expert Options</B></BIG><BR>Some advanced configuration options
+-can be set in this dialog. Usually there is no need to modify the default values.</P>")
++can be set in this dialog. Usually there is no need to modify the default values.</P>") +
+ 	// For translators: help text in backup expert options dialog - part 3/3
+-	+ _("<P>System areas, such as partition table or ext2 image, can be added to the backup archive with <b>Back Up Hard Disk System Areas</b>. These system areas can only be restored from an archive manually.</P>")
++	_("<P>System areas, such as partition table or ext2 image, can be added to the backup archive with <b>Back Up Hard Disk System Areas</b>. These system areas can only be restored from an archive manually.</P>") +
+ 	// For translators: help text in backup expert options dialog - part 2/3
+-	+ _("<P>In <B>Temporary Directory</B>, set the location in which parts
++	_("<P>In <B>Temporary Directory</B>, set the location in which parts
+ of the archive are stored before the final archive is created. The temporary directory should have enough
+ free space for the entire archive.</P>\n");
+ 
+@@ -274,28 +274,28 @@ To change or delete a directory, select it and click
+ <b>Edit</b> or <b>Delete</b>.
+ If you do not select any directory or if you delete all the already listed ones,
+ the entire file system is searched and backed up.</p>
+-")
++") +
+     
+     // For translators: help text in exclude directory dialog - part 2/5
+-    + _("<P><BIG><B>Constraints</B></BIG>
++    _("<P><BIG><B>Constraints</B></BIG>
+ <BR>It is possible to exclude some files from the backup.
+ Search constraints can be a directory, file system, or regular expression.
+ Use <b>Edit</b> to modify an existing constraint, or
+ <b>Delete</b> to remove the selected constraint.
+-To add a new constraint, click <b>Add</b> then select the type of constraint. </P>")
++To add a new constraint, click <b>Add</b> then select the type of constraint. </P>") +
+ 
+     // For translators: help text in exclude directory dialog - part 3/5
+-    + _("<P><B>Directory</B>: All files located in the specified directories will not be backed up.</P>")
++    _("<P><B>Directory</B>: All files located in the specified directories will not be backed up.</P>") +
+ 
+     // For translators: help text in exclude directory dialog - part 4/5
+-    + _("<P><B>File System</B>: It is possible to exclude all files located
++    _("<P><B>File System</B>: It is possible to exclude all files located
+ on a certain type of file system (such as ReiserFS or Ext2).
+ The root directory will always be searched, even if its file system is selected.
+ File systems that cannot be used on a local disk, such as network file systems,
+-are excluded by default.</P>")
++are excluded by default.</P>") +
+ 
+     // For translators: help text in exclude directory dialog - part 5/5
+-    + _("<P><B>Regular Expressions</B>: Any filename that matches any of the regular expressions will not be backed up. Use Perl regular expressions. To exclude, for example, <tt>*.bak</tt> files, add the regular expression <tt>\\.bak$</tt>.</P>");
++    _("<P><B>Regular Expressions</B>: Any filename that matches any of the regular expressions will not be backed up. Use Perl regular expressions. To exclude, for example, <tt>*.bak</tt> files, add the regular expression <tt>\\.bak$</tt>.</P>");
+ 
+ }
+ 
+diff --git a/src/include/backup/ui.ycp b/src/include/backup/ui.ycp
+index af10f88..22e0921 100644
+--- a/src/include/backup/ui.ycp
++++ b/src/include/backup/ui.ycp
+@@ -2198,8 +2198,8 @@ Aborting the backup.
+         string dir_shown = "";
+ 
+ 	while ((boolean) SCR::Read (.process.running, backup_PID) || ! (boolean) SCR::Read (.process.buffer_empty, backup_PID))
+-	// test of script_out size is needed, because previous while cycle was interrupted and script could exited with no new output...
+ 	{
++	// test of script_out size is needed, because previous while cycle was interrupted and script could exited with no new output...
+ 	    line = (string) SCR::Read (.process.read_line, backup_PID);	// read line
+ 	    if (line == nil) continue;
+ 
+@@ -3138,16 +3138,16 @@ Replace the existing profile?
+     else
+     {
+ 	// part of summary text
+-	backup_result = p + _("Modified Files Found: ") + modified_num + br
++	backup_result = p + _("Modified Files Found: ") + modified_num + br +
+ 	// part of summary text
+-	    + _("Total Size: ") + String::FormatSize(modified_size) + _p;
++	    _("Total Size: ") + String::FormatSize(modified_size) + _p;
+ 
+ 	if (Backup::do_search)
+ 	{
+ 	    // part of summary text
+-	    backup_result = backup_result + p + _("Files Not in a Package Found: ") + nopkg_num + br
++	    backup_result = backup_result + p + _("Files Not in a Package Found: ") + nopkg_num + br +
+ 	    // part of summary text
+-		+ _("Total Size: ") + String::FormatSize(nopkg_size) + _p;
++		_("Total Size: ") + String::FormatSize(nopkg_size) + _p;
+ 	}
+ 
+ 	if (Backup::display)
+@@ -3165,9 +3165,9 @@ Replace the existing profile?
+ 	    // part of summary text
+ 	    (em + _("Storing file list failed") + _em)) + br + (comment_stored ? _("Comment stored successfully") :
+ 	    // part of summary text
+-	    (em + _("Storing comment failed") + _em)) + br
++	    (em + _("Storing comment failed") + _em)) + br +
+ 	    // part of summary text
+-	    + (packages_list_stored ? _("List of installed packages stored successfully") :
++	    (packages_list_stored ? _("List of installed packages stored successfully") :
+ 	    // part of summary text
+ 	    (em + _("Storing list of installed packages failed") + _em)) + _p;
+ 
+@@ -3235,17 +3235,17 @@ Replace the existing profile?
+ 
+ 			if (r)
+ 			{
+-			    backup_details = backup_details
++			    backup_details = backup_details +
+ 				// For translators: %1 is partition name e.g. /dev/hda1 - part of summary text
+-				+ sformat(_("Ext2 image of %1 stored successfully"), partition_name) + br;
++				sformat(_("Ext2 image of %1 stored successfully"), partition_name) + br;
+ 
+ 			    added_files = added_files + 1;
+ 			}
+ 			else
+ 			{
+-			    backup_details = backup_details + em
++			    backup_details = backup_details + em +
+ 				// For translators: %1 is partition name e.g. /dev/hda1 - part of summary text
+-				+ sformat(_("Storing ext2 image of %1 failed"), partition_name) + _em + br;
++				sformat(_("Storing ext2 image of %1 failed"), partition_name) + _em + br;
+ 			}
+ 
+ 			index = index + 1;
+@@ -3285,9 +3285,9 @@ Replace the existing profile?
+ 	y2debug("added_files: %1", added_files);
+ 	y2debug("total_files: %1", total_files);
+ 
+-	backup_result = backup_result + _p
++	backup_result = backup_result + _p +
+ 	    // part of summary text
+-	    + br + ((selected_files_num + added_files < total_files) ? em + _("Warning: Some files were not backed up") + _em + br : "");
++	    br + ((selected_files_num + added_files < total_files) ? em + _("Warning: Some files were not backed up") + _em + br : "");
+ 
+ 	string archive_created = "";
+ 
+@@ -3306,11 +3306,11 @@ Replace the existing profile?
+ 	// part of summary text - %1 is file name
+ 	string profilesummary = (((boolean)(profilewritten["result"]:false)) == true) ? sformat(_("Autoinstallation profile saved to file %1."), (string)(profilewritten["profile"]:"")) : (em + _("Autoinstallation profile was not saved.") + _em);
+ 
+-	backup_result = backup_result
++	backup_result = backup_result +
+ 	    // part of summary text
+-	    + ((tar_result == 0) ? archive_created : (em + _("Archive creation failed") + _em))
+-	    + br + profilesummary + br
+-	    + _p;
++	    ((tar_result == 0) ? archive_created : (em + _("Archive creation failed") + _em)) +
++	    br + profilesummary + br +
++	    _p;
+ 
+ 	// part of summary text
+ 	backup_details = backup_details + p + _("Total Archived Files: ") + archived_num + _p;
+diff --git a/src/modules/Backup.ycp b/src/modules/Backup.ycp
+index eb895a2..04f798a 100644
+--- a/src/modules/Backup.ycp
++++ b/src/modules/Backup.ycp
+@@ -302,12 +302,12 @@ global list< map<string,any> > zip_media_descriptions = [
+     ],*/
+ ];
+ 
+-global list< map<string,any> > misc_descriptions = [
+ /*    $[
+ 	"label" : _("Default Volume Size"),
+ 	"symbol" : `default_size,
+ 	"capacity" : 1024*1024*1024
+     ]*/
++global list< map<string,any> > misc_descriptions = [
+ ];
+ 
+ global list< map<string,any> > media_descriptions = (list< map<string,any> >) merge(merge(merge(cd_media_descriptions, floppy_media_descriptions), zip_media_descriptions), misc_descriptions);
 diff --git a/yast2-backup.spec.in b/yast2-backup.spec.in
-index 3f5b8fc..c09f5f2 100644
+index 3f5b8fc..8e60dce 100644
 --- a/yast2-backup.spec.in
 +++ b/yast2-backup.spec.in
 @@ -4,6 +4,8 @@
@@ -34,7 +359,7 @@ index 3f5b8fc..c09f5f2 100644
  Summary:		YaST2 - System Backup
  BuildArchitectures:	noarch
  
-@@ -65,10 +67,9 @@ backs them up.
+@@ -65,10 +65,9 @@ backs them up.
  @agentdir@/ag_file_append
  @scrconfdir@/cfg_backup.scr
  @yncludedir@/backup/*
