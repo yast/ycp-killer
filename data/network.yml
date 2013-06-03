@@ -42,15 +42,16 @@ moves:
   - from: src/services/*.ycp
     to: src/include/network/services
 
+include_wrappers:
+  src/include/network/devices.ycp: src/modules/ISDN.ycp
+  src/include/network/hardware.ycp: src/modules/ISDN.ycp
+  src/include/network/isdn/config.ycp: src/modules/ISDN.ycp
+  src/include/network/lan/bridge.ycp: src/include/network/lan/address.ycp
+  src/include/network/lan/wireless.ycp: src/include/network/lan/wizards.ycp
+  src/include/network/provider/complex.ycp: src/clients/provider.ycp
+  src/include/network/provider/wizards.ycp: src/clients/provider.ycp
+
 excluded:
-  # these are partial includes that want symbols from the including files
-  - src/include/network/isdn/config.ycp
-  - src/include/network/hardware.ycp
-  - src/include/network/lan/wireless.ycp
-  - src/include/network/lan/bridge.ycp
-  - src/include/network/provider/wizards.ycp
-  - src/include/network/provider/complex.ycp
-  - src/include/network/devices.ycp
   # keep the data in YCP format (loaded via .target.yast2)
   - src/data/modem-t35-keys.ycp
   - src/data/phone-codes.ycp
