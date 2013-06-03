@@ -32,6 +32,47 @@ moves:
   - from: storage/src/testsuite
     to: .
 
+include_wrappers:
+  src/include/partitioning/auto_part_prepare.ycp: src/clients/inst_target_part.ycp
+  src/include/partitioning/auto_part_ui.ycp: src/clients/inst_target_part.ycp
+  src/include/partitioning/custom_part_check_generated.ycp: src/include/partitioning/ep-main.ycp
+  src/include/partitioning/custom_part_lib.ycp: src/include/partitioning/ep-main.ycp
+  src/include/partitioning/ep-all.ycp: src/include/partitioning/ep-main.ycp
+  src/include/partitioning/ep-btrfs-dialogs.ycp: src/include/partitioning/ep-main.ycp
+  src/include/partitioning/ep-btrfs-lib.ycp: src/include/partitioning/ep-main.ycp
+  src/include/partitioning/ep-btrfs.ycp: src/include/partitioning/ep-main.ycp
+  src/include/partitioning/ep-dialogs.ycp: src/include/partitioning/ep-main.ycp
+  src/include/partitioning/ep-dm-dialogs.ycp: src/include/partitioning/ep-main.ycp
+  src/include/partitioning/ep-dm-lib.ycp: src/include/partitioning/ep-main.ycp
+  src/include/partitioning/ep-dm.ycp: src/include/partitioning/ep-main.ycp
+  src/include/partitioning/ep-graph.ycp: src/include/partitioning/ep-main.ycp
+  src/include/partitioning/ep-hd-dialogs.ycp: src/include/partitioning/ep-main.ycp
+  src/include/partitioning/ep-hd-lib.ycp: src/include/partitioning/ep-main.ycp
+  src/include/partitioning/ep-hd.ycp: src/include/partitioning/ep-main.ycp
+  src/include/partitioning/ep-import.ycp: src/include/partitioning/ep-main.ycp
+  src/include/partitioning/ep-lib.ycp: src/include/partitioning/ep-main.ycp
+  src/include/partitioning/ep-log.ycp: src/include/partitioning/ep-main.ycp
+  src/include/partitioning/ep-loop-dialogs.ycp: src/include/partitioning/ep-main.ycp
+  src/include/partitioning/ep-loop-lib.ycp: src/include/partitioning/ep-main.ycp
+  src/include/partitioning/ep-loop.ycp: src/include/partitioning/ep-main.ycp
+  src/include/partitioning/ep-lvm-dialogs.ycp: src/include/partitioning/ep-main.ycp
+  src/include/partitioning/ep-lvm-lib.ycp: src/include/partitioning/ep-main.ycp
+  src/include/partitioning/ep-lvm.ycp: src/include/partitioning/ep-main.ycp
+  src/include/partitioning/ep-nfs.ycp: src/include/partitioning/ep-main.ycp
+  src/include/partitioning/ep-raid-dialogs.ycp: src/include/partitioning/ep-main.ycp
+  src/include/partitioning/ep-raid-lib.ycp: src/include/partitioning/ep-main.ycp
+  src/include/partitioning/ep-raid.ycp: src/include/partitioning/ep-main.ycp
+  src/include/partitioning/ep-settings.ycp: src/include/partitioning/ep-main.ycp
+  src/include/partitioning/ep-summary.ycp: src/include/partitioning/ep-main.ycp
+  src/include/partitioning/ep-tmpfs-dialogs.ycp: src/include/partitioning/ep-main.ycp
+  src/include/partitioning/ep-tmpfs-lib.ycp: src/include/partitioning/ep-main.ycp
+  src/include/partitioning/ep-tmpfs.ycp: src/include/partitioning/ep-main.ycp
+  src/include/partitioning/ep-tmpfs.ycp: src/include/partitioning/ep-main.ycp
+  src/include/partitioning/ep-unused.ycp: src/include/partitioning/ep-main.ycp
+  src/include/partitioning/lvm_lv_lib.ycp: src/include/partitioning/ep-main.ycp
+  src/include/partitioning/lvm_pv_lib.ycp: src/include/partitioning/ep-main.ycp
+  src/include/partitioning/raid_lib.ycp: src/include/partitioning/ep-main.ycp
+
 excluded:
   # TODO: These are the only files using LibStorage::initDefaultLogger which is
   #       an overloaded function. pluglib-bindings (the YCP addition over SWIG)
@@ -40,42 +81,3 @@ excluded:
   #       be fixed either upstream or in our stubs.
   - bindings/ycp/callback.ycp
   - bindings/ycp/example.ycp
-  # TODO incomplete include files
-  - src/include/partitioning/custom_part_lib.ycp
-  - src/include/partitioning/ep-lvm.ycp
-  - src/include/partitioning/ep-lvm-lib.ycp
-  - src/include/partitioning/ep-all.ycp
-  - src/include/partitioning/ep-unused.ycp
-  - src/include/partitioning/ep-btrfs-lib.ycp
-  - src/include/partitioning/ep-dialogs.ycp
-  - src/include/partitioning/auto_part_prepare.ycp
-  - src/include/partitioning/ep-dm-dialogs.ycp
-  - src/include/partitioning/ep-raid-dialogs.ycp
-  - src/include/partitioning/ep-btrfs.ycp
-  - src/include/partitioning/ep-lib.ycp
-  - src/include/partitioning/ep-dm.ycp
-  - src/include/partitioning/ep-tmpfs.ycp
-  - src/include/partitioning/ep-import.ycp
-  - src/include/partitioning/custom_part_check_generated.ycp
-  - src/include/partitioning/ep-loop-lib.ycp
-  - src/include/partitioning/ep-loop.ycp
-  - src/include/partitioning/lvm_pv_lib.ycp
-  - src/include/partitioning/ep-tmpfs-lib.ycp
-  - src/include/partitioning/ep-raid-lib.ycp
-  - src/include/partitioning/raid_lib.ycp
-  - src/include/partitioning/ep-lvm-dialogs.ycp
-  - src/include/partitioning/ep-tmpfs-dialogs.ycp
-  - src/include/partitioning/ep-nfs.ycp
-  - src/include/partitioning/ep-hd-lib.ycp
-  - src/include/partitioning/ep-graph.ycp
-  - src/include/partitioning/ep-hd-dialogs.ycp
-  - src/include/partitioning/ep-settings.ycp
-  - src/include/partitioning/lvm_lv_lib.ycp
-  - src/include/partitioning/ep-dm-lib.ycp
-  - src/include/partitioning/ep-raid.ycp
-  - src/include/partitioning/ep-summary.ycp
-  - src/include/partitioning/ep-hd.ycp
-  - src/include/partitioning/ep-loop-dialogs.ycp
-  - src/include/partitioning/ep-btrfs-dialogs.ycp
-  - src/include/partitioning/ep-log.ycp
-  - src/include/partitioning/auto_part_ui.ycp
