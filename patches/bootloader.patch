@@ -42,6 +42,36 @@ index 1833773..d7b8303 100644
 +#AUTODOCS_YCP = $(top_srcdir)/src/*/*.ycp
 +#AUTODOCS_PM  = $(top_srcdir)/src/*/*.pm
 +#include $(top_srcdir)/autodocs-ycp.ami
+diff --git a/src/clients/bootloader_proposal.ycp b/src/clients/bootloader_proposal.ycp
+index 7a2886e..01f2986 100644
+--- a/src/clients/bootloader_proposal.ycp
++++ b/src/clients/bootloader_proposal.ycp
+@@ -37,12 +37,12 @@
+ 
+ 	// use the cache if possible
+ 	    // if not asked to recreate and we have a cached proposal and
+-	if (false
+-	    && !force_reset
+-	    && Bootloader::cached_proposal != nil
++	if (false &&
++	    !force_reset &&
++	    Bootloader::cached_proposal != nil &&
+ 
+ 	    // has the configuration been changed?
+-	    && Bootloader::cached_settings == Bootloader::Export()
++	    Bootloader::cached_settings == Bootloader::Export() &&
+ 
+ 	    // has the partitioning been changed?
+ 	    // This is correct as long as the proposal is only dependent on the
+@@ -53,7 +53,7 @@
+ 	    // changes relevant to the yast2-bootloader settings are made
+ 	    // through Storage, so the change time of Storage data should be
+ 	    // sufficient.
+-	    && BootCommon::cached_settings_base_data_change_time == Storage::GetTargetChangeTime())
++	    BootCommon::cached_settings_base_data_change_time == Storage::GetTargetChangeTime())
+ 
+ 
+ 	  // FIXME: has the software selection changed?: esp. has the
 diff --git a/src/include/bootloader/elilo/options.ycp b/src/include/bootloader/elilo/options.ycp
 index 1584c1e..2a1b431 100644
 --- a/src/include/bootloader/elilo/options.ycp
@@ -789,7 +819,7 @@ index 1389e28..1a19f1f 100644
      }
  
 diff --git a/src/include/bootloader/routines/misc.ycp b/src/include/bootloader/routines/misc.ycp
-index b3a4322..2b2fe30 100644
+index b3a4322..6e87b2f 100644
 --- a/src/include/bootloader/routines/misc.ycp
 +++ b/src/include/bootloader/routines/misc.ycp
 @@ -39,6 +39,11 @@
@@ -804,9 +834,38 @@ index b3a4322..2b2fe30 100644
  
  // bootloader attributes handling functions
  
-@@ -76,7 +81,7 @@
+@@ -56,27 +61,27 @@
+     global define string getLoaderName (string bootloader, symbol mode) ``{
+ 	if (bootloader == "none")
+ 	{
+-	    return mode == `summary
++	    return mode == `summary ?
+ 		// summary string
+-		? _("Do not install any boot loader")
++		_("Do not install any boot loader") :
+ 		// combo box item
+-		: _("Do Not Install Any Boot Loader");
++		_("Do Not Install Any Boot Loader");
+ 	}
+ 	if (bootloader == "default")
+ 	{
+-	    return mode == `summary
++	    return mode == `summary ?
+ 		// summary string
+-		? _("Install the default boot loader")
++		_("Install the default boot loader") :
+ 		// combo box item
+-		: _("Install Default Boot Loader");
++		_("Install Default Boot Loader");
+ 	}
+-	string fallback_name = mode == `summary
++	string fallback_name = mode == `summary ?
+ 	    // summary string
+-	    ? _("Boot loader")
++	    _("Boot loader") :
  	    // combo box item
- 	    : _("Boot Loader");
+-	    : _("Boot Loader");
++	    _("Boot Loader");
  	// fallback bootloader name, keep short
 -	return bootloader_attribs[bootloader, "loader_name"]:fallback_name;
 +	return BootCommon::bootloader_attribs[bootloader, "loader_name"]:fallback_name;
@@ -831,6 +890,18 @@ index b3a4322..2b2fe30 100644
      }
  
  // other misc functions
+@@ -122,9 +127,9 @@
+         // to do a hard reboot (because a different kernel
+         // was installed), tell the user to leave the floppy
+         // inserted.
+-        msg = msg
++        msg = msg +
+             // popup - continuing
+-            + _("Leave the floppy disk in the drive.");
++            _("Leave the floppy disk in the drive.");
+ 
+         if ( size (confirm_boot_msg) > 0 )
+         {
 @@ -260,7 +265,7 @@ global list<map<string,any> > remapSections(list<map<string,any> >sec)
  	list<map<string,any> >temp_sec = [];
  	
@@ -1064,7 +1135,7 @@ index b3a4322..2b2fe30 100644
      }
  }
 diff --git a/src/include/bootloader/routines/popups.ycp b/src/include/bootloader/routines/popups.ycp
-index c3e8bd3..ad8627f 100644
+index c3e8bd3..c785992 100644
 --- a/src/include/bootloader/routines/popups.ycp
 +++ b/src/include/bootloader/routines/popups.ycp
 @@ -28,6 +28,7 @@
@@ -1075,6 +1146,18 @@ index c3e8bd3..ad8627f 100644
  
  /**
   * Inform about not available functionality when no loader selected
+@@ -331,9 +332,9 @@ no options to set here."));
+ 	// popup, %1 is bootloader name
+ 	string msg = sformat (_("The %1 boot sector has been written to the floppy disk."),
+ 	    bootloader);
+-	msg = msg + "\n"
++	msg = msg + "\n" +
+ 	    // popup - continuing - alternative 1 ...
+-	    + _("Leave the floppy disk in the drive. The system will now be rebooted.");
++	    _("Leave the floppy disk in the drive. The system will now be rebooted.");
+ 
+ 	if ( size (confirm_boot_msg) > 0 )
+ 	{
 diff --git a/src/include/bootloader/routines/section_widgets.ycp b/src/include/bootloader/routines/section_widgets.ycp
 index 58c6dfa..77199af 100644
 --- a/src/include/bootloader/routines/section_widgets.ycp
@@ -1104,8 +1187,41 @@ index f756b6c..5659a4f 100644
  
  import "Linuxrc";
  
+diff --git a/src/modules/BootPOWERLILO.ycp b/src/modules/BootPOWERLILO.ycp
+index 5705552..609d771 100644
+--- a/src/modules/BootPOWERLILO.ycp
++++ b/src/modules/BootPOWERLILO.ycp
+@@ -110,9 +110,9 @@ boolean updatePrepBootPartitions () {
+         list<map> partitions = ddata["partitions"]:[];
+ 	y2milestone ("Partitions: %1", partitions);
+ 	partitions = filter (map p, partitions,
+-	    ``((! p["delete"]:false) && is (p["fsid"]:nil, integer)
++	    ``((! p["delete"]:false) && is (p["fsid"]:nil, integer) &&
+ 		// both partition types 0x41 and FAT16 can be handled by PPC lilo
+-		&& (p["fsid"]:nil == 65 ||  p["fsid"]:nil == 6)
++		(p["fsid"]:nil == 65 ||  p["fsid"]:nil == 6)
+ 		&& !contains( [`lvm, `evms, `sw_raid], p["type"]:`primary )
+ 	       ));
+ 	y2milestone ("Filtered existing partitions: %1", partitions);
+@@ -451,12 +451,12 @@ string GoodPmacBootPartition() {
+ 
+ 	// find possible boot partitions
+ 	partitions = filter (map p, partitions, ``(
+-	    (! p["delete"]:false)
+-	    && is (p["fsid"]:nil, integer)
++	    (! p["delete"]:false) &&
++	    is (p["fsid"]:nil, integer) &&
+ 	    // both partition types Apple_Bootstrap and Apple_HFS can be
+ 	    // handled by PPC lilo; yast2-storage maps both to fsid 258
+-	    && (p["fsid"]:nil == 258)
+-	    && !contains( [`lvm, `evms, `sw_raid], p["type"]:`primary )
++	    (p["fsid"]:nil == 258) &&
++	    !contains( [`lvm, `evms, `sw_raid], p["type"]:`primary )
+ 	));
+ 	y2milestone ("Filtered existing partitions: %1", partitions);
+ 
 diff --git a/yast2-bootloader.spec.in b/yast2-bootloader.spec.in
-index dac4bd0..6db7cfa 100644
+index dac4bd0..325d018 100644
 --- a/yast2-bootloader.spec.in
 +++ b/yast2-bootloader.spec.in
 @@ -36,6 +36,8 @@ Obsoletes:	y2c_boot y2t_boot
@@ -1117,7 +1233,7 @@ index dac4bd0..6db7cfa 100644
  Summary:	YaST2 - Bootloader Configuration
  
  %description
-@@ -66,9 +68,9 @@ This package contains the YaST2 component for bootloader configuration.
+@@ -66,9 +66,9 @@ This package contains the YaST2 component for bootloader configuration.
  %dir @yncludedir@/bootloader
  @yncludedir@/bootloader/*
  @moduledir@/*
