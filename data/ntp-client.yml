@@ -21,13 +21,12 @@ moves:
   - from: src/ntpclient.rnc
     to: src/autoyast-rnc
 
-excluded:
-  # Y2R thinks they have Undeclared identifiers even though they don't !?
-  # strange, but clients work, so OK
-  - src/include/ntp-client/widgets.ycp    
-  - src/include/ntp-client/dialogs.ycp    
-  - src/include/ntp-client/commandline.ycp
+include_wrappers:
+  src/include/ntp-client/commandline.ycp: src/clients/ntp-client.ycp
+  src/include/ntp-client/dialogs.ycp: src/clients/ntp-client.ycp
+  src/include/ntp-client/widgets.ycp: src/clients/ntp-client.ycp
 
+excluded:
   # loaded via .target.ycp agent
   # do not convert it (would fail at runtime)
   - src/data/ntp_servers.ycp
