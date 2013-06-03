@@ -15,7 +15,7 @@ index 4110426..e69de29 100644
 -
 -EXTRA_DIST = $(scrconf_DATA)  $(agent_SCRIPTS)
 diff --git a/autoyast2.spec.in b/autoyast2.spec.in
-index c7196fd..bb38ea3 100644
+index c7196fd..ebb86d3 100644
 --- a/autoyast2.spec.in
 +++ b/autoyast2.spec.in
 @@ -27,6 +27,8 @@ PreReq:		%insserv_prereq %fillup_prereq
@@ -255,6 +255,19 @@ index bc6f88f..ac5e97e 100644
 -
 -EXTRA_DIST = $(ybin_SCRIPTS) autoyast-initscripts.service
 +EXTRA_DIST = autoyast-initscripts.service
+diff --git a/src/clients/ayast_setup.ycp b/src/clients/ayast_setup.ycp
+index ee0f5d4..f3914b4 100644
+--- a/src/clients/ayast_setup.ycp
++++ b/src/clients/ayast_setup.ycp
+@@ -18,7 +18,7 @@
+    You have to provide a profile and autoyast will
+    configure your system like in the profile.
+    Only stage2 configuration can be done.
+-   yast2 ./ayast_setup.ycp setup filename=/tmp/my.xml
++   yast2 ./ayast_setup.rb setup filename=/tmp/my.xml
+ 
+  */
+ 
 diff --git a/src/include/autoinstall/DriveDialog.ycp b/src/include/autoinstall/DriveDialog.ycp
 index f7dfc4d..567f816 100644
 --- a/src/include/autoinstall/DriveDialog.ycp
