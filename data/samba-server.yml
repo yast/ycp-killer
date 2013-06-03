@@ -27,4 +27,4 @@ moves:
     to:   src/autoyast-rnc
 
 include_wrappers:
-  src/include/samba-server/samba-options-local.ycp: src/clients/samba-server.ycp
+  src/include/samba-server/samba-options-local.ycp: src/include/samba-server/dialogs-items.ycp
