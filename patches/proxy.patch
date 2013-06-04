@@ -20,8 +20,40 @@ index 5b3470c..d5925e8 100644
      Proxy::Read ();
  
      Wizard::CreateDialog();
+diff --git a/src/include/proxy/dialogs.ycp b/src/include/proxy/dialogs.ycp
+index 47b0d47..6a0057f 100644
+--- a/src/include/proxy/dialogs.ycp
++++ b/src/include/proxy/dialogs.ycp
+@@ -117,7 +117,7 @@ list <string> return_codes_good = [
+     "302", // Moved Temporarily
+     "303", // See Other
+     "304", // Not Modified
+-    "305", // Use Proxy
++    "305"  // Use Proxy
+ ];
+ 
+ /* Known return codes - bad proxy response */
+@@ -138,15 +138,15 @@ list <string> return_codes_bad = [
+     "412", // Precondition Failed
+     "413", // Request Entity Too Long
+     "414", // Request URI Too Long
+-    "415", // Unsupported Media Type
+-
++    "415"  // Unsupported Media Type
++    ,
+     // Server Errors
+     "500", // Internal Server Error
+     "501", // Not Implemented
+     "502", // Bad Gateway
+     "503", // Service Unavailable
+     "504", // Gateway Timeout
+-    "505", // HTTP Version Not Supported
++    "505"  // HTTP Version Not Supported
+ ];
+ 
+ /**
 diff --git a/yast2-proxy.spec.in b/yast2-proxy.spec.in
-index 09b83c7..c2c852e 100644
+index 09b83c7..b751e68 100644
 --- a/yast2-proxy.spec.in
 +++ b/yast2-proxy.spec.in
 @@ -17,6 +17,8 @@ Conflicts:      yast2-network < 2.22.6
