@@ -2104,7 +2104,7 @@ index 39df374..c751218 100644
 +    include "helper1b.yh";
  }
 diff --git a/yast2-storage.spec.in b/yast2-storage.spec.in
-index 8ae9071..4ab9e67 100644
+index 8ae9071..b754e33 100644
 --- a/yast2-storage.spec.in
 +++ b/yast2-storage.spec.in
 @@ -23,6 +23,8 @@ Provides:	yast2-trans-inst-partitioning
@@ -2116,12 +2116,11 @@ index 8ae9071..4ab9e67 100644
  Summary:	YaST2 - Storage Configuration
  
  %description
-@@ -47,26 +49,27 @@ rm -f $RPM_BUILD_ROOT/@plugindir@/libpy2StorageCallbacks.so
+@@ -47,26 +49,26 @@ rm -f $RPM_BUILD_ROOT/@plugindir@/libpy2StorageCallbacks.so
  
  # storage
  %dir @yncludedir@/partitioning
-+@yncludedir@/partitioning/*.rb
- @yncludedir@/partitioning/*.ycp
+-@yncludedir@/partitioning/*.ycp
 -@clientdir@/inst_custom_part.ycp
 -@clientdir@/inst_resize_ui.ycp
 -@clientdir@/inst_resize_dialog.ycp
@@ -2136,6 +2135,7 @@ index 8ae9071..4ab9e67 100644
 -@clientdir@/disk.ycp
 -@clientdir@/disk_worker.ycp
 -@clientdir@/multipath-simple.ycp
++@yncludedir@/partitioning/*.rb
 +@clientdir@/inst_custom_part.rb
 +@clientdir@/inst_resize_ui.rb
 +@clientdir@/inst_resize_dialog.rb
@@ -2159,7 +2159,7 @@ index 8ae9071..4ab9e67 100644
  
  %doc %dir @docdir@
  %doc @docdir@/README*
-@@ -91,6 +94,7 @@ rm -f $RPM_BUILD_ROOT/@plugindir@/libpy2StorageCallbacks.so
+@@ -91,6 +93,7 @@ rm -f $RPM_BUILD_ROOT/@plugindir@/libpy2StorageCallbacks.so
  %package devel
  Requires:	libstorage-devel = %(echo `rpm -q --queryformat '%{VERSION}' libstorage-devel`)
  Requires:       libstdc++-devel yast2-storage = %version
@@ -2167,7 +2167,7 @@ index 8ae9071..4ab9e67 100644
  Summary:        YaST2 - Storage Library Headers and Documentation
  Group:          Development/Libraries/YaST
  
-@@ -100,5 +104,6 @@ to develop a program using libstorage.
+@@ -100,5 +103,6 @@ to develop a program using libstorage.
  
  %files devel
  %defattr(-,root,root)
