@@ -19,6 +19,20 @@ index 856418a..e69de29 100644
 -	DHCPToHosts.pl \
 -	sample_hpc.cfg
 -EXTRA_DIST = $(ybin_SCRIPTS)
+diff --git a/src/clients/HPCMain.ycp b/src/clients/HPCMain.ycp
+index 7404f46..6ab1ef5 100644
+--- a/src/clients/HPCMain.ycp
++++ b/src/clients/HPCMain.ycp
+@@ -274,7 +274,8 @@ string current_help = HPCServerSetupDialogHelpText();
+ 
+ term setup_dialog = `VBox(
+ 			 `DumbTab( [
+-				    `item(`id(`server  ), _("&Server"), true  ), //initially Server-Tab selected
++           //initially Server-Tab selected
++				    `item(`id(`server  ), _("&Server"), true  ),
+ 				 //   `item(`id(`services  ), _("Ser&vices") ),
+ 				    `item(`id(`nodes ), _("&Nodes") )
+ 				   ],
 diff --git a/src/include/hpc/HPCDialog.ycp b/src/include/hpc/HPCDialog.ycp
 index 2129f06..a2999af 100644
 --- a/src/include/hpc/HPCDialog.ycp
