@@ -21,6 +21,31 @@ index a5421e3..af859b1 100644
 +# TODO FIXME: temporarily disabled
 +
 +#include $(top_srcdir)/autodocs-ycp.ami
+diff --git a/src/clients/isns.ycp b/src/clients/isns.ycp
+index 0fd9c06..dd422f2 100644
+--- a/src/clients/isns.ycp
++++ b/src/clients/isns.ycp
+@@ -36,14 +36,14 @@ map cmdline_description = $[
+     "initialize"        : IsnsServer::Read,
+     "finish"            : IsnsServer::Write,
+     "actions"           : $[
+-	// FIXME TODO: fill the functionality description here
+-    ],
++
++    ],	// FIXME TODO: fill the functionality description here
+     "options"		: $[
+-	// FIXME TODO: fill the option descriptions here
+-    ],
++
++    ],	// FIXME TODO: fill the option descriptions here
+     "mappings"		: $[
+-	// FIXME TODO: fill the mappings of actions and options here
+-    ]
++
++    ]	// FIXME TODO: fill the mappings of actions and options here
+ ];
+ 
+ /* is this proposal or not? */
 diff --git a/src/include/isns/dialogs.ycp b/src/include/isns/dialogs.ycp
 index 309ade0..244253d 100644
 --- a/src/include/isns/dialogs.ycp
@@ -46,7 +71,7 @@ index 3cbab5e..2e5d255 100644
  string address = "";  //global
  
 diff --git a/yast2-isns.spec.in b/yast2-isns.spec.in
-index 6803626..c46af21 100644
+index 6803626..046b103 100644
 --- a/yast2-isns.spec.in
 +++ b/yast2-isns.spec.in
 @@ -7,6 +7,8 @@ BuildRequires:	perl-XML-Writer update-desktop-files yast2 yast2-devtools yast2-t
