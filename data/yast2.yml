@@ -105,9 +105,10 @@ export_private:
   - library/network/src/modules/NetworkInterfaces.ycp
   - library/commandline/src/modules/CommandLine.ycp
 
+include_wrappers:
+  library/sequencer/testsuite/tests/Wizard.yh: library/sequencer/testsuite/tests/Wizard0.ycp
+
 excluded:
-  # include stuff for testsuite
-  - library/sequencer/testsuite/tests/Wizard.yh
   # agreed to exclude doc from automatic translation
   - library/commandline/doc/lan-simple.ycp
   - library/commandline/doc/lan-simpler.ycp
