@@ -9,6 +9,31 @@ index 754a2e6..70bbab6 100644
 +# TODO FIXME: temporarily disabled
 +
 +#include $(top_srcdir)/autodocs-ycp.ami
+diff --git a/src/clients/kerberos-server.ycp b/src/clients/kerberos-server.ycp
+index 7a5d49c..801e848 100644
+--- a/src/clients/kerberos-server.ycp
++++ b/src/clients/kerberos-server.ycp
+@@ -56,14 +56,14 @@ map cmdline_description = $[
+     "initialize"        : KerberosServer::Read,
+     "finish"            : KerberosServer::Write,
+     "actions"           : $[
+-	// FIXME TODO: fill the functionality description here
+-    ],
++
++    ],	// FIXME TODO: fill the functionality description here
+     "options"		: $[
+-	// FIXME TODO: fill the option descriptions here
+-    ],
++
++    ],	// FIXME TODO: fill the option descriptions here
+     "mappings"		: $[
+-	// FIXME TODO: fill the mappings of actions and options here
+-    ]
++
++    ]	// FIXME TODO: fill the mappings of actions and options here
+ ];
+ 
+ /* is this proposal or not? */
 diff --git a/src/include/kerberos-server/advanced_items.ycp b/src/include/kerberos-server/advanced_items.ycp
 index 86804bd..c6b2da0 100644
 --- a/src/include/kerberos-server/advanced_items.ycp
@@ -35,7 +60,7 @@ index 64a5036..74b6629 100644
  import "Confirm";
  import "KerberosServer";
 diff --git a/yast2-kerberos-server.spec.in b/yast2-kerberos-server.spec.in
-index 1c43fd4..c8743f0 100644
+index 1c43fd4..4cce044 100644
 --- a/yast2-kerberos-server.spec.in
 +++ b/yast2-kerberos-server.spec.in
 @@ -10,6 +10,8 @@ BuildRequires:	perl-XML-Writer update-desktop-files yast2 yast2-devtools yast2-t
