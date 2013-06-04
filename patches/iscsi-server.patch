@@ -21,6 +21,31 @@ index 6461f9c..6d99b70 100644
 +# TODO FIXME: temporarily disabled
 +
 +#include $(top_srcdir)/autodocs-ycp.ami
+diff --git a/src/clients/iscsi-server.ycp b/src/clients/iscsi-server.ycp
+index 3a0a866..e8188b3 100644
+--- a/src/clients/iscsi-server.ycp
++++ b/src/clients/iscsi-server.ycp
+@@ -59,14 +59,14 @@ map cmdline_description = $[
+     "initialize"        : IscsiServer::Read,
+     "finish"            : IscsiServer::Write,
+     "actions"           : $[
+-	// FIXME TODO: fill the functionality description here
+-    ],
++
++    ],	// FIXME TODO: fill the functionality description here
+     "options"		: $[
+-	// FIXME TODO: fill the option descriptions here
+-    ],
++
++    ],	// FIXME TODO: fill the option descriptions here
+     "mappings"		: $[
+-	// FIXME TODO: fill the mappings of actions and options here
+-    ]
++
++    ]	// FIXME TODO: fill the mappings of actions and options here
+ ];
+ 
+ /* is this proposal or not? */
 diff --git a/src/include/iscsi-server/complex.ycp b/src/include/iscsi-server/complex.ycp
 index 6920367..30ae128 100644
 --- a/src/include/iscsi-server/complex.ycp
@@ -81,7 +106,7 @@ index 1141380..b2aee43 100644
  import "Wizard";
  
 diff --git a/yast2-iscsi-server.spec.in b/yast2-iscsi-server.spec.in
-index 94a45c6..743862d 100644
+index 94a45c6..b07647e 100644
 --- a/yast2-iscsi-server.spec.in
 +++ b/yast2-iscsi-server.spec.in
 @@ -13,6 +13,8 @@ Requires:       yast2 >= 2.21.22
