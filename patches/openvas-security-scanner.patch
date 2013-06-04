@@ -1,6 +1,3 @@
-The "Wizard_hw" module import does not work and the module is actually not used,
-so this patch removes it.
-
 diff --git a/doc/autodocs/Makefile.am b/doc/autodocs/Makefile.am
 index 0a581b4..1daac7c 100644
 --- a/doc/autodocs/Makefile.am
@@ -24,8 +21,88 @@ index 27bbcac..f6daf89 100644
  import "Confirm";
  import "OpenvasSecurityScanner";
  
+diff --git a/src/include/openvas-security-scanner/helps.ycp b/src/include/openvas-security-scanner/helps.ycp
+index 098a0c9..0d21f6b 100644
+--- a/src/include/openvas-security-scanner/helps.ycp
++++ b/src/include/openvas-security-scanner/helps.ycp
+@@ -36,45 +36,45 @@ textdomain "openvas-security-scanner";
+  */
+ map HELPS = $[
+     /* Help for main dialog */
+-    "configuration" : "<p><b><big>" 
+-                    + _("OpenVAS Security Scanner Configuration")
+-                    + "</big></b>"
++    "configuration" : "<p><b><big>" +
++                    _("OpenVAS Security Scanner Configuration") +
++                    "</big></b>" +
+                     // Disable OpenVAS Security Scanner
+-                    + "<p><b>" + _("Disable OpenVAS Security Scanner") + "</b>: "
+-                    + _("Select \"Disable OpenVAS Security Scanner\" to switch off the OpenVAS Security Scanner Service. ")
+-                    + _("The datastores for Network Vulnerabilities (NVTs) will be deleted. This might take some time.")
++                    "<p><b>" + _("Disable OpenVAS Security Scanner") + "</b>: " +
++                    _("Select \"Disable OpenVAS Security Scanner\" to switch off the OpenVAS Security Scanner Service. ") +
++                    _("The datastores for Network Vulnerabilities (NVTs) will be deleted. This might take some time.") +
+                     // Enable and use OpenVAS NVT Feed
+-                    + "</p><p><b>" + _("Enable and use OpenVAS NVT Feed") + "</b>: "
+-                    + _("Select \"Enable and use OpenVAS NVT Feed\" to switch on the OpenVAS Security Scanner with the OpenVAS NVT Feed. ")
+-                    + _("The free-of-charge OpenVAS NVT Feed delivers the latest Network Vulnerability Tests (NVTs) with volunteer-based Quality Assurance. The NVT synchronisation uses RSYNC protocol. Please visit <tt>http://www.openvas.org/</tt> for more information.")
+-                    + _("Previous NVT datastores will be deleted before the initial synchronization is executed. This might take some time. ")
++                    "</p><p><b>" + _("Enable and use OpenVAS NVT Feed") + "</b>: " +
++                    _("Select \"Enable and use OpenVAS NVT Feed\" to switch on the OpenVAS Security Scanner with the OpenVAS NVT Feed. ") +
++                    _("The free-of-charge OpenVAS NVT Feed delivers the latest Network Vulnerability Tests (NVTs) with volunteer-based Quality Assurance. The NVT synchronisation uses RSYNC protocol. Please visit <tt>http://www.openvas.org/</tt> for more information.") +
++                    _("Previous NVT datastores will be deleted before the initial synchronization is executed. This might take some time. ") +
+                     // Enable and use Greenbone Security Feed
+-                    + "</p><p><b>" + _("Enable and use Greenbone Security Feed") + "</b>: "
+-                    + _("Select \"Enable and use Greenbone Security Feed\" to switch on the OpenVAS Security Scanner with the Greenbone Security Feed.<br>")
+-                    + _("Note that this option is only available if you obtained and activated an access key for the Greenbone Security Feed. ")
+-                    + _("The subscription-based Greenbone Security Feed assures Network Vulnerability Tests (NVTs) of consistent quality, high availability and professional support. ")
+-                    + _("The NVT synchronisation uses SSH-secured RSYNC protocol. ")
+-                    + _("Previous NVT datastores will be deleted. This might take some time.")
++                    "</p><p><b>" + _("Enable and use Greenbone Security Feed") + "</b>: " +
++                    _("Select \"Enable and use Greenbone Security Feed\" to switch on the OpenVAS Security Scanner with the Greenbone Security Feed.<br>") +
++                    _("Note that this option is only available if you obtained and activated an access key for the Greenbone Security Feed. ") +
++                    _("The subscription-based Greenbone Security Feed assures Network Vulnerability Tests (NVTs) of consistent quality, high availability and professional support. ") +
++                    _("The NVT synchronisation uses SSH-secured RSYNC protocol. ") +
++                    _("Previous NVT datastores will be deleted. This might take some time.") +
+                     // Activate Greenbone Security Feed Subscription
+-                    + "</p><p><b>" + _("Activate Greenbone Security Feed Subscription") + "</b>: "
+-                    + _("To obtain a access key for the Greenbone Security Feed, please visit <tt>http://greenbone.net/order/</tt>. ")
+-                    + _("Click on \"Activate Greenbone Security Feed\" and enter the path to the obtained access key files. ")
+-                    + _("The access key and synchronization script will then be installed and you can choose the <b>\"Use Greenbone Security Feed\"</b> option to use the OpenVAS Security Scanner with this feed.")
++                    "</p><p><b>" + _("Activate Greenbone Security Feed Subscription") + "</b>: " +
++                    _("To obtain a access key for the Greenbone Security Feed, please visit <tt>http://greenbone.net/order/</tt>. ") +
++                    _("Click on \"Activate Greenbone Security Feed\" and enter the path to the obtained access key files. ") +
++                    _("The access key and synchronization script will then be installed and you can choose the <b>\"Use Greenbone Security Feed\"</b> option to use the OpenVAS Security Scanner with this feed.") +
+                     // Deactivate Greenbone Security Feed Subscription
+-                    + "</p><p><b>" + _("Deactivate Greenbone Security Feed Subscription") + "</b>: "
+-                    + _("This option is only available if you have previously activated your Greenbone Security Feed Subscription. ")
+-                    + _("If you select this option, previous NVT datastores, NVT selections and other feed related files will be deleted. This might take some time.")
++                    "</p><p><b>" + _("Deactivate Greenbone Security Feed Subscription") + "</b>: " +
++                    _("This option is only available if you have previously activated your Greenbone Security Feed Subscription. ") +
++                    _("If you select this option, previous NVT datastores, NVT selections and other feed related files will be deleted. This might take some time.") +
+                     // Synchronize with Feed now
+-                    + "</p><p><b>" + _("Synchronize with Feed now") + "</b>: "
+-                    + _("Will immediately start a synchronize with the selected feed. Note that this option is not available if you just changed the feed. ")
++                    "</p><p><b>" + _("Synchronize with Feed now") + "</b>: " +
++                    _("Will immediately start a synchronize with the selected feed. Note that this option is not available if you just changed the feed. ") +
+                     // Do a daily feed synchronization
+-                    + "</p><p><b>" + _("Do a daily feed synchronization") + "</b>: "
+-                    + _("Will enable the daily feed synchronization with a cron job, if a feed was chosen and the service is enabled. Note that the openvas scanner service has to be restarted to be able to use the newly fetched NVTs.")
++                    "</p><p><b>" + _("Do a daily feed synchronization") + "</b>: " +
++                    _("Will enable the daily feed synchronization with a cron job, if a feed was chosen and the service is enabled. Note that the openvas scanner service has to be restarted to be able to use the newly fetched NVTs.") +
+ 
+                     // Next
+-                    + "</p><p><b>" + _("Next") + "</b>: "
+-                    + _("Click on \"Next\" to synchronize with a newly chosen feed.")
+-                    + "</p>",
++                    "</p><p><b>" + _("Next") + "</b>: " +
++                    _("Click on \"Next\" to synchronize with a newly chosen feed.") +
++                    "</p>", 
+ 
+     /* Help for the Activate Greenbone Security Feed dialog */
+     "activategsf" : "<p><b><big>" + _("Activate Greenbone Security Feed") + "</big></b>"
 diff --git a/yast2-openvas-security-scanner.spec.in b/yast2-openvas-security-scanner.spec.in
-index 7abed8e..f488df5 100644
+index 7abed8e..b7f9336 100644
 --- a/yast2-openvas-security-scanner.spec.in
 +++ b/yast2-openvas-security-scanner.spec.in
 @@ -6,6 +6,8 @@ BuildRequires:	perl-XML-Writer update-desktop-files yast2 yast2-devtools yast2-t
