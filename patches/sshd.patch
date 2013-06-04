@@ -26,8 +26,52 @@ index 28e831e..af311ca 100644
  }
  
  /* Finish */
+diff --git a/src/include/sshd/helps.ycp b/src/include/sshd/helps.ycp
+index a91b9d0..5301061 100644
+--- a/src/include/sshd/helps.ycp
++++ b/src/include/sshd/helps.ycp
+@@ -52,29 +52,29 @@ Configure SSHD here.<br></p>"),
+     /* Login Settings dialog help 1 */
+     "login_settings" : _("<p><b><big>Login Settings</big></b><br>
+ Here you can configure the SSHD login and authentication settings.
+-Some apply to a particular protocol version only.</p>")
++Some apply to a particular protocol version only.</p>") +
+ 
+     /* Login Settings dialog help 2, text taken from sshd_config manpage */
+-    + _("<p><b>Print Message of the Day After Login</b>
++    _("<p><b>Print Message of the Day After Login</b>
+ Specifies whether sshd should print /etc/motd when
+-a user logs in interactively.</p>")
++a user logs in interactively.</p>") +
+ 
+     /* Login Settings dialog help 3, text taken from sshd_config manpage */
+-    + _("<p><b>Permit Root Login</b><br>
+-Specifies whether root can log in using ssh.</p>")
++    _("<p><b>Permit Root Login</b><br>
++Specifies whether root can log in using ssh.</p>") +
+ 
+     /* Login Settings dialog help 4, text taken from sshd_config manpage */
+-    + _("<p><b>Maximum Authentication Tries</b><br>
++    _("<p><b>Maximum Authentication Tries</b><br>
+ Specifies the maximum number of authentication attempts permitted per connection.
+-Once the number of failures reaches half this value, additional failures are logged.</p>")
++Once the number of failures reaches half this value, additional failures are logged.</p>") +
+ 
+     /* Login Settings dialog help 5, text taken from sshd_config manpage */
+-    + _("<p><b>RSA Authentication</b><br>
++    _("<p><b>RSA Authentication</b><br>
+ Specifies whether pure RSA authentication is allowed.
+-This option applies to protocol version 1 only.</p>")
++This option applies to protocol version 1 only.</p>") +
+ 
+     /* Login Settings dialog help 6, text taken from sshd_config manpage */
+-    + _("<p><b>Public Key Authentication</b><br>
++    _("<p><b>Public Key Authentication</b><br>
+ Specifies whether public key authentication is allowed.
+ This option applies to protocol version 2 only.</p>"),
+ 
 diff --git a/yast2-sshd.spec.in b/yast2-sshd.spec.in
-index 3cd820b..5cf8ddf 100644
+index 3cd820b..f7fd564 100644
 --- a/yast2-sshd.spec.in
 +++ b/yast2-sshd.spec.in
 @@ -9,6 +9,8 @@ BuildRequires:	perl-XML-Writer update-desktop-files yast2 yast2-devtools yast2-t
