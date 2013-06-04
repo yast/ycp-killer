@@ -33,8 +33,30 @@ index 9a2350a..b464f78 100644
 +
 +#AUTODOCS_YCP=$(top_srcdir)/src/*/*.ycp
 +#include $(top_srcdir)/autodocs-ycp.ami
+diff --git a/kernel-update.ycp b/kernel-update.ycp
+index 8385f46..428d367 100644
+--- a/kernel-update.ycp
++++ b/kernel-update.ycp
+@@ -463,14 +463,14 @@
+ 
+ 	y2milestone("Handling update script...");
+ 	while (
+-	    // While the script is running or there is still something to be parsed (stdout / stderr)
+ 	    (
++	    // While the script is running or there is still something to be parsed (stdout / stderr)
+ 		(boolean) SCR::Read(.background.isrunning)
+ 		|| (integer) SCR::Read(.background.newlines) > 0
+ 		|| (integer) SCR::Read(.background.newlines_err) > 0
+-	    )
++	    ) &&
+ 	    // and it hasn't been aborted or finished
+-	    && next_loop
++	    next_loop
+ 	)  {
+ 	    if (next_loop)
+ 		next_loop = HandleSTDERR((list <string>) SCR::Read(.background.newerr));
 diff --git a/yast2-update.spec.in b/yast2-update.spec.in
-index 07df4cc..9283ea3 100644
+index 07df4cc..faf4488 100644
 --- a/yast2-update.spec.in
 +++ b/yast2-update.spec.in
 @@ -39,6 +39,8 @@ Conflicts:	yast2-pkg-bindings < 2.15.11
