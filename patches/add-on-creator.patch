@@ -65,6 +65,20 @@ index c1e4bc3..f977351 100644
 +# TODO FIXME: temporarily disabled
 +
 +#include $(top_srcdir)/autodocs-ycp.ami
+diff --git a/src/include/add-on-creator/complex.ycp b/src/include/add-on-creator/complex.ycp
+index 595d92d..5c88358 100644
+--- a/src/include/add-on-creator/complex.ycp
++++ b/src/include/add-on-creator/complex.ycp
+@@ -308,8 +308,7 @@ any NewProductDialog () {
+ 		`HSpacing (2.5),
+ 		`Left (`CheckBox (`id(`descr_ch),
+ 		    // checkbox label
+-		    _("&Generate Package Descriptions"), generate_descriptions)
+-		// TODO move to next dialog?
++		    _("&Generate Package Descriptions"), generate_descriptions) // TODO move to next dialog?
+ 		)
+ 	    )
+ 	))),
 diff --git a/src/include/add-on-creator/dialogs.ycp b/src/include/add-on-creator/dialogs.ycp
 index 9c7780e..d641efb 100644
 --- a/src/include/add-on-creator/dialogs.ycp
@@ -94,7 +108,7 @@ index e01a5cf..9ada241 100644
  // how to show and handle pattern keys
  map pattern_descr	= AddOnCreator::pattern_descr;
 diff --git a/yast2-add-on-creator.spec.in b/yast2-add-on-creator.spec.in
-index a4deceb..653f268 100644
+index a4deceb..80f715e 100644
 --- a/yast2-add-on-creator.spec.in
 +++ b/yast2-add-on-creator.spec.in
 @@ -9,6 +9,8 @@ BuildRequires:	perl-XML-Writer update-desktop-files yast2 yast2-devtools yast2-t
