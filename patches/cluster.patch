@@ -38,6 +38,31 @@ index 1bb2081..7784d62 100644
 +# TODO
 +# FIXME disabling autodocs temporarily
 +# include $(top_srcdir)/autodocs-ycp.ami
+diff --git a/src/clients/cluster.ycp b/src/clients/cluster.ycp
+index fefa027..9c341e4 100644
+--- a/src/clients/cluster.ycp
++++ b/src/clients/cluster.ycp
+@@ -56,14 +56,14 @@ map cmdline_description = $[
+     "initialize"        : Cluster::Read,
+     "finish"            : Cluster::Write,
+     "actions"           : $[
+-	// FIXME TODO: fill the functionality description here
+-    ],
++
++    ],	// FIXME TODO: fill the functionality description here
+     "options"		: $[
+-	// FIXME TODO: fill the option descriptions here
+-    ],
++
++    ],	// FIXME TODO: fill the option descriptions here
+     "mappings"		: $[
+-	// FIXME TODO: fill the mappings of actions and options here
+-    ]
++
++    ],	// FIXME TODO: fill the mappings of actions and options here
+ ];
+ 
+ /* is this proposal or not? */
 diff --git a/src/include/cluster/common.ycp b/src/include/cluster/common.ycp
 index 07ac83e..45c08ad 100644
 --- a/src/include/cluster/common.ycp
@@ -64,7 +89,7 @@ index ce438f1..9623c97 100644
  list<string> csync2_suggest_files = ["/etc/corosync/corosync.conf",
  	"/etc/corosync/authkey", "/etc/sysconfig/pacemaker",
 diff --git a/yast2-cluster.spec.in b/yast2-cluster.spec.in
-index 6063b4e..8c80699 100644
+index 6063b4e..2f8bb34 100644
 --- a/yast2-cluster.spec.in
 +++ b/yast2-cluster.spec.in
 @@ -6,6 +6,8 @@ BuildRequires:	perl-XML-Writer update-desktop-files yast2 yast2-devtools yast2-t
