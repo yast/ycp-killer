@@ -35,6 +35,87 @@ index 0764d69..9ef8dbb 100644
  # Makefile.am for sound/sound
 -SUBDIRS = doc src testsuite agents config
 +SUBDIRS =
+diff --git a/src/include/sound/complex.ycp b/src/include/sound/complex.ycp
+index 93d457e..fe46c42 100644
+--- a/src/include/sound/complex.ycp
++++ b/src/include/sound/complex.ycp
+@@ -627,4 +627,4 @@ define map sound_complex() ``{
+ //    return ComplexDialog ();
+ }
+ 
+-}//EOF
++}
+diff --git a/src/include/sound/mixer.ycp b/src/include/sound/mixer.ycp
+index 7074342..78239f5 100644
+--- a/src/include/sound/mixer.ycp
++++ b/src/include/sound/mixer.ycp
+@@ -365,4 +365,4 @@ Press <B>Next</B> to save your volume settings, press <B>Back</B> to restore the
+ 
+ }
+ 
+-}//EOF
++}
+diff --git a/src/include/sound/options.ycp b/src/include/sound/options.ycp
+index 3a5b6d9..78f75ed 100644
+--- a/src/include/sound/options.ycp
++++ b/src/include/sound/options.ycp
+@@ -699,4 +701,4 @@
+ 	return $["ui" : result["ui"]:`cancel, "return" : save_entry];
+     }
+ 
+-}//EOF
++}
+diff --git a/src/include/sound/routines.ycp b/src/include/sound/routines.ycp
+index 54655b0..e6b10fc 100644
+--- a/src/include/sound/routines.ycp
++++ b/src/include/sound/routines.ycp
+@@ -1076,4 +1076,4 @@ could make your system unstable.
+ 	});
+     }
+ 
+-}//EOF
++}
+diff --git a/src/include/sound/texts.ycp b/src/include/sound/texts.ycp
+index 0fd570b..bce9eb3 100644
+--- a/src/include/sound/texts.ycp
++++ b/src/include/sound/texts.ycp
+@@ -326,5 +326,5 @@ Use <b>Add sound card</b> to add a sound card.
+ 	return ret;
+     }
+ 
+-}//EOF
++}
+ 
+diff --git a/src/include/sound/ui.ycp b/src/include/sound/ui.ycp
+index 7a09398..e300816 100644
+--- a/src/include/sound/ui.ycp
++++ b/src/include/sound/ui.ycp
+@@ -159,4 +159,4 @@
+ 	return $["ui" : output];
+     }
+ 
+-}//EOF
++}
+diff --git a/src/include/sound/volume.ycp b/src/include/sound/volume.ycp
+index 39e6ea1..a6260e3 100644
+--- a/src/include/sound/volume.ycp
++++ b/src/include/sound/volume.ycp
+@@ -399,4 +399,4 @@ define map sound_volume (map save_entry, integer card_id, boolean finish,
+     return $["ui" : ui, "return" : size (err_msg) == 0];
+ }
+ 
+-}//EOF
++}
+diff --git a/src/include/sound/volume_routines.ycp b/src/include/sound/volume_routines.ycp
+index 6fefcc8..edcf496 100644
+--- a/src/include/sound/volume_routines.ycp
++++ b/src/include/sound/volume_routines.ycp
+@@ -283,4 +283,4 @@
+ 	return true;
+     }
+ 
+-}//EOF
++}
 diff --git a/yast2-sound.spec.in b/yast2-sound.spec.in
 index 1b9ba31..3bce60f 100644
 --- a/yast2-sound.spec.in
