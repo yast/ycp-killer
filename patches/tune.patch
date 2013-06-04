@@ -63,8 +63,74 @@ index 204e23b..e69de29 100644
 -EXTRA_DIST = $(client_DATA) $(ynclude_DATA) $(desktop_DATA) $(module_DATA)
 -
 -include $(top_srcdir)/Makefile.am.common
+diff --git a/src/clients/inst_hwinfo.ycp b/src/clients/inst_hwinfo.ycp
+index d8915aa..6eef371 100644
+--- a/src/clients/inst_hwinfo.ycp
++++ b/src/clients/inst_hwinfo.ycp
+@@ -235,11 +235,11 @@ define symbol detected_dialog() ``{
+     );
+ 
+     // help text - part 1/3
+-    string help_text = _("<P><B>Detected Hardware</B><BR>This table contains all hardware components detected in your system.</P>")
++    string help_text = _("<P><B>Detected Hardware</B><BR>This table contains all hardware components detected in your system.</P>") +
+     // help text - part 2/3
+-    + _("<P><B>Details</B><BR>Select a component and press <B>Details</B> to see a more detailed description of the component.</P>")
++    _("<P><B>Details</B><BR>Select a component and press <B>Details</B> to see a more detailed description of the component.</P>") +
+     // help text - part 3/3
+-    + ((Arch::is_uml()) ? "" : _("<P><B>Save to File</B><BR>You can save
++    ((Arch::is_uml()) ? "" : _("<P><B>Save to File</B><BR>You can save
+     hardware information (<I>hwinfo</I> output) to a file or floppy disk. Select the target type in <B>Save to File</B>.</P>"));
+ 
+     Wizard::HideBackButton();
+diff --git a/src/include/hwinfo/newid.ycp b/src/include/hwinfo/newid.ycp
+index 9b4aa42..9424504 100644
+--- a/src/include/hwinfo/newid.ycp
++++ b/src/include/hwinfo/newid.ycp
+@@ -348,20 +348,20 @@ define string NewPCIIDDialogHelp () {
+ 
+     return
+ 	// help text header
+-	_("<P><B>PCI ID Setup</B><BR></P>")
++	_("<P><B>PCI ID Setup</B><BR></P>") +
+ 	// PCI ID help text
+-	+ _("<P>It is possible to add a PCI ID to a device driver to extend its internal database of known supported devices.</P>")
++	_("<P>It is possible to add a PCI ID to a device driver to extend its internal database of known supported devices.</P>")  +
+ 	// PCI ID help text
+-	+ _("<P>PCI ID numbers are entered and displayed as hexadecimal numbers. <b>SysFS Dir.</b> is the directory name in the /sys/bus/pci/drivers directory. If it is empty, the driver name is used as the directory name.</P>")
++	_("<P>PCI ID numbers are entered and displayed as hexadecimal numbers. <b>SysFS Dir.</b> is the directory name in the /sys/bus/pci/drivers directory. If it is empty, the driver name is used as the directory name.</P>") +
+ 	// PCI ID help text
+-	+ _("<P>If the driver is compiled into the kernel, leave the driver name empty and enter the SysFS directory name instead.</P>")
++	_("<P>If the driver is compiled into the kernel, leave the driver name empty and enter the SysFS directory name instead.</P>")
+ 	+ sformat(
+ 	    // PCI ID help text, %1 stands for a button name (OK or Finish -- depends on the situation)
+ 	    _("<P>Use the buttons below the table to change the list of PCI IDs. Press <b>%1</b> to activate the settings.</P>"),
+ 	    button_label
+-	)
++	) +
+ 	// PCI ID help text
+-	+ _("<P><B>Warning:</B> This is an expert configuration. Only continue if you know what you are doing.</P>");
++	_("<P><B>Warning:</B> This is an expert configuration. Only continue if you know what you are doing.</P>");
+ }
+ 
+ define string NewPCIIDDialogCaption () {
+diff --git a/src/modules/NewID.ycp b/src/modules/NewID.ycp
+index 116627c..776a35a 100644
+--- a/src/modules/NewID.ycp
++++ b/src/modules/NewID.ycp
+@@ -355,9 +355,9 @@
+ 		    // load kernel module if it isn't already loaded
+ 		    if (modulename != nil && modulename != "")
+ 		    {
+-			ModuleLoading::Load(modulename, "", // TODO allow setting of module args?
++			ModuleLoading::Load(modulename, "" // TODO allow setting of module args?
+ 				// vendor is empty, device name is unknown
+-				"", _("Unknown device"), Linuxrc::manual(), true);
++				,"", _("Unknown device"), Linuxrc::manual(), true);
+ 		    }
+ 
+ 
 diff --git a/yast2-tune.spec.in b/yast2-tune.spec.in
-index d6f2256..a808c2d 100644
+index d6f2256..b3faf11 100644
 --- a/yast2-tune.spec.in
 +++ b/yast2-tune.spec.in
 @@ -14,6 +14,8 @@ Obsoletes:	yast2-config-hwinfo yast2-tune-idedma yast2-trans-tune
