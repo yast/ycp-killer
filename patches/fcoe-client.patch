@@ -9,8 +9,33 @@ index c6064ce..37172fc 100644
 +# TODO FIXME: temporarily disabled
 +
 +#include $(top_srcdir)/autodocs-ycp.ami
+diff --git a/src/clients/fcoe-client.ycp b/src/clients/fcoe-client.ycp
+index f5d5ff9..da4b229 100644
+--- a/src/clients/fcoe-client.ycp
++++ b/src/clients/fcoe-client.ycp
+@@ -56,14 +56,14 @@ map cmdline_description = $[
+     "initialize"        : FcoeClient::Read,
+     "finish"            : FcoeClient::Write,
+     "actions"           : $[
+-	// FIXME TODO: fill the functionality description here
+-    ],
++
++    ],	// FIXME TODO: fill the functionality description here
+     "options"		: $[
+-	// FIXME TODO: fill the option descriptions here
+-    ],
++
++    ],	// FIXME TODO: fill the option descriptions here
+     "mappings"		: $[
+-	// FIXME TODO: fill the mappings of actions and options here
+-    ]
++
++    ]	// FIXME TODO: fill the mappings of actions and options here
+ ];
+ 
+ /* is this proposal or not? */
 diff --git a/yast2-fcoe-client.spec.in b/yast2-fcoe-client.spec.in
-index 44e9242..876ab50 100644
+index 44e9242..7f24b8b 100644
 --- a/yast2-fcoe-client.spec.in
 +++ b/yast2-fcoe-client.spec.in
 @@ -8,6 +8,8 @@ BuildRequires:	perl-XML-Writer update-desktop-files yast2 yast2-devtools yast2-t
