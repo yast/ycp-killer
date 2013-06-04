@@ -14,6 +14,19 @@ index f8be896..87a7241 100644
 +#AUTODOCS_YCP = $(wildcard $(srcdir)/../../src/*/*.ycp)
 +#AUTODOCS_PM  = $(wildcard $(srcdir)/../../src/*/*.pm)
 +#include $(top_srcdir)/autodocs-ycp.ami
+diff --git a/src/clients/inst_productsources.ycp b/src/clients/inst_productsources.ycp
+index 1361381..a7cb402 100644
+--- a/src/clients/inst_productsources.ycp
++++ b/src/clients/inst_productsources.ycp
+@@ -570,7 +570,7 @@ Would you like to configure it?"),
+ 		// TRANSLATORS: progress step
+ 		_("Check network configuration"),
+ 		// TRANSLATORS: progress step
+-		_("Download list of online repositories"),
++		_("Download list of online repositories")
+ 		// TRANSLATORS: progress step
+ 	];
+ 
 diff --git a/src/clients/sw_single.ycp b/src/clients/sw_single.ycp
 index f6685c5..04ce372 100644
 --- a/src/clients/sw_single.ycp
