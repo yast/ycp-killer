@@ -9,6 +9,31 @@ index bb7ebdc..e34d7ca 100644
 +# TODO FIXME: temporarily disabled
 +
 +#include $(top_srcdir)/autodocs-ycp.ami
+diff --git a/src/clients/iscsi-client.ycp b/src/clients/iscsi-client.ycp
+index fa377b7..84aa718 100644
+--- a/src/clients/iscsi-client.ycp
++++ b/src/clients/iscsi-client.ycp
+@@ -59,14 +59,14 @@ map cmdline_description = $[
+     "initialize"        : IscsiClient::Read,
+     "finish"            : IscsiClient::Write,
+     "actions"           : $[
+-	// FIXME TODO: fill the functionality description here
+-    ],
++
++    ],	// FIXME TODO: fill the functionality description here
+     "options"		: $[
+-	// FIXME TODO: fill the option descriptions here
+-    ],
++
++    ],	// FIXME TODO: fill the option descriptions here
+     "mappings"		: $[
+-	// FIXME TODO: fill the mappings of actions and options here
+-    ]
++
++    ]	// FIXME TODO: fill the mappings of actions and options here
+ ];
+ 
+ /* is this proposal or not? */
 diff --git a/src/include/iscsi-client/complex.ycp b/src/include/iscsi-client/complex.ycp
 index 378c26a..c90b295 100644
 --- a/src/include/iscsi-client/complex.ycp
@@ -70,7 +95,7 @@ index 8c49b17..52fb8e9 100644
  		// delete (logout from) connected target
  		record = setRecord();
 diff --git a/yast2-iscsi-client.spec.in b/yast2-iscsi-client.spec.in
-index d945497..c67d5a1 100644
+index d945497..04e8803 100644
 --- a/yast2-iscsi-client.spec.in
 +++ b/yast2-iscsi-client.spec.in
 @@ -17,6 +17,8 @@ Requires:       yast2 >= 2.21.22
