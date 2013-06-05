@@ -74,6 +74,9 @@ include_wrappers:
   src/include/partitioning/raid_lib.ycp: src/include/partitioning/ep-main.ycp
 
 excluded:
+  # Keep the datafiles in YCP format
+  - src/data/demo_target_map.ycp
+  - src/data/test_target_map.ycp
   # TODO: These are the only files using LibStorage::initDefaultLogger which is
   #       an overloaded function. pluglib-bindings (the YCP addition over SWIG)
   #       don't handle the overloading, letting YCP see only one variant at
