@@ -136,6 +136,20 @@ index 0689035..66b2263 100644
  	}
      });
  
+diff --git a/src/include/installation/inst_inc_second.ycp b/src/include/installation/inst_inc_second.ycp
+index e0c985c..9c7b7fc 100644
+--- a/src/include/installation/inst_inc_second.ycp
++++ b/src/include/installation/inst_inc_second.ycp
+@@ -399,7 +399,8 @@ Note: You may have to enter some information again.");
+             SCR::Execute (.target.remove, Installation::current_step);
+         }
+ 
+-        if (WFM::Read (.local.size, "/usr/share/YaST2/clients/product_post.ycp") > 0)
++        if (WFM::Read (.local.size, "/usr/share/YaST2/clients/product_post.ycp") > 0
++          || WFM::Read (.local.size, "/usr/share/YaST2/clients/product_post.rb") > 0)
+             WFM::CallFunction ("product_post", [Mode::update ()]);
+     }
+ 
 diff --git a/yast2-installation.spec.in b/yast2-installation.spec.in
 index 2ff4767..78d35a5 100644
 --- a/yast2-installation.spec.in
