@@ -1,7 +1,18 @@
 diff --git a/src/include/runlevel/ui.ycp b/src/include/runlevel/ui.ycp
-index 0c65120..9377ff3 100644
+index 0c65120..bfaadb8 100644
 --- a/src/include/runlevel/ui.ycp
 +++ b/src/include/runlevel/ui.ycp
+@@ -1145,8 +1145,8 @@ Select runlevels in which to run the currently selected service.<ul>
+ 			]
+ 			+ (!show_restore ? [] :
+ 			[
+-			    //TODO
+-			])
++			    
++			]) //TODO
+ 			+
+ 			[
+ 				 // menu item
 @@ -1574,6 +1574,15 @@ name or the name specified is already in use."));
      }
  
@@ -53,7 +64,7 @@ index 0c65120..9377ff3 100644
  		}
  		else if (`clear_all == ret)
 diff --git a/yast2-runlevel.spec.in b/yast2-runlevel.spec.in
-index d8fdbd1..cd2b68a 100644
+index d8fdbd1..fe38048 100644
 --- a/yast2-runlevel.spec.in
 +++ b/yast2-runlevel.spec.in
 @@ -16,6 +16,8 @@ Obsoletes:	yast2-config-runlevel

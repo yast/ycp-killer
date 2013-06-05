@@ -72,3 +72,19 @@ index d1c1669..c9097f0 100644
  Summary:	YaST2 - Firewall Configuration
  
  %description
+diff --git a/src/include/firewall/summary.ycp b/src/include/firewall/summary.ycp
+index 92f05ae..bd651b8 100644
+--- a/src/include/firewall/summary.ycp
++++ b/src/include/firewall/summary.ycp
+@@ -95,9 +95,9 @@ you may find current contact information at www.novell.com
+ 		    _("Any unassigned interface will be assigned to this zone.");
+ 		//);
+ 	    } else {
+-		ret_val = " '" + spec_interface + "' "
++		ret_val = " '" + spec_interface + "' " +
+ 		    // TRANSLATORS: informative text
+-		    + _("Currently supported only in external zone.");
++		    _("Currently supported only in external zone.");
+ 	    }
+ 	} else {
+ 	    // TRANSLATORS: informative text

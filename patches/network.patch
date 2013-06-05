@@ -34,6 +34,61 @@ index a708e92..4b93a56 100644
 +
 +#AUTODOCS_YCP = $(srcdir)/../../src/*/*.ycp
 +#include $(top_srcdir)/autodocs-ycp.ami
+diff --git a/src/clients/network.ycp b/src/clients/network.ycp
+index a1f540d..302da53 100644
+--- a/src/clients/network.ycp
++++ b/src/clients/network.ycp
+@@ -173,8 +173,7 @@ dsl	")+ _("DSL Connection") +("
+ 	"options" : $[
+ 		],
+ 	"mapping" : $[
+-//		"run" : [  ],
+-		]
++		], //		"run" : [  ],
+ ];
+ 
+ 
+diff --git a/src/include/network/dsl/wizards.ycp b/src/include/network/dsl/wizards.ycp
+index c953412..3a9421d 100644
+--- a/src/include/network/dsl/wizards.ycp
++++ b/src/include/network/dsl/wizards.ycp
+@@ -299,7 +299,7 @@ define symbol DSLSequence() ``{
+ 	"write" : $[
+ 	    `abort	: `abort,
+ 	    `next	: `next //"finish"
+-	]
++	],
+ /*
+ 	"finish" : $[
+ 	    `next	: `next,
+diff --git a/src/include/network/isdn/lowlevel.ycp b/src/include/network/isdn/lowlevel.ycp
+index 8cd40f2..2c1080c 100644
+--- a/src/include/network/isdn/lowlevel.ycp
++++ b/src/include/network/isdn/lowlevel.ycp
+@@ -225,7 +225,8 @@ define term Card_Parameter(map drv) ``{
+ 	if (drv == nil)
+ 	    return contens;
+ 
+-	if (typ == 8005) { /* AVM T1 */
++	if (typ == 8005) /* AVM T1 */
++  {
+ 	    // CheckBox label
+ 	    contens = add(contens, `CheckBox(`id(`t1b), _("&T1B Version"), false));
+ 	}
+diff --git a/src/include/network/lan/address.ycp b/src/include/network/lan/address.ycp
+index d832a40..69c1c8f 100644
+--- a/src/include/network/lan/address.ycp
++++ b/src/include/network/lan/address.ycp
+@@ -1091,8 +1091,7 @@ _("<p><b><big>IFPLUGD PRIORITY</big></b></p>
+ 	`Frame(_("Detailed Settings"), `HBox(`HStretch(),
+ 	`HSquash(`VBox(
+ //	    `VSpacing(0.4),
+-	    "ADVANCED_MB"
+-//	    `VSpacing(0.4)
++	    "ADVANCED_MB" //	    `VSpacing(0.4)
+ 	)),
+ 	`HStretch()
+     )));
 diff --git a/src/include/network/lan/bridge.ycp b/src/include/network/lan/bridge.ycp
 index e597956..ec028b3 100644
 --- a/src/include/network/lan/bridge.ycp
@@ -98,6 +153,19 @@ index e11a8a4..0dc4672 100644
  	    }
  
  	    LanItems::DeleteItem();
+diff --git a/src/include/network/lan/hardware.ycp b/src/include/network/lan/hardware.ycp
+index 0cb1549..9a57d23 100644
+--- a/src/include/network/lan/hardware.ycp
++++ b/src/include/network/lan/hardware.ycp
+@@ -937,7 +937,7 @@ any HardwareDialog (){
+     Wizard::SetContents(caption, contents, initHelp(),false, true);
+     Wizard::SetAbortButton(`cancel, Label::CancelButton());
+ //    Wizard::DisableBackButton();
+-    any ret = CWM::Run(w, $[ /*`abort:ReallyAbort*/ ]);
++    any ret = CWM::Run(w, $[]); /*`abort:ReallyAbort*/
+     Wizard::CloseDialog();
+ //    Wizard::RestoreAbortButton();
+     return ret;
 diff --git a/src/include/network/lan/s390.ycp b/src/include/network/lan/s390.ycp
 index 2d55233..02723df 100644
 --- a/src/include/network/lan/s390.ycp
@@ -129,6 +197,43 @@ index cde9148..cb979fa 100644
  import "Netmask";
  import "NetworkInterfaces";
  import "NetworkService";
+diff --git a/src/include/network/modem/wizards.ycp b/src/include/network/modem/wizards.ycp
+index 767c126..d26fa39 100644
+--- a/src/include/network/modem/wizards.ycp
++++ b/src/include/network/modem/wizards.ycp
+@@ -299,7 +299,7 @@ define symbol ModemSequence() {
+ 	"write" : $[
+ 	    `abort	: `abort,
+ 	    `next	: `next //"finish"
+-	]
++	],
+ /*
+ 	"finish" : $[
+ 	    `next	: `next,
+diff --git a/src/include/network/provider/provider.ycp b/src/include/network/provider/provider.ycp
+index e002163..637f503 100644
+--- a/src/include/network/provider/provider.ycp
++++ b/src/include/network/provider/provider.ycp
+@@ -283,7 +283,8 @@ disk. If you enter the password here, it is saved in clear text on disk
+     ));
+ 
+     term encapbox = `Empty();
+-    if(type == "isdn") { /* FIXME: ISDN ??? */
++    if(type == "isdn") /* FIXME: ISDN ??? */
++    {
+ 	/* ComboBox label */
+ 	encapbox = `Left(`ComboBox(`id(`encap), `opt(`notify), _("Packet &Encapsulation"), [
+ 	    /* ComboBox item */
+@@ -393,7 +394,8 @@ disk. If you enter the password here, it is saved in clear text on disk
+     ChangeWidgetIfExists(`id(`password), `Enabled, !ask_pass);
+     ChangeWidgetIfExists(`id(`info), `Enabled, infotext != nil && infotext != "");
+ 
+-    if(type == "isdn" && encap == "rawip") { /* FIXME: ISDN ??? */
++    if(type == "isdn" && encap == "rawip") /* FIXME: ISDN ??? */
++    {
+ 	// seems that disabling via frame is not possible
+ 	// UI::ChangeWidget(`id(`auth), `Enabled, false);
+ 	ChangeWidgetIfExists(`id(`username), `Enabled, false);
 diff --git a/src/include/network/services/dns.ycp b/src/include/network/services/dns.ycp
 index c29640e..1adbc3f 100644
 --- a/src/include/network/services/dns.ycp
@@ -141,8 +246,35 @@ index c29640e..1adbc3f 100644
  
  include "network/routines.ycp";
  include "network/widgets.ycp";
+diff --git a/src/modules/Lan.ycp b/src/modules/Lan.ycp
+index caaba2a..c0d36f5 100644
+--- a/src/modules/Lan.ycp
++++ b/src/modules/Lan.ycp
+@@ -172,7 +172,7 @@ void readIPv6(){
+                 "filelist" : ["sysctl.conf"],
+                 "filepath" : "/etc/",
+                 "regexp"   : "^[[:space:]]*(net.ipv6.conf.all.disable_ipv6)[[:space:]]*=[[:space:]]*1"
+-        ]
++        ],
+ /*
+         "module" : $[
+                 "filelist" : ["ipv6", "50-ipv6.conf"],
+diff --git a/src/modules/Provider.ycp b/src/modules/Provider.ycp
+index 93de507..543f606 100644
+--- a/src/modules/Provider.ycp
++++ b/src/modules/Provider.ycp
+@@ -410,8 +410,7 @@ global define boolean Select(string name) {
+     if(Current == $[]) {
+ 	/* Default provider map */
+ 	Current = $[
+-	    /* FIXME: remaining items */
+-	];
++	]; /* FIXME: remaining items */
+ 
+ 	/* Variable key -> not functional #16701 */
+ 	Current[toupper(Type) + "SUPPORTED"] = "yes";
 diff --git a/yast2-network.spec.in b/yast2-network.spec.in
-index de9eec7..885c977 100644
+index de9eec7..e8b2cbc 100644
 --- a/yast2-network.spec.in
 +++ b/yast2-network.spec.in
 @@ -29,10 +29,14 @@ PreReq:         /bin/rm
@@ -160,7 +292,7 @@ index de9eec7..885c977 100644
  Summary:        YaST2 - Developer documentation for yast2-network
  
  %description 
-@@ -71,10 +75,9 @@ fi
+@@ -71,10 +71,9 @@ fi
  @ybindir@/*
  @ydatadir@/*
  @yncludedir@/network

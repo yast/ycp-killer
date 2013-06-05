@@ -29,6 +29,31 @@ index f7e5b2d..23dcf72 100644
 +# TODO FIXME: temporarily disabled, enable back when 
 +#             autodocs support is implemented
 +# include $(top_srcdir)/autodocs-ycp.ami
+diff --git a/src/clients/printer.ycp b/src/clients/printer.ycp
+index 2cb336f..a658293 100644
+--- a/src/clients/printer.ycp
++++ b/src/clients/printer.ycp
+@@ -56,14 +56,14 @@ map cmdline_description = $[
+     "initialize"        : Printer::Read,
+     "finish"            : Printer::Write,
+     "actions"           : $[
+-	// FIXME TODO: fill the functionality description here
+-    ],
++
++    ],	// FIXME TODO: fill the functionality description here
+     "options"		: $[
+-	// FIXME TODO: fill the option descriptions here
+-    ],
++
++    ],	// FIXME TODO: fill the option descriptions here
+     "mappings"		: $[
+-	// FIXME TODO: fill the mappings of actions and options here
+-    ]
++
++    ]	// FIXME TODO: fill the mappings of actions and options here
+ ];
+ 
+ /* is this proposal or not? */
 diff --git a/src/include/printer/connectionwizard.ycp b/src/include/printer/connectionwizard.ycp
 index 253eff4..dc1bfd2 100644
 --- a/src/include/printer/connectionwizard.ycp
@@ -153,7 +178,7 @@ index 253eff4..dc1bfd2 100644
      case(`serial):
            string serial_device_node = (string)UI::QueryWidget( `serial_device_node, `Value );
 diff --git a/yast2-printer.spec.in b/yast2-printer.spec.in
-index 27b37f2..22ffe31 100644
+index 27b37f2..30f908c 100644
 --- a/yast2-printer.spec.in
 +++ b/yast2-printer.spec.in
 @@ -18,6 +18,8 @@ Requires:       yast2 >= 2.16.12

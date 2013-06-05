@@ -65,6 +65,26 @@ index 5557669..fd70d67 100644
      
      define list<string> certificateID = [];
  
+diff --git a/src/include/ca-management/crlExport.ycp b/src/include/ca-management/crlExport.ycp
+index c8f91da..02f6d2a 100644
+--- a/src/include/ca-management/crlExport.ycp
++++ b/src/include/ca-management/crlExport.ycp
+@@ -278,11 +278,13 @@ define void exportCRL (string ca) {
+                                 // Translators: this is used to express a setting of  "every XX hour(s)"
+                                 `Label(_("every")),
+                                 // Translators: this is used to express a setting of  "every XX hour(s)"
+-                                `HSquash( `IntField( `id(`interval_hours), `opt(`notify), _("&hour(s)"), 1, 24, 12 )),  // (bnc#446137)
++                                `HSquash( `IntField( `id(`interval_hours), `opt(`notify), _("&hour(s)"), 1, 24, 12 ))  // (bnc#446137)
++                                ,
+                                 // Translators: in case "every XX hour(s)" is set to 24, the user can set "at XX o'clock"
+                                 `HBox(`id(`atHourSetting), `Label(_("at")),
+                                 // Translators: in case "every XX hour(s)" is set to 24, the user can set "at XX o'clock"
+-                                `HSquash( `IntField( `id(`interval_athour), _("&o'clock"), 0, 23, 3 ))),  // (bnc#446137)
++                                `HSquash( `IntField( `id(`interval_athour), _("&o'clock"), 0, 23, 3 )))  // (bnc#446137)
++                                ,
+                                 `HSpacing(3),
+                                 `VBox( `VSpacing(1), `PushButton(`id(`securityInfo), _("&Security Information")) )
+                             )
 diff --git a/src/include/ca-management/request.ycp b/src/include/ca-management/request.ycp
 index 81f9cb9..7b192b6 100644
 --- a/src/include/ca-management/request.ycp
@@ -91,8 +111,28 @@ index 223f310..5882646 100644
  
      // Description of the current Request
      map currentRequestMap = $[];
+diff --git a/src/include/ca-management/wizards.ycp b/src/include/ca-management/wizards.ycp
+index af5c4ef..03d55f8 100644
+--- a/src/include/ca-management/wizards.ycp
++++ b/src/include/ca-management/wizards.ycp
+@@ -101,13 +101,13 @@ define symbol MainSequence() ``{
+ 				`next 		: "startup",				
+ 				`abort		: "startup",
+                             ],
+-        "new_certServer"    : $[
+ //				`next       	: "certificate",
+ //				`abort		: "certificate",
++        "new_certServer"    : $[
+                             ],
+-        "new_certClient"    : $[
+ //				`next       	: "certificate",
+ //				`abort		: "certificate",
++        "new_certClient"    : $[
+                             ],
+         ];
+ 
 diff --git a/yast2-ca-management.spec.in b/yast2-ca-management.spec.in
-index 05afd3f..04a8c8e 100644
+index 05afd3f..dce42da 100644
 --- a/yast2-ca-management.spec.in
 +++ b/yast2-ca-management.spec.in
 @@ -27,6 +27,8 @@ Requires:       perl-gettext

@@ -23,6 +23,44 @@ index 942c239..33acb79 100644
  
  htmldir = $(docdir)
  
+diff --git a/src/clients/support.ycp b/src/clients/support.ycp
+index ee74cab..7968abf 100644
+--- a/src/clients/support.ycp
++++ b/src/clients/support.ycp
+@@ -58,14 +58,14 @@ map cmdline_description = $[
+     "initialize"        : Support::Read,
+     "finish"            : Support::Write,
+     "actions"           : $[
+-	// FIXME TODO: fill the functionality description here
+-    ],
++
++    ],	// FIXME TODO: fill the functionality description here
+     "options"		: $[
+-	// FIXME TODO: fill the option descriptions here
+-    ],
++
++    ],	// FIXME TODO: fill the option descriptions here
+     "mappings"		: $[
+-	// FIXME TODO: fill the mappings of actions and options here
+-    ]
++
++    ]	// FIXME TODO: fill the mappings of actions and options here
+ ];
+ 
+ /* is this proposal or not? */
+diff --git a/src/include/support/complex.ycp b/src/include/support/complex.ycp
+index 80e7483..b6fbadc 100644
+--- a/src/include/support/complex.ycp
++++ b/src/include/support/complex.ycp
+@@ -96,7 +96,7 @@ symbol ReadDialog() {
+ 	            "^[#][^ \t[]", // comment char followed by non-blank nor '['
+ 	            "^[#][ \t]+[^[a-z \t].*$", // comment chars followed by non a-z char nor '[' nor blank
+ 	            "^[#][ \t]+[a-z ]*[a-z][ \t]*$", // comment chars followed by a-z or blank chars
+-	            "^[#][ \t]+[a-z ]*[a-z][ \t]*[^a-z \t=].*$", // like above, but followed by non a-z nor blank nor '=' chars
++	            "^[#][ \t]+[a-z ]*[a-z][ \t]*[^a-z \t=].*$"  // like above, but followed by non a-z nor blank nor '=' chars
+ 	        ],
+ 	/*
+ 	        "sections" : [
 diff --git a/src/include/support/dialogs.ycp b/src/include/support/dialogs.ycp
 index 105e952..a3adbed 100644
 --- a/src/include/support/dialogs.ycp
@@ -42,8 +80,75 @@ index 105e952..a3adbed 100644
  
  any OverviewDialog(){
  
+diff --git a/src/include/support/helps.ycp b/src/include/support/helps.ycp
+index 00d1afc..9469218 100644
+--- a/src/include/support/helps.ycp
++++ b/src/include/support/helps.ycp
+@@ -82,27 +82,27 @@ the configuration opens.</p>
+ To start a Web browser that opens the Novell Support Center Portal, use <b>Open Novell Support Center</b>.
+ You can then open a Service Request with Novell Technical Support. Make sure you write down
+ the Service Request number to include in the supportconfig data upload.</p>
+-")
++") +
+     /* Ovreview dialog help 2/3 */
+-    + _("<p><b><big>Collecting Data</big></b><br>
+-To run the supportconfig data collection tool, use <b>Collect Data</b></p>")
++    _("<p><b><big>Collecting Data</big></b><br>
++To run the supportconfig data collection tool, use <b>Collect Data</b></p>") +
+     /* Ovreview dialog help 3/3 */
+-    + _("<p><b><big>Uploading Collected Data</big></b><br>
++    _("<p><b><big>Uploading Collected Data</big></b><br>
+ To upload the data already collected to a server, use <b>Upload Data</b>.
+ The server may or may not be Novell Technical Support.</p>"),
+ 
+     /* Configure1 dialog help 1/3 */
+     "support_params" : _("<p><b><big>Supportconfig Options</big></b><br>
+ Select an option to override the defaults. You can use the default settings,
+-gather the most data or only gather a minimum amount of data.")
++gather the most data or only gather a minimum amount of data.") +
+     /* Configure1 dialog help 2/3 */
+-    + _("<p><b><big>Expert Settings</big></b><br>
++    _("<p><b><big>Expert Settings</big></b><br>
+ Select <b>Use Custom</b> and click the <b>Expert Settings</b> button
+ to select specific data sets to collect.</p>
+-")
++") +
+ 
+     /* Configure1 dialog help 3/3 */
+-    + _("<p><b><big>Options</big></b><br>
++    _("<p><b><big>Options</big></b><br>
+ Collect additional information. Usually these options are not
+ necessary, but can be included if circumstances require more information.</p>
+ "),
+@@ -114,20 +114,20 @@ Select or deselect each of the data sets you would like to include in the suppor
+     /* Contact dialog help 1/4 */
+     "contact" : _("<p><big><b>Contact Information</b></big><br>
+ Fill in each of the contact information fields that you would like to include
+-in the supportconfig tarball. The fields are saved in the basic-environment.txt file.</p>")
++in the supportconfig tarball. The fields are saved in the basic-environment.txt file.</p>") +
+     /* Contact dialog help 2/4 */
+-    + _("<p><b><big>Upload Information</big></b><br>
++    _("<p><b><big>Upload Information</big></b><br>
+ The upload target is the supportconfig tarball's destination URI. Supported upload services include
+ ftp, http, https, scp. If you need to include the supportconfig tarball filename in your upload target,
+ use the <i>tarball</i> keyword. This will get replaced with the actual tarball filename.
+-See <i>man supportconfig(1)</i> for further details.</p>")
++See <i>man supportconfig(1)</i> for further details.</p>") +
+     /* Contact dialog help 3/4 */
+-    + _("<p><b><big>Upload Target Examples</big></b><br>
++    _("<p><b><big>Upload Target Examples</big></b><br>
+ https://secure-www.novell.com/upload?appname=supportconfig&file=<i>tarball</i><br>
+ ftp://ftp.novell.com/incoming<br>
+-scp://central.server.foo.com/supportconfig/archives</p>")
++scp://central.server.foo.com/supportconfig/archives</p>") +
+     /* Contact dialog help 4/4 */
+-    + _("<p><b>Note:</b> If you are uploading a supportconfig tarball to Novell Technical Support,
++    _("<p><b>Note:</b> If you are uploading a supportconfig tarball to Novell Technical Support,
+ make sure you include the Novell 11-digit service request number from your open service request.
+ "),
+ 
 diff --git a/yast2-support.spec.in b/yast2-support.spec.in
-index 41404e7..2e15828 100644
+index 41404e7..fcfa942 100644
 --- a/yast2-support.spec.in
 +++ b/yast2-support.spec.in
 @@ -8,6 +8,8 @@ BuildRequires:	perl-XML-Writer update-desktop-files yast2 yast2-devtools yast2-t

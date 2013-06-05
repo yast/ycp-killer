@@ -35,6 +35,166 @@ index bc7845f..3793b8a 100644
  
  
      /**
+diff --git a/src/include/http-server/helps.ycp b/src/include/http-server/helps.ycp
+index 6bbcae7..90b7190 100644
+--- a/src/include/http-server/helps.ycp
++++ b/src/include/http-server/helps.ycp
+@@ -58,13 +58,13 @@ The table contains a list of all available Apache2 modules.
+ The first column contains the name of the module. 
+ The second column shows whether the module should be
+ loaded by the server. Enabled modules will be loaded. The last column displays a short description
+-of the module.</p>")
++of the module.</p>") +
+ 	// module dialog help 2/3
+-	+ _("<p>To change the status of a module, 
++	_("<p>To change the status of a module, 
+ choose the appropriate entry of the table and click <b>Toggle Status</b>.</p>
+-")
++") +
+ 	// module dialog help 3/3
+-	+ _("<p>If you need to add a module not listed in the table, 
++	_("<p>If you need to add a module not listed in the table, 
+ use <b>Add Module</b>.</p>
+ "),
+ 
+@@ -92,11 +92,11 @@ default (fallback) host. If the server name of the default
+ host is not specified, a path to the document root of the
+ default host is displayed.
+ <b>Hosts</b> contains a list of hosts configured for the server.</p>
+-")
++") +
+ 	// server configuration overview help 2/2
+-	+ _("<p>Choose an appropriate entry from the table and click <b>Edit</b> to change settings.</p>")
++	_("<p>Choose an appropriate entry from the table and click <b>Edit</b> to change settings.</p>") +
+ 	// help of menu button for server configuration 1/1
+-	+  _("<p><b>Log Files</b> displays server log files.</p>"),
++	 _("<p><b>Log Files</b> displays server log files.</p>"),
+ 
+ 
+ 	// hosts list help 1/2
+@@ -105,18 +105,18 @@ This is a list of already configured hosts. One of the hosts is
+ marked as default (the asterisk next to the server name). A default host is used if no other host
+ matches for an incoming request. To set a host as default,
+ press <b>Set as Default</b>.</p>
+-")
++") +
+ 	// hosts list help 2/2
+-	+ _("<p>Choose an appropriate entry of the table and click <b>Edit</b> to change the host.
++	_("<p>Choose an appropriate entry of the table and click <b>Edit</b> to change the host.
+ To add a host, click <b>Add</b>. To remove a host, select it and click <b>Delete</b>.</p>"),
+ 
+ 	// host editing help 1/2
+ 	"global_table": _("<p><b><big>Host Configuration</big></b><br>
+ To edit the host settings, choose the appropriate entry of the table then click <b>Edit</b>.
+-To add a new option, click <b>Add</b>. To remove an option, select it and click <b>Delete</b>.</p>")
++To add a new option, click <b>Add</b>. To remove an option, select it and click <b>Delete</b>.</p>") +
+ 
+ 	// host editing help 2/2
+-	+ _("<p>The <b>Server Resolution</b> options set the resolution when using
++	_("<p>The <b>Server Resolution</b> options set the resolution when using
+ 	virtual hosts. However, when you choose <b>Resolution via HTTP Headers</b>,
+ 	the default server will never be served requests to the IP address of
+ 	a name-based virtual host. If you plan to configure a SSL based vhost, use <b>Resolution via IP address</b></p>"),
+@@ -125,9 +125,9 @@ To add a new option, click <b>Add</b>. To remove an option, select it and click
+ 	"listen" : _("<p><b><big><i>Listen</i> Settings for a Host</big></b><br>
+ The <i>Listen</i> directive allows selection of ports and network interfaces
+ where the HTTP server should listen for incoming requests.</p>
+-")
++") +
+ 	// listen dialog editor help 2/2
+-	+ _("<p>Choose an appropriate entry of the table and click <b>Edit</b> to change the entry.
++	_("<p>Choose an appropriate entry of the table and click <b>Edit</b> to change the entry.
+ To add a new entry, click <b>Add</b>. To remove an entry, select it and click <b>Delete</b>.</p>"),
+ 
+ 	// ssl options dialog help 1/4
+@@ -135,47 +135,47 @@ To add a new entry, click <b>Add</b>. To remove an entry, select it and click <b
+ This is a list of options related to the SSL (Secure Socket Layer) settings
+ of the host. SSL allows communicating securely with the host by 
+ encrypting communication.</p>
+-")
++") +
+ 
+ 	// ssl options dialog help 2/4
+-	+ _("<p>General behavior is determined by the SSL option. The host can
++	_("<p>General behavior is determined by the SSL option. The host can
+ not support SSL at all (<tt>No SSL</tt>), allow both non-SSL and SSL access (<tt>Allowed</tt>),
+ or accept only connections encrypted via SSL (<tt>Required</tt>).
+ </p>
+-")
++") +
+ 
+ 	// ssl options dialog help 3/4
+-	+ _("<p>Choose an appropriate option of the table and click <b>Edit</b> to change the option.
+-To add a new option, click <b>Add</b>. To remove an option, select it and click <b>Delete</b>.</p>")
++	_("<p>Choose an appropriate option of the table and click <b>Edit</b> to change the option.
++To add a new option, click <b>Add</b>. To remove an option, select it and click <b>Delete</b>.</p>") +
+ 
+ 	// ssl options dialog help 3/4 (empty in simple mode)
+-	+ ((ProductFeatures::GetFeature ("globals", "ui_mode") != "simple") ? _("<p>The <b>Certificates</b> menu allows 
++	((ProductFeatures::GetFeature ("globals", "ui_mode") != "simple") ? _("<p>The <b>Certificates</b> menu allows 
+ importing server certificates. <b>Import Server Certificate</b> 
+ allows use of a special purpose certificate. 
+ <b>Use Common Certificate</b> configures usage of the
+ common certificate issued for this host.</p>
+-") : "" )
++") : "" ) +
+ 
+ 	// ssl options dialog help 4/4
+-	+ _("<p><b>Note:</b> If you enable use of SSL for a host, the <tt>mod_ssl</tt> 
++	_("<p><b>Note:</b> If you enable use of SSL for a host, the <tt>mod_ssl</tt> 
+ module should be loaded by the server.</p>
+ "),
+ 
+ 	// new host dialog help 1/3
+ 	"add_host_general" : _("<p><b><big>New Host</big></b><br>
+-This dialog allows you to enter a basic information about a new virtual host.</p>")
++This dialog allows you to enter a basic information about a new virtual host.</p>") +
+ 
+ 	// new host dialog help 2/3
+-	+ _("<p><b>Server Identification</b> specifies the content and
++	_("<p><b>Server Identification</b> specifies the content and
+ the presentation of the the new virtual host. <b>Server Name</b> is the DNS name returned as a part
+ of the HTTP headers of the server response. <b>Server Contents Root</b>
+ is an absolute path to a directory containing all documents provided by
+ this virtual host. <b>Administrator E-Mail</b> allows setup of an e-mail
+ address for feedback about this host.</p>
+-")
++") +
+ 
+ 	// new host dialog help 3/3
+-	+ _("<p><big><b>Server Resolution</b></big><br>
++	_("<p><big><b>Server Resolution</b></big><br>
+ Apache2 must be able to determine which virtual host
+ settings it should use to create a response for an HTTP request. 
+ There are two basic approaches. If using HTTP headers
+@@ -187,20 +187,20 @@ Consult the Apache2 manual for further details.</p>
+ "),
+ 	// advanced new host dialog 1/5
+ 	"set_vhost"	: _("<p><b><big>Details for New Host</big></b><br>
+-This dialog allows you to specify additional information about a new virtual host.</p>")
++This dialog allows you to specify additional information about a new virtual host.</p>") +
+ 	// advanced new host dialog 2/5
+-	+_("<p>Select <b>Enable CGI Support</b>
+-to run CGI scripts in the path in <b>CGI Directory Path</b> using the alias <tt>/cgi-bin/</tt>.</p>")
++	_("<p>Select <b>Enable CGI Support</b>
++to run CGI scripts in the path in <b>CGI Directory Path</b> using the alias <tt>/cgi-bin/</tt>.</p>") +
+ 	// advanced new host dialog 3/5
+-	+_("<p>For HTTPS access to this virtual host, select <b>Enable SSL Support</b>.
++	_("<p>For HTTPS access to this virtual host, select <b>Enable SSL Support</b>.
+ 
+ Then enter the path for the certificate file in <b>Certificate File
+ Path</b>.This option is only available for IP-based vhosts.</p>
+-")
++") +
+ 	// advanced new host dialog 4/5
+-	+_("<p>In <b>Directory Index</b>, enter a space-separated list of files that Apache should look for and provide when a URL for a directory (one that ends in <tt>/</tt>) is requested.  The first matching file found is provided.</p>")
++	_("<p>In <b>Directory Index</b>, enter a space-separated list of files that Apache should look for and provide when a URL for a directory (one that ends in <tt>/</tt>) is requested.  The first matching file found is provided.</p>") +
+ 	// advanced new host dialog 5/5
+-	+_("<p><b>Public HTML</b>\n
++	_("<p><b>Public HTML</b>\n
+ enables access to <tt>.public_html</tt> directories of all users.</p>")
+ 
+     ];
 diff --git a/src/include/http-server/routines.ycp b/src/include/http-server/routines.ycp
 index 1fd4425..9edee6c 100644
 --- a/src/include/http-server/routines.ycp
@@ -87,7 +247,7 @@ index ed077e7..42be13e 100644
     * Sequention used for determining on which ip adresses and port apache2 will listen and if firewall is enebled
     * whether to open firewall on this port.
 diff --git a/yast2-http-server.spec.in b/yast2-http-server.spec.in
-index 2821125..bcf9798 100644
+index 2821125..c6e77e7 100644
 --- a/yast2-http-server.spec.in
 +++ b/yast2-http-server.spec.in
 @@ -11,6 +11,8 @@ Requires:       yast2 >= 2.21.22

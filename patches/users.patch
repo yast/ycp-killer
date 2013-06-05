@@ -63,6 +63,44 @@ index 84686e4..c5e262b 100644
  
  textdomain "users";
  
+diff --git a/src/include/users/widgets.ycp b/src/include/users/widgets.ycp
+index 62bdf33..b2e76b2 100644
+--- a/src/include/users/widgets.ycp
++++ b/src/include/users/widgets.ycp
+@@ -468,9 +468,9 @@ only obtain users with a username beginning with 'u'.</p>
+ 		    button = `notnext;
+ 		    continue;
+ 		}
+-		if (!issubstring (tolower (curr_user_f),tolower(default_user_f))
++		if (!issubstring (tolower (curr_user_f),tolower(default_user_f)) &&
+ 		    // yes/no popup question
+-		    && !Popup::YesNo (_("The new user filter does not contain the default user filter.
++		    !Popup::YesNo (_("The new user filter does not contain the default user filter.
+ Really use it?
+ ")))
+ 		{
+@@ -2245,4 +2245,4 @@ map <string, map <string, any> > widgets = $[
+     ],
+ ];
+ 
+-}//EOF
++}
+diff --git a/src/include/users/wizards.ycp b/src/include/users/wizards.ycp
+index 010cd2b..d552e37 100644
+--- a/src/include/users/wizards.ycp
++++ b/src/include/users/wizards.ycp
+@@ -276,8 +276,9 @@ define symbol UsersSequence(string start) ``{
+ 	"read" : $[
+ 	    `abort	: `abort,
+ 	    `next	: "main",
+-        `nextmodule: `next // this is for skiping users conf during install,
+-                           // see Users::CheckHomeMounted() or bug #20365
++        // this is for skiping users conf during install,
++        // see Users::CheckHomeMounted() or bug #20365
++        `nextmodule: `next 
+ 	],
+ 	"main" : $[
+ 	    `abort	: `abort,
 diff --git a/yast2-users.spec.in b/yast2-users.spec.in
 index dda3d5f..acf6d4c 100644
 --- a/yast2-users.spec.in

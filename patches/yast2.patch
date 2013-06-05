@@ -668,6 +668,33 @@ index 3879b6d..9e1aaec 100644
 +
 +#AUTODOCS_SUBDIR=network
 +#include $(top_srcdir)/autodocs-ycp.ami
+diff --git a/library/network/src/modules/NetworkInterfaces.ycp b/library/network/src/modules/NetworkInterfaces.ycp
+index 1fbfbdb..5d78f16 100644
+--- a/library/network/src/modules/NetworkInterfaces.ycp
++++ b/library/network/src/modules/NetworkInterfaces.ycp
+@@ -1185,8 +1185,7 @@ global define boolean Select(string name) {
+     if(Current == $[]) {
+ 	/* Default device map */
+ 	Current = $[
+-	    /* FIXME: remaining items */
+-	];
++	]; /* FIXME: remaining items */
+     }
+ 
+     y2debug("Name=%1", Name);
+diff --git a/library/network/testsuite/tests/NetworkInterfaces.ycp b/library/network/testsuite/tests/NetworkInterfaces.ycp
+index fce4040..d967b9a 100644
+--- a/library/network/testsuite/tests/NetworkInterfaces.ycp
++++ b/library/network/testsuite/tests/NetworkInterfaces.ycp
+@@ -52,7 +52,7 @@ list <string> ifcfgs = [
+     "eth-id-00:07:e9:d5:8e:e8#foo",
+     "ip6tnl0",
+     "ip6tnl31",
+-    "mip6mnha3",
++    "mip6mnha3"
+ /*
+     // trying
+     "bogusname",
 diff --git a/library/packages/doc/autodocs/Makefile.am b/library/packages/doc/autodocs/Makefile.am
 index 0f42745..0d975b6 100644
 --- a/library/packages/doc/autodocs/Makefile.am
@@ -913,6 +940,25 @@ index 6248ff4..ae166c7 100644
 +
 +#AUTODOCS_SUBDIR=system
 +#include $(top_srcdir)/autodocs-ycp.ami
+diff --git a/library/system/src/modules/ModuleLoading.ycp b/library/system/src/modules/ModuleLoading.ycp
+index 95c0b8d..711079e 100644
+--- a/library/system/src/modules/ModuleLoading.ycp
++++ b/library/system/src/modules/ModuleLoading.ycp
+@@ -130,11 +130,11 @@ you may find current contact information at www.novell.com
+ 			string vendorname, string devicename,
+ 			boolean ask_before_loading, boolean with_modprobe)
+     ``{
+-	if ((modulename != "")
++	if ((modulename != "") &&
+ // there is no reason for checking initrd, if I need the module to get loaded, I just  need to
+ // check if it isn't already loaded
+-//	    && (!contains (Initrd::ListModules (), modulename))
+-	    && !Mode::test ())
++//	    (!contains (Initrd::ListModules (), modulename)) &&
++	    !Mode::test ())
+ 	{
+ 	    // always look whether the module is already loaded
+ 	    map loaded_modules = (map) SCR::Read(.proc.modules);
 diff --git a/library/types/doc/autodocs/Makefile.am b/library/types/doc/autodocs/Makefile.am
 index 2c416a5..4e95b91 100644
 --- a/library/types/doc/autodocs/Makefile.am
@@ -939,6 +985,22 @@ index 60abcb8..452a0bb 100644
 +
 +#AUTODOCS_SUBDIR=wizard
 +#include $(top_srcdir)/autodocs-ycp.ami
+diff --git a/library/wizard/src/modules/Wizard.ycp b/library/wizard/src/modules/Wizard.ycp
+index 4ca0575..b76e1d0 100644
+--- a/library/wizard/src/modules/Wizard.ycp
++++ b/library/wizard/src/modules/Wizard.ycp
+@@ -59,9 +59,9 @@ you may find current contact information at www.novell.com
+ 
+ 	    have_fancy_ui_cache = UI::HasSpecialWidget(`Wizard ) == true
+ 		&& ui_info[ "Depth" ]:0 >= 15
+-		&& ui_info[ "DefaultWidth" ]:0 >= 800
++		&& ui_info[ "DefaultWidth" ]:0 >= 800 &&
+ 		// some netbooks use such a strange resolution (fate#306298)
+-		&& ui_info[ "DefaultHeight"]:0 >= 576;
++		ui_info[ "DefaultHeight"]:0 >= 576;
+ 
+ 	    // have_fancy_ui_cache = false;
+ 
 diff --git a/library/wizard/testsuite/tests/wizard_dialog.ycp b/library/wizard/testsuite/tests/wizard_dialog.ycp
 index f8825de..5d58b65 100644
 --- a/library/wizard/testsuite/tests/wizard_dialog.ycp

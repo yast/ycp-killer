@@ -106,7 +106,7 @@ index 3ef84e6..80773e2 100644
  
      </programlisting>
 diff --git a/src/clients/driver_update2_finish.ycp b/src/clients/driver_update2_finish.ycp
-index 909e81c..f9d3ae3 100644
+index 909e81c..19f4a13 100644
 --- a/src/clients/driver_update2_finish.ycp
 +++ b/src/clients/driver_update2_finish.ycp
 @@ -64,7 +64,10 @@ if (func == "Info")
@@ -136,6 +136,104 @@ index 0689035..66b2263 100644
  	}
      });
  
+diff --git a/src/clients/inst_congratulate.ycp b/src/clients/inst_congratulate.ycp
+index 91cf573..e5cca69 100644
+--- a/src/clients/inst_congratulate.ycp
++++ b/src/clients/inst_congratulate.ycp
+@@ -280,7 +280,3 @@ selected, a profile of the current system is stored in <tt>/root/autoinst.xml</t
+ 
+     return ret;
+ }
+-
+-// indentation is f*cked up but this comes close at least
+-// vim: set noexpandtab:
+-// vim: set tabstop=8:
+diff --git a/src/clients/inst_finish.ycp b/src/clients/inst_finish.ycp
+index 2bfb0fa..5f99928 100644
+--- a/src/clients/inst_finish.ycp
++++ b/src/clients/inst_finish.ycp
+@@ -434,9 +434,9 @@ if (required_to_open_sl_dialog) {
+ if (size (Misc::boot_msg) > 0 && !Mode::autoinst ())
+ {
+     // bugzilla #245742, #160301
+-    if ((Linuxrc::usessh () && !Linuxrc::vnc())
++    if ((Linuxrc::usessh () && !Linuxrc::vnc()) ||
+ 	// also live installation - bzilla #297691
+-	|| Mode::live_installation ())
++	Mode::live_installation ())
+     {
+ 	// Display the message and wait for user to accept it
+ 	Report::DisplayMessages (true, 0);
+diff --git a/src/clients/inst_proposal.ycp b/src/clients/inst_proposal.ycp
+index dcba708..da2d99d 100644
+--- a/src/clients/inst_proposal.ycp
++++ b/src/clients/inst_proposal.ycp
+@@ -1068,9 +1068,9 @@ Put the hardware settings into effect by pressing <b>Next</b>.
+ 	else if (proposal_mode == "uml")
+ 	{
+ 	    // Proposal in uml module
+-	    help_text_string = _("<P><B>UML Installation Proposal</B></P>")
++	    help_text_string = _("<P><B>UML Installation Proposal</B></P>") +
+ 	    // help text
+-	    + _("<P>UML (User Mode Linux) installation allows you to start independent
++	    _("<P>UML (User Mode Linux) installation allows you to start independent
+ Linux virtual machines in the host system.</P>");
+ 	}
+ 	else if (proposal_properties["help"]:"" != "")
+diff --git a/src/clients/stroj-casu.ycp b/src/clients/stroj-casu.ycp
+index e4904e7..33ea01f 100644
+--- a/src/clients/stroj-casu.ycp
++++ b/src/clients/stroj-casu.ycp
+@@ -47,10 +47,10 @@
+ so much younger than today,<br>...</p>");
+     Verzeichnis<string> headings = [
+ 	Tr("Time Machine"),
+-	Tr("Temporal Range"),	// 
+-	Tr("Spatial Range"),	// 
+-	Tr("Temporal Accuracy"),	// 
+-	Tr("Spatial Accuracy"),	// 
++	Tr("Temporal Range"),
++	Tr("Spatial Range"),
++	Tr("Temporal Accuracy"),
++	Tr("Spatial Accuracy"),
+ 	];
+     Verzeichnis<Verzeichnis> buttons = [
+ 	[ `repair, Tr("Self &Repair") ],
+diff --git a/src/include/installation/inst_inc_first.ycp b/src/include/installation/inst_inc_first.ycp
+index 143de16..30dbddd 100644
+--- a/src/include/installation/inst_inc_first.ycp
++++ b/src/include/installation/inst_inc_first.ycp
+@@ -167,7 +167,7 @@
+ 		"disks_activate", // disks activated before running upgrade
+ 		"mode", // always doing update, is already preselected
+ 		"update_partition", // no mounting
+-		"prepdisk", // disks already mounted, it is dummy in update anyway
++		"prepdisk" // disks already mounted, it is dummy in update anyway
+ 	    ], {
+ 		ProductControl::DisableModule (m);
+ 	    });
+diff --git a/src/include/installation/misc.ycp b/src/include/installation/misc.ycp
+index 9dd0c2e..aa9b992 100644
+--- a/src/include/installation/misc.ycp
++++ b/src/include/installation/misc.ycp
+@@ -191,13 +191,13 @@ previous dialogs.</p>");
+ 
+ 	    body =
+ 	    // Text for confirmation popup before the update really starts 1/3
+-		_("<p>Information required to perform an update is now complete.</p>")
++		_("<p>Information required to perform an update is now complete.</p>") +
+ 	    // Text for confirmation popup before the update really starts 2/3
+-		+ _("
++		_("
+ <p>If you continue now, data on your hard disk will be overwritten
+-according to the settings in the previous dialogs.</p>")
++according to the settings in the previous dialogs.</p>") +
+ 	    // Text for confirmation popup before the update really starts 3/3
+-		+ _("<p>Go back and check the settings if you are unsure.</p>")
++		_("<p>Go back and check the settings if you are unsure.</p>")
+ 		;
+ 
+ 	    // Label for the button that confirms startint the installation
 diff --git a/yast2-installation.spec.in b/yast2-installation.spec.in
 index 2ff4767..78d35a5 100644
 --- a/yast2-installation.spec.in

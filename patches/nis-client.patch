@@ -38,8 +38,38 @@ index 2a6f678..4cb582c 100644
 +# TODO FIXME: temporarily disabled
 +
 +# include $(top_srcdir)/autodocs-ycp.ami
+diff --git a/src/clients/nis.ycp b/src/clients/nis.ycp
+index 8b89df9..a95b280 100644
+--- a/src/clients/nis.ycp
++++ b/src/clients/nis.ycp
+@@ -236,7 +236,7 @@ map cmdline = $[
+ 	"disable"	: [],
+ 	"summary"	: [],
+ 	"configure"	: [ "server", "domain", "automounter", "broadcast" ],
+-	"find"		: [ "domain" ]
++	"find"		: [ "domain" ],
+ 	// TODO:
+ 	// more domains?
+ 	// YPBIND_OPTIONS: delimiter??
+diff --git a/src/include/nis/ui.ycp b/src/include/nis/ui.ycp
+index b91a78d..8210760 100644
+--- a/src/include/nis/ui.ycp
++++ b/src/include/nis/ui.ycp
+@@ -241,10 +241,10 @@ by separating their addresses with spaces.</p>
+ 	help_text = help_text + _("<p><b>Automounter</b> is a daemon that mounts directories automatically,
+ such as users' home directories.
+ It is assumed that its configuration files (auto.*) already exist,
+-either locally or over NIS.</p>")
++either locally or over NIS.</p>") +
+ 
+ 	// help text
+-	+ _("<p>NFS Settings which affects how the automounter operates could be set in NFS Client, which can be configured using <b>NFS Configuration</b> button.</p>");
++	_("<p>NFS Settings which affects how the automounter operates could be set in NFS Client, which can be configured using <b>NFS Configuration</b> button.</p>");
+ 
+ 
+ 	help_text = help_text + firewall_widget["help"]:"";
 diff --git a/yast2-nis-client.spec.in b/yast2-nis-client.spec.in
-index 8a34023..0afab19 100644
+index 8a34023..95af8fd 100644
 --- a/yast2-nis-client.spec.in
 +++ b/yast2-nis-client.spec.in
 @@ -18,6 +18,8 @@ Provides:	yast2-trans-nis

@@ -23,6 +23,31 @@ index 3dca519..c7779b2 100644
 +# TODO FIXME: temporarily disabled
 +
 +#include $(top_srcdir)/autodocs-ycp.ami
+diff --git a/src/clients/drbd.ycp b/src/clients/drbd.ycp
+index 0e05309..6a16733 100644
+--- a/src/clients/drbd.ycp
++++ b/src/clients/drbd.ycp
+@@ -56,14 +56,14 @@ map cmdline_description = $[
+     "initialize"        : Drbd::Read,
+     "finish"            : Drbd::Write,
+     "actions"           : $[
+-	// FIXME TODO: fill the functionality description here
+-    ],
++
++    ],	// FIXME TODO: fill the functionality description here
+     "options"		: $[
+-	// FIXME TODO: fill the option descriptions here
+-    ],
++
++    ],	// FIXME TODO: fill the option descriptions here
+     "mappings"		: $[
+-	// FIXME TODO: fill the mappings of actions and options here
+-    ]
++
++    ]	// FIXME TODO: fill the mappings of actions and options here
+ ];
+ 
+ /* is this proposal or not? */
 diff --git a/src/include/drbd/common.ycp b/src/include/drbd/common.ycp
 index f5c46d3..5e7eb23 100644
 --- a/src/include/drbd/common.ycp
@@ -37,7 +62,7 @@ index f5c46d3..5e7eb23 100644
  		"startup_conf",
  		"global_conf",
 diff --git a/yast2-drbd.spec.in b/yast2-drbd.spec.in
-index 70d1f7b..878b2e3 100644
+index 70d1f7b..55abaef 100644
 --- a/yast2-drbd.spec.in
 +++ b/yast2-drbd.spec.in
 @@ -6,6 +6,8 @@ Group:          System/YaST

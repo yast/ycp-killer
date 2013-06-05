@@ -19,8 +19,27 @@ index 93ce8ad..1d261db 100644
 +	install -d -m 755 $(DESTDIR)/etc/YaST2/instserver
 +
  EXTRA_DIST = $(apacheconf_DATA) 
+diff --git a/src/include/instserver/dialogs.ycp b/src/include/instserver/dialogs.ycp
+index 4471693..fcf1c08 100644
+--- a/src/include/instserver/dialogs.ycp
++++ b/src/include/instserver/dialogs.ycp
+@@ -99,11 +99,11 @@
+ 	    basecontent = $[];
+ 	}
+ 
+-	if ((tolower(content["BASEPRODUCT"]:"") == tolower(basecontent["BASEPRODUCT"]:"")
+-	    && content["BASEVERSION"]:"" == basecontent["BASEVERSION"]:"")
++	if ((tolower(content["BASEPRODUCT"]:"") == tolower(basecontent["BASEPRODUCT"]:"") &&
++	    content["BASEVERSION"]:"" == basecontent["BASEVERSION"]:"") ||
+ 	    // or it's a service pack for maintained product (e.g. NLD)
+ 	    // compare BASEPRODUCT and PRODUCT in that case
+-	    || (!haskey(basecontent, "BASEPRODUCT") && !haskey(basecontent, "BASEVERSION") &&
++	    (!haskey(basecontent, "BASEPRODUCT") && !haskey(basecontent, "BASEVERSION") &&
+ 		tolower(content["BASEPRODUCT"]:"") == tolower(basecontent["PRODUCT"]:"")
+ 		&& content["BASEVERSION"]:"" == basecontent["VERSION"]:"" )
+ 	)
 diff --git a/yast2-instserver.spec.in b/yast2-instserver.spec.in
-index e452ea7..d8f6f7d 100644
+index e452ea7..9e39b33 100644
 --- a/yast2-instserver.spec.in
 +++ b/yast2-instserver.spec.in
 @@ -12,6 +12,8 @@ Requires:	yast2-slp

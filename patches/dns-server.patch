@@ -65,7 +65,7 @@ index 67a7831..0f622a6 100644
      list<string> zn = maplist (map z, zones, ``(z["zone"]:""));
      string zl = mergestring (zn, ", ");
 diff --git a/src/include/dns-server/dialog-main.ycp b/src/include/dns-server/dialog-main.ycp
-index 02ebf85..2589485 100644
+index 02ebf85..8bb0a1d 100644
 --- a/src/include/dns-server/dialog-main.ycp
 +++ b/src/include/dns-server/dialog-main.ycp
 @@ -13,6 +13,7 @@
@@ -87,6 +87,21 @@ index 02ebf85..2589485 100644
  /* String defines the initial screen for the expert dialog */
  string initial_screen = "start_up";
  
+@@ -107,11 +112,11 @@ void UpdateServiceStatusWidget () {
+ 	UI::ChangeWidget (`id ("start_dns_now"), `Enabled, ! status);
+ 	UI::ChangeWidget (`id ("stop_dns_now"), `Enabled, status);
+ 	UI::ReplaceWidget (`id ("service_status_rp"),
+-	    `Label (status
++	    `Label (status ?
+ 		// service sttus - label
+-		? _("DNS server is running.")
++		_("DNS server is running.") :
+ 		// service sttus - label
+-		: _("DNS server is not running.")
++		_("DNS server is not running.")
+ 	    )
+ 	);
+     }
 @@ -277,29 +282,29 @@ void RedrawForwardersListWidget () {
  	`SelectionBox ( `id ( "forwarders_list" ), `opt ( `hstretch ),
  	    // Selectionbox for listing current DNS-Forwarders
@@ -227,16 +242,24 @@ index 02ebf85..2589485 100644
  }
  
  /**
-@@ -883,7 +888,7 @@ boolean IsUniqueOption (string option) {
+@@ -881,12 +886,13 @@ boolean IsUniqueOption (string option) {
+  * Returns if the option was set yet
+  */
  boolean OptionIsSetYet (string option) {
-     if (size(
+-    if (size(
++    if (
++    // options are list, size returns count of records
++    size(
  	// filters all records whith key = option
 -	filter (map<string, any> option_record, options,
 +	filter (map<string, any> option_record, DnsServerUI::options,
  	    ``(option_record["key"]:nil == option)
  	)
-     // options are list, size returns count of records
-@@ -1002,8 +1007,8 @@ symbol HandleExpertBasicOptionsPage (string key, map event) {
+-    // options are list, size returns count of records
+     ) >0 ) {
+ 	return true;
+     }
+@@ -1002,8 +1008,8 @@ symbol HandleExpertBasicOptionsPage (string key, map event) {
  	    return nil;
  	}
  
@@ -247,7 +270,7 @@ index 02ebf85..2589485 100644
  	RedrawOptionsTableWidget ();
  	return nil;
      }
-@@ -1028,7 +1033,7 @@ Really add another one?
+@@ -1028,7 +1034,7 @@ Really add another one?
  	    y2warning("Added unique option '%1' more times", current_key);
  	}
  
@@ -256,7 +279,7 @@ index 02ebf85..2589485 100644
  	    "key" : current_key,
  	    "value" : current_value,
  	]);
-@@ -1040,8 +1045,8 @@ Really add another one?
+@@ -1040,8 +1046,8 @@ Really add another one?
  	// testing options for right values
  	if (! CheckOptionValue(current_key, current_value)) return nil;
  
@@ -267,7 +290,7 @@ index 02ebf85..2589485 100644
  	RedrawOptionsTableWidget ();
  	return nil;
      }
-@@ -1298,7 +1303,7 @@ term Expert_ACLs_Dialog () {
+@@ -1298,7 +1304,7 @@ term Expert_ACLs_Dialog () {
  
  void RedrawAclPage () {
      integer index = -1;
@@ -276,7 +299,7 @@ index 02ebf85..2589485 100644
  	index = index + 1;
  	while (substring (a, 0, 1) == " " || substring (a, 0, 1) == "\t")
  	    a = substring (a, 1);
-@@ -1318,7 +1323,7 @@ void RedrawAclPage () {
+@@ -1318,7 +1324,7 @@ void RedrawAclPage () {
   */
  void InitExpertAclPage (string key) {
      SetDNSSErverIcon();
@@ -285,7 +308,7 @@ index 02ebf85..2589485 100644
      UI::ChangeWidget (`id ("new_acl_name"), `ValidChars,
  	"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_-");
      RedrawAclPage ();
-@@ -1328,7 +1333,7 @@ void InitExpertAclPage (string key) {
+@@ -1328,7 +1334,7 @@ void InitExpertAclPage (string key) {
   * Store settings of a tab of a dialog
   */
  void StoreExpertAclPage (string key, map event) {
@@ -294,7 +317,7 @@ index 02ebf85..2589485 100644
  }
  
  /**
-@@ -1336,7 +1341,7 @@ void StoreExpertAclPage (string key, map event) {
+@@ -1336,7 +1342,7 @@ void StoreExpertAclPage (string key, map event) {
   * @returns true if the name is duplicate
   */
  boolean IsAclDefined (string new_name, list<string> acls) {
@@ -303,7 +326,7 @@ index 02ebf85..2589485 100644
  	list<string> splitted = splitstring (acl, " \t");
  	if (new_name == splitted[0]:"") return true;
      }) == true) {
-@@ -1395,7 +1400,7 @@ symbol HandleExpertAclPage (string key, map event) {
+@@ -1395,7 +1401,7 @@ symbol HandleExpertAclPage (string key, map event) {
  	`CurrentItem);
      if (ret == "delete_acl")
      {
@@ -312,7 +335,7 @@ index 02ebf85..2589485 100644
  	while (substring (a, 0, 1) == " " || substring (a, 0, 1) == "\t")
  	    a = substring (a, 1);
  	list<string> s = splitstring (a, " \t");
-@@ -1422,8 +1427,8 @@ symbol HandleExpertAclPage (string key, map event) {
+@@ -1422,8 +1428,8 @@ symbol HandleExpertAclPage (string key, map event) {
  	});
  	DnsServer::StoreZones (zones);
  
@@ -323,7 +346,7 @@ index 02ebf85..2589485 100644
  	RedrawAclPage ();
      }
      else if (ret == "add_acl")
-@@ -1460,7 +1465,7 @@ symbol HandleExpertAclPage (string key, map event) {
+@@ -1460,7 +1466,7 @@ symbol HandleExpertAclPage (string key, map event) {
  		v = v + " }";
  	    }
  	    // testing for ACL duplicity
@@ -332,7 +355,7 @@ index 02ebf85..2589485 100644
  	    {
  		UI::SetFocus(`id ("new_acl_name") );
  		// An error popup message
-@@ -1468,7 +1473,7 @@ symbol HandleExpertAclPage (string key, map event) {
+@@ -1468,7 +1474,7 @@ symbol HandleExpertAclPage (string key, map event) {
  	    }
  	    else
  	    {
@@ -341,7 +364,7 @@ index 02ebf85..2589485 100644
  		RedrawAclPage ();
  	    }
  	}
-@@ -1554,7 +1559,7 @@ term ExpertZonesDialog () {
+@@ -1554,7 +1560,7 @@ term ExpertZonesDialog () {
  
  void RedrawZonesListWidget () {
      // Translating of all zone names at once
@@ -350,7 +373,7 @@ index 02ebf85..2589485 100644
  	return z["zone"]:"";
      });
      list <string> decoded_zone_names = Punycode::DocodeDomainNames(encoded_zone_names);
-@@ -1566,7 +1571,7 @@ void RedrawZonesListWidget () {
+@@ -1566,7 +1572,7 @@ void RedrawZonesListWidget () {
      });
  
      index = -1;
@@ -359,7 +382,7 @@ index 02ebf85..2589485 100644
  	index = index + 1;
  	string zone_name = z["zone"]:"";
  
-@@ -1593,7 +1598,9 @@ void RedrawZonesListWidget () {
+@@ -1593,7 +1599,9 @@ void RedrawZonesListWidget () {
  		// TRANSLATORS: Table item - Server type
  		type_trans = _("Forward");
  		break;
@@ -370,7 +393,7 @@ index 02ebf85..2589485 100644
  	}
  
  	return `item (`id (index), enc_to_dec[zone_name]:zone_name, type_trans);
-@@ -1616,7 +1623,7 @@ void RedrawZonesListWidget () {
+@@ -1616,7 +1624,7 @@ void RedrawZonesListWidget () {
   */
  void InitExpertZonesPage (string key) {
      SetDNSSErverIcon();
@@ -379,7 +402,7 @@ index 02ebf85..2589485 100644
      RedrawZonesListWidget ();
  }
  
-@@ -1660,9 +1667,9 @@ symbol HandleExpertZonesPage (string key, map event) {
+@@ -1660,9 +1668,9 @@ symbol HandleExpertZonesPage (string key, map event) {
  	// Confirm deleting zone
  	if (!Confirm::DeleteSelected()) return nil;
  
@@ -392,7 +415,7 @@ index 02ebf85..2589485 100644
  	RedrawZonesListWidget ();
  	return nil;
      }
-@@ -1700,7 +1707,7 @@ symbol HandleExpertZonesPage (string key, map event) {
+@@ -1700,7 +1708,7 @@ symbol HandleExpertZonesPage (string key, map event) {
  	    return nil;
  	}
  
@@ -401,7 +424,7 @@ index 02ebf85..2589485 100644
  	    return z["zone"]:"" == encoded_zone_name;
  	});
  	if (size (zones_same) != 0)
-@@ -1711,7 +1718,7 @@ symbol HandleExpertZonesPage (string key, map event) {
+@@ -1711,7 +1719,7 @@ symbol HandleExpertZonesPage (string key, map event) {
  	    return nil;
  	}
  
@@ -410,7 +433,7 @@ index 02ebf85..2589485 100644
  	DnsServer::SelectZone (-1);
  	map<string,any> z = DnsServer::FetchCurrentZone ();
  	z = (map<string,any>)union (z, $[
-@@ -1722,13 +1729,13 @@ symbol HandleExpertZonesPage (string key, map event) {
+@@ -1722,13 +1730,13 @@ symbol HandleExpertZonesPage (string key, map event) {
  	y2milestone ("Created zone: %1 (%2)", z, zone_name);
  	DnsServer::StoreCurrentZone (z);
  	DnsServer::StoreZone ();
@@ -427,7 +450,7 @@ index 02ebf85..2589485 100644
  	    return `edit_zone;
  	}
      }
-@@ -1737,7 +1744,7 @@ symbol HandleExpertZonesPage (string key, map event) {
+@@ -1737,7 +1745,7 @@ symbol HandleExpertZonesPage (string key, map event) {
  	// next time, the initial screen will be "zones"
  	initial_screen = "zones";
  	DnsServer::SelectZone (index);
@@ -1260,6 +1283,128 @@ index 3e4ffc2..b046cbb 100644
      y2milestone ("Editing zone %1 (%2), type %3", name, Punycode::DecodeDomainName(name), type);
      if (type == "master")
  	return `master;
+diff --git a/src/include/dns-server/helps.ycp b/src/include/dns-server/helps.ycp
+index 8886208..1a45831 100644
+--- a/src/include/dns-server/helps.ycp
++++ b/src/include/dns-server/helps.ycp
+@@ -79,9 +79,9 @@ both DHCP and DNS servers.</p>"),
+     // help 3/5, only for alt. 1
+     "master_zone" : _("<p><b><big>Editing a DNS Zone</big></b><br>
+ To edit the zone settings, choose the appropriate
+-entry of the table then click <b>Edit</b>.</p>")
++entry of the table then click <b>Edit</b>.</p>") +
+     // help 4/5, only for alt. 1
+-    + _("<p>To add a new record to the zone, click <b>Add</b>. To remove
++    _("<p>To add a new record to the zone, click <b>Add</b>. To remove
+ a record, select it and click <b>Delete</b>.</p>"),
+ 
+     // help 5/5, only for alt. 1
+@@ -127,42 +127,42 @@ via all network interfaces to which it listens, check
+     // soa dialog
+     // help text 1/9
+     "soa" : _("<p><b><big>SOA Record Configuration</big></b><br>
+-Set the entries of the SOA record.</p>")
++Set the entries of the SOA record.</p>") +
+ 
+     // help text 2/9 - TTL
+-    + _("<p><b>$TTL</b> specifies the time to live for all records in the
+-zone that do not have an explicit TTL.</p>")
++    _("<p><b>$TTL</b> specifies the time to live for all records in the
++zone that do not have an explicit TTL.</p>") +
+ 
+     // help text 3/9 - Primary source
+-    + _("<p><b>Primary Source</b> must contain the fully qualified domain name
+-of the primary name server.</p>")
++    _("<p><b>Primary Source</b> must contain the fully qualified domain name
++of the primary name server.</p>") +
+ 
+     // help text 4/9 - Administrator's mail
+-    + _("<p><b>Administrator's Mail</b> must contain the e-mail address of
++    _("<p><b>Administrator's Mail</b> must contain the e-mail address of
+ the administrator responsible for the zone.</p>
+-")
++") +
+ 
+     // help text 5/9 - Serial
+-    + _("<p><b>Serial</b> number is used for determining if the zone has changed on
++    _("<p><b>Serial</b> number is used for determining if the zone has changed on
+ the master servers (so that slave servers do not always need to synchronize the
+ entire zone).</p>
+-")
++") +
+ 
+     // help text 6/9 - Refresh
+-    + _("<p><b>Refresh</b> sets how often the zone should be synchronized from
+-master name server to slave name servers.</p>")
++    _("<p><b>Refresh</b> sets how often the zone should be synchronized from
++master name server to slave name servers.</p>") +
+ 
+     // help text 7/9 - Retry
+-    + _("<p><b>Retry</b> sets how often slave servers try to synchronize
+-the zone from the master server if synchronization fails.</p>")
++    _("<p><b>Retry</b> sets how often slave servers try to synchronize
++the zone from the master server if synchronization fails.</p>") +
+ 
+     // help text 8/9 - Expiry
+-    + _("<p><b>Expiry</b> means the period after which the zone expires on slave
++    _("<p><b>Expiry</b> means the period after which the zone expires on slave
+ servers and slave servers stop answering replies until it is synchronized.
+-</p>")
++</p>") +
+ 
+     // help text 9/9 - Minimum
+-    + _("<p><b>Minimum</b> sets for how long the slave servers should cache
++    _("<p><b>Minimum</b> sets for how long the slave servers should cache
+ negative answers (name resolution failed).</p>"),
+ 
+     // ddns keys dialog
+@@ -372,34 +372,34 @@ To remove one of the listed mail servers, select it and click
+ 
+     /* Zone Editor - Help for tab - Zone (SOA) 1/7 */
+ "zone_editor_soa" : _("<p><b><big>SOA Record Configuration</big></b><br>
+-Set the entries of the SOA record.</p>")
++Set the entries of the SOA record.</p>") +
+ 
+     /* Zone Editor - Help for tab - Zone (SOA) 2/7 */
+-+ _("<p><b>Serial</b> is the number used for determining if the zone has 
++_("<p><b>Serial</b> is the number used for determining if the zone has 
+ changed on
+ the master servers (then slave servers do not always need to synchronize the
+ entire zone).</p>
+-")
++") +
+ 
+     /* Zone Editor - Help for tab - Zone (SOA) 3/7 */
+-+ _("<p><b>TTL</b> specifies the time to live for all records in the
+-zone that do not have an explicit TTL.</p>")
++_("<p><b>TTL</b> specifies the time to live for all records in the
++zone that do not have an explicit TTL.</p>") +
+ 
+     /* Zone Editor - Help for tab - Zone (SOA) 4/7 */
+-+ _("<p><b>Refresh</b> sets how often the zone should be synchronized from
+-master name server to slave name servers.</p>")
++_("<p><b>Refresh</b> sets how often the zone should be synchronized from
++master name server to slave name servers.</p>") +
+ 
+     /* Zone Editor - Help for tab - Zone (SOA) 5/7 */
+-+ _("<p><b>Retry</b> sets how often slave servers try to synchronize
+-the zone from the master server if synchronization fails.</p>")
++_("<p><b>Retry</b> sets how often slave servers try to synchronize
++the zone from the master server if synchronization fails.</p>") +
+ 
+     /* Zone Editor - Help for tab - Zone (SOA) 6/7 */
+-+ _("<p><b>Expiration</b> means the period after which the zone expires on slave
++_("<p><b>Expiration</b> means the period after which the zone expires on slave
+ servers and slave servers stop answering replies until it is synchronized.
+-</p>")
++</p>") +
+ 
+     /* Zone Editor - Help for tab - Zone (SOA) 7/7 */
+-+ _("<p><b>Minimum</b> sets for how long the slave servers should cache
++_("<p><b>Minimum</b> sets for how long the slave servers should cache
+ negative answers (name resolution failed).</p>"),
+ 
+     /* Zone Editor - Help for tab - Records 1/7  or 1/5 */
 diff --git a/src/include/dns-server/options.ycp b/src/include/dns-server/options.ycp
 index 4d7d727..4b21795 100644
 --- a/src/include/dns-server/options.ycp

@@ -23,8 +23,36 @@ index 8e1465e..e9aa7f9 100644
  [
    $[
      "comment" : " admind: admin daemon for thin clients\n uses ident and host name lookups for authentication\n security: weak authentication, just enough for thin clients\n client: adminc.pl\n default config file: /etc/opt/SLES/POS/admind.conf\n",
+diff --git a/src/include/inetd/dialogs.ycp b/src/include/inetd/dialogs.ycp
+index c232268..2c207f4 100644
+--- a/src/include/inetd/dialogs.ycp
++++ b/src/include/inetd/dialogs.ycp
+@@ -361,7 +361,8 @@ define symbol InetdDialog () ``{
+ 	    `HBox(
+ 		/* Translators: Table Header: The "Ch" label is short of "Changed". Please, make the
+ 				translation as short as possible. */
+-		`Table(`id(`table),// `opt(`notify),
++		`Table(`id(`table),
++    // `opt(`notify),
+ 		//`opt(`keepSorting),
+ 		`header(`Center(_("Ch")), `Center(_("Status")),
+ 		    _("Service"), _("Type "), `Center(_("Protocol")), _("Wait"),
+diff --git a/src/modules/Inetd.ycp b/src/modules/Inetd.ycp
+index 8d63468..1171923 100644
+--- a/src/modules/Inetd.ycp
++++ b/src/modules/Inetd.ycp
+@@ -439,8 +439,7 @@ global define services_t MergeAyProfile (services_t target, services_t changes)
+ 	// if the matching turns out to be too clever:
+ 	// skip matching
+ 	string change_iid = change_s["iid"]:"";
+-	if (search (change_iid, "new") != 0
+-	    /* || find (change_iid, "inst") == 0*/ ) // do nothing if matches is 0 and we add the service
++	if (search (change_iid, "new") != 0 /* || find (change_iid, "inst") == 0*/ ) // do nothing if matches is 0 and we add the service
+ 	{
+ 	    // apply the change to the target list:
+ 	    target = maplist(service_t target_s, target, ``{
 diff --git a/yast2-inetd.spec.in b/yast2-inetd.spec.in
-index 74e1dd3..5389b0e 100644
+index 74e1dd3..9274beb 100644
 --- a/yast2-inetd.spec.in
 +++ b/yast2-inetd.spec.in
 @@ -18,6 +18,8 @@ Obsoletes:	yast2-trans-inet y2t_inet
@@ -36,7 +64,7 @@ index 74e1dd3..5389b0e 100644
  Summary:	YaST2 - Network Services Configuration
  
  %description
-@@ -35,10 +37,9 @@ The YaST2 component for configuring the inetd and xinetd daemons.
+@@ -35,10 +35,9 @@ The YaST2 component for configuring the inetd and xinetd daemons.
  %defattr(-,root,root)
  %dir @yncludedir@/inetd
  @yncludedir@/inetd/*

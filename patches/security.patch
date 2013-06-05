@@ -7,6 +7,40 @@ index 2a6f678..19b5419 100644
  
 -include $(top_srcdir)/autodocs-ycp.ami
 +# include $(top_srcdir)/autodocs-ycp.ami
+diff --git a/src/include/security/dialogs.ycp b/src/include/security/dialogs.ycp
+index 546802b..e17802d 100644
+--- a/src/include/security/dialogs.ycp
++++ b/src/include/security/dialogs.ycp
+@@ -825,8 +825,8 @@ define any LoginDialog() ``{
+ 	    VSeparator(),
+ 	    settings2widget("DISPLAYMANAGER_REMOTE_ACCESS")
+ 	    //VSeparator()
+-	))
+-	//,`VSpacing(1.7)
++	))//,`VSpacing(1.7)
++	
+     );
+     contents = `HVCenter(`HVSquash(`HBox(`HSpacing(5),`VBox(`VSpacing(2),`ReplacePoint(`id(`rp_main),contents),`VSpacing(2)),`HSpacing(5))));
+ 
+diff --git a/src/include/security/helps.ycp b/src/include/security/helps.ycp
+index 2606cad..610eff5 100644
+--- a/src/include/security/helps.ycp
++++ b/src/include/security/helps.ycp
+@@ -251,11 +251,11 @@ debugging). For details, see /usr/src/linux/Documentation/sysrq.txt</p>"),
+ 
+ 
+     // help text: security overview dialog 1/
+-    "overview" : _("<P><B>Security Overview</B><BR>This overview shows the most important security settings.</P>")
++    "overview" : _("<P><B>Security Overview</B><BR>This overview shows the most important security settings.</P>") +
+     // help text: security overview dialog 1/
+-    + _("<P>To change the current value, click the link associated to the option.</P>")
++    _("<P>To change the current value, click the link associated to the option.</P>") +
+     // help text: security overview dialog 1/
+-    + _("<P> A check mark in the <B>Security Status</B> column means that the current value of the option is secure.</P>"),
++    _("<P> A check mark in the <B>Security Status</B> column means that the current value of the option is secure.</P>"),
+ 
+     // an error message (rich text)
+     "unknown_status" : _("<P><B>The current value could not be read. The service is probably not installed or the option is missing on the system.</B></P>")
 diff --git a/src/include/security/users.ycp b/src/include/security/users.ycp
 index b54cdda..7b53634 100644
 --- a/src/include/security/users.ycp
@@ -21,7 +55,7 @@ index b54cdda..7b53634 100644
  /**
   * Adduser dialog
 diff --git a/yast2-security.spec.in b/yast2-security.spec.in
-index a60270e..53cfa05 100644
+index a60270e..5d7f9f3 100644
 --- a/yast2-security.spec.in
 +++ b/yast2-security.spec.in
 @@ -19,6 +19,8 @@ Obsoletes:	yast2-trans-security y2t_sec

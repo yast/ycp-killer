@@ -38,8 +38,72 @@ index 4128d71..ddde8e7 100644
 +
 +#include $(top_srcdir)/autodocs-ycp.ami
  
+diff --git a/src/include/samba-client/dialogs.ycp b/src/include/samba-client/dialogs.ycp
+index 572531d..db90fd4 100644
+--- a/src/include/samba-client/dialogs.ycp
++++ b/src/include/samba-client/dialogs.ycp
+@@ -638,11 +638,11 @@ symbol MembershipDialog () {
+ 		    // a workgroup, must be a domain; %1 is the workgroup name
+ 		    sformat( _("Cannot use the workgroup\n'%1' for Linux authentication."), workgroup)
+ 		    + "\n\n"
+-		    + (Stage::cont()
++		    + (Stage::cont() ?
+ 			// translators: 2nd part of an error message
+-			? _("Enter a valid domain.")
++			_("Enter a valid domain.") :
+ 			// translators: 2nd part of an error message
+-			: _("Enter a domain or disable\nusing SMB for Linux authentication.")));
++			_("Enter a domain or disable\nusing SMB for Linux authentication.")));
+ 		    continue;
+ 		}
+ 
+@@ -673,9 +673,9 @@ settings in smb.conf to the default values:
+ 			// winbind cannot provide user information if the host
+ 			// is not in a domain
+ 			Popup::Error( _("The host must be a member of a domain\nfor Linux authentication using SMB.")
+-			    + "\n\n"
++			    + "\n\n" +
+ 			    // translators: 2nd part of an error message
+-			    + _("Join a domain or disable use of SMB\nfor Linux authentication."));
++			    _("Join a domain or disable use of SMB\nfor Linux authentication."));
+ 			continue;
+ 		    }
+ 		}
+diff --git a/src/include/samba-client/helps.ycp b/src/include/samba-client/helps.ycp
+index 013f6eb..7ba7cb2 100644
+--- a/src/include/samba-client/helps.ycp
++++ b/src/include/samba-client/helps.ycp
+@@ -59,9 +59,9 @@ An additional dialog informs you whether it is safe to do so.
+ "),
+ 
+     /* translators: Samba workgroup dialog help title */
+-    "MembershipDialog_nocont" : _("<p><b><big>Selecting Windows Domain Membership</big></b></p>")
++    "MembershipDialog_nocont" : _("<p><b><big>Selecting Windows Domain Membership</big></b></p>") +
+     /* translators: Samba workgroup dialog help 1/3 */
+-+ _("<p>A Linux client can be a member of a workgroup, NT domain, or Active Directory domain.
++_("<p>A Linux client can be a member of a workgroup, NT domain, or Active Directory domain.
+ Specify the name of the membership.</p>
+ ") +
+ 
+@@ -80,12 +80,12 @@ if it is a NT or Active Directory domain, allows this host to join the domain.</
+ "),
+ 
+     /* translators: Samba membership dialog help title (installation) */
+-    "MembershipDialog_cont" : _("<p><b><big>Selecting Windows Domain Membership</big></b></p>")
++    "MembershipDialog_cont" : _("<p><b><big>Selecting Windows Domain Membership</big></b></p>") +
+     /* translators: Samba membership dialog help 1/2 (installation) */
+-+ _("<p>Specify the name of the NT or Active Directory domain.</p>
+-")
++_("<p>Specify the name of the NT or Active Directory domain.</p>
++") +
+     /* translators: Samba membership dialog help 2/2 (installation) */
+-+ _("<p>When you press <b>Next</b>, the system verifies the domain and
++_("<p>When you press <b>Next</b>, the system verifies the domain and
+ allows this host to join the domain.</p>
+ "),
+ 
 diff --git a/yast2-samba-client.spec.in b/yast2-samba-client.spec.in
-index 0dc5bb4..a8c417e 100644
+index 0dc5bb4..a212d16 100644
 --- a/yast2-samba-client.spec.in
 +++ b/yast2-samba-client.spec.in
 @@ -15,6 +15,8 @@ Requires:       yast2 >= 2.21.22

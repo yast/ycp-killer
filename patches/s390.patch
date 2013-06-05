@@ -24,8 +24,370 @@ index 7d55a84..7ce8d69 100644
 +#AUTODOCS_YCP = $(srcdir)/../../src/*/*.ycp
 +#include $(top_srcdir)/autodocs-ycp.ami
  
+diff --git a/src/clients/dasd.ycp b/src/clients/dasd.ycp
+index be87c23..53cb126 100644
+--- a/src/clients/dasd.ycp
++++ b/src/clients/dasd.ycp
+@@ -50,14 +50,14 @@ map cmdline_description = $[
+     "initialize"        : DASDController::Read,
+     "finish"            : DASDController::Write,
+     "actions"           : $[
+-	// FIXME TODO: fill the functionality description here
+-    ],
++
++    ],	// FIXME TODO: fill the functionality description here
+     "options"		: $[
+-	// FIXME TODO: fill the option descriptions here
+-    ],
++
++    ],	// FIXME TODO: fill the option descriptions here
+     "mapping"		: $[
+-	// FIXME TODO: fill the mappings of actions and options here
+-    ]
++
++    ]	// FIXME TODO: fill the mappings of actions and options here
+ ];
+ 
+ any ret = CommandLine::Run(cmdline_description);
+diff --git a/src/clients/dump.ycp b/src/clients/dump.ycp
+index 8e51eb3..6aadbe9 100644
+--- a/src/clients/dump.ycp
++++ b/src/clients/dump.ycp
+@@ -49,14 +49,14 @@ map cmdline_description = $[
+ 	"help"	: _("Creation of S/390 dump devices"),
+ 	"guihandler"		: DumpSequence,
+ 	"actions"		   : $[
+-	// FIXME TODO: fill the functionality description here
+-	],
++
++	],	// FIXME TODO: fill the functionality description here
+ 	"options"		: $[
+-	// FIXME TODO: fill the option descriptions here
+-	],
++
++	],	// FIXME TODO: fill the option descriptions here
+ 	"mapping"		: $[
+-	// FIXME TODO: fill the mappings of actions and options here
+-	]
++
++	]	// FIXME TODO: fill the mappings of actions and options here
+ ];
+ 
+ 
+diff --git a/src/clients/iucvterminal-server.ycp b/src/clients/iucvterminal-server.ycp
+index 1570ce5..768a8f0 100644
+--- a/src/clients/iucvterminal-server.ycp
++++ b/src/clients/iucvterminal-server.ycp
+@@ -44,14 +44,14 @@ map cmdline_description = $[
+ 	"help"	: _("Configuration of IUCV terminal server"),
+ 	"guihandler"		: IUCVTerminalServerSequence,
+ 	"actions"		   : $[
+-	// FIXME TODO: fill the functionality description here
+-	],
++
++	],	// FIXME TODO: fill the functionality description here
+ 	"options"		: $[
+-	// FIXME TODO: fill the option descriptions here
+-	],
++
++	],	// FIXME TODO: fill the option descriptions here
+ 	"mapping"		: $[
+-	// FIXME TODO: fill the mappings of actions and options here
+-	]
++
++	]	// FIXME TODO: fill the mappings of actions and options here
+ ];
+ 
+ 
+diff --git a/src/clients/iucvterminal.ycp b/src/clients/iucvterminal.ycp
+index cf419b8..47d1cdd 100644
+--- a/src/clients/iucvterminal.ycp
++++ b/src/clients/iucvterminal.ycp
+@@ -44,14 +44,14 @@ map cmdline_description = $[
+ 	"help"	: _("Configuration of IUCV terminal settings"),
+ 	"guihandler"		: IUCVTerminalSequence,
+ 	"actions"		   : $[
+-	// FIXME TODO: fill the functionality description here
+-	],
++
++	],	// FIXME TODO: fill the functionality description here
+ 	"options"		: $[
+-	// FIXME TODO: fill the option descriptions here
+-	],
++
++	],	// FIXME TODO: fill the option descriptions here
+ 	"mapping"		: $[
+-	// FIXME TODO: fill the mappings of actions and options here
+-	]
++
++	]	// FIXME TODO: fill the mappings of actions and options here
+ ];
+ 
+ 
+diff --git a/src/clients/onpanic.ycp b/src/clients/onpanic.ycp
+index 6ef5263..2d46acc 100644
+--- a/src/clients/onpanic.ycp
++++ b/src/clients/onpanic.ycp
+@@ -55,11 +55,11 @@ map cmdline_description = $[
+ 	"initialize"		: OnPanic::Read,
+ 	"finish"			: OnPanic::Write,
+ 	"actions"		   : $[
+-	// FIXME TODO: fill the functionality description here
+-	],
++
++	],	// FIXME TODO: fill the functionality description here
+ 	"options"	   : $[
+-	// FIXME TODO: fill the option descriptions here
+-	],
++
++	],	// FIXME TODO: fill the option descriptions here
+ ];
+ 
+ 
+diff --git a/src/clients/zfcp.ycp b/src/clients/zfcp.ycp
+index fee82a0..80b851e 100644
+--- a/src/clients/zfcp.ycp
++++ b/src/clients/zfcp.ycp
+@@ -50,14 +50,14 @@ map cmdline_description = $[
+     "initialize"        : ZFCPController::Read,
+     "finish"            : ZFCPController::Write,
+     "actions"           : $[
+-	// FIXME TODO: fill the functionality description here
+-    ],
++
++    ],	// FIXME TODO: fill the functionality description here
+     "options"		: $[
+-	// FIXME TODO: fill the option descriptions here
+-    ],
++
++    ],	// FIXME TODO: fill the option descriptions here
+     "mapping"		: $[
+-	// FIXME TODO: fill the mappings of actions and options here
+-    ]
++
++    ]	// FIXME TODO: fill the mappings of actions and options here
+ ];
+ 
+ any ret = CommandLine::Run(cmdline_description);
+diff --git a/src/include/s390/dump/ui.ycp b/src/include/s390/dump/ui.ycp
+index 373c903..1ed5ee8 100644
+--- a/src/include/s390/dump/ui.ycp
++++ b/src/include/s390/dump/ui.ycp
+@@ -50,24 +50,24 @@ symbol DumpDialog () {
+ 	string caption = _("Create Dump Device");
+ 	string help =
+     /* Dump dialog help 1/8 */
+-_("<p><b>Prepare one or more volumes for use as S/390 dump device.</b></p>")
++_("<p><b>Prepare one or more volumes for use as S/390 dump device.</b></p>") +
+     /* Dump dialog help 2/8 */
+-+ _("<p>Supported devices are ECKD DASD and ZFCP disks, while multi-volumes are limited to DASD.<br>")
++_("<p>Supported devices are ECKD DASD and ZFCP disks, while multi-volumes are limited to DASD.<br>") +
+     /* Dump dialog help 3/8 */
+-+ _("Only whole disks can be used, no partitions. If the device is incompatibly\nformatted or partitioned, activate the checkbox <b>Force overwrite of disk</b>.</p>")
++_("Only whole disks can be used, no partitions. If the device is incompatibly\nformatted or partitioned, activate the checkbox <b>Force overwrite of disk</b>.</p>") +
+     /* Dump dialog help 4/8 */
+-+ _("<p>To use DASD and ZFCP devices activate them in the respective YaST DASD or ZFCP dialog.<br>")
++_("<p>To use DASD and ZFCP devices activate them in the respective YaST DASD or ZFCP dialog.<br>") +
+     /* Dump dialog help 5/8 */
+-+ _("Devices which are in use or have mounted partitions will not be shown.</p>")
++_("Devices which are in use or have mounted partitions will not be shown.</p>") +
+ 
+     /* Dump dialog help 6/8 */
+-+ _("<p><b>dumpdevice</b> after a disk indicates that it is a usable dump
+-device. Multi-volume dump devices are indicated by a list of DASD IDs.</p>")
++_("<p><b>dumpdevice</b> after a disk indicates that it is a usable dump
++device. Multi-volume dump devices are indicated by a list of DASD IDs.</p>") +
+ 
+     /* Dump dialog help 7/8 */
+-+ _("<p>ZFCP columns: Device, Size, ID, WWPN, LUN, Dump<br>")
++_("<p>ZFCP columns: Device, Size, ID, WWPN, LUN, Dump<br>") +
+     /* Dump dialog help 8/8 */
+-+ _("DASD columns: Device, Size, ID, Dump</p>");
++_("DASD columns: Device, Size, ID, Dump</p>");
+ 
+ 
+ 	list<string> dasd_disks = Dump::dasd_disks;
+diff --git a/src/include/s390/iucvterminal-server/helps.ycp b/src/include/s390/iucvterminal-server/helps.ycp
+index 1ad1a92..c0526b2 100644
+--- a/src/include/s390/iucvterminal-server/helps.ycp
++++ b/src/include/s390/iucvterminal-server/helps.ycp
+@@ -45,58 +45,58 @@ map HELP = $[
+ 
+ 
+     /* TS-Shell dialog help 1/5 */
+-    "ts" : _("<p><b><big>TS-Shell</big></b></p>")
+-+ _("<p>TS-Shell allows to specify <b>Authorization</b> for every TS-Shell user and group. The rights of a group are inherited by its members.</p>")
++    "ts" : _("<p><b><big>TS-Shell</big></b></p>") +
++_("<p>TS-Shell allows to specify <b>Authorization</b> for every TS-Shell user and group. The rights of a group are inherited by its members.</p>") +
+ 
+     /* TS-Shell dialog help 2/5 */
+-+ _("<p>Each allowed z/VM ID can be selected manually under <b>Selection</b>, defined by a <b>Regex</b> or loaded from a <b>File</b> which contains all allowed z/VM IDs separated by line breaks.</p>")
++_("<p>Each allowed z/VM ID can be selected manually under <b>Selection</b>, defined by a <b>Regex</b> or loaded from a <b>File</b> which contains all allowed z/VM IDs separated by line breaks.</p>") +
+ 
+     /* TS-Shell dialog help 3/5 */
+-+ _("<p>Click on <b>New User</b> to create new TS-Shell users or <b>Delete\nUser</b> to remove users.</p>")
++_("<p>Click on <b>New User</b> to create new TS-Shell users or <b>Delete\nUser</b> to remove users.</p>") +
+ 
+     /* TS-Shell dialog help 4/5 */
+-+ _("<p>To add or remove groups from the TS-Shell authorization table or to change\nthe membership of users, go to <b>Manage Groups</b>.</p>")
++_("<p>To add or remove groups from the TS-Shell authorization table or to change\nthe membership of users, go to <b>Manage Groups</b>.</p>") +
+ 
+     /* TS-Shell dialog help 5/5 */
+-+ _("<p>With <b>Audited IDs</b> specify the z/VM IDs from which transcripts should be gathered.</p>"),
++_("<p>With <b>Audited IDs</b> specify the z/VM IDs from which transcripts should be gathered.</p>"),
+ 
+ 
+     /* TS-Shell User creation dialog help 1/3 */
+     "ts-user" : _("<p><b><big>New TS-Shell User</big></b></p>")
+ + _("<p>To create new TS-Shell user the <b>Username</b>, <b>Home Directory</b> and <b>Password</b> has to be provided.
+-	<br>It is also possible to specify <b>Additional Groups</b> by selecting them on the right.</p>")
++	<br>It is also possible to specify <b>Additional Groups</b> by selecting them on the right.</p>") +
+ 
+     /* TS-Shell User creation dialog help 2/3 */
+-+ _("<p>To ensure that the user changes his password after the first login, activate <b>Force Password Change</b>.</p>")
++_("<p>To ensure that the user changes his password after the first login, activate <b>Force Password Change</b>.</p>") +
+ 
+     /* TS-Shell User creation dialog help 3/3 */
+-+ _("<p>You can specify the same home directory for every TS-Shell user since no\ndata will be stored there.</p>"),
++_("<p>You can specify the same home directory for every TS-Shell user since no\ndata will be stored there.</p>"),
+ 
+ 
+     /* TS-Shell Managing Groups dialog help 1/5 */
+     "ts-group" : _("<p><b><big>Manage Groups for TS-Authorization</big></b></p>")
+-+ _("<p>Define TS-Shell authorizations per group if you want every TS-Shell \nmember of this groups to inherit the same rights.</p>")
+++ _("<p>Define TS-Shell authorizations per group if you want every TS-Shell \nmember of this groups to inherit the same rights.</p>") +
+ 
+     /* TS-Shell Managing Groups dialog help 2/5 */
+-+ _("<p>Existing groups can be added to or removed from the TS-Shell\nauthorization. Select the groups in the table and click on <b>Select or Deselect</b>. The current status is shown in the column <b>TS-Auth</b>.</p>")
++_("<p>Existing groups can be added to or removed from the TS-Shell\nauthorization. Select the groups in the table and click on <b>Select or Deselect</b>. The current status is shown in the column <b>TS-Auth</b>.</p>") +
+ 
+     /* TS-Shell Managing Groups dialog help 3/5 */
+-+ _("<p>Change TS-Shell members of a selected group in the <b>TS-Members</b>\nselection.</p>")
++_("<p>Change TS-Shell members of a selected group in the <b>TS-Members</b>\nselection.</p>") +
+ 
+     /* TS-Shell Managing Groups dialog help 4/5 */
+-+ _("<p>New groups could be created by entering the name in the <b>New Group</b> input field and confirming with <b>Create</b>.
+-	<br>To delete previously created groups the <b>YaST users</b> dialog has to be used.</p>")
++_("<p>New groups could be created by entering the name in the <b>New Group</b> input field and confirming with <b>Create</b>.
++	<br>To delete previously created groups the <b>YaST users</b> dialog has to be used.</p>") +
+ 
+     /* TS-Shell Managing Groups dialog help 5/5 */
+-+ _("<p>Undo changes in this dialog by clicking the <b>Back</b> button.</p>"),
++_("<p>Undo changes in this dialog by clicking the <b>Back</b> button.</p>"),
+ 
+ 
+     /* IUCVConn on Login dialog help 1/2 */
+     "ic" : _("<p><b><big>IUCVConn on Login</big></b></p>")
+-+ _("<p>IUCVConn on Login needs one user for every z/VM ID. To create these users a <b>password</b> and <b>home directory</b> has to be provided.")
+++ _("<p>IUCVConn on Login needs one user for every z/VM ID. To create these users a <b>password</b> and <b>home directory</b> has to be provided.") +
+ 
+     /* IUCVConn on Login dialog help 2/2 */
+-+ _("<p>It is possible to sync the users manually by clicking on <b>Sync</b> or just confirming the changes with <b>Ok</b> while <b>IUCVConn on Login</b> is enabled. </p>"),
++_("<p>It is possible to sync the users manually by clicking on <b>Sync</b> or just confirming the changes with <b>Ok</b> while <b>IUCVConn on Login</b> is enabled. </p>"),
+ 
+ ];
+ /* EOF */
+diff --git a/src/include/s390/iucvterminal/ui.ycp b/src/include/s390/iucvterminal/ui.ycp
+index d66ae9a..0aaaa49 100644
+--- a/src/include/s390/iucvterminal/ui.ycp
++++ b/src/include/s390/iucvterminal/ui.ycp
+@@ -242,39 +242,39 @@ symbol TerminalDialog () {
+ 
+ 	string help =
+ /* IUCVTerminal dialog help 1/10 */
+-_("<p><h2>Configure Local Terminal System Settings</h2></p>")
++_("<p><h2>Configure Local Terminal System Settings</h2></p>") +
+ 
+ /* IUCVTerminal dialog help 2/11 */
+-+ _("<p><b>IUCVtty</b></p>")
++_("<p><b>IUCVtty</b></p>") +
+ 
+ /* IUCVTerminal dialog help 3/11 */
+-+ _("<p>Several <b>IUCVtty instances</b> can run to provide multiple terminal devices. The instances are distinguished by a terminal ID, which is a combination of the <b>Terminal ID Prefix</b> and the number of the instance.<br>")
++_("<p>Several <b>IUCVtty instances</b> can run to provide multiple terminal devices. The instances are distinguished by a terminal ID, which is a combination of the <b>Terminal ID Prefix</b> and the number of the instance.<br>") +
+ 
+ /* IUCVTerminal dialog help 4/11 */
+-+ _("For example, if you define ten instances with the prefix &quot;<i>lxterm</i>&quot;, the terminal IDs from <i>lxterm1</i> to <i>lxterm10</i> are available.</p>")
++_("For example, if you define ten instances with the prefix &quot;<i>lxterm</i>&quot;, the terminal IDs from <i>lxterm1</i> to <i>lxterm10</i> are available.</p>") +
+ 
+-+ "<p>&nbsp;</p>"
++"<p>&nbsp;</p>" +
+ 
+ /* IUCVTerminal dialog help 5/11 */
+-+ _("<p><b>HVC</b></p>")
++_("<p><b>HVC</b></p>") +
+ 
+ /* IUCVTerminal dialog help 6/11 */
+-+ _("<p>The z/VM IUCV HVC device driver is a kernel module and uses device nodes to enable up to eight HVC terminal devices to communicate with getty and login programs.</p>")
++_("<p>The z/VM IUCV HVC device driver is a kernel module and uses device nodes to enable up to eight HVC terminal devices to communicate with getty and login programs.</p>") +
+ 
+ /* IUCVTerminal dialog help 7/11 */
+-+ _("<p>With <b>restrict access</b>, allow only connections from certain <b>terminal servers</b>.</p>")
++_("<p>With <b>restrict access</b>, allow only connections from certain <b>terminal servers</b>.</p>") +
+ 
+ /* IUCVTerminal dialog help 8/11 */
+-+ _("<p>Define the emulation for all instances at once or for each one separately.</p>")
++_("<p>Define the emulation for all instances at once or for each one separately.</p>") +
+ 
+ /* IUCVTerminal dialog help 9/11 */
+-+ _("<p>Activate <b>route kernel messages to hvc0</b> to route kernel messages to\nthe hvc0 device instead of ttyS0.<br>")
++_("<p>Activate <b>route kernel messages to hvc0</b> to route kernel messages to\nthe hvc0 device instead of ttyS0.<br>") +
+ 
+ /* IUCVTerminal dialog help 10/11 */
+-+_("Should kernel messages still be shown on ttyS0, manually add <b>console=ttyS0</b> to the current boot selection kernel parameter in the <b>YaST bootloader module</b>.</p>")
++_("Should kernel messages still be shown on ttyS0, manually add <b>console=ttyS0</b> to the current boot selection kernel parameter in the <b>YaST bootloader module</b>.</p>") +
+ 
+ /* IUCVTerminal dialog help 11/11 */
+-+ _("<h3>Warning: HVC Terminals stay logged on without a manual logout through the shortcut: ctrl _ d</h3>");
++_("<h3>Warning: HVC Terminals stay logged on without a manual logout through the shortcut: ctrl _ d</h3>");
+ 
+ 
+ 	/* Dialog content */
+diff --git a/src/include/s390/onpanic/ui.ycp b/src/include/s390/onpanic/ui.ycp
+index cffbd0a..98f0ed0 100644
+--- a/src/include/s390/onpanic/ui.ycp
++++ b/src/include/s390/onpanic/ui.ycp
+@@ -111,27 +111,27 @@ define symbol OnPanicDialog () {
+ 	string caption = _("On Panic Configuration");
+ 	string help =
+     /* OnPanic dialog help 1/11 */
+-_("<p><b>Configure the actions to be taken if a kernel panic occurs</b></p>")
++_("<p><b>Configure the actions to be taken if a kernel panic occurs</b></p>") +
+     /* OnPanic dialog help 2/11 */
+-+ _("<p>The <b>Dumpconf</b> daemon needs to be enabled to influence the behavior during kernel panics.</p>")
++_("<p>The <b>Dumpconf</b> daemon needs to be enabled to influence the behavior during kernel panics.</p>") +
+     /* OnPanic dialog help 3/11 */
+-+ _("<p>The following <b>Panic Actions</b> are possible:<br>")
++_("<p>The following <b>Panic Actions</b> are possible:<br>") +
+     /* OnPanic dialog help 4/11 */
+-+ _("<b>stop</b> Stop Linux (default).<br>")
++_("<b>stop</b> Stop Linux (default).<br>") +
+     /* OnPanic dialog help 5/11 */
+-+ _("<b>dump</b> Dump Linux and stop system.<br>")
++_("<b>dump</b> Dump Linux and stop system.<br>") +
+     /* OnPanic dialog help 6/11 */
+-+ _("<b>reipl</b> Reboot Linux.<br>")
++_("<b>reipl</b> Reboot Linux.<br>") +
+     /* OnPanic dialog help 7/11 */
+-+ _("<b>dump_reipl</b> Dump Linux and reboot system. This option is only available\non LPAR with z9(r) machines and later and on z/VMversion 5.3 and later.<br>")
++_("<b>dump_reipl</b> Dump Linux and reboot system. This option is only available\non LPAR with z9(r) machines and later and on z/VMversion 5.3 and later.<br>") +
+     /* OnPanic dialog help 8/11 */
+-+ _("<b>vmcmd</b> Execute specified CP commands and stop system.</p>")
++_("<b>vmcmd</b> Execute specified CP commands and stop system.</p>") +
+     /* OnPanic dialog help 9/11 */
+-+ _("<p>The time defined in <b>Delay Minutes</b> defers activating the specified panic action for a newly started system to prevent loops. If the system crashes before the time has elapsed the default action (stop) is performed.</p>")
++_("<p>The time defined in <b>Delay Minutes</b> defers activating the specified panic action for a newly started system to prevent loops. If the system crashes before the time has elapsed the default action (stop) is performed.</p>") +
+     /* OnPanic dialog help 10/11 */
+-+ _("<p>The device for dumping the memory can be set with <b>Dump Device</b>. If no device is shown you have to create one with the <b>YaST Dump Devices</b> dialog.</p>")
++_("<p>The device for dumping the memory can be set with <b>Dump Device</b>. If no device is shown you have to create one with the <b>YaST Dump Devices</b> dialog.</p>") +
+     /* OnPanic dialog help 11/11 */
+-+ sformat(_("<p>With <b>VMCMD</b> specify CP commands to be executed before the Linux system is stopped. Only %1 lines and a total of %2 chars are allowed.</p>"), OnPanic::VMCMD_MAX_ROWS, OnPanic::VMCMD_MAX_CHARS);
++sformat(_("<p>With <b>VMCMD</b> specify CP commands to be executed before the Linux system is stopped. Only %1 lines and a total of %2 chars are allowed.</p>"), OnPanic::VMCMD_MAX_ROWS, OnPanic::VMCMD_MAX_CHARS);
+ 
+ 	term content = `HBox (`HSpacing (3), `VBox (
+ 	`VSpacing (2),
 diff --git a/yast2-s390.spec.in b/yast2-s390.spec.in
-index 9f098e9..cb5012f 100644
+index 9f098e9..99d445e 100644
 --- a/yast2-s390.spec.in
 +++ b/yast2-s390.spec.in
 @@ -5,9 +5,13 @@ Group:		System/YaST

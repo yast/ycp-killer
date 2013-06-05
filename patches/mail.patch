@@ -122,6 +122,50 @@ index 5093469..749104b 100644
 +EXTRA_DIST = $(ldapschema_DATA)
  
  include $(top_srcdir)/Makefile.am.common
+diff --git a/src/clients/mail-advanced.ycp b/src/clients/mail-advanced.ycp
+index a0d6353..5d818d7 100644
+--- a/src/clients/mail-advanced.ycp
++++ b/src/clients/mail-advanced.ycp
+@@ -57,11 +57,11 @@ $[
+        ],
+     ],
+     "options"		: $[
+-	// FIXME TODO: fill the option descriptions here
+-    ],
++
++    ],	// FIXME TODO: fill the option descriptions here
+     "mapping"		: $[
+-	// FIXME TODO: fill the mappings of actions and options here
+-    ]
++
++    ]	// FIXME TODO: fill the mappings of actions and options here
+ ];
+ 
+ /* analyze command line */
+diff --git a/src/clients/mail-server.ycp b/src/clients/mail-server.ycp
+index 988ba5d..b054251 100644
+--- a/src/clients/mail-server.ycp
++++ b/src/clients/mail-server.ycp
+@@ -38,14 +38,14 @@ map cmdline_description = $[
+     "initialize"        : MailServer::Read,
+     "finish"            : MailServer::Write,
+     "actions"           : $[
+-	// FIXME TODO: fill the functionality description here
++
+     ],
+     "options"		: $[
+-	// FIXME TODO: fill the option descriptions here
+-    ],
++
++    ],	// FIXME TODO: fill the option descriptions here
+     "mapping"		: $[
+-	// FIXME TODO: fill the mappings of actions and options here
+-    ]
++
++    ]	// FIXME TODO: fill the mappings of actions and options here
+ ];
+ 
+ /*
 diff --git a/src/include/mail/mail-server_dialogs.ycp b/src/include/mail/mail-server_dialogs.ycp
 index 1aa3e3b..05d8c27 100644
 --- a/src/include/mail/mail-server_dialogs.ycp
@@ -145,8 +189,74 @@ index 1aa3e3b..05d8c27 100644
  
  boolean ReallyAbort() {
      return !MailServer::Modified() || Popup::ReallyAbort(true);
+diff --git a/src/include/mail/widgets.ycp b/src/include/mail/widgets.ycp
+index 346977f..ca3eaf3 100644
+--- a/src/include/mail/widgets.ycp
++++ b/src/include/mail/widgets.ycp
+@@ -650,7 +650,7 @@ define list Choices_delivery_mode () ``{
+ 	    `item (`id (`dm_procmail), _("Through procmail")),
+ 	    // combo box choice:
+ 	    // deliver mail to cyrus-imapd using LMTP
+-	    `item (`id (`dm_cyrus), _("To Cyrus IMAP Server")),
++	    `item (`id (`dm_cyrus), _("To Cyrus IMAP Server"))
+ 	    // TODO: should check whether cyrus-imapd is installed.
+ 	    // And show the choice only if it is.
+ 	    // But config.postfix falls back to local if it's not, so OK
+@@ -738,14 +738,14 @@ a POP or an IMAP server using <b>fetchmail</b>.</p>"),
+ 	"help": _("
+ <p><b>Enabling virus scanning (AMaViS)</b> checks incoming and outgoing mail
+ with AMaViS.</p>
+-")
++") +
+ 	// help text
+-+ _("<p>Enabling AMaViS will also enable the following modules: </p>
++_("<p>Enabling AMaViS will also enable the following modules: </p>
+ <p><b>Spamassassin</b> SPAM scanner</p>
+ <p><b>DKIM</b> checks Domain Key signed incomming mails</p>
+-<p><b>Clamav</b> open source virus scanner engine</p>")
++<p><b>Clamav</b> open source virus scanner engine</p>") +
+ 	// help text
+-+ _("
++_("
+ <p>If AMaViS is not installed and you want to use it, it will be installed
+ automatically.</p>
+ "),
+@@ -759,9 +759,9 @@ automatically.</p>
+ 	// help text
+ 	"help": _("
+ <p><b>Enabling DKIM signig for outgoing mails.</b></p>
+-")
++") +
+ 	// help text
+-+ _("
++_("
+ <p>Enabling DKIM for outgoing emails requires additional actions. A SSL key
+ will be generated for the 'mydomain' value defined in Postfix. A new service
+ 'submission' will be configured in Postfix. After this is set up you can send
+diff --git a/testsuite/tests/readwrite.ycp b/testsuite/tests/readwrite.ycp
+index 81ff8e1..e814e03 100644
+--- a/testsuite/tests/readwrite.ycp
++++ b/testsuite/tests/readwrite.ycp
+@@ -165,7 +165,7 @@
+     Progress::off ();
+     TEST (``(Mail::Read (dont_abort)), [READ, WRITE, [
+ 					    EXECUTE_0, //rpm sendmail
+-					    EXECUTE_0, //rpm amavisd-new
++					    EXECUTE_0  //rpm amavisd-new
+ 					    ]], nil);
+     Mail::write_only = false;
+     TEST (``(Mail::Write (dont_abort)), [READ, WRITE, [
+@@ -173,7 +173,7 @@
+ 					     EXECUTE_0, //SuSEconfig
+ 					     EXECUTE_0, //amavis stop
+ 					     EXECUTE_0, //amavis start
+-					     EXECUTE_0, //sendmail restart
++					     EXECUTE_0  //sendmail restart
+ 					     ]], nil);
+ 
+ }
 diff --git a/yast2-mail.spec.in b/yast2-mail.spec.in
-index b85d006..61eb746 100644
+index b85d006..a9fa5e1 100644
 --- a/yast2-mail.spec.in
 +++ b/yast2-mail.spec.in
 @@ -28,6 +28,8 @@ Provides:       yast2-mail-server = %{version}

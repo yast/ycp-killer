@@ -9,8 +9,283 @@ index 2a6f678..9de7be0 100644
 +# TODO FIXME: temporarily disabled
 +
 +#include $(top_srcdir)/autodocs-ycp.ami
+diff --git a/src/include/scanner/dialogs.ycp b/src/include/scanner/dialogs.ycp
+index bd57198..a9ed0c3 100644
+--- a/src/include/scanner/dialogs.ycp
++++ b/src/include/scanner/dialogs.ycp
+@@ -122,7 +122,8 @@ any OverviewDialog()
+   string caption = _("Scanner Configuration");
+   WizardHW::CreateHWDialog( caption,
+                             HELPS["overview"]:"",
+-                            [ // Header for a column of the overview table
++                            [ 
++                              // Header for a column of the overview table
+                               // where scanners and associated drivers are listed:
+                               _("Driver"),
+                               // Header for a column of the overview table
+diff --git a/src/modules/Scanner.ycp b/src/modules/Scanner.ycp
+index 295acca..8e2978e 100644
+--- a/src/modules/Scanner.ycp
++++ b/src/modules/Scanner.ycp
+@@ -1210,7 +1210,8 @@ global list< map< string, any > > OverviewContents()
+                  { model_string = model_string + model + " ";
+                  }
+                  model_string = model_string + description;
+-                 list< string > table_descr = [ // A prefix for the first column of a table
++                 list< string > table_descr = [ 
++                                                // A prefix for the first column of a table
+                                                 // where autodetected scanners are listed in the second column
+                                                 // to denote those scanners which are not configured yet:
+                                                 _("Not Configured:"),
+@@ -1232,7 +1233,8 @@ global list< map< string, any > > OverviewContents()
+   integer active_scanners_index = -1;
+   foreach( map< string, string > active_scanner,
+            active_scanners,
+-           { // Set the active_scanners_index to the index number
++           { 
++             // Set the active_scanners_index to the index number
+              // of the actual active_scanner in active_scanners:
+              active_scanners_index = active_scanners_index + 1;
+              // Use local variables to have shorter variable names:
+@@ -1259,7 +1261,8 @@ global list< map< string, any > > OverviewContents()
+              if( "" != backend )
+              { string id = id_prefix + tostring( active_scanners_index );
+                string rich_descr = "";
+-               string active_scanner_text = sformat( // Active scanner entry where
++               string active_scanner_text = sformat( 
++                                                     // Active scanner entry where
+                                                      // %1 will be replaced by the manufacturer name
+                                                      // %2 will be replaced by the model name
+                                                      // %3 will be replaced by the device name
+@@ -1287,13 +1290,15 @@ global list< map< string, any > > OverviewContents()
+   integer active_backends_index = -1;
+   foreach( string active_backend,
+            active_backends,
+-           { // Set the active_backends_index to the index number
++           {
++             // Set the active_backends_index to the index number
+              // of the actual active_backend in active_backends:
+              active_backends_index = active_backends_index + 1;
+              // The last entry in the active_backends list is an empty string.
+              // Skip this last entry:
+              if( "" != active_backend )
+-             { // Test whether the active_backend is one of the active_scanners.
++             { 
++               // Test whether the active_backend is one of the active_scanners.
+                // If yes, then there is no need to show it again:
+                boolean show_as_active_backend = true;
+                foreach( map< string, string > active_scanner,
+@@ -1350,7 +1355,8 @@ global list< map< string, any > > OverviewContents()
+  * @return list of model strings (manufacturer, model, backend, comment)
+  */
+ global list ModelItems( string filter_string )
+-{ // Make a list of the scanner models according to the database
++{ 
++  // Make a list of the scanner models according to the database
+   // and take the filter_string into account (if it is not the empty string)
+   // and try to preselect a model according to a selected autodetected scanner:
+   integer database_index = -1;
+@@ -1369,7 +1375,8 @@ global list ModelItems( string filter_string )
+   list< term > model_items = [];
+   foreach( map< string, string > database_entry,
+            database,
+-           { // Set the database_index to the index number of the current database_entry:
++           { 
++             // Set the database_index to the index number of the current database_entry:
+              database_index = database_index + 1;
+              // Use local variables to have shorter variable names:
+              string manufacturer = database_entry["manufacturer"]:"unknown manufacturer";
+@@ -1389,42 +1396,52 @@ global list ModelItems( string filter_string )
+                  && package != "unknown"
+                  && status != "unknown"
+                )
+-             { // Build the interface_and_usbid_string:
++             {
++               // Build the interface_and_usbid_string:
+                // Enclose it in parenthesis to seperate it from the rest of the model_string
+                // because the interface_and_usbid_string is untranslatable stuff like
+                // the acronyms "SCSI" and/or "USB or the hexadecimal numbers of the USB-ID:
+                if( issubstring( tolower( interface ), "scsi" ) )
+-               { // The scanner has SCSI:
++               {
++                 // The scanner has SCSI:
+                  if( usbid != "" )
+-                 { // The scanner has SCSI and a USB-ID is known:
++                 {
++                   // The scanner has SCSI and a USB-ID is known:
+                    interface_and_usbid_string = "(SCSI, USB-ID " + usbid + ")";
+                  }
+                  else
+-                 { // The scanner has SCSI but no USB-ID is known:
++                 { 
++                   // The scanner has SCSI but no USB-ID is known:
+                    if( issubstring( tolower( interface ), "usb" ) )
+-                   { // The scanner has SCSI and USB:
++                   {
++                     // The scanner has SCSI and USB:
+                      interface_and_usbid_string = "(SCSI, USB)";
+                    }
+                    else
+-                   { // The scanner has SCSI but no USB:
++                   {
++                     // The scanner has SCSI but no USB:
+                      interface_and_usbid_string = "(SCSI)";
+                    }
+                  }
+                }
+                else
+-               { // The scanner has no SCSI:
++               {
++                 // The scanner has no SCSI:
+                  if( usbid != "" )
+-                 { // The scanner has USB because a USB-ID is known:
++                 {
++                   // The scanner has USB because a USB-ID is known:
+                    interface_and_usbid_string = "(USB-ID " + usbid + ")";
+                  }
+                  else
+                  { // No USB-ID is known:
+                    if( issubstring( tolower( interface ), "usb" ) )
+-                   { // The scanner has USB:
++                   {
++                     // The scanner has USB:
+                      interface_and_usbid_string = "(USB)";
+                    }
+                    else
+-                   { // The scanner has neither SCSI nor USB:
++                   {
++                     // The scanner has neither SCSI nor USB:
+                      interface_and_usbid_string = "";
+                    }
+                  }
+@@ -1439,7 +1456,8 @@ global list ModelItems( string filter_string )
+                { package_string = iscan_string;
+                }
+                else
+-               { package_string = sformat( // Scanner model list package name entry:
++               { package_string = sformat(
++                                           // Scanner model list package name entry:
+                                            // %1 will be replaced by the RPM package name
+                                            // which provides the driver for the particular model:
+                                            _("Package %1"),
+@@ -1460,7 +1478,8 @@ global list ModelItems( string filter_string )
+                // from the rest of the model_string because they are untranslatable English words.
+                if( "good" == status )
+                { if( "unmaintained" == version )
+-                 { status_string = sformat( // Scanner model list status entry for "good" supported models
++                 { status_string = sformat(
++                                            // Scanner model list status entry for "good" supported models
+                                             // but where the backend (scanner driver) is unmaintained:
+                                             // %1 will be replaced by the backend (scanner driver) name
+                                             _("Unmaintained driver %1 may provide good functionality."),
+@@ -1468,7 +1487,8 @@ global list ModelItems( string filter_string )
+                                           );
+                  }
+                  else
+-                 { status_string = sformat( // Scanner model list status entry for "good" supported models:
++                 { status_string = sformat( 
++                                            // Scanner model list status entry for "good" supported models:
+                                             // %1 will be replaced by the backend (scanner driver) name
+                                             _("Driver %1 should provide good functionality."),
+                                             backend
+@@ -1478,11 +1498,13 @@ global list ModelItems( string filter_string )
+                else
+                { if( "unsupported" == status )
+                  { if( "unsupported" == backend )
+-                   { // Scanner model list status entry for unsupported models:
++                   {
++                     // Scanner model list status entry for unsupported models:
+                      status_string = _("This scanner is not supported.");
+                    }
+                    else
+-                   { status_string = sformat( // Scanner model list status entry for models
++                   { status_string = sformat(
++                                              // Scanner model list status entry for models
+                                               // which are listed as "unsupported" for a particular driver:
+                                               // %1 will be replaced by the backend (scanner driver) name
+                                               _("This scanner is not supported by the driver %1."),
+@@ -1493,7 +1515,8 @@ global list ModelItems( string filter_string )
+                  else
+                  { if( "complete" == status )
+                    { if( "unmaintained" == version )
+-                     { status_string = sformat( // Scanner model list status entry for "complete" supported models
++                     { status_string = sformat(
++                                                // Scanner model list status entry for "complete" supported models
+                                                 // but where the backend (scanner driver) is unmaintained:
+                                                 // %1 will be replaced by the backend (scanner driver) name
+                                                 _("Unmaintained driver %1 may provide complete functionality."),
+@@ -1501,7 +1524,8 @@ global list ModelItems( string filter_string )
+                                               );
+                      }
+                      else
+-                     { status_string = sformat( // Scanner model list status entry for "complete" supported models:
++                     { status_string = sformat( 
++                                                // Scanner model list status entry for "complete" supported models:
+                                                 // %1 will be replaced by the backend (scanner driver) name
+                                                 _("Driver %1 should provide complete functionality."),
+                                                 backend
+@@ -1510,7 +1534,8 @@ global list ModelItems( string filter_string )
+                    }
+                    else
+                    { if( "untested" == status )
+-                     { status_string = sformat( // Scanner model list status entry for "untested" models:
++                     { status_string = sformat( 
++                                                // Scanner model list status entry for "untested" models:
+                                                 // %1 will be replaced by the backend (scanner driver) name
+                                                 _("Driver %1 may work, but was not tested."),
+                                                 backend
+@@ -1519,7 +1544,8 @@ global list ModelItems( string filter_string )
+                      else
+                      { if( "basic" == status )
+                        { if( "unmaintained" == version )
+-                         { status_string = sformat( // Scanner model list status entry for "basic" supported models
++                         { status_string = sformat(
++                                                    // Scanner model list status entry for "basic" supported models
+                                                     // but where the backend (scanner driver) is unmaintained:
+                                                     // %1 will be replaced by the backend (scanner driver) name
+                                                     _("Unmaintained driver %1 may provide basic functionality."),
+@@ -1527,7 +1553,8 @@ global list ModelItems( string filter_string )
+                                                   );
+                          }
+                          else
+-                         { status_string = sformat( // Scanner model list status entry for "basic" supported models:
++                         { status_string = sformat(
++                                                    // Scanner model list status entry for "basic" supported models:
+                                                     // %1 will be replaced by the backend (scanner driver) name
+                                                     _("Driver %1 should provide basic functionality."),
+                                                     backend
+@@ -1537,7 +1564,8 @@ global list ModelItems( string filter_string )
+                        else
+                        { if( "minimal" == status )
+                          { if( "unmaintained" == version )
+-                           { status_string = sformat( // Scanner model list status entry for "minimal" supported models
++                           { status_string = sformat(
++                                                      // Scanner model list status entry for "minimal" supported models
+                                                       // but where the backend (scanner driver) is unmaintained:
+                                                       // %1 will be replaced by the backend (scanner driver) name
+                                                       _("Unmaintained driver %1 may provide minimal functionality."),
+@@ -1545,7 +1573,8 @@ global list ModelItems( string filter_string )
+                                                     );
+                            }
+                            else
+-                           { status_string = sformat( // Scanner model list status entry for "minimal" supported models:
++                           { status_string = sformat( 
++                                                      // Scanner model list status entry for "minimal" supported models:
+                                                       // %1 will be replaced by the backend (scanner driver) name
+                                                       _("Driver %1 should provide minimal functionality."),
+                                                       backend
+@@ -1553,7 +1582,8 @@ global list ModelItems( string filter_string )
+                            }
+                          }
+                          else
+-                         { status_string = sformat( // Fallback scanner model list status entry for models
++                         { status_string = sformat(
++                                                    // Fallback scanner model list status entry for models
+                                                     // which are listed but without a known support status:
+                                                     // %1 will be replaced by the backend (scanner driver) name
+                                                     _("Driver %1 may work, but the functionality is unknown."),
 diff --git a/yast2-scanner.spec.in b/yast2-scanner.spec.in
-index 625ac90..6f09d12 100644
+index 625ac90..0fcf859 100644
 --- a/yast2-scanner.spec.in
 +++ b/yast2-scanner.spec.in
 @@ -8,6 +8,8 @@ Requires:	yast2

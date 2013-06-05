@@ -30,8 +30,25 @@ index 6233695..96989d4 100644
 +# TODO FIXME: temporarily disabled
 +
 +#include $(top_srcdir)/autodocs-ycp.ami
+diff --git a/src/include/fingerprint-reader/dialogs.ycp b/src/include/fingerprint-reader/dialogs.ycp
+index b1775c3..752d197 100644
+--- a/src/include/fingerprint-reader/dialogs.ycp
++++ b/src/include/fingerprint-reader/dialogs.ycp
+@@ -82,10 +82,10 @@ any FingerprintReaderDialog() {
+     string help_text = _("<p>
+ <b>Fingerprint Authentication</b><br>
+ The fingerprint reader configuration updates your PAM settings to enable authentication with fingerprints.</p>
+-")
++") +
+ 
+     // help text, cont.
+-    + _("<p>To register fingerprints for a user, start YaST User Management and see the Plug-Ins tab of the selected user. To automatically start YaST User Management, activate <b>Start User Management After Finish</b>.</p>");
++    _("<p>To register fingerprints for a user, start YaST User Management and see the Plug-Ins tab of the selected user. To automatically start YaST User Management, activate <b>Start User Management After Finish</b>.</p>");
+ 
+     term con = `HBox (`HSpacing (3), `VBox (
+ 	// frame label
 diff --git a/yast2-fingerprint-reader.spec.in b/yast2-fingerprint-reader.spec.in
-index bcceba7..e3a0b59 100644
+index bcceba7..e64b479 100644
 --- a/yast2-fingerprint-reader.spec.in
 +++ b/yast2-fingerprint-reader.spec.in
 @@ -10,6 +10,8 @@ BuildRequires:	doxygen gcc-c++ yast2-core-devel perl-XML-Writer update-desktop-f

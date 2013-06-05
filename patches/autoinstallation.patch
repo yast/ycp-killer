@@ -255,6 +255,19 @@ index bc6f88f..ac5e97e 100644
 -
 -EXTRA_DIST = $(ybin_SCRIPTS) autoyast-initscripts.service
 +EXTRA_DIST = autoyast-initscripts.service
+diff --git a/src/include/autoinstall/AdvancedPartitionDialog.ycp b/src/include/autoinstall/AdvancedPartitionDialog.ycp
+index 8a7d660..256dac9 100644
+--- a/src/include/autoinstall/AdvancedPartitionDialog.ycp
++++ b/src/include/autoinstall/AdvancedPartitionDialog.ycp
+@@ -104,7 +104,7 @@
+      * with the tree on the left) to be replaced by this one, which might be
+      * a bit irritating... but otherwise the dialog is too small.
+      */
+-    UI::OpenDialog( `opt( /*`decorated `defaultsize */ ), contents );
++    UI::OpenDialog( `opt( ), contents ); /*`decorated `defaultsize */ 
+     UI::ChangeWidget(`id(`crypt_key), `ValidChars, "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ#* ,.;:._-+!$%&/|\?{[()]}@^\\<>" );
+ 
+     /*
 diff --git a/src/clients/ayast_setup.ycp b/src/clients/ayast_setup.ycp
 index ee0f5d4..f3914b4 100644
 --- a/src/clients/ayast_setup.ycp
@@ -378,8 +391,24 @@ index 5fa1b35..e039a4a 100644
  
      string title = _("Autoinstallation - Configuration");
      boolean show_source = false;
+diff --git a/src/include/autoinstall/dialogs.ycp b/src/include/autoinstall/dialogs.ycp
+index e01a2e3..5225049 100644
+--- a/src/include/autoinstall/dialogs.ycp
++++ b/src/include/autoinstall/dialogs.ycp
+@@ -394,9 +394,9 @@ were imported correctly."));
+         */
+ 	    [
+ 		_("Checking XML with RNG validation..."),
+-		"/usr/bin/xmllint --noout --relaxng "
++		"/usr/bin/xmllint --noout --relaxng " +
+ 		// was: /usr/share/autoinstall/rng/profile.rng
+-		+ Directory::schemadir + "/autoyast/rng/profile.rng",
++		Directory::schemadir + "/autoyast/rng/profile.rng",
+ 		]
+ 	    ];
+ 
 diff --git a/src/include/autoinstall/general_dialogs.ycp b/src/include/autoinstall/general_dialogs.ycp
-index d81321c..1fcece8 100644
+index eb26f43..65dedcd 100644
 --- a/src/include/autoinstall/general_dialogs.ycp
 +++ b/src/include/autoinstall/general_dialogs.ycp
 @@ -10,6 +10,9 @@

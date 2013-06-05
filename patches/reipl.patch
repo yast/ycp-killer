@@ -21,6 +21,31 @@ index 26d35b7..4709d9d 100644
 +# TODO FIXME: temporary disabled
 +
 +#include $(top_srcdir)/autodocs-ycp.ami
+diff --git a/src/clients/reipl.ycp b/src/clients/reipl.ycp
+index be5d9d8..c72d261 100644
+--- a/src/clients/reipl.ycp
++++ b/src/clients/reipl.ycp
+@@ -56,14 +56,14 @@ map cmdline_description = $[
+     "initialize"        : Reipl::Read,
+     "finish"            : Reipl::Write,
+     "actions"           : $[
+-	// FIXME TODO: fill the functionality description here
+-    ],
++
++    ],	// FIXME TODO: fill the functionality description here
+     "options"		: $[
+-	// FIXME TODO: fill the option descriptions here
+-    ],
++
++    ],	// FIXME TODO: fill the option descriptions here
+     "mappings"		: $[
+-	// FIXME TODO: fill the mappings of actions and options here
+-    ]
++
++    ]	// FIXME TODO: fill the mappings of actions and options here
+ ];
+ 
+ /* is this proposal or not? */
 diff --git a/src/include/reipl/dialogs.ycp b/src/include/reipl/dialogs.ycp
 index 83bbbd9..464185d 100644
 --- a/src/include/reipl/dialogs.ycp
@@ -34,7 +59,7 @@ index 83bbbd9..464185d 100644
  /**
   * Configure dialog
 diff --git a/yast2-reipl.spec.in b/yast2-reipl.spec.in
-index 490276d..45c35f6 100644
+index 490276d..9f6c67a 100644
 --- a/yast2-reipl.spec.in
 +++ b/yast2-reipl.spec.in
 @@ -21,14 +21,12 @@ PreReq:         %fillup_prereq

@@ -25,6 +25,22 @@ index f8be896..2c14eba 100644
 +# AUTODOCS_YCP = $(wildcard $(srcdir)/../../src/*/*.ycp)
 +# AUTODOCS_PM  = $(wildcard $(srcdir)/../../src/*/*.pm)
 +# include $(top_srcdir)/autodocs-ycp.ami
+diff --git a/src/modules/DirInstall.ycp b/src/modules/DirInstall.ycp
+index c2bff86..79cc100 100644
+--- a/src/modules/DirInstall.ycp
++++ b/src/modules/DirInstall.ycp
+@@ -93,9 +93,9 @@ global string Propose()
+     tmp = add (tmp, sformat (_("Target Directory: %1"), HTML::Colorize(Installation::dirinstall_target, color)));
+ 
+     // Proposal for backup during update
+-    tmp = add (tmp, sformat (_("Run YaST and SuSEconfig at First Boot: %1"), HTML::Colorize(DirInstall::runme_at_boot
++    tmp = add (tmp, sformat (_("Run YaST and SuSEconfig at First Boot: %1"), HTML::Colorize(DirInstall::runme_at_boot ?
+ 	// part of label in proposal
+-	? _("Yes"):
++	_("Yes"):
+ 	// part of label in proposal
+ 	_("No"), color) ));
+     // Proposal for dirinstall installation
 diff --git a/yast2-dirinstall.spec.in b/yast2-dirinstall.spec.in
 index 23e001e..c6e1a4b 100644
 --- a/yast2-dirinstall.spec.in

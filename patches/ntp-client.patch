@@ -37,8 +37,109 @@ index 2a6f678..4cb582c 100644
 +# TODO FIXME: temporarily disabled
 +
 +# include $(top_srcdir)/autodocs-ycp.ami
+diff --git a/src/clients/ntp-client_proposal.ycp b/src/clients/ntp-client_proposal.ycp
+index 37ba901..10b0c13 100644
+--- a/src/clients/ntp-client_proposal.ycp
++++ b/src/clients/ntp-client_proposal.ycp
+@@ -190,7 +190,8 @@ boolean ui_init(term rp, string country, boolean first_time) {
+ 	)),
+ 	`HWeight (1, `VBox (
+ 	    `Label (""),
+-	    `VSpacing (0.3), // try to line up the widgets horizontally
++      // try to line up the widgets horizontally
++	    `VSpacing (0.3), 
+ 	    // push button label
+ 	    `Left (`PushButton (`id (`ntp_now), _("S&ynchronize now"))),
+ 	    `VSpacing (0.3),
+diff --git a/src/include/ntp-client/commandline.ycp b/src/include/ntp-client/commandline.ycp
+index bff6df9..019829d 100644
+--- a/src/include/ntp-client/commandline.ycp
++++ b/src/include/ntp-client/commandline.ycp
+@@ -89,11 +89,11 @@ define boolean updateSyncRecord (map options) ``{
+   * @return boolean true if settings have been changed
+   */
+ define boolean NtpStatusHandler (map options) ``{
+-    CommandLine::Print (NtpClient::run_service
++    CommandLine::Print (NtpClient::run_service ?
+ 	// status information for command line
+-	? _("NTP daemon is enabled.")
++	_("NTP daemon is enabled.") :
+ 	// status information for command line
+-	: _("NTP daemon is disabled.")
++	_("NTP daemon is disabled.")
+     );
+     return false;
+ }
+diff --git a/src/include/ntp-client/dialogs.ycp b/src/include/ntp-client/dialogs.ycp
+index 193f69f..3481d56 100644
+--- a/src/include/ntp-client/dialogs.ycp
++++ b/src/include/ntp-client/dialogs.ycp
+@@ -649,9 +649,9 @@ define symbol SelectConfigType () ``{
+ 
+     boolean random_pool_servers_enabled_only = (
+ 	// number of listed servers is the same as the needed servers for random_pool_servers function
+-	(size (servers) == size (NtpClient::random_pool_servers))
++	(size (servers) == size (NtpClient::random_pool_servers)) &&
+ 	// enabled means that all of needed servers are listed
+-	&& NtpClient::IsRandomServersServiceEnabled()
++	NtpClient::IsRandomServersServiceEnabled()
+     );
+ 
+     if (size (peers) != size (servers) + size (clocks))
+diff --git a/src/include/ntp-client/helps.ycp b/src/include/ntp-client/helps.ycp
+index d41b01c..66fa90d 100644
+--- a/src/include/ntp-client/helps.ycp
++++ b/src/include/ntp-client/helps.ycp
+@@ -149,21 +149,21 @@ nomodify noquery</i>. This option is only available if you have checked the
+ 
+     // help text 1/6
+     "peer_types" : _("<p><b><big>Synchronization Peer Type</big></b><br>
+-Select the kind of synchronization peer to add here.</p>")
++Select the kind of synchronization peer to add here.</p>") +
+     // help text 2/6
+-    + _("<p>To add an NTP server to which to synchronize,
+-select <b>Server</b>.</p>")
++    _("<p>To add an NTP server to which to synchronize,
++select <b>Server</b>.</p>") +
+     // help text 3/6
+-    + _("<p>To add an NTP peer to synchronize mutually, select
+-<b>Peer</b>.</p>")
++    _("<p>To add an NTP peer to synchronize mutually, select
++<b>Peer</b>.</p>") +
+     // help text 4/6
+-    + _("<p>To configure a local clock connected directly to your computer,
+-select <b>Radio Clock</b>.</p>")
++    _("<p>To configure a local clock connected directly to your computer,
++select <b>Radio Clock</b>.</p>") +
+     // help text 5/6
+-    + _("<p>To broadcast time information through your network, select
+-<b>Outgoing Broadcast</b>.</p>")
++    _("<p>To broadcast time information through your network, select
++<b>Outgoing Broadcast</b>.</p>") +
+     // help text 6/6
+-    + _("<p>To accept NTP packets broadcasted by other hosts on the network
++    _("<p>To accept NTP packets broadcasted by other hosts on the network
+ and use them for setting local time, select <b>Incoming Broadcast<b>.</p>"),
+ 
+     // help text 1/5
+diff --git a/src/modules/NtpClient.ycp b/src/modules/NtpClient.ycp
+index 3479c01..50eb39e 100644
+--- a/src/modules/NtpClient.ycp
++++ b/src/modules/NtpClient.ycp
+@@ -642,9 +642,9 @@ global define void DeActivateRandomPoolServersFunction() {
+ 	ntp_records = filter(map <string, any> one_record, ntp_records, {
+ 	    return (
+ 		// do not filter out not-servers
+-		one_record["type"]:"" != "server"
++		one_record["type"]:"" != "server" ||
+ 		// do not filter out serces that are not random_pool_servers
+-		|| one_record["address"]:"" != random_pool_server
++		one_record["address"]:"" != random_pool_server
+ 	    );
+ 	});
+     });
 diff --git a/yast2-ntp-client.spec.in b/yast2-ntp-client.spec.in
-index 4b69c82..f479a2a 100644
+index 4b69c82..1d4089e 100644
 --- a/yast2-ntp-client.spec.in
 +++ b/yast2-ntp-client.spec.in
 @@ -17,6 +17,8 @@ Requires:       yast2-country-data

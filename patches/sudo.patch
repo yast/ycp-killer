@@ -25,8 +25,33 @@ index 2a519b9..4668e9b 100644
  
  htmldir = $(docdir)
  
+diff --git a/src/clients/sudo.ycp b/src/clients/sudo.ycp
+index 45af9a1..a0daf03 100644
+--- a/src/clients/sudo.ycp
++++ b/src/clients/sudo.ycp
+@@ -56,14 +56,14 @@ map cmdline_description = $[
+     "initialize"        : Sudo::Read,
+     "finish"            : Sudo::Write,
+     "actions"           : $[
+-	// FIXME TODO: fill the functionality description here
+-    ],
++
++    ],	// FIXME TODO: fill the functionality description here
+     "options"		: $[
+-	// FIXME TODO: fill the option descriptions here
+-    ],
++
++    ],	// FIXME TODO: fill the option descriptions here
+     "mappings"		: $[
+-	// FIXME TODO: fill the mappings of actions and options here
+-    ]
++
++    ]	// FIXME TODO: fill the mappings of actions and options here
+ ];
+ 
+ 
 diff --git a/yast2-sudo.spec.in b/yast2-sudo.spec.in
-index 26b8cd0..50df00a 100644
+index 26b8cd0..c06766f 100644
 --- a/yast2-sudo.spec.in
 +++ b/yast2-sudo.spec.in
 @@ -14,6 +14,8 @@ BuildRequires:	perl-XML-Writer update-desktop-files yast2 yast2-devtools yast2-t
