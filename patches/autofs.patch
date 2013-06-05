@@ -15,6 +15,31 @@ index cb9e9f3..4365926 100644
 +# TODO FIXME: temporarily disabled
 +
 +#include $(top_srcdir)/autodocs-ycp.ami
+diff --git a/src/clients/autofs.ycp b/src/clients/autofs.ycp
+index a490e37..bfe5550 100644
+--- a/src/clients/autofs.ycp
++++ b/src/clients/autofs.ycp
+@@ -56,14 +56,14 @@ map cmdline_description = $[
+     "initialize"        : Autofs::Read,
+     "finish"            : Autofs::Write,
+     "actions"           : $[
+-	// FIXME TODO: fill the functionality description here
+-    ],
++	
++    ],// FIXME TODO: fill the functionality description here
+     "options"		: $[
+-	// FIXME TODO: fill the option descriptions here
+-    ],
++	
++    ],// FIXME TODO: fill the option descriptions here
+     "mappings"		: $[
+-	// FIXME TODO: fill the mappings of actions and options here
+-    ]
++	
++    ] // FIXME TODO: fill the mappings of actions and options here
+ ];
+ 
+ /* is this proposal or not? */
 diff --git a/src/clients/autofs_auto.ycp b/src/clients/autofs_auto.ycp
 deleted file mode 100644
 index 35be156..0000000
@@ -265,7 +290,7 @@ index f230f4d..52cdd7f 100644
  
  /**
 diff --git a/yast2-autofs.spec.in b/yast2-autofs.spec.in
-index e157043..298370e 100644
+index e157043..63942c1 100644
 --- a/yast2-autofs.spec.in
 +++ b/yast2-autofs.spec.in
 @@ -9,6 +9,8 @@ BuildRequires:	perl-XML-Writer update-desktop-files yast2 yast2-devtools yast2-t
