@@ -17,3 +17,6 @@ moves:
   - from: "agents/*.scr"
     to:   src/scrconf
 
+export_private:
+  - src/modules/Kerberos.ycp
+
