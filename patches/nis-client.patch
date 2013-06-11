@@ -27,6 +27,19 @@ index 9f64c0a..b9dae7f 100644
  
 -EXTRA_DIST = $(agent_SCRIPTS) $(scrconf_DATA) $(TESTS) $(testdata)
 +EXTRA_DIST = $(TESTS) $(testdata)
+diff --git a/agents/test-ypconf b/agents/test-ypconf
+index 3246ae8..7695983 100755
+--- a/agents/test-ypconf
++++ b/agents/test-ypconf
+@@ -2,7 +2,7 @@
+ # $Id$
+ set -o errexit
+ 
+-AGENT=./ag_yp_conf
++AGENT=../src/servers_non_y2/ag_yp_conf
+ CASE=test-ypconf
+ AGPROG='YpConf ("'$CASE'-i.in")
+ Read (.)'
 diff --git a/doc/autodocs/Makefile.am b/doc/autodocs/Makefile.am
 index 2a6f678..4cb582c 100644
 --- a/doc/autodocs/Makefile.am
@@ -39,7 +52,7 @@ index 2a6f678..4cb582c 100644
 +
 +# include $(top_srcdir)/autodocs-ycp.ami
 diff --git a/yast2-nis-client.spec.in b/yast2-nis-client.spec.in
-index 8a34023..0afab19 100644
+index 8a34023..95af8fd 100644
 --- a/yast2-nis-client.spec.in
 +++ b/yast2-nis-client.spec.in
 @@ -18,6 +18,8 @@ Provides:	yast2-trans-nis
