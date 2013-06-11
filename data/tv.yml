@@ -19,6 +19,9 @@ moves:
   - from: "src/*.desktop"
     to: src/desktop
 
+export_private:
+  - src/modules/Tv.ycp
+
 excluded:
   - src/data/tv_cards-lirc_gpio.ycp
   - src/data/tv_dvbcards.ycp
