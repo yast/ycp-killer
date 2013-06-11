@@ -103,6 +103,7 @@ moves:
 export_private:
   - library/sequencer/src/modules/Sequencer.ycp
   - library/network/src/modules/NetworkInterfaces.ycp
+  - library/network/src/modules/Internet.ycp
   - library/commandline/src/modules/CommandLine.ycp
 
 include_wrappers:
