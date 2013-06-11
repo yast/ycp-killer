@@ -16,7 +16,7 @@ moves:
   - from: "sound/agents/*.scr"
     to: src/scrconf
   - from: "sound/testsuite"
-    to: src
+    to: "."
   - from: "sound/doc"
     to: "."
   - from: "data/alsa_packages.ycp"
