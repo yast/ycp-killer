@@ -18,3 +18,7 @@ moves:
     to:   src/scrconf
   - from: agents/sysconfig.*
     to:   src/fillup
+
+export_private:
+  - src/modules/Ldap.ycp
+
