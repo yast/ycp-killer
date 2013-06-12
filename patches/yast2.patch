@@ -1,3 +1,6 @@
+TODO FIXME: remove patch for updating testedfiles in cwm/testsuite files
+(it's just a temporary workaround for inlined include files)
+
 diff --git a/configure.in.in b/configure.in.in
 index eaa7454..4cbb1d1 100644
 --- a/configure.in.in
@@ -463,6 +466,20 @@ index a6b9e52..b3bf479 100644
  
      import "TypeRepository";
      import "CommandLine";
+diff --git a/library/commandline/testsuite/tests/unique1.ycp b/library/commandline/testsuite/tests/unique1.ycp
+index 05a1927..6b948c3 100644
+--- a/library/commandline/testsuite/tests/unique1.ycp
++++ b/library/commandline/testsuite/tests/unique1.ycp
+@@ -38,8 +38,7 @@ you may find current contact information at www.novell.com
+     import "Report";
+ 
+     // disable use of UI
+-    Report::display_errors = false;
+-    Report::log_errors = true;
++    Report::Import($["errors" : $["show" : false, "log" : true] ]);
+ 
+     // fail: add and delete are mutually exclusive
+     TEST(``(CommandLine::UniqueOption($["add":"", "delete":"" ],["add","delete"]) ),[],nil);
 diff --git a/library/control/doc/autodocs/Makefile.am b/library/control/doc/autodocs/Makefile.am
 index e692626..f2309b8 100644
 --- a/library/control/doc/autodocs/Makefile.am
@@ -527,12 +544,25 @@ index 2b51cd4..dde9eef 100644
 +#AUTODOCS_SUBDIR=cwm
 +#include $(top_srcdir)/autodocs-ycp.ami
 diff --git a/library/cwm/testsuite/tests/t1.ycp b/library/cwm/testsuite/tests/t1.ycp
-index afa62bb..d41081b 100644
+index afa62bb..186dd59 100644
 --- a/library/cwm/testsuite/tests/t1.ycp
 +++ b/library/cwm/testsuite/tests/t1.ycp
-@@ -46,7 +46,7 @@ you may find current contact information at www.novell.com
-     Report::display_errors = false;
-     Report::log_errors = true;
+@@ -34,7 +34,7 @@ you may find current contact information at www.novell.com
+  *
+  * $Id$
+  *
+- * testedfiles: CWM.ycp testfunc.yh Testsuite.ycp
++ * testedfiles: CWM.ycp testfunc.yh Testsuite.ycp tests/t1.rb
+  */
+ 
+ {
+@@ -43,10 +43,9 @@ you may find current contact information at www.novell.com
+     import "Report";
+ 
+     // disable use of UI
+-    Report::display_errors = false;
+-    Report::log_errors = true;
++    Report::Import($["errors" : $["show" : false, "log" : true] ]);
  
 -    include "./tests/testfunc.yh";
 +    include "testfunc.yh";
@@ -540,12 +570,25 @@ index afa62bb..d41081b 100644
  
      map<string, any> functions = $[
 diff --git a/library/cwm/testsuite/tests/t2.ycp b/library/cwm/testsuite/tests/t2.ycp
-index a86971d..b29f075 100644
+index a86971d..4e48d2c 100644
 --- a/library/cwm/testsuite/tests/t2.ycp
 +++ b/library/cwm/testsuite/tests/t2.ycp
-@@ -51,7 +51,7 @@ you may find current contact information at www.novell.com
-     Report::display_errors = false;
-     Report::log_errors = true;
+@@ -34,7 +34,7 @@ you may find current contact information at www.novell.com
+  *
+  * $Id$
+  *
+- * testedfiles: CWM.ycp testfunc.yh Testsuite.ycp
++ * testedfiles: CWM.ycp testfunc.yh Testsuite.ycp tests/t2.rb
+  */
+ 
+ {
+@@ -48,10 +48,9 @@ you may find current contact information at www.novell.com
+     import "Report";
+ 
+     // disable use of UI
+-    Report::display_errors = false;
+-    Report::log_errors = true;
++    Report::Import($["errors" : $["show" : false, "log" : true] ]);
  
 -    include "./tests/testfunc.yh";
 +    include "testfunc.yh";
