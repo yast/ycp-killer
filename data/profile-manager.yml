@@ -13,3 +13,7 @@ moves:
     to:   src/desktop
   - from: "agents/cfg_scpm.scr"
     to:   src/scrconf
+
+export_private:
+  - src/modules/ProfileManager.ycp
+
