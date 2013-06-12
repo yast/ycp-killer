@@ -45,6 +45,21 @@ index 437379e..41e04cb 100644
  
  # foreach file, call ycp-run (from testsuite/lib)
  
+diff --git a/testsuite/lib/ag_hwprobe_init.exp b/testsuite/lib/ag_hwprobe_init.exp
+index 871b6b5..e55d9eb 100644
+--- a/testsuite/lib/ag_hwprobe_init.exp
++++ b/testsuite/lib/ag_hwprobe_init.exp
+@@ -14,8 +14,8 @@ proc ycp-run { src } {
+     fail "Bad filename syntax '$src'"
+     return -1
+   }
+-  if {[lindex $fname [expr [llength $fname]-1]] != "ycp"} {
+-    fail "Not .ycp extension '$src'"
++  if {[lindex $fname [expr [llength $fname]-1]] != "rb"} {
++    fail "Not .rb extension '$src'"
+     return -1
+   }
+ 
 diff --git a/testsuite/runag_hwprobe.cc b/testsuite/runag_hwprobe.cc
 index 08f8d0d..59d2218 100644
 --- a/testsuite/runag_hwprobe.cc
@@ -70,7 +85,7 @@ index 78aebd5..f8da694 100644
 +EXTRA_DIST = *.rb *.out *.err runtest.sh
  
 diff --git a/yast2-hardware-detection.spec.in b/yast2-hardware-detection.spec.in
-index 3f57467..baabf59 100644
+index 3f57467..13fb51e 100644
 --- a/yast2-hardware-detection.spec.in
 +++ b/yast2-hardware-detection.spec.in
 @@ -22,6 +22,8 @@ BuildRequires:	openssl-devel
