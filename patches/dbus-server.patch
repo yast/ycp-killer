@@ -17,3 +17,23 @@ index 3f35fba..a38d034 100644
 -all: $(yast_modules_ybc)
 -
 -CLEANFILES = $(wildcard *.ybc)
+diff --git a/src/services/namespace_service/testsuite/org.freedesktop.DBus.Introspectable.Introspect.test b/src/services/namespace_service/testsuite/org.freedesktop.DBus.Introspectable.Introspect.test
+index 471aa70..1469899 100644
+--- a/src/services/namespace_service/testsuite/org.freedesktop.DBus.Introspectable.Introspect.test
++++ b/src/services/namespace_service/testsuite/org.freedesktop.DBus.Introspectable.Introspect.test
+@@ -42,6 +42,7 @@
+   <method name='String'><arg name='ret' type='s' direction='out'/></method>
+   <method name='Symbol'><arg name='ret' type='s' direction='out'/></method>
+   <method name='Void'></method>
++  <method name='last_exception'><arg name='ret' type='s' direction='out'/></method>
+  </interface>
+  <interface name='org.opensuse.YaST.YCPValues'>
+   <method name='Any'><arg name='ret' type='(bsv)' direction='out'/></method>
+@@ -80,6 +81,7 @@
+   <method name='String'><arg name='ret' type='(bsv)' direction='out'/></method>
+   <method name='Symbol'><arg name='ret' type='(bsv)' direction='out'/></method>
+   <method name='Void'></method>
++  <method name='last_exception'><arg name='ret' type='(bsv)' direction='out'/></method>
+  </interface>
+ </node>
+ "
