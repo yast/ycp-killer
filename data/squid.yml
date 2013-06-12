@@ -14,3 +14,8 @@ moves:
     to:   src/desktop
   - from: "config/squid.rnc"
     to:   src/autoyast-rnc
+
+export_private:
+  - src/modules/Squid.ycp
+  - src/modules/SquidErrorMessages.ycp
+
