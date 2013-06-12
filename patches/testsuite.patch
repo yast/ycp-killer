@@ -9,6 +9,19 @@ index 2a6f678..4cb582c 100644
 +# TODO FIXME: temporarily disabled
 +
 +# include $(top_srcdir)/autodocs-ycp.ami
+diff --git a/skel/Makefile_am b/skel/Makefile_am
+index d9b12b0..de7f5c5 100644
+--- a/skel/Makefile_am
++++ b/skel/Makefile_am
+@@ -5,7 +5,7 @@
+ #
+ 
+ AUTOMAKE_OPTIONS = dejagnu
+-EXTRA_DIST = $(wildcard tests/*.out) $(wildcard tests/*.err) $(wildcard tests/*.ycp) $(wildcard tests/*.yh)
++EXTRA_DIST = $(wildcard tests/*.out) $(wildcard tests/*.err) $(wildcard tests/*.ycp) $(wildcard tests/*.yh) $(wildcard tests/*.rb)
+ 
+ testsuite_prepare = @ydatadir@/testsuite/Makefile.testsuite
+ 
 diff --git a/testsuite/Makefile.am b/testsuite/Makefile.am
 index d9277fe..6a1163a 100644
 --- a/testsuite/Makefile.am
@@ -43,7 +56,7 @@ index 5596f82..f86f329 100644
  map READ = $[ "read" : $[ "path" : "read_result" ] ];
  map WRITE = $[ "write" : $[ "path" : true ] ];
 diff --git a/yast2-testsuite.spec.in b/yast2-testsuite.spec.in
-index 9c5c8b6..83e4fae 100644
+index 9c5c8b6..4e1adce 100644
 --- a/yast2-testsuite.spec.in
 +++ b/yast2-testsuite.spec.in
 @@ -7,6 +7,8 @@ BuildRequires:	openslp-devel perl-XML-Writer popt-devel yast2-core-devel yast2-d
