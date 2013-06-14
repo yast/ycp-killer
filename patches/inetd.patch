@@ -1,3 +1,8 @@
+TODO FIXME: remove the patches for *.out files
+(temporary workaround for inlined includes, the logged source location
+is wrong and the output appears in the result. although
+it is in an include which is not listed in testedfiles)
+
 diff --git a/doc/autodocs/Makefile.am b/doc/autodocs/Makefile.am
 index 2a6f678..b9be0f7 100644
 --- a/doc/autodocs/Makefile.am
@@ -68,6 +73,42 @@ index 96dc488..71b0037 100644
      set in_f "$tests_ag/$base_name.in"
      set out_f "$tests_ag/$base_name.out"
      set out_tmp_f "$tmpdir/$base_name.out.tmp"
+diff --git a/testsuite/tests/Inetd.out b/testsuite/tests/Inetd.out
+index 3c9e512..4372da5 100644
+--- a/testsuite/tests/Inetd.out
++++ b/testsuite/tests/Inetd.out
+@@ -1,3 +1,4 @@
++Log	XVersion::binPath() is nil!
+ Dump	
+ Dump	All services are running and inetd will be used
+ Dump	
+diff --git a/testsuite/tests/Inetd2.out b/testsuite/tests/Inetd2.out
+index 895e01f..4907918 100644
+--- a/testsuite/tests/Inetd2.out
++++ b/testsuite/tests/Inetd2.out
+@@ -1,3 +1,4 @@
++Log	XVersion::binPath() is nil!
+ Dump	
+ Dump	inetd is stopped and will be started
+ Dump	
+diff --git a/testsuite/tests/Inetd3.out b/testsuite/tests/Inetd3.out
+index fb11bc0..ff67a4b 100644
+--- a/testsuite/tests/Inetd3.out
++++ b/testsuite/tests/Inetd3.out
+@@ -1,3 +1,4 @@
++Log	XVersion::binPath() is nil!
+ Dump	
+ Dump	Read  --- read all services
+ Dump	
+diff --git a/testsuite/tests/Inetd_r2.out b/testsuite/tests/Inetd_r2.out
+index 72a6a3f..6b87493 100644
+--- a/testsuite/tests/Inetd_r2.out
++++ b/testsuite/tests/Inetd_r2.out
+@@ -1,3 +1,4 @@
++Log	XVersion::binPath() is nil!
+ Dump	
+ Dump	Default (full) configuration
+ Dump	
 diff --git a/yast2-inetd.spec.in b/yast2-inetd.spec.in
 index 74e1dd3..a0df3cb 100644
 --- a/yast2-inetd.spec.in
