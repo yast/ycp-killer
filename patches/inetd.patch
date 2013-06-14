@@ -23,8 +23,53 @@ index 8e1465e..e9aa7f9 100644
  [
    $[
      "comment" : " admind: admin daemon for thin clients\n uses ident and host name lookups for authentication\n security: weak authentication, just enough for thin clients\n client: adminc.pl\n default config file: /etc/opt/SLES/POS/admind.conf\n",
+diff --git a/testsuite/Makefile.am b/testsuite/Makefile.am
+index 1e03128..556c2ad 100644
+--- a/testsuite/Makefile.am
++++ b/testsuite/Makefile.am
+@@ -4,11 +4,11 @@
+ 
+ AUTOMAKE_OPTIONS = dejagnu
+ 
+-ycp_testfiles = $(wildcard tests/*.out) $(wildcard tests/*.err) $(wildcard tests/*.ycp) $(wildcard tests/*.yh)
++ruby_testfiles = $(wildcard tests/*.out) $(wildcard tests/*.err) $(wildcard tests/*.rb)
+ 
+ ag_misc = lib/yast2_ag.exp run/runtest-ag.sh
+-ag_testfiles = $(wildcard $(RPMNAME).test/ag_*.exp tests.ag/*.in tests.ag/*.out tests.ag/*.err tests.ag/*.ycp)
+-EXTRA_DIST = $(ycp_testfiles) $(ag_testfiles) $(ag_misc)
++ag_testfiles = $(wildcard $(RPMNAME).test/ag_*.exp tests.ag/*.in tests.ag/*.out tests.ag/*.err tests.ag/*.rb)
++EXTRA_DIST = $(ruby_testfiles) $(ag_testfiles) $(ag_misc)
+ 
+ testsuite_prepare = @ydatadir@/testsuite/Makefile.testsuite
+ 
+diff --git a/testsuite/lib/yast2_ag.exp b/testsuite/lib/yast2_ag.exp
+index 96dc488..71b0037 100644
+--- a/testsuite/lib/yast2_ag.exp
++++ b/testsuite/lib/yast2_ag.exp
+@@ -8,7 +8,7 @@
+ proc run_ag_tests { agent_basename } {
+     global srcdir
+ 
+-    set test_cases [lsort [glob $srcdir/tests.ag/*.ycp]]
++    set test_cases [lsort [glob $srcdir/tests.ag/*.rb]]
+ 
+     foreach test_case $test_cases {
+ 	run_case $test_case $agent_basename
+@@ -56,12 +56,6 @@ proc run_case { run ag } {
+     # tests.ag/$filename is the name of the original testfile
+     # with relative path, relative to the testsuite directory
+ 
+-    set r_data_name "$tests_ag/$base_name.r.data"
+-    set rw_ycp_name "$tests_ag/$base_name.rw.ycp"
+-    set rw_ycp_tmp_name "$tmpdir/$base_name.rw.ycp.tmp"
+-    set w_data_name "$tests_ag/$base_name.w.data"
+-    set w_data_tmp_name "$tmpdir/$base_name.w.data.tmp"
+-
+     set in_f "$tests_ag/$base_name.in"
+     set out_f "$tests_ag/$base_name.out"
+     set out_tmp_f "$tmpdir/$base_name.out.tmp"
 diff --git a/yast2-inetd.spec.in b/yast2-inetd.spec.in
-index 74e1dd3..5389b0e 100644
+index 74e1dd3..a0df3cb 100644
 --- a/yast2-inetd.spec.in
 +++ b/yast2-inetd.spec.in
 @@ -18,6 +18,8 @@ Obsoletes:	yast2-trans-inet y2t_inet
