@@ -5,3 +5,9 @@ moves:
   - from: conf/*.scr
     to: src/scrconf
 
+excluded:
+  # keep the tests in YCP format, the runag_hwprobe.cc wrapper uses
+  # scr/run_agent.h which explicitly uses YCP parser for running the tests
+  # (see https://github.com/yast/yast-core/blob/master/libscr/src/include/scr/run_agent.h#L130)
+  - testsuite/tests/arch.ycp
+  - testsuite/tests/dir.ycp
