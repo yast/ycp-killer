@@ -1,3 +1,17 @@
+Testsuite update:
+
+YCP ignores the integer parameter in y2log() functions
+(https://github.com/yast/yast-core/blob/master/libycp/src/YCPBuiltinMisc.cc#L558)
+while in Ruby it is handled properly
+(https://github.com/yast/yast-ruby-bindings/blob/master/src/ruby/ycp/logger.rb#L8)
+
+This can break tests which use Report or Service modules
+(https://github.com/yast/yast-yast2/blob/master/library/modules/Report.ycp#L544)
+(https://github.com/yast/yast-yast2/blob/master/library/runlevel/src/Service.ycp#L264)
+
+In this case fixing the reporting means that some errors (originally) from
+Service surface even though testedfiles has only NtpClient
+
 diff --git a/agents/Makefile.am b/agents/Makefile.am
 index 3b65eee..e69de29 100644
 --- a/agents/Makefile.am
@@ -37,8 +51,20 @@ index 2a6f678..4cb582c 100644
 +# TODO FIXME: temporarily disabled
 +
 +# include $(top_srcdir)/autodocs-ycp.ami
+diff --git a/testsuite/tests/Write.out b/testsuite/tests/Write.out
+index 76a6dd4..f6f0e4c 100644
+--- a/testsuite/tests/Write.out
++++ b/testsuite/tests/Write.out
+@@ -7,5 +7,7 @@ Write	.sysconfig.network.config nil true
+ Execute	.target.bash "/sbin/netconfig update -m ntp" 0
+ Write	.sysconfig.ntp.NTPD_RUN_CHROOTED "yes" true
+ Write	.sysconfig.ntp nil true
++Log	Unable to disable service ntp
++Log	Cannot adjust 'NTP' service.
+ Execute	.target.bash "test -e /etc/cron.d/novell.ntp-synchronize  && rm /etc/cron.d/novell.ntp-synchronize;" 0
+ Return	true
 diff --git a/yast2-ntp-client.spec.in b/yast2-ntp-client.spec.in
-index 4b69c82..f479a2a 100644
+index 4b69c82..1d4089e 100644
 --- a/yast2-ntp-client.spec.in
 +++ b/yast2-ntp-client.spec.in
 @@ -17,6 +17,8 @@ Requires:       yast2-country-data
