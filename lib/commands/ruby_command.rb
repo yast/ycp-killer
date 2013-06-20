@@ -85,6 +85,7 @@ module Commands
         cmd << "--include-path" << include_path
       end
 
+      cmd << "--dont-inline-include-files"
       cmd << "--as-include-file" if options[:is_include]
       cmd << "--extract-file" << options[:extracted_file] if options[:extracted_file]
       cmd << "--export-private" if options[:export_private]
