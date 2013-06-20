@@ -1,3 +1,16 @@
+Testsuite update:
+
+YCP ignores the integer parameter in y2log() functions
+(https://github.com/yast/yast-core/blob/master/libycp/src/YCPBuiltinMisc.cc#L558)
+while in Ruby it is handled properly
+(https://github.com/yast/yast-ruby-bindings/blob/master/src/ruby/ycp/logger.rb#L8)
+
+This can break tests which use Report
+(https://github.com/yast/yast-yast2/blob/master/library/modules/Report.ycp#L544)
+
+In this case fixing the reporting means that some errors (originally) from
+Report surface even though testedfiles has only Snapper
+
 diff --git a/agent-snapper/conf/Makefile.am b/agent-snapper/conf/Makefile.am
 index 40c39fb..e69de29 100644
 --- a/agent-snapper/conf/Makefile.am
@@ -35,8 +48,30 @@ index 2cbc75e..17633f0 100644
 +# TODO FIXME: temporarily disabled
 +
 +#include $(top_srcdir)/autodocs-ycp.ami
+diff --git a/testsuite/tests/GetSnapshotPath.out b/testsuite/tests/GetSnapshotPath.out
+index 0fbf6ff..b1893ce 100644
+--- a/testsuite/tests/GetSnapshotPath.out
++++ b/testsuite/tests/GetSnapshotPath.out
+@@ -1,4 +1,5 @@
+ Read	.snapper.path $["num":0] nil
++Log	Snapshot '0' was not found.
+ Return	
+ Read	.snapper.path $["num":0] "/snapshots/0/snapshot"
+ Return	/snapshots/0/snapshot
+diff --git a/testsuite/tests/ReadConfigs.out b/testsuite/tests/ReadConfigs.out
+index 3809ebc..4d03d8d 100644
+--- a/testsuite/tests/ReadConfigs.out
++++ b/testsuite/tests/ReadConfigs.out
+@@ -2,6 +2,7 @@ Read	.snapper.configs []
+ Return	[]
+ Return	root
+ Read	.snapper.configs nil
++Log	File /etc/sysconfig/snapper is not available.
+ Return	["root"]
+ Return	root
+ Read	.snapper.configs ["opt", "var", "root"]
 diff --git a/yast2-snapper.spec.in b/yast2-snapper.spec.in
-index c91664f..c91c855 100644
+index c91664f..62db558 100644
 --- a/yast2-snapper.spec.in
 +++ b/yast2-snapper.spec.in
 @@ -8,6 +8,8 @@ BuildRequires:	libsnapper-devel >= 0.0.11
