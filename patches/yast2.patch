@@ -693,6 +693,28 @@ index 3ced0f7..f57f665 100644
      /* read modules */
      map filemap = $[];
      path filepath = nil;
+diff --git a/library/general/Makefile.am b/library/general/Makefile.am
+index 1f9c470..19a4533 100644
+--- a/library/general/Makefile.am
++++ b/library/general/Makefile.am
+@@ -1,15 +1,3 @@
+-# Makefile.am for yast2/library/modules
++# Makefile.am for library/general
+ 
+-SUBDIRS = . testsuite
+-
+-module_DATA = $(wildcard *.ycp) $(wildcard *.pm)
+-EXTRA_DIST = $(module_DATA) Version.ycp.in
+-
+-YCPCFLAGS = -M ../types/src
+-
+-# people are lazy to run Makefile.cvs so let's substitute it
+-# also here in addition to configure (#40492)
+-Version.ycp: Version.ycp.in ${top_srcdir}/VERSION
+-	sed -e "s/\@VERSION\@/`cat ${top_srcdir}/VERSION`/g" $< > $@
+-
+-include $(top_srcdir)/Makefile.am.common
++SUBDIRS = src testsuite
 diff --git a/library/gpg/doc/Makefile.am b/library/gpg/doc/Makefile.am
 index f855694..6a765c1 100644
 --- a/library/gpg/doc/Makefile.am
@@ -764,7 +786,7 @@ index 3879b6d..9e1aaec 100644
 +#AUTODOCS_SUBDIR=network
 +#include $(top_srcdir)/autodocs-ycp.ami
 diff --git a/library/network/src/modules/PortAliases.ycp b/library/network/src/modules/PortAliases.ycp
-index d632271..3eb9cc9 100644
+index d632271..f9e1520 100644
 --- a/library/network/src/modules/PortAliases.ycp
 +++ b/library/network/src/modules/PortAliases.ycp
 @@ -213,7 +213,10 @@ No spaces are allowed.
@@ -1206,32 +1228,23 @@ index 68b9f1a..72ef8e3 100644
 -%doc @docdir@/xml
  
  %changelog
-diff --git a/library/general/Makefile.am b/library/general/Makefile.am
-new file mode 100644
-index 0000000..19a4533
---- /dev/null
-+++ b/library/general/Makefile.am
-@@ -0,0 +1,3 @@
-+# Makefile.am for library/general
-+
-+SUBDIRS = src testsuite
-+diff --git a/library/control/src/modules/ProductControl.ycp b/library/control/src/modules/ProductControl.ycp
-+index 90bc26e..e4d65d9 100644
-+--- a/library/control/src/modules/ProductControl.ycp
-++++ b/library/control/src/modules/ProductControl.ycp
-+@@ -565,6 +565,7 @@ void PrepareScripts(map m)
-+ /**
-+  * Get list of required files for the workflow.
-+  * @return list<string> Required files list.
-++ * TODO FIXME: this function seems to be unused, remove it?
-+  */
-+ global list<string> RequiredFiles (string stage, string mode) 
-+ {
-  +@@ -595,6 +596,7 @@ global list<string> RequiredFiles (string stage, string mode)
-  +             client = "inst_" + m["name"]:"dummy";
-  +         }
-  +     }
-  ++        // TODO FIXME: what about the ruby files?
-  +     client = Directory::clientdir + "/" + client + ".ycp";
-  +     needed_client_files = add(needed_client_files, client);
-  +     });
+diff --git a/library/control/src/modules/ProductControl.ycp b/library/control/src/modules/ProductControl.ycp
+index 90bc26e..e4d65d9 100644
+--- a/library/control/src/modules/ProductControl.ycp
++++ b/library/control/src/modules/ProductControl.ycp
+@@ -565,6 +565,7 @@ void PrepareScripts(map m)
+ /**
+  * Get list of required files for the workflow.
+  * @return list<string> Required files list.
++ * TODO FIXME: this function seems to be unused, remove it?
+  */
+ global list<string> RequiredFiles (string stage, string mode) 
+ {
+@@ -595,6 +596,7 @@ global list<string> RequiredFiles (string stage, string mode)
+ 		client = "inst_" + m["name"]:"dummy";
+ 	    }
+ 	}
++        // TODO FIXME: what about the ruby files?
+ 	client = Directory::clientdir + "/" + client + ".ycp";
+ 	needed_client_files = add(needed_client_files, client);
+     });
