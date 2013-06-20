@@ -29,15 +29,26 @@ module Commands
             FileUtils.rm "#{mod.result_dir}/#{file}"
             result_file = "#{mod.result_dir}/#{file}".sub(/\.y(cp|h)$/, ".rb")
 
-            options = {
-              :is_include => mod.exports.any? do |export|
-                file.start_with?("#{export}/include")
-              end
-            }
+            options = {}
+
+            is_in_include_dir = mod.exports.any? do |export|
+              file.start_with?("#{export}/include")
+            end
+            is_yh = file.end_with?(".yh")
+
+            options[:is_include] = is_in_include_dir || is_yh
 
             if options[:is_include]
               options[:extracted_file] = if mod.include_wrappers[file]
-                file.sub(/^.*\/include\//, "")
+                # We assume that if an include file isn't in the include dir,
+                # the wrapper file includes it just using its base name. This
+                # seems to be true for all such include files we have.
+
+                if is_in_include_dir
+                  file.sub(/^.*\/include\//, "")
+                else
+                  File.basename(file)
+                end
               else
                 nil
               end
