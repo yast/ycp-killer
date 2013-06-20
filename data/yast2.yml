@@ -25,6 +25,8 @@ moves:
     to: library/general
   - from: "library/modules/*.{pm,ycp,ycp.in}"
     to: library/general/src/modules
+  - from: "library/modules/Makefile.am"
+    to: library/general
   - from: "library/agents/*.scr"
     to: library/general/src/scrconf
   - from: "library/agents/ag_*"
