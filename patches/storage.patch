@@ -1240,7 +1240,7 @@ index 129e77f..36bc9b4 100644
  }
  
 diff --git a/src/modules/Storage.ycp b/src/modules/Storage.ycp
-index 0ea15c5..81c882e 100644
+index 4a02e11..7743790 100644
 --- a/src/modules/Storage.ycp
 +++ b/src/modules/Storage.ycp
 @@ -29,16 +29,16 @@
@@ -1779,6 +1779,22 @@ index 2659b2f..0000000
 -EXTRA_DIST = $(client_DATA)
 -
 -include $(top_srcdir)/Makefile.am.common
+diff --git a/testsuite/Makefile.am b/testsuite/Makefile.am
+index 8191677..d5a583e 100644
+--- a/testsuite/Makefile.am
++++ b/testsuite/Makefile.am
+@@ -7,9 +7,9 @@
+ SUBDIRS = data
+ 
+ AUTOMAKE_OPTIONS = dejagnu
+-EXTRA_DIST = $(wildcard tests/*.out) $(wildcard tests/*.err) $(wildcard tests/*.ycp) $(wildcard tests/*.yh)
++EXTRA_DIST = $(wildcard tests/*.out) $(wildcard tests/*.err) $(wildcard tests/*.rb)
+ 
+-Y2BASEFLAGS = -M $(top_builddir)/bindings/ycp
++Y2BASEFLAGS = -M $(top_builddir)/bindings/ycp -I tests
+ export Y2BASEFLAGS
+ 
+ Y2BASE_LD_LIBRARY_PATH = $(top_builddir)/bindings/src/.libs
 diff --git a/testsuite/tests/empty-efi1.ycp b/testsuite/tests/empty-efi1.ycp
 index 4c5345d..ad1d0ee 100644
 --- a/testsuite/tests/empty-efi1.ycp
