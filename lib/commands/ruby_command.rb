@@ -39,18 +39,17 @@ module Commands
             options[:is_include] = is_in_include_dir || is_yh
 
             if options[:is_include]
-              options[:extracted_file] = if mod.include_wrappers[file]
+              if mod.include_wrappers[file]
                 # We assume that if an include file isn't in the include dir,
                 # the wrapper file includes it just using its base name. This
                 # seems to be true for all such include files we have.
-
-                if is_in_include_dir
+                options[:extracted_file] = if is_in_include_dir
                   file.sub(/^.*\/include\//, "")
                 else
                   File.basename(file)
                 end
-              else
-                nil
+
+                options[:reported_file] = file
               end
             end
 
@@ -99,6 +98,7 @@ module Commands
       cmd << "--dont-inline-include-files"
       cmd << "--as-include-file" if options[:is_include]
       cmd << "--extract-file" << options[:extracted_file] if options[:extracted_file]
+      cmd << "--report-file" << options[:reported_file] if options[:reported_file]
       cmd << "--export-private" if options[:export_private]
 
       cmd << file
