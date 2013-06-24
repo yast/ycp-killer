@@ -28,8 +28,20 @@ index 2a6f678..9de7be0 100644
 +# TODO FIXME: temporarily disabled
 +
 +#include $(top_srcdir)/autodocs-ycp.ami
+diff --git a/testsuite/tests/routines2.out b/testsuite/tests/routines2.out
+index 3f8d61e..637ac16 100644
+--- a/testsuite/tests/routines2.out
++++ b/testsuite/tests/routines2.out
+@@ -6,6 +6,7 @@ Return	false
+ Return	false
+ Return	false
+ Return	true
++Log	Invalid option.
+ Return	false
+ Return	true
+ Return	true
 diff --git a/yast2-nfs-server.spec.in b/yast2-nfs-server.spec.in
-index 1949add..1a14d0d 100644
+index 1949add..c2741d2 100644
 --- a/yast2-nfs-server.spec.in
 +++ b/yast2-nfs-server.spec.in
 @@ -14,6 +14,8 @@ Recommends:     nfs-kernel-server
