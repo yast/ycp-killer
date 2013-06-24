@@ -10,3 +10,18 @@ index e109945..26050d7 100644
 +EXTRA_DIST = $(TESTS) test-perl-min tests/*.rb tests/*.pm tests/A/*.pm tests/*.out tests/*.err tests.pl/*.pl tests.pl/*.rb tests.pl/*.out tests.pl/*.err
  clean-local:
  	rm -f tmp.out.* tmp.err.*
+diff --git a/testsuite/test-yast b/testsuite/test-yast
+index 1324577..23e3467 100755
+--- a/testsuite/test-yast
++++ b/testsuite/test-yast
+@@ -28,8 +28,8 @@ ln -s $PLUGDIR $Y2DIR/plugin
+ trap "rm -f $Y2DIR/modules $Y2DIR/plugin" EXIT TERM
+ 
+ RET=0
+-for SCRIPT in $TDIR/*.ycp; do
+-    BASE=${SCRIPT%.ycp}
++for SCRIPT in $TDIR/*.rb; do
++    BASE=${SCRIPT%.rb}
+     OUT=$BASE.out
+     ERR=$BASE.err
+     BASE=${BASE#$TDIR/}
