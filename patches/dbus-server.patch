@@ -37,3 +37,17 @@ index 471aa70..1469899 100644
   </interface>
  </node>
  "
+diff --git a/yast2-dbus-server.spec.in b/yast2-dbus-server.spec.in
+index 6b952e8..b76b753 100644
+--- a/yast2-dbus-server.spec.in
++++ b/yast2-dbus-server.spec.in
+@@ -25,6 +25,9 @@ BuildRequires:  dbus-1-python python-devel
+ # its tests
+ BuildRequires:  dbus-1-python python-devel
+ 
++# to run the tests
++BuildRequires:  yast2-ruby-bindings >= 1.0.0
++
+ Summary:	YaST2 - DBus Server
+ 
+ %description
