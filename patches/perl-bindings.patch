@@ -11,7 +11,7 @@ index e109945..26050d7 100644
  clean-local:
  	rm -f tmp.out.* tmp.err.*
 diff --git a/testsuite/test-yast b/testsuite/test-yast
-index 1324577..23e3467 100755
+index 1324577..c849dfd 100755
 --- a/testsuite/test-yast
 +++ b/testsuite/test-yast
 @@ -28,8 +28,8 @@ ln -s $PLUGDIR $Y2DIR/plugin
@@ -25,3 +25,207 @@ index 1324577..23e3467 100755
      OUT=$BASE.out
      ERR=$BASE.err
      BASE=${BASE#$TDIR/}
+@@ -41,6 +41,8 @@ for SCRIPT in $TDIR/*.ycp; do
+     # filter out variable information
+     sed --in-place -e 's/^....-..-.. ..:..:.. \(<.> \)[^ ]* /\1/' tmp.err.$BASE
+     sed --in-place -e 's/\(([^)]*)\):[0-9]\+/\1:XXX/' tmp.err.$BASE
++    # client call contains absolute path, ignore the line
++    sed --in-place '/^<1> \[Ruby\] yast\/wfm.rb:[0-9]\+ Call client /d' tmp.err.$BASE
+     diff -Nu $ERR tmp.err.$BASE || CASEOK=false
+     diff -Nu $OUT tmp.out.$BASE || CASEOK=false
+ 
+diff --git a/testsuite/tests/Long.err b/testsuite/tests/Long.err
+index 800ca44..121915b 100644
+--- a/testsuite/tests/Long.err
++++ b/testsuite/tests/Long.err
+@@ -1,32 +1,31 @@
+-<1> [liby2] genericfrontend.cc(main):XXX Launched YaST2 component 'y2base' '-l' '-' '-n' 'Long=perl' 'tests/Long.ycp' 'testsuite'
++<1> [liby2] genericfrontend.cc(main):XXX Launched YaST2 component 'y2base' '-l' '-' '-n' 'Long=perl' 'tests/Long.rb' 'testsuite'
+ <1> [ui-component] YUIComponentCreator.cc(createInternal):XXX Creating UI component for ""
+-<1> [Y2Perl] Y2PerlComponent.cc(Y2PerlComponent):XXX Creating Y2PerlComponent
+-<1> [wfm] Y2WFMComponent.cc(SetLanguage):XXX GET encoding for C:  ANSI_X3.4-1968
+-<1> [wfm] Y2CCWFM.cc(createInLevel):XXX Parsing finished
+ <1> [liby2] genericfrontend.cc(main):XXX YAST_IS_RUNNING is yes
+-<1> [YCP] tests/Long.ycp:4 3*2**30: 3221225472
+-<1> [YCP] tests/Long.ycp:5 3*2**30: 3221225472 (class)
+-<1> [YCP] tests/Long.ycp:6 3*2**40: 3298534883328
+-<1> [YCP] tests/Long.ycp:7 3*2**40: 3298534883328 (class)
+-<1> [YCP] tests/Long.ycp:12 -7 * 2**30: -7516192768
+-<1> [YCP] tests/Long.ycp:13 -7 * 2**30: -7516192768 class
+-<1> [YCP] tests/Long.ycp:12 -1 * 2**30: -1073741824
+-<1> [YCP] tests/Long.ycp:13 -1 * 2**30: -1073741824 class
+-<1> [YCP] tests/Long.ycp:12 1 * 2**30: 1073741824
+-<1> [YCP] tests/Long.ycp:13 1 * 2**30: 1073741824 class
+-<1> [YCP] tests/Long.ycp:12 3 * 2**30: 3221225472
+-<1> [YCP] tests/Long.ycp:13 3 * 2**30: 3221225472 class
+-<1> [YCP] tests/Long.ycp:12 7 * 2**30: 7516192768
+-<1> [YCP] tests/Long.ycp:13 7 * 2**30: 7516192768 class
+-<1> [YCP] tests/Long.ycp:18 loop -7 * 2**30: -7516192768
+-<1> [YCP] tests/Long.ycp:19 loop -7 * 2**30: -7516192768 class
+-<1> [YCP] tests/Long.ycp:18 loop -1 * 2**30: -1073741824
+-<1> [YCP] tests/Long.ycp:19 loop -1 * 2**30: -1073741824 class
+-<1> [YCP] tests/Long.ycp:18 loop 1 * 2**30: 1073741824
+-<1> [YCP] tests/Long.ycp:19 loop 1 * 2**30: 1073741824 class
+-<1> [YCP] tests/Long.ycp:18 loop 3 * 2**30: 3221225472
+-<1> [YCP] tests/Long.ycp:19 loop 3 * 2**30: 3221225472 class
+-<1> [YCP] tests/Long.ycp:18 loop 7 * 2**30: 7516192768
+-<1> [YCP] tests/Long.ycp:19 loop 7 * 2**30: 7516192768 class
++<1> [wfm] Y2WFMComponent.cc(SetLanguage):XXX GET encoding for C:  ANSI_X3.4-1968
++<1> [Y2Perl] Y2PerlComponent.cc(Y2PerlComponent):XXX Creating Y2PerlComponent
++<1> [Ruby] tests/Long.rb:11 3*2**30: 3221225472
++<1> [Ruby] tests/Long.rb:12 3*2**30: 3221225472 (class)
++<1> [Ruby] tests/Long.rb:13 3*2**40: 3298534883328
++<1> [Ruby] tests/Long.rb:14 3*2**40: 3298534883328 (class)
++<1> [Ruby] tests/Long.rb:17 -7 * 2**30: -7516192768
++<1> [Ruby] tests/Long.rb:18 -7 * 2**30: -7516192768 class
++<1> [Ruby] tests/Long.rb:17 -1 * 2**30: -1073741824
++<1> [Ruby] tests/Long.rb:18 -1 * 2**30: -1073741824 class
++<1> [Ruby] tests/Long.rb:17 1 * 2**30: 1073741824
++<1> [Ruby] tests/Long.rb:18 1 * 2**30: 1073741824 class
++<1> [Ruby] tests/Long.rb:17 3 * 2**30: 3221225472
++<1> [Ruby] tests/Long.rb:18 3 * 2**30: 3221225472 class
++<1> [Ruby] tests/Long.rb:17 7 * 2**30: 7516192768
++<1> [Ruby] tests/Long.rb:18 7 * 2**30: 7516192768 class
++<1> [Ruby] tests/Long.rb:22 loop -7 * 2**30: -7516192768
++<1> [Ruby] tests/Long.rb:27 loop -7 * 2**30: -7516192768 class
++<1> [Ruby] tests/Long.rb:22 loop -1 * 2**30: -1073741824
++<1> [Ruby] tests/Long.rb:27 loop -1 * 2**30: -1073741824 class
++<1> [Ruby] tests/Long.rb:22 loop 1 * 2**30: 1073741824
++<1> [Ruby] tests/Long.rb:27 loop 1 * 2**30: 1073741824 class
++<1> [Ruby] tests/Long.rb:22 loop 3 * 2**30: 3221225472
++<1> [Ruby] tests/Long.rb:27 loop 3 * 2**30: 3221225472 class
++<1> [Ruby] tests/Long.rb:22 loop 7 * 2**30: 7516192768
++<1> [Ruby] tests/Long.rb:27 loop 7 * 2**30: 7516192768 class
+ <1> [liby2] genericfrontend.cc(main):XXX Finished YaST2 component 'y2base'
+ <1> [liby2] genericfrontend.cc(main):XXX Exiting with client return value 'nil'
+diff --git a/testsuite/tests/Reference.err b/testsuite/tests/Reference.err
+index 54182fc..7bb604e 100644
+--- a/testsuite/tests/Reference.err
++++ b/testsuite/tests/Reference.err
+@@ -1,14 +1,13 @@
+-<1> [liby2] genericfrontend.cc(main):XXX Launched YaST2 component 'y2base' '-l' '-' '-n' 'Reference=perl' 'tests/Reference.ycp' 'testsuite'
++<1> [liby2] genericfrontend.cc(main):XXX Launched YaST2 component 'y2base' '-l' '-' '-n' 'Reference=perl' 'tests/Reference.rb' 'testsuite'
+ <1> [ui-component] YUIComponentCreator.cc(createInternal):XXX Creating UI component for ""
+-<1> [Y2Perl] Y2PerlComponent.cc(Y2PerlComponent):XXX Creating Y2PerlComponent
+-<1> [wfm] Y2WFMComponent.cc(SetLanguage):XXX GET encoding for C:  ANSI_X3.4-1968
+-<1> [wfm] Y2CCWFM.cc(createInLevel):XXX Parsing finished
+ <1> [liby2] genericfrontend.cc(main):XXX YAST_IS_RUNNING is yes
+-<1> [YCP] tests/Reference.ycp:19 integer: 20
+-<1> [YCP] tests/Reference.ycp:20 float: 6.28
+-<1> [YCP] tests/Reference.ycp:21 boolean: true
+-<1> [YCP] tests/Reference.ycp:22 string: hu-ok
+-<1> [YCP] tests/Reference.ycp:23 list: [8, 2, 2, 3, 4, -3]
+-<1> [YCP] tests/Reference.ycp:24 map: $["a":"A", "b":"y-ok", "d":"123"]
++<1> [wfm] Y2WFMComponent.cc(SetLanguage):XXX GET encoding for C:  ANSI_X3.4-1968
++<1> [Y2Perl] Y2PerlComponent.cc(Y2PerlComponent):XXX Creating Y2PerlComponent
++<1> [Ruby] tests/Reference.rb:53 integer: 20
++<1> [Ruby] tests/Reference.rb:54 float: 6.28
++<1> [Ruby] tests/Reference.rb:55 boolean: true
++<1> [Ruby] tests/Reference.rb:56 string: hu-ok
++<1> [Ruby] tests/Reference.rb:57 list: [8, 2, 2, 3, 4, -3]
++<1> [Ruby] tests/Reference.rb:58 map: $["a":"A", "b":"y-ok", "d":"123"]
+ <1> [liby2] genericfrontend.cc(main):XXX Finished YaST2 component 'y2base'
+ <1> [liby2] genericfrontend.cc(main):XXX Exiting with client return value 'nil'
+diff --git a/testsuite/tests/Simple1.err b/testsuite/tests/Simple1.err
+index 47bd25b..d6b596d 100644
+--- a/testsuite/tests/Simple1.err
++++ b/testsuite/tests/Simple1.err
+@@ -1,9 +1,8 @@
+-<1> [liby2] genericfrontend.cc(main):XXX Launched YaST2 component 'y2base' '-l' '-' '-n' 'Simple1=perl' 'tests/Simple1.ycp' 'testsuite'
++<1> [liby2] genericfrontend.cc(main):XXX Launched YaST2 component 'y2base' '-l' '-' '-n' 'Simple1=perl' 'tests/Simple1.rb' 'testsuite'
+ <1> [ui-component] YUIComponentCreator.cc(createInternal):XXX Creating UI component for ""
+-<1> [Y2Perl] Y2PerlComponent.cc(Y2PerlComponent):XXX Creating Y2PerlComponent
+-<1> [wfm] Y2CCWFM.cc(createInLevel):XXX Parsing finished
+-<1> [wfm] Y2WFMComponent.cc(SetLanguage):XXX GET encoding for C:  ANSI_X3.4-1968
+ <1> [liby2] genericfrontend.cc(main):XXX YAST_IS_RUNNING is yes
+-<1> [YCP] tests/Simple1.ycp:6 Hello, world
++<1> [wfm] Y2WFMComponent.cc(SetLanguage):XXX GET encoding for C:  ANSI_X3.4-1968
++<1> [Y2Perl] Y2PerlComponent.cc(Y2PerlComponent):XXX Creating Y2PerlComponent
++<1> [Ruby] tests/Simple1.rb:11 Hello, world
+ <1> [liby2] genericfrontend.cc(main):XXX Finished YaST2 component 'y2base'
+ <1> [liby2] genericfrontend.cc(main):XXX Exiting with client return value 'nil'
+diff --git a/testsuite/tests/Testpfunc1.err b/testsuite/tests/Testpfunc1.err
+index fb6921f..a988ac6 100644
+--- a/testsuite/tests/Testpfunc1.err
++++ b/testsuite/tests/Testpfunc1.err
+@@ -1,12 +1,11 @@
+-<1> [liby2] genericfrontend.cc(main):XXX Launched YaST2 component 'y2base' '-l' '-' '-n' 'Testpfunc1=perl' 'tests/Testpfunc1.ycp' 'testsuite'
++<1> [liby2] genericfrontend.cc(main):XXX Launched YaST2 component 'y2base' '-l' '-' '-n' 'Testpfunc1=perl' 'tests/Testpfunc1.rb' 'testsuite'
+ <1> [ui-component] YUIComponentCreator.cc(createInternal):XXX Creating UI component for ""
+-<1> [Y2Perl] Y2PerlComponent.cc(Y2PerlComponent):XXX Creating Y2PerlComponent
+-<1> [wfm] Y2CCWFM.cc(createInLevel):XXX Parsing finished
+-<1> [wfm] Y2WFMComponent.cc(SetLanguage):XXX GET encoding for C:  ANSI_X3.4-1968
+ <1> [liby2] genericfrontend.cc(main):XXX YAST_IS_RUNNING is yes
+-<1> [YCP] tests/Testpfunc1.ycp:5 rxmatch (abracadabra, [a-d]*): true
+-<1> [YCP] tests/Testpfunc1.ycp:7 rxmatch (abracadabra, ^[a-d]*$): false
+-<1> [YCP] tests/Testpfunc1.ycp:10 lengths (["one", "two", "three"]): [3, 3, 5]
+-<1> [YCP] tests/Testpfunc1.ycp:13 amap ($["one":"two"]): $["a":"1", "b":"two"]
++<1> [wfm] Y2WFMComponent.cc(SetLanguage):XXX GET encoding for C:  ANSI_X3.4-1968
++<1> [Y2Perl] Y2PerlComponent.cc(Y2PerlComponent):XXX Creating Y2PerlComponent
++<1> [Ruby] tests/Testpfunc1.rb:11 rxmatch (abracadabra, [a-d]*): true
++<1> [Ruby] tests/Testpfunc1.rb:17 rxmatch (abracadabra, ^[a-d]*$): false
++<1> [Ruby] tests/Testpfunc1.rb:23 lengths (["one", "two", "three"]): [3, 3, 5]
++<1> [Ruby] tests/Testpfunc1.rb:28 amap ($["one":"two"]): $["a":"1", "b":"two"]
+ <1> [liby2] genericfrontend.cc(main):XXX Finished YaST2 component 'y2base'
+ <1> [liby2] genericfrontend.cc(main):XXX Exiting with client return value 'nil'
+diff --git a/testsuite/tests/Testpfunc2.err b/testsuite/tests/Testpfunc2.err
+index 18f49db..0023070 100644
+--- a/testsuite/tests/Testpfunc2.err
++++ b/testsuite/tests/Testpfunc2.err
+@@ -1,10 +1,9 @@
+-<1> [liby2] genericfrontend.cc(main):XXX Launched YaST2 component 'y2base' '-l' '-' '-n' 'Testpfunc2=perl' 'tests/Testpfunc2.ycp' 'testsuite'
++<1> [liby2] genericfrontend.cc(main):XXX Launched YaST2 component 'y2base' '-l' '-' '-n' 'Testpfunc2=perl' 'tests/Testpfunc2.rb' 'testsuite'
+ <1> [ui-component] YUIComponentCreator.cc(createInternal):XXX Creating UI component for ""
+-<1> [Y2Perl] Y2PerlComponent.cc(Y2PerlComponent):XXX Creating Y2PerlComponent
+-<1> [wfm] Y2CCWFM.cc(createInLevel):XXX Parsing finished
+-<1> [wfm] Y2WFMComponent.cc(SetLanguage):XXX GET encoding for C:  ANSI_X3.4-1968
+ <1> [liby2] genericfrontend.cc(main):XXX YAST_IS_RUNNING is yes
+-<1> [YCP] tests/Testpfunc2.ycp:5 nested: Hello, world
++<1> [wfm] Y2WFMComponent.cc(SetLanguage):XXX GET encoding for C:  ANSI_X3.4-1968
++<1> [Y2Perl] Y2PerlComponent.cc(Y2PerlComponent):XXX Creating Y2PerlComponent
++<1> [Ruby] tests/Testpfunc2.rb:11 nested: Hello, world
+ <1> [liby2] genericfrontend.cc(main):XXX Finished YaST2 component 'y2base'
+ <1> [liby2] genericfrontend.cc(main):XXX Exiting with client return value 'nil'
+ <1> [Y2Perl] YPerl.cc(destroy):XXX Shutting down embedded Perl interpreter.
+diff --git a/testsuite/tests/Types.err b/testsuite/tests/Types.err
+index deb470c..3a388f2 100644
+--- a/testsuite/tests/Types.err
++++ b/testsuite/tests/Types.err
+@@ -1,10 +1,9 @@
+-<1> [liby2] genericfrontend.cc(main):XXX Launched YaST2 component 'y2base' '-l' '-' '-n' 'Types=perl' 'tests/Types.ycp' 'testsuite'
++<1> [liby2] genericfrontend.cc(main):XXX Launched YaST2 component 'y2base' '-l' '-' '-n' 'Types=perl' 'tests/Types.rb' 'testsuite'
+ <1> [ui-component] YUIComponentCreator.cc(createInternal):XXX Creating UI component for ""
+-<1> [Y2Perl] Y2PerlComponent.cc(Y2PerlComponent):XXX Creating Y2PerlComponent
+-<1> [wfm] Y2WFMComponent.cc(SetLanguage):XXX GET encoding for C:  ANSI_X3.4-1968
+-<1> [wfm] Y2CCWFM.cc(createInLevel):XXX Parsing finished
+ <1> [liby2] genericfrontend.cc(main):XXX YAST_IS_RUNNING is yes
+-<1> [YCP] tests/Types.ycp:4 bool1: false
+-<1> [YCP] tests/Types.ycp:5 bool2: false
++<1> [wfm] Y2WFMComponent.cc(SetLanguage):XXX GET encoding for C:  ANSI_X3.4-1968
++<1> [Y2Perl] Y2PerlComponent.cc(Y2PerlComponent):XXX Creating Y2PerlComponent
++<1> [Ruby] tests/Types.rb:11 bool1: false
++<1> [Ruby] tests/Types.rb:12 bool2: false
+ <1> [liby2] genericfrontend.cc(main):XXX Finished YaST2 component 'y2base'
+ <1> [liby2] genericfrontend.cc(main):XXX Exiting with client return value 'nil'
+diff --git a/testsuite/tests/Types2.err b/testsuite/tests/Types2.err
+index dbeb7e3..2d60c76 100644
+--- a/testsuite/tests/Types2.err
++++ b/testsuite/tests/Types2.err
+@@ -1,11 +1,10 @@
+-<1> [liby2] genericfrontend.cc(main):XXX Launched YaST2 component 'y2base' '-l' '-' '-n' 'Types2=perl' 'tests/Types2.ycp' 'testsuite'
++<1> [liby2] genericfrontend.cc(main):XXX Launched YaST2 component 'y2base' '-l' '-' '-n' 'Types2=perl' 'tests/Types2.rb' 'testsuite'
+ <1> [ui-component] YUIComponentCreator.cc(createInternal):XXX Creating UI component for ""
+-<1> [Y2Perl] Y2PerlComponent.cc(Y2PerlComponent):XXX Creating Y2PerlComponent
+-<1> [wfm] Y2WFMComponent.cc(SetLanguage):XXX GET encoding for C:  ANSI_X3.4-1968
+-<1> [wfm] Y2CCWFM.cc(createInLevel):XXX Parsing finished
+ <1> [liby2] genericfrontend.cc(main):XXX YAST_IS_RUNNING is yes
+-<1> [YCP] tests/Types2.ycp:6 termloop: `MyTerm ("Hi", "42")
+-<1> [YCP] tests/Types2.ycp:7 termloop nt: `NestedTerm (`id ("42"), `MyTerm ("Hi", "42"))
+-<1> [YCP] tests/Types2.ycp:8 termreverse: `mreTyM ("42", "Hi")
++<1> [wfm] Y2WFMComponent.cc(SetLanguage):XXX GET encoding for C:  ANSI_X3.4-1968
++<1> [Y2Perl] Y2PerlComponent.cc(Y2PerlComponent):XXX Creating Y2PerlComponent
++<1> [Ruby] tests/Types2.rb:13 termloop: `MyTerm ("Hi", "42")
++<1> [Ruby] tests/Types2.rb:14 termloop nt: `NestedTerm (`id ("42"), `MyTerm ("Hi", "42"))
++<1> [Ruby] tests/Types2.rb:15 termreverse: `mreTyM ("42", "Hi")
+ <1> [liby2] genericfrontend.cc(main):XXX Finished YaST2 component 'y2base'
+ <1> [liby2] genericfrontend.cc(main):XXX Exiting with client return value 'nil'
