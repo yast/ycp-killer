@@ -22,8 +22,24 @@ index c23b5dc..fe2f2f1 100644
      });
      return TRUE;
  }
+diff --git a/testsuite/YaPI/Makefile.am b/testsuite/YaPI/Makefile.am
+index d9b12b0..956c637 100644
+--- a/testsuite/YaPI/Makefile.am
++++ b/testsuite/YaPI/Makefile.am
+@@ -5,7 +5,10 @@
+ #
+ 
+ AUTOMAKE_OPTIONS = dejagnu
+-EXTRA_DIST = $(wildcard tests/*.out) $(wildcard tests/*.err) $(wildcard tests/*.ycp) $(wildcard tests/*.yh)
++EXTRA_DIST = $(wildcard tests/*.out) $(wildcard tests/*.err) $(wildcard tests/*.rb)
++
++Y2BASEFLAGS = -I tests
++export Y2BASEFLAGS
+ 
+ testsuite_prepare = @ydatadir@/testsuite/Makefile.testsuite
+ 
 diff --git a/testsuite/YaPI/tests/YaPI-AddSAM-2.ycp b/testsuite/YaPI/tests/YaPI-AddSAM-2.ycp
-index 49173d7..2ea5476 100644
+index c4ae80b..9aba24a 100644
 --- a/testsuite/YaPI/tests/YaPI-AddSAM-2.ycp
 +++ b/testsuite/YaPI/tests/YaPI-AddSAM-2.ycp
 @@ -8,7 +8,7 @@
@@ -36,7 +52,7 @@ index 49173d7..2ea5476 100644
      import "YaPI::Samba";
  
 diff --git a/testsuite/YaPI/tests/YaPI-AddSAM.ycp b/testsuite/YaPI/tests/YaPI-AddSAM.ycp
-index 098a3a6..d2d3d3a 100644
+index 5999705..43d00b3 100644
 --- a/testsuite/YaPI/tests/YaPI-AddSAM.ycp
 +++ b/testsuite/YaPI/tests/YaPI-AddSAM.ycp
 @@ -8,7 +8,7 @@
@@ -49,7 +65,7 @@ index 098a3a6..d2d3d3a 100644
      import "YaPI::Samba";
  
 diff --git a/testsuite/YaPI/tests/YaPI-AddShare.ycp b/testsuite/YaPI/tests/YaPI-AddShare.ycp
-index aa3ecc1..0594b6d 100644
+index 0f3475b..db6b344 100644
 --- a/testsuite/YaPI/tests/YaPI-AddShare.ycp
 +++ b/testsuite/YaPI/tests/YaPI-AddShare.ycp
 @@ -7,7 +7,7 @@
@@ -62,7 +78,7 @@ index aa3ecc1..0594b6d 100644
      SambaConfig::Import(
  	    $["global" : $[
 diff --git a/testsuite/YaPI/tests/YaPI-DeleteSAM-2.ycp b/testsuite/YaPI/tests/YaPI-DeleteSAM-2.ycp
-index 8aaae7e..c64a56e 100644
+index c8238fe..5e9489e 100644
 --- a/testsuite/YaPI/tests/YaPI-DeleteSAM-2.ycp
 +++ b/testsuite/YaPI/tests/YaPI-DeleteSAM-2.ycp
 @@ -8,7 +8,7 @@
@@ -75,7 +91,7 @@ index 8aaae7e..c64a56e 100644
      SambaConfig::Import( $[
                      "global" : $[
 diff --git a/testsuite/YaPI/tests/YaPI-DeleteSAM-3.ycp b/testsuite/YaPI/tests/YaPI-DeleteSAM-3.ycp
-index f01b98a..6d84227 100644
+index b801f7e..9ebe44e 100644
 --- a/testsuite/YaPI/tests/YaPI-DeleteSAM-3.ycp
 +++ b/testsuite/YaPI/tests/YaPI-DeleteSAM-3.ycp
 @@ -8,7 +8,7 @@
@@ -88,7 +104,7 @@ index f01b98a..6d84227 100644
      SambaConfig::Import($[
                      "global" : $[
 diff --git a/testsuite/YaPI/tests/YaPI-DeleteSAM.ycp b/testsuite/YaPI/tests/YaPI-DeleteSAM.ycp
-index 147e7d3..789d1ff 100644
+index 0a8901e..dda4a2e 100644
 --- a/testsuite/YaPI/tests/YaPI-DeleteSAM.ycp
 +++ b/testsuite/YaPI/tests/YaPI-DeleteSAM.ycp
 @@ -8,7 +8,7 @@
@@ -101,7 +117,7 @@ index 147e7d3..789d1ff 100644
      SambaConfig::Import( $[
                      "global" : $[
 diff --git a/testsuite/YaPI/tests/YaPI-DeleteShare-2.ycp b/testsuite/YaPI/tests/YaPI-DeleteShare-2.ycp
-index 041a15b..7eecd72 100644
+index 4105ad3..0771cb1 100644
 --- a/testsuite/YaPI/tests/YaPI-DeleteShare-2.ycp
 +++ b/testsuite/YaPI/tests/YaPI-DeleteShare-2.ycp
 @@ -7,7 +7,7 @@
@@ -114,7 +130,7 @@ index 041a15b..7eecd72 100644
      SambaConfig::Import( $[
                      "global" : $[
 diff --git a/testsuite/YaPI/tests/YaPI-DeleteShare.ycp b/testsuite/YaPI/tests/YaPI-DeleteShare.ycp
-index a4df80e..8180215 100644
+index 77418fd..83f0797 100644
 --- a/testsuite/YaPI/tests/YaPI-DeleteShare.ycp
 +++ b/testsuite/YaPI/tests/YaPI-DeleteShare.ycp
 @@ -7,7 +7,7 @@
@@ -166,7 +182,7 @@ index e51f67e..e3af9ca 100644
      SambaConfig::Import( $["global" : $[
                          "workgroup" : "Test",
 diff --git a/testsuite/YaPI/tests/YaPI-EditDefaultSAM.ycp b/testsuite/YaPI/tests/YaPI-EditDefaultSAM.ycp
-index 0b87c2d..4c37ec4 100644
+index 13b3f67..006b8f6 100644
 --- a/testsuite/YaPI/tests/YaPI-EditDefaultSAM.ycp
 +++ b/testsuite/YaPI/tests/YaPI-EditDefaultSAM.ycp
 @@ -8,7 +8,7 @@
@@ -179,7 +195,7 @@ index 0b87c2d..4c37ec4 100644
      SambaConfig::Import( $[
                      "global" : $[
 diff --git a/testsuite/YaPI/tests/YaPI-EditSAMConfiguration.ycp b/testsuite/YaPI/tests/YaPI-EditSAMConfiguration.ycp
-index fb7d23e..3ce1ae1 100644
+index 2e1e1c5..9c03416 100644
 --- a/testsuite/YaPI/tests/YaPI-EditSAMConfiguration.ycp
 +++ b/testsuite/YaPI/tests/YaPI-EditSAMConfiguration.ycp
 @@ -7,7 +7,7 @@
@@ -192,7 +208,7 @@ index fb7d23e..3ce1ae1 100644
      SambaConfig::Import( $[
                      "global" : $[
 diff --git a/testsuite/YaPI/tests/YaPI-EditServerAsBDC.ycp b/testsuite/YaPI/tests/YaPI-EditServerAsBDC.ycp
-index 365c9e1..921f268 100644
+index 5758eda..cb3fd6a 100644
 --- a/testsuite/YaPI/tests/YaPI-EditServerAsBDC.ycp
 +++ b/testsuite/YaPI/tests/YaPI-EditServerAsBDC.ycp
 @@ -7,7 +7,7 @@
@@ -205,7 +221,7 @@ index 365c9e1..921f268 100644
      map r = depth_union(r_common, $["etc" : $[ "nsswitch_conf" : $[
                  "passwd" : "",
 diff --git a/testsuite/YaPI/tests/YaPI-EditServerAsPDC.ycp b/testsuite/YaPI/tests/YaPI-EditServerAsPDC.ycp
-index 1966a81..20cc29d 100644
+index 35640b6..110ace2 100644
 --- a/testsuite/YaPI/tests/YaPI-EditServerAsPDC.ycp
 +++ b/testsuite/YaPI/tests/YaPI-EditServerAsPDC.ycp
 @@ -7,7 +7,7 @@
@@ -218,7 +234,7 @@ index 1966a81..20cc29d 100644
      map r = depth_union(r_common, $["etc" : $[ "nsswitch_conf" : $[
                  "passwd" : "",
 diff --git a/testsuite/YaPI/tests/YaPI-EditServerAsStandalone.ycp b/testsuite/YaPI/tests/YaPI-EditServerAsStandalone.ycp
-index 2dad587..eeef466 100644
+index 4dc9998..c0effe2 100644
 --- a/testsuite/YaPI/tests/YaPI-EditServerAsStandalone.ycp
 +++ b/testsuite/YaPI/tests/YaPI-EditServerAsStandalone.ycp
 @@ -7,7 +7,7 @@
@@ -231,7 +247,7 @@ index 2dad587..eeef466 100644
      map r = depth_union(r_common, $["etc" : $[ "nsswitch_conf" : $[
                  "passwd" : "",
 diff --git a/testsuite/YaPI/tests/YaPI-EditServerDescription.ycp b/testsuite/YaPI/tests/YaPI-EditServerDescription.ycp
-index b55ed0e..a381902 100644
+index 3b7216f..31233bc 100644
 --- a/testsuite/YaPI/tests/YaPI-EditServerDescription.ycp
 +++ b/testsuite/YaPI/tests/YaPI-EditServerDescription.ycp
 @@ -7,7 +7,7 @@
@@ -257,7 +273,7 @@ index 92c02aa..1a3e1c3 100644
      map r = depth_union(r_common, $[]);
      map w = depth_union(w_common, $[]);
 diff --git a/testsuite/YaPI/tests/YaPI-EditShare.ycp b/testsuite/YaPI/tests/YaPI-EditShare.ycp
-index cfe64b9..04de8f5 100644
+index bf4cf42..c861caf 100644
 --- a/testsuite/YaPI/tests/YaPI-EditShare.ycp
 +++ b/testsuite/YaPI/tests/YaPI-EditShare.ycp
 @@ -7,7 +7,7 @@
@@ -270,7 +286,7 @@ index cfe64b9..04de8f5 100644
      SambaConfig::Import( $[
                      "global" : $[
 diff --git a/testsuite/YaPI/tests/YaPI-EnableHomes.ycp b/testsuite/YaPI/tests/YaPI-EnableHomes.ycp
-index e06ce12..b339bc3 100644
+index 4841fec..68234ad 100644
 --- a/testsuite/YaPI/tests/YaPI-EnableHomes.ycp
 +++ b/testsuite/YaPI/tests/YaPI-EnableHomes.ycp
 @@ -7,7 +7,7 @@
@@ -283,7 +299,7 @@ index e06ce12..b339bc3 100644
      SambaConfig::Import( $["global" : $[
  			"_modified" : "1",
 diff --git a/testsuite/YaPI/tests/YaPI-EnableNetlogon.ycp b/testsuite/YaPI/tests/YaPI-EnableNetlogon.ycp
-index 9d825e1..92af1dc 100644
+index adfa1b7..ec73e18 100644
 --- a/testsuite/YaPI/tests/YaPI-EnableNetlogon.ycp
 +++ b/testsuite/YaPI/tests/YaPI-EnableNetlogon.ycp
 @@ -7,7 +7,7 @@
@@ -309,7 +325,7 @@ index d0fbb1a..58909eb 100644
      SambaConfig::Import( $[
                      "global" : $[
 diff --git a/testsuite/YaPI/tests/YaPI-EnableShare-2.ycp b/testsuite/YaPI/tests/YaPI-EnableShare-2.ycp
-index 3c85b6c..961ff55 100644
+index ee8cc9a..ba7db63 100644
 --- a/testsuite/YaPI/tests/YaPI-EnableShare-2.ycp
 +++ b/testsuite/YaPI/tests/YaPI-EnableShare-2.ycp
 @@ -7,7 +7,7 @@
@@ -322,7 +338,7 @@ index 3c85b6c..961ff55 100644
      SambaConfig::Import( $[
                      "global" : $[
 diff --git a/testsuite/YaPI/tests/YaPI-EnableShare.ycp b/testsuite/YaPI/tests/YaPI-EnableShare.ycp
-index 41a86bf..9d84689 100644
+index 4210caf..606531f 100644
 --- a/testsuite/YaPI/tests/YaPI-EnableShare.ycp
 +++ b/testsuite/YaPI/tests/YaPI-EnableShare.ycp
 @@ -7,7 +7,7 @@
