@@ -126,6 +126,26 @@ index 54182fc..7bb604e 100644
 +<1> [Ruby] tests/Reference.rb:58 map: $["a":"A", "b":"y-ok", "d":"123"]
  <1> [liby2] genericfrontend.cc(main):XXX Finished YaST2 component 'y2base'
  <1> [liby2] genericfrontend.cc(main):XXX Exiting with client return value 'nil'
+diff --git a/testsuite/tests/Reference.pm b/testsuite/tests/Reference.pm
+index 8e96f2f..514b1d6 100644
+--- a/testsuite/tests/Reference.pm
++++ b/testsuite/tests/Reference.pm
+@@ -36,9 +36,12 @@ sub refFloat
+ BEGIN { $TYPEINFO{refListInt} = ["function", "void", ["&list", "integer"]]; }
+ sub refListInt
+ {
+-    $_[1][0] = 8;
+-    $_[1][1]++;
+-    push @{$_[1]}, "-3";
++    $_[1][0] = YaST::YCP::Integer(8);
++    $_[1][1] = YaST::YCP::Integer($_[1][1] + 1);
++    $_[1][2] = YaST::YCP::Integer($_[1][2]);
++    $_[1][3] = YaST::YCP::Integer($_[1][3]);
++    $_[1][4] = YaST::YCP::Integer($_[1][4]);
++    push @{$_[1]}, YaST::YCP::Integer(-3);
+ }
+ 
+ BEGIN { $TYPEINFO{refMapStringString} = ["function", "void", ["&map", "string", "string"]]; }
 diff --git a/testsuite/tests/Simple1.err b/testsuite/tests/Simple1.err
 index 47bd25b..d6b596d 100644
 --- a/testsuite/tests/Simple1.err
