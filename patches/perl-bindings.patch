@@ -98,10 +98,10 @@ index 800ca44..121915b 100644
 +<1> [Ruby] tests/Long.rb:27 loop 7 * 2**30: 7516192768 class
  <1> [liby2] genericfrontend.cc(main):XXX Finished YaST2 component 'y2base'
  <1> [liby2] genericfrontend.cc(main):XXX Exiting with client return value 'nil'
-diff --git a/testsuite/tests/Reference.err b/testsuite/tests/Reference.err
+diff --git a/testsuite/tests/disabled/Reference.err b/testsuite/tests/disabled/Reference.err
 index 54182fc..7bb604e 100644
---- a/testsuite/tests/Reference.err
-+++ b/testsuite/tests/Reference.err
+--- a/testsuite/tests/disabled/Reference.err
++++ b/testsuite/tests/disabled/Reference.err
 @@ -1,14 +1,13 @@
 -<1> [liby2] genericfrontend.cc(main):XXX Launched YaST2 component 'y2base' '-l' '-' '-n' 'Reference=perl' 'tests/Reference.ycp' 'testsuite'
 +<1> [liby2] genericfrontend.cc(main):XXX Launched YaST2 component 'y2base' '-l' '-' '-n' 'Reference=perl' 'tests/Reference.rb' 'testsuite'
