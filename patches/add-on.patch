@@ -11,8 +11,21 @@ index f92f253..c7df380 100644
  
  htmldir = $(docdir)
  
+diff --git a/testsuite/Makefile.am b/testsuite/Makefile.am
+index d9b12b0..e85fbc8 100644
+--- a/testsuite/Makefile.am
++++ b/testsuite/Makefile.am
+@@ -5,7 +5,7 @@
+ #
+ 
+ AUTOMAKE_OPTIONS = dejagnu
+-EXTRA_DIST = $(wildcard tests/*.out) $(wildcard tests/*.err) $(wildcard tests/*.ycp) $(wildcard tests/*.yh)
++EXTRA_DIST = $(wildcard tests/*.out) $(wildcard tests/*.err) $(wildcard tests/*.rb)
+ 
+ testsuite_prepare = @ydatadir@/testsuite/Makefile.testsuite
+ 
 diff --git a/yast2-add-on.spec.in b/yast2-add-on.spec.in
-index ef8280b..246c4f8 100644
+index ef8280b..2a88a5b 100644
 --- a/yast2-add-on.spec.in
 +++ b/yast2-add-on.spec.in
 @@ -29,6 +29,8 @@ Conflicts:	yast2-pkg-bindings < 2.17.25

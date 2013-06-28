@@ -34,8 +34,21 @@ index ed7a5a6..3be59d2 100644
 +#html_DATA = index.html $(wildcard *.html)
 +
 +#CLEANFILES = $(html_DATA)
+diff --git a/testsuite/Makefile.am b/testsuite/Makefile.am
+index d9b12b0..e85fbc8 100644
+--- a/testsuite/Makefile.am
++++ b/testsuite/Makefile.am
+@@ -5,7 +5,7 @@
+ #
+ 
+ AUTOMAKE_OPTIONS = dejagnu
+-EXTRA_DIST = $(wildcard tests/*.out) $(wildcard tests/*.err) $(wildcard tests/*.ycp) $(wildcard tests/*.yh)
++EXTRA_DIST = $(wildcard tests/*.out) $(wildcard tests/*.err) $(wildcard tests/*.rb)
+ 
+ testsuite_prepare = @ydatadir@/testsuite/Makefile.testsuite
+ 
 diff --git a/yast2-boot-server.spec.in b/yast2-boot-server.spec.in
-index 4c884ee..ed28286 100644
+index 4c884ee..e04ae98 100644
 --- a/yast2-boot-server.spec.in
 +++ b/yast2-boot-server.spec.in
 @@ -8,6 +8,8 @@ Requires:	yast2

@@ -12,6 +12,19 @@ index b3ffc5a..1fb0e86 100644
  
  htmldir = $(docdir)
  
+diff --git a/testsuite/Makefile.am b/testsuite/Makefile.am
+index d9b12b0..e85fbc8 100644
+--- a/testsuite/Makefile.am
++++ b/testsuite/Makefile.am
+@@ -5,7 +5,7 @@
+ #
+ 
+ AUTOMAKE_OPTIONS = dejagnu
+-EXTRA_DIST = $(wildcard tests/*.out) $(wildcard tests/*.err) $(wildcard tests/*.ycp) $(wildcard tests/*.yh)
++EXTRA_DIST = $(wildcard tests/*.out) $(wildcard tests/*.err) $(wildcard tests/*.rb)
+ 
+ testsuite_prepare = @ydatadir@/testsuite/Makefile.testsuite
+ 
 diff --git a/testsuite/tests/r-check.out b/testsuite/tests/r-check.out
 index 7182678..4047e4f 100644
 --- a/testsuite/tests/r-check.out

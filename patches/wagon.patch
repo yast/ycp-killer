@@ -42,8 +42,21 @@ index 0400e31..7716974 100644
 +
 +#AUTODOCS_YCP=$(top_srcdir)/src/*/*.ycp
 +#include $(top_srcdir)/autodocs-ycp.ami
+diff --git a/testsuite/Makefile.am b/testsuite/Makefile.am
+index a1881b8..d8fd043 100644
+--- a/testsuite/Makefile.am
++++ b/testsuite/Makefile.am
+@@ -5,7 +5,7 @@
+ #
+ 
+ AUTOMAKE_OPTIONS = dejagnu
+-EXTRA_DIST = $(wildcard tests/*.out) $(wildcard tests/*.err) $(wildcard tests/*.ycp) $(wildcard tests/*.yh) $(wildcard tests/*.xml)
++EXTRA_DIST = $(wildcard tests/*.out) $(wildcard tests/*.err) $(wildcard tests/*.rb) $(wildcard tests/*.xml)
+ 
+ testsuite_prepare = @ydatadir@/testsuite/Makefile.testsuite
+ 
 diff --git a/yast2-wagon.spec.in b/yast2-wagon.spec.in
-index 12d22e6..7c33d6f 100644
+index 12d22e6..1bd8928 100644
 --- a/yast2-wagon.spec.in
 +++ b/yast2-wagon.spec.in
 @@ -39,6 +39,8 @@ Requires:	wagon-control-file

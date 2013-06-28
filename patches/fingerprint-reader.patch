@@ -30,8 +30,21 @@ index 6233695..96989d4 100644
 +# TODO FIXME: temporarily disabled
 +
 +#include $(top_srcdir)/autodocs-ycp.ami
+diff --git a/testsuite/Makefile.am b/testsuite/Makefile.am
+index d9b12b0..e85fbc8 100644
+--- a/testsuite/Makefile.am
++++ b/testsuite/Makefile.am
+@@ -5,7 +5,7 @@
+ #
+ 
+ AUTOMAKE_OPTIONS = dejagnu
+-EXTRA_DIST = $(wildcard tests/*.out) $(wildcard tests/*.err) $(wildcard tests/*.ycp) $(wildcard tests/*.yh)
++EXTRA_DIST = $(wildcard tests/*.out) $(wildcard tests/*.err) $(wildcard tests/*.rb)
+ 
+ testsuite_prepare = @ydatadir@/testsuite/Makefile.testsuite
+ 
 diff --git a/yast2-fingerprint-reader.spec.in b/yast2-fingerprint-reader.spec.in
-index bcceba7..e3a0b59 100644
+index bcceba7..e64b479 100644
 --- a/yast2-fingerprint-reader.spec.in
 +++ b/yast2-fingerprint-reader.spec.in
 @@ -10,6 +10,8 @@ BuildRequires:	doxygen gcc-c++ yast2-core-devel perl-XML-Writer update-desktop-f

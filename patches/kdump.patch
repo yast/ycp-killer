@@ -46,8 +46,21 @@ index 61fa93d..8e02d7c 100644
  
      // EXAMPLE FUNCTIONS
  /*
+diff --git a/testsuite/Makefile.am b/testsuite/Makefile.am
+index d9b12b0..e85fbc8 100644
+--- a/testsuite/Makefile.am
++++ b/testsuite/Makefile.am
+@@ -5,7 +5,7 @@
+ #
+ 
+ AUTOMAKE_OPTIONS = dejagnu
+-EXTRA_DIST = $(wildcard tests/*.out) $(wildcard tests/*.err) $(wildcard tests/*.ycp) $(wildcard tests/*.yh)
++EXTRA_DIST = $(wildcard tests/*.out) $(wildcard tests/*.err) $(wildcard tests/*.rb)
+ 
+ testsuite_prepare = @ydatadir@/testsuite/Makefile.testsuite
+ 
 diff --git a/yast2-kdump.spec.in b/yast2-kdump.spec.in
-index 01bcdc8..1b74d21 100644
+index 01bcdc8..3bab3e5 100644
 --- a/yast2-kdump.spec.in
 +++ b/yast2-kdump.spec.in
 @@ -12,6 +12,8 @@ Recommends:     makedumpfile

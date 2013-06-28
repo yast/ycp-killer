@@ -75,8 +75,21 @@ index 4c44712..9dcef54 100644
  /**
    * Handler for command line interface
    * @param options map options from the command line
+diff --git a/testsuite/Makefile.am b/testsuite/Makefile.am
+index d9b12b0..e85fbc8 100644
+--- a/testsuite/Makefile.am
++++ b/testsuite/Makefile.am
+@@ -5,7 +5,7 @@
+ #
+ 
+ AUTOMAKE_OPTIONS = dejagnu
+-EXTRA_DIST = $(wildcard tests/*.out) $(wildcard tests/*.err) $(wildcard tests/*.ycp) $(wildcard tests/*.yh)
++EXTRA_DIST = $(wildcard tests/*.out) $(wildcard tests/*.err) $(wildcard tests/*.rb)
+ 
+ testsuite_prepare = @ydatadir@/testsuite/Makefile.testsuite
+ 
 diff --git a/yast2-power-management.spec.in b/yast2-power-management.spec.in
-index 145f877..e5e6e62 100644
+index 145f877..48eb387 100644
 --- a/yast2-power-management.spec.in
 +++ b/yast2-power-management.spec.in
 @@ -10,6 +10,8 @@ BuildArchitectures: noarch

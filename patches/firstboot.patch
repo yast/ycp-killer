@@ -135,8 +135,21 @@ index 671b84b..0000000
 -    UI::CloseDialog();
 -    return ret;
 -}
+diff --git a/testsuite/Makefile.am b/testsuite/Makefile.am
+index d9b12b0..e85fbc8 100644
+--- a/testsuite/Makefile.am
++++ b/testsuite/Makefile.am
+@@ -5,7 +5,7 @@
+ #
+ 
+ AUTOMAKE_OPTIONS = dejagnu
+-EXTRA_DIST = $(wildcard tests/*.out) $(wildcard tests/*.err) $(wildcard tests/*.ycp) $(wildcard tests/*.yh)
++EXTRA_DIST = $(wildcard tests/*.out) $(wildcard tests/*.err) $(wildcard tests/*.rb)
+ 
+ testsuite_prepare = @ydatadir@/testsuite/Makefile.testsuite
+ 
 diff --git a/yast2-firstboot.spec.in b/yast2-firstboot.spec.in
-index b0a1cd5..8a44fb3 100644
+index b0a1cd5..442cbe8 100644
 --- a/yast2-firstboot.spec.in
 +++ b/yast2-firstboot.spec.in
 @@ -20,6 +20,8 @@ Requires:	yast2-installation >= 2.19.0

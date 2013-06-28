@@ -20,8 +20,21 @@ index b54cdda..7b53634 100644
  
  /**
   * Adduser dialog
+diff --git a/testsuite/Makefile.am b/testsuite/Makefile.am
+index d9b12b0..e85fbc8 100644
+--- a/testsuite/Makefile.am
++++ b/testsuite/Makefile.am
+@@ -5,7 +5,7 @@
+ #
+ 
+ AUTOMAKE_OPTIONS = dejagnu
+-EXTRA_DIST = $(wildcard tests/*.out) $(wildcard tests/*.err) $(wildcard tests/*.ycp) $(wildcard tests/*.yh)
++EXTRA_DIST = $(wildcard tests/*.out) $(wildcard tests/*.err) $(wildcard tests/*.rb)
+ 
+ testsuite_prepare = @ydatadir@/testsuite/Makefile.testsuite
+ 
 diff --git a/yast2-security.spec.in b/yast2-security.spec.in
-index a60270e..53cfa05 100644
+index a60270e..5d7f9f3 100644
 --- a/yast2-security.spec.in
 +++ b/yast2-security.spec.in
 @@ -19,6 +19,8 @@ Obsoletes:	yast2-trans-security y2t_sec

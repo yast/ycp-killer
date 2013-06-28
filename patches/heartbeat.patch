@@ -106,8 +106,21 @@ index ba90cfe..01014ae 100644
  
  include "heartbeat/helps.ycp";
  include "heartbeat/common.ycp";
+diff --git a/testsuite/Makefile.am b/testsuite/Makefile.am
+index d9b12b0..e85fbc8 100644
+--- a/testsuite/Makefile.am
++++ b/testsuite/Makefile.am
+@@ -5,7 +5,7 @@
+ #
+ 
+ AUTOMAKE_OPTIONS = dejagnu
+-EXTRA_DIST = $(wildcard tests/*.out) $(wildcard tests/*.err) $(wildcard tests/*.ycp) $(wildcard tests/*.yh)
++EXTRA_DIST = $(wildcard tests/*.out) $(wildcard tests/*.err) $(wildcard tests/*.rb)
+ 
+ testsuite_prepare = @ydatadir@/testsuite/Makefile.testsuite
+ 
 diff --git a/yast2-heartbeat.spec.in b/yast2-heartbeat.spec.in
-index 6193558..77ab24d 100644
+index 6193558..e3700c6 100644
 --- a/yast2-heartbeat.spec.in
 +++ b/yast2-heartbeat.spec.in
 @@ -8,6 +8,8 @@ Requires:	yast2 >= 2.21.22

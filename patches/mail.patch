@@ -145,8 +145,25 @@ index 1aa3e3b..05d8c27 100644
  
  boolean ReallyAbort() {
      return !MailServer::Modified() || Popup::ReallyAbort(true);
+diff --git a/testsuite/Makefile.am b/testsuite/Makefile.am
+index 02a627f..06bc411 100644
+--- a/testsuite/Makefile.am
++++ b/testsuite/Makefile.am
+@@ -4,10 +4,10 @@
+ 
+ AUTOMAKE_OPTIONS = dejagnu
+ 
+-ycp_testfiles = $(wildcard tests/*.out) $(wildcard tests/*.err) $(wildcard tests/*.ycp) $(wildcard tests/*.yh)
++ycp_testfiles = $(wildcard tests/*.out) $(wildcard tests/*.err) $(wildcard tests/*.rb)
+ 
+ epag_misc = lib/yast2_epag.exp run/runtest-epag.sh
+-epag_testfiles = $(wildcard $(RPMNAME).test/ag_*.exp tests.epag/*.[rw].run tests.epag/*.[rw].data tests.epag/*.rw.ycp)
++epag_testfiles = $(wildcard $(RPMNAME).test/ag_*.exp tests.epag/*.[rw].run tests.epag/*.[rw].data tests.epag/*.rw.rb)
+ EXTRA_DIST = $(ycp_testfiles) $(epag_testfiles) $(epag_misc)
+ 
+ testsuite_prepare = @ydatadir@/testsuite/Makefile.testsuite
 diff --git a/yast2-mail.spec.in b/yast2-mail.spec.in
-index b85d006..61eb746 100644
+index b85d006..a9fa5e1 100644
 --- a/yast2-mail.spec.in
 +++ b/yast2-mail.spec.in
 @@ -28,6 +28,8 @@ Provides:       yast2-mail-server = %{version}

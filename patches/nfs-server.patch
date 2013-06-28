@@ -28,6 +28,23 @@ index 2a6f678..9de7be0 100644
 +# TODO FIXME: temporarily disabled
 +
 +#include $(top_srcdir)/autodocs-ycp.ami
+diff --git a/testsuite/Makefile.am b/testsuite/Makefile.am
+index 02a627f..06bc411 100644
+--- a/testsuite/Makefile.am
++++ b/testsuite/Makefile.am
+@@ -4,10 +4,10 @@
+ 
+ AUTOMAKE_OPTIONS = dejagnu
+ 
+-ycp_testfiles = $(wildcard tests/*.out) $(wildcard tests/*.err) $(wildcard tests/*.ycp) $(wildcard tests/*.yh)
++ycp_testfiles = $(wildcard tests/*.out) $(wildcard tests/*.err) $(wildcard tests/*.rb)
+ 
+ epag_misc = lib/yast2_epag.exp run/runtest-epag.sh
+-epag_testfiles = $(wildcard $(RPMNAME).test/ag_*.exp tests.epag/*.[rw].run tests.epag/*.[rw].data tests.epag/*.rw.ycp)
++epag_testfiles = $(wildcard $(RPMNAME).test/ag_*.exp tests.epag/*.[rw].run tests.epag/*.[rw].data tests.epag/*.rw.rb)
+ EXTRA_DIST = $(ycp_testfiles) $(epag_testfiles) $(epag_misc)
+ 
+ testsuite_prepare = @ydatadir@/testsuite/Makefile.testsuite
 diff --git a/testsuite/tests/routines2.out b/testsuite/tests/routines2.out
 index 3f8d61e..637ac16 100644
 --- a/testsuite/tests/routines2.out

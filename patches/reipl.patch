@@ -33,8 +33,21 @@ index 83bbbd9..464185d 100644
  
  /**
   * Configure dialog
+diff --git a/testsuite/Makefile.am b/testsuite/Makefile.am
+index 7ca744c..f19f3d3 100644
+--- a/testsuite/Makefile.am
++++ b/testsuite/Makefile.am
+@@ -5,7 +5,7 @@
+ #
+ 
+ AUTOMAKE_OPTIONS = dejagnu
+-EXTRA_DIST = $(wildcard tests/*.out) $(wildcard tests/*.err) $(wildcard tests/*.ycp) $(wildcard tests/*.yh)
++EXTRA_DIST = $(wildcard tests/*.out) $(wildcard tests/*.err) $(wildcard tests/*.rb)
+ 
+ testsuite_prepare = @ydatadir@/testsuite/Makefile.testsuite
+ 
 diff --git a/yast2-reipl.spec.in b/yast2-reipl.spec.in
-index 490276d..45c35f6 100644
+index 490276d..9f6c67a 100644
 --- a/yast2-reipl.spec.in
 +++ b/yast2-reipl.spec.in
 @@ -21,14 +21,12 @@ PreReq:         %fillup_prereq

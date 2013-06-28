@@ -93,8 +93,21 @@ index e01a5cf..9ada241 100644
  
  // how to show and handle pattern keys
  map pattern_descr	= AddOnCreator::pattern_descr;
+diff --git a/testsuite/Makefile.am b/testsuite/Makefile.am
+index d9b12b0..e85fbc8 100644
+--- a/testsuite/Makefile.am
++++ b/testsuite/Makefile.am
+@@ -5,7 +5,7 @@
+ #
+ 
+ AUTOMAKE_OPTIONS = dejagnu
+-EXTRA_DIST = $(wildcard tests/*.out) $(wildcard tests/*.err) $(wildcard tests/*.ycp) $(wildcard tests/*.yh)
++EXTRA_DIST = $(wildcard tests/*.out) $(wildcard tests/*.err) $(wildcard tests/*.rb)
+ 
+ testsuite_prepare = @ydatadir@/testsuite/Makefile.testsuite
+ 
 diff --git a/yast2-add-on-creator.spec.in b/yast2-add-on-creator.spec.in
-index a4deceb..653f268 100644
+index a4deceb..80f715e 100644
 --- a/yast2-add-on-creator.spec.in
 +++ b/yast2-add-on-creator.spec.in
 @@ -9,6 +9,8 @@ BuildRequires:	perl-XML-Writer update-desktop-files yast2 yast2-devtools yast2-t

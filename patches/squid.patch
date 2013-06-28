@@ -48,8 +48,21 @@ index 5c90780..e70ce9c 100644
 +# TODO FIXME: temporarily disabled
 +
 +# include $(top_srcdir)/autodocs-ycp.ami
+diff --git a/testsuite/Makefile.am b/testsuite/Makefile.am
+index d9b12b0..e85fbc8 100644
+--- a/testsuite/Makefile.am
++++ b/testsuite/Makefile.am
+@@ -5,7 +5,7 @@
+ #
+ 
+ AUTOMAKE_OPTIONS = dejagnu
+-EXTRA_DIST = $(wildcard tests/*.out) $(wildcard tests/*.err) $(wildcard tests/*.ycp) $(wildcard tests/*.yh)
++EXTRA_DIST = $(wildcard tests/*.out) $(wildcard tests/*.err) $(wildcard tests/*.rb)
+ 
+ testsuite_prepare = @ydatadir@/testsuite/Makefile.testsuite
+ 
 diff --git a/yast2-squid.spec.in b/yast2-squid.spec.in
-index 7837bae..4080d13 100644
+index 7837bae..b58bcbd 100644
 --- a/yast2-squid.spec.in
 +++ b/yast2-squid.spec.in
 @@ -9,6 +9,8 @@ BuildRequires: yast2-testsuite yast2-core-devel boost-devel gcc-c++ libtool

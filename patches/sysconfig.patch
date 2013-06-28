@@ -12,8 +12,21 @@ index fbc0358..e11ea30 100644
  
  htmldir = $(docdir)
  
+diff --git a/testsuite/Makefile.am b/testsuite/Makefile.am
+index d9b12b0..e85fbc8 100644
+--- a/testsuite/Makefile.am
++++ b/testsuite/Makefile.am
+@@ -5,7 +5,7 @@
+ #
+ 
+ AUTOMAKE_OPTIONS = dejagnu
+-EXTRA_DIST = $(wildcard tests/*.out) $(wildcard tests/*.err) $(wildcard tests/*.ycp) $(wildcard tests/*.yh)
++EXTRA_DIST = $(wildcard tests/*.out) $(wildcard tests/*.err) $(wildcard tests/*.rb)
+ 
+ testsuite_prepare = @ydatadir@/testsuite/Makefile.testsuite
+ 
 diff --git a/yast2-sysconfig.spec.in b/yast2-sysconfig.spec.in
-index 88bf07f..595dc29 100644
+index 88bf07f..2fba954 100644
 --- a/yast2-sysconfig.spec.in
 +++ b/yast2-sysconfig.spec.in
 @@ -15,6 +15,8 @@ Obsoletes:	y2c_rc_config yast2-config-rcconfig yast2-config-sysconfig

@@ -24,8 +24,21 @@ index 27bbcac..f6daf89 100644
  import "Confirm";
  import "OpenvasSecurityScanner";
  
+diff --git a/testsuite/Makefile.am b/testsuite/Makefile.am
+index d9b12b0..e85fbc8 100644
+--- a/testsuite/Makefile.am
++++ b/testsuite/Makefile.am
+@@ -5,7 +5,7 @@
+ #
+ 
+ AUTOMAKE_OPTIONS = dejagnu
+-EXTRA_DIST = $(wildcard tests/*.out) $(wildcard tests/*.err) $(wildcard tests/*.ycp) $(wildcard tests/*.yh)
++EXTRA_DIST = $(wildcard tests/*.out) $(wildcard tests/*.err) $(wildcard tests/*.rb)
+ 
+ testsuite_prepare = @ydatadir@/testsuite/Makefile.testsuite
+ 
 diff --git a/yast2-openvas-security-scanner.spec.in b/yast2-openvas-security-scanner.spec.in
-index 7abed8e..f488df5 100644
+index 7abed8e..b7f9336 100644
 --- a/yast2-openvas-security-scanner.spec.in
 +++ b/yast2-openvas-security-scanner.spec.in
 @@ -6,6 +6,8 @@ BuildRequires:	perl-XML-Writer update-desktop-files yast2 yast2-devtools yast2-t

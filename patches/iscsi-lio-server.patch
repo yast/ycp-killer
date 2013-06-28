@@ -59,8 +59,21 @@ index 5539378..8f476e9 100644
  //	**************** global funcions and variables *****
  string curr_target = "";
  integer curr_tpg = 1;
+diff --git a/testsuite/Makefile.am b/testsuite/Makefile.am
+index d9b12b0..e85fbc8 100644
+--- a/testsuite/Makefile.am
++++ b/testsuite/Makefile.am
+@@ -5,7 +5,7 @@
+ #
+ 
+ AUTOMAKE_OPTIONS = dejagnu
+-EXTRA_DIST = $(wildcard tests/*.out) $(wildcard tests/*.err) $(wildcard tests/*.ycp) $(wildcard tests/*.yh)
++EXTRA_DIST = $(wildcard tests/*.out) $(wildcard tests/*.err) $(wildcard tests/*.rb)
+ 
+ testsuite_prepare = @ydatadir@/testsuite/Makefile.testsuite
+ 
 diff --git a/yast2-iscsi-lio-server.spec.in b/yast2-iscsi-lio-server.spec.in
-index 0df1e82..b2ff62e 100644
+index 0df1e82..c906798 100644
 --- a/yast2-iscsi-lio-server.spec.in
 +++ b/yast2-iscsi-lio-server.spec.in
 @@ -14,6 +14,8 @@ Requires:       yast2 >= 2.21.22

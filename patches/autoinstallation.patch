@@ -379,7 +379,7 @@ index 5fa1b35..e039a4a 100644
      string title = _("Autoinstallation - Configuration");
      boolean show_source = false;
 diff --git a/src/include/autoinstall/general_dialogs.ycp b/src/include/autoinstall/general_dialogs.ycp
-index d81321c..1fcece8 100644
+index eb26f43..65dedcd 100644
 --- a/src/include/autoinstall/general_dialogs.ycp
 +++ b/src/include/autoinstall/general_dialogs.ycp
 @@ -10,6 +10,9 @@
@@ -422,6 +422,19 @@ index 6e4f464..4eb2077 100644
  
  
      /**
+diff --git a/testsuite/Makefile.am b/testsuite/Makefile.am
+index d9b12b0..e85fbc8 100644
+--- a/testsuite/Makefile.am
++++ b/testsuite/Makefile.am
+@@ -5,7 +5,7 @@
+ #
+ 
+ AUTOMAKE_OPTIONS = dejagnu
+-EXTRA_DIST = $(wildcard tests/*.out) $(wildcard tests/*.err) $(wildcard tests/*.ycp) $(wildcard tests/*.yh)
++EXTRA_DIST = $(wildcard tests/*.out) $(wildcard tests/*.err) $(wildcard tests/*.rb)
+ 
+ testsuite_prepare = @ydatadir@/testsuite/Makefile.testsuite
+ 
 diff --git a/xslt/Makefile.am b/xslt/Makefile.am
 index 98761a2..763da68 100644
 --- a/xslt/Makefile.am
