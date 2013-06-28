@@ -80,8 +80,21 @@ index 1141380..b2aee43 100644
  import "Sequencer";
  import "Wizard";
  
+diff --git a/testsuite/Makefile.am b/testsuite/Makefile.am
+index d9b12b0..e85fbc8 100644
+--- a/testsuite/Makefile.am
++++ b/testsuite/Makefile.am
+@@ -5,7 +5,7 @@
+ #
+ 
+ AUTOMAKE_OPTIONS = dejagnu
+-EXTRA_DIST = $(wildcard tests/*.out) $(wildcard tests/*.err) $(wildcard tests/*.ycp) $(wildcard tests/*.yh)
++EXTRA_DIST = $(wildcard tests/*.out) $(wildcard tests/*.err) $(wildcard tests/*.rb)
+ 
+ testsuite_prepare = @ydatadir@/testsuite/Makefile.testsuite
+ 
 diff --git a/yast2-iscsi-server.spec.in b/yast2-iscsi-server.spec.in
-index 94a45c6..743862d 100644
+index 94a45c6..b07647e 100644
 --- a/yast2-iscsi-server.spec.in
 +++ b/yast2-iscsi-server.spec.in
 @@ -13,6 +13,8 @@ Requires:       yast2 >= 2.21.22

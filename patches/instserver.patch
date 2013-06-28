@@ -19,8 +19,21 @@ index 93ce8ad..1d261db 100644
 +	install -d -m 755 $(DESTDIR)/etc/YaST2/instserver
 +
  EXTRA_DIST = $(apacheconf_DATA) 
+diff --git a/testsuite/Makefile.am b/testsuite/Makefile.am
+index d9b12b0..e85fbc8 100644
+--- a/testsuite/Makefile.am
++++ b/testsuite/Makefile.am
+@@ -5,7 +5,7 @@
+ #
+ 
+ AUTOMAKE_OPTIONS = dejagnu
+-EXTRA_DIST = $(wildcard tests/*.out) $(wildcard tests/*.err) $(wildcard tests/*.ycp) $(wildcard tests/*.yh)
++EXTRA_DIST = $(wildcard tests/*.out) $(wildcard tests/*.err) $(wildcard tests/*.rb)
+ 
+ testsuite_prepare = @ydatadir@/testsuite/Makefile.testsuite
+ 
 diff --git a/yast2-instserver.spec.in b/yast2-instserver.spec.in
-index e452ea7..d8f6f7d 100644
+index e452ea7..9e39b33 100644
 --- a/yast2-instserver.spec.in
 +++ b/yast2-instserver.spec.in
 @@ -12,6 +12,8 @@ Requires:	yast2-slp

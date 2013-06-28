@@ -86,8 +86,21 @@ index ed077e7..42be13e 100644
    /**
     * Sequention used for determining on which ip adresses and port apache2 will listen and if firewall is enebled
     * whether to open firewall on this port.
+diff --git a/testsuite/Makefile.am b/testsuite/Makefile.am
+index d9b12b0..e85fbc8 100644
+--- a/testsuite/Makefile.am
++++ b/testsuite/Makefile.am
+@@ -5,7 +5,7 @@
+ #
+ 
+ AUTOMAKE_OPTIONS = dejagnu
+-EXTRA_DIST = $(wildcard tests/*.out) $(wildcard tests/*.err) $(wildcard tests/*.ycp) $(wildcard tests/*.yh)
++EXTRA_DIST = $(wildcard tests/*.out) $(wildcard tests/*.err) $(wildcard tests/*.rb)
+ 
+ testsuite_prepare = @ydatadir@/testsuite/Makefile.testsuite
+ 
 diff --git a/yast2-http-server.spec.in b/yast2-http-server.spec.in
-index 2821125..bcf9798 100644
+index 2821125..c6e77e7 100644
 --- a/yast2-http-server.spec.in
 +++ b/yast2-http-server.spec.in
 @@ -11,6 +11,8 @@ Requires:       yast2 >= 2.21.22

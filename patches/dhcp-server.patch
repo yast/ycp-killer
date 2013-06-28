@@ -669,8 +669,21 @@ index 285ec51..7278154 100644
  any FirstRunSequence() {
  
      map aliases = $[
+diff --git a/testsuite/Makefile.am b/testsuite/Makefile.am
+index d9b12b0..e85fbc8 100644
+--- a/testsuite/Makefile.am
++++ b/testsuite/Makefile.am
+@@ -5,7 +5,7 @@
+ #
+ 
+ AUTOMAKE_OPTIONS = dejagnu
+-EXTRA_DIST = $(wildcard tests/*.out) $(wildcard tests/*.err) $(wildcard tests/*.ycp) $(wildcard tests/*.yh)
++EXTRA_DIST = $(wildcard tests/*.out) $(wildcard tests/*.err) $(wildcard tests/*.rb)
+ 
+ testsuite_prepare = @ydatadir@/testsuite/Makefile.testsuite
+ 
 diff --git a/yast2-dhcp-server.spec.in b/yast2-dhcp-server.spec.in
-index 90af475..ca4dbee 100644
+index 90af475..2aedfae 100644
 --- a/yast2-dhcp-server.spec.in
 +++ b/yast2-dhcp-server.spec.in
 @@ -15,6 +15,8 @@ Requires: yast2-dns-server >= 2.13.16

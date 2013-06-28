@@ -10,7 +10,7 @@ index 2a6f678..9de7be0 100644
 +
 +#include $(top_srcdir)/autodocs-ycp.ami
 diff --git a/yast2-slp.spec.in b/yast2-slp.spec.in
-index bbb0628..cbbab3f 100644
+index bbb0628..8424cfb 100644
 --- a/yast2-slp.spec.in
 +++ b/yast2-slp.spec.in
 @@ -11,6 +11,8 @@ Requires: openslp

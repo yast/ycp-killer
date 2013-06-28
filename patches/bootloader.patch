@@ -43,7 +43,7 @@ index 1833773..d7b8303 100644
 +#AUTODOCS_PM  = $(top_srcdir)/src/*/*.pm
 +#include $(top_srcdir)/autodocs-ycp.ami
 diff --git a/src/include/bootloader/elilo/options.ycp b/src/include/bootloader/elilo/options.ycp
-index 1584c1e..2a1b431 100644
+index 1584c1e..6d977f9 100644
 --- a/src/include/bootloader/elilo/options.ycp
 +++ b/src/include/bootloader/elilo/options.ycp
 @@ -21,7 +21,7 @@ import "Label";
@@ -193,8 +193,21 @@ index f756b6c..5659a4f 100644
  
  import "Linuxrc";
  
+diff --git a/testsuite/Makefile.am b/testsuite/Makefile.am
+index d9b12b0..e85fbc8 100644
+--- a/testsuite/Makefile.am
++++ b/testsuite/Makefile.am
+@@ -5,7 +5,7 @@
+ #
+ 
+ AUTOMAKE_OPTIONS = dejagnu
+-EXTRA_DIST = $(wildcard tests/*.out) $(wildcard tests/*.err) $(wildcard tests/*.ycp) $(wildcard tests/*.yh)
++EXTRA_DIST = $(wildcard tests/*.out) $(wildcard tests/*.err) $(wildcard tests/*.rb)
+ 
+ testsuite_prepare = @ydatadir@/testsuite/Makefile.testsuite
+ 
 diff --git a/yast2-bootloader.spec.in b/yast2-bootloader.spec.in
-index dac4bd0..6db7cfa 100644
+index abbe7fa..fb8280d 100644
 --- a/yast2-bootloader.spec.in
 +++ b/yast2-bootloader.spec.in
 @@ -36,6 +36,8 @@ Obsoletes:	y2c_boot y2t_boot

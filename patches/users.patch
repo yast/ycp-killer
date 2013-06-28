@@ -63,6 +63,19 @@ index 84686e4..c5e262b 100644
  
  textdomain "users";
  
+diff --git a/testsuite/Makefile.am b/testsuite/Makefile.am
+index 97cf756..85e8a1c 100644
+--- a/testsuite/Makefile.am
++++ b/testsuite/Makefile.am
+@@ -5,7 +5,7 @@
+ #
+ 
+ AUTOMAKE_OPTIONS = dejagnu
+-EXTRA_DIST = $(wildcard tests/*.out) $(wildcard tests/*.err) $(wildcard tests/*.ycp) $(wildcard tests/*.yh) passwd shadow group
++EXTRA_DIST = $(wildcard tests/*.out) $(wildcard tests/*.err) $(wildcard tests/*.rb) passwd shadow group
+ 
+ testsuite_prepare = @ydatadir@/testsuite/Makefile.testsuite
+ 
 diff --git a/yast2-users.spec.in b/yast2-users.spec.in
 index dda3d5f..acf6d4c 100644
 --- a/yast2-users.spec.in

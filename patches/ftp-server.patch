@@ -255,8 +255,21 @@ index 8fc5f60..540d97a 100644
  	         FtpServer::start_xinetd = true;
                   if (Service::Enabled("vsftpd"))
                      Service::Disable("vsftpd");
+diff --git a/testsuite/Makefile.am b/testsuite/Makefile.am
+index d9b12b0..e85fbc8 100644
+--- a/testsuite/Makefile.am
++++ b/testsuite/Makefile.am
+@@ -5,7 +5,7 @@
+ #
+ 
+ AUTOMAKE_OPTIONS = dejagnu
+-EXTRA_DIST = $(wildcard tests/*.out) $(wildcard tests/*.err) $(wildcard tests/*.ycp) $(wildcard tests/*.yh)
++EXTRA_DIST = $(wildcard tests/*.out) $(wildcard tests/*.err) $(wildcard tests/*.rb)
+ 
+ testsuite_prepare = @ydatadir@/testsuite/Makefile.testsuite
+ 
 diff --git a/yast2-ftp-server.spec.in b/yast2-ftp-server.spec.in
-index 896a8c7..b5486fd 100644
+index 896a8c7..68cfa8b 100644
 --- a/yast2-ftp-server.spec.in
 +++ b/yast2-ftp-server.spec.in
 @@ -10,6 +10,8 @@ BuildRequires:	perl-XML-Writer update-desktop-files yast2 yast2-devtools yast2-t

@@ -38,8 +38,21 @@ index 4128d71..ddde8e7 100644
 +
 +#include $(top_srcdir)/autodocs-ycp.ami
  
+diff --git a/testsuite/Makefile.am b/testsuite/Makefile.am
+index d63b19b..e85fbc8 100644
+--- a/testsuite/Makefile.am
++++ b/testsuite/Makefile.am
+@@ -5,7 +5,7 @@
+ #
+ 
+ AUTOMAKE_OPTIONS = dejagnu
+-EXTRA_DIST = $(wildcard tests/*.out) $(wildcard tests/*.err) $(wildcard tests/*.ycp)
++EXTRA_DIST = $(wildcard tests/*.out) $(wildcard tests/*.err) $(wildcard tests/*.rb)
+ 
+ testsuite_prepare = @ydatadir@/testsuite/Makefile.testsuite
+ 
 diff --git a/yast2-samba-client.spec.in b/yast2-samba-client.spec.in
-index 0dc5bb4..a8c417e 100644
+index 0dc5bb4..a212d16 100644
 --- a/yast2-samba-client.spec.in
 +++ b/yast2-samba-client.spec.in
 @@ -15,6 +15,8 @@ Requires:       yast2 >= 2.21.22
