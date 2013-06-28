@@ -17,3 +17,6 @@ moves:
   - from: src/ftp-server.desktop
     to:   src/desktop
 
+include_wrappers:
+  src/include/ftp-server/write_load.ycp: src/modules/FtpServer.ycp
+
