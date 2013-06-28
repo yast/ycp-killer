@@ -18,3 +18,13 @@ moves:
     to: src/desktop
   - from: src/*.rnc
     to: src/autoyast-rnc
+
+include_wrappers:
+  src/include/dns-server/dialog-installwizard.ycp: src/modules/DnsServerUI.ycp
+  src/include/dns-server/dialog-masterzone.ycp: src/modules/DnsServerUI.ycp
+  src/include/dns-server/dialog-main.ycp: src/modules/DnsServerUI.ycp
+  src/include/dns-server/dialogs.ycp: src/modules/DnsServerUI.ycp
+  src/include/dns-server/options.ycp: src/modules/DnsServerUI.ycp
+  src/include/dns-server/wizards.ycp: src/modules/DnsServerUI.ycp
+
+
