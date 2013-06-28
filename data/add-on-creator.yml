@@ -20,3 +20,7 @@ moves:
   - from: "agents/sysconfig.add-on-creator"
     to:   src/fillup
 
+include_wrappers:
+  src/include/add-on-creator/dialogs.ycp: src/clients/add-on-creator.ycp
+  src/include/add-on-creator/wizards.ycp: src/clients/add-on-creator.ycp
+  src/include/add-on-creator/patterns.ycp: src/clients/add-on-creator.ycp
