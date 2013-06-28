@@ -65,34 +65,6 @@ index c1e4bc3..f977351 100644
 +# TODO FIXME: temporarily disabled
 +
 +#include $(top_srcdir)/autodocs-ycp.ami
-diff --git a/src/include/add-on-creator/dialogs.ycp b/src/include/add-on-creator/dialogs.ycp
-index 9c7780e..d641efb 100644
---- a/src/include/add-on-creator/dialogs.ycp
-+++ b/src/include/add-on-creator/dialogs.ycp
-@@ -33,9 +33,11 @@ textdomain "add-on-creator";
- 
- import "Label";
- import "Wizard";
-+import "Popup";
- import "AddOnCreator";
- 
- include "add-on-creator/helps.ycp";
-+include "add-on-creator/complex.ycp";
- 
- // add the new readme/license file
- string AddFile (string label, list conflicts, list<string> values) {
-diff --git a/src/include/add-on-creator/patterns.ycp b/src/include/add-on-creator/patterns.ycp
-index e01a5cf..9ada241 100644
---- a/src/include/add-on-creator/patterns.ycp
-+++ b/src/include/add-on-creator/patterns.ycp
-@@ -38,6 +38,7 @@ import "Wizard";
- import "AddOnCreator";
- 
- include "add-on-creator/helps.ycp";
-+include "add-on-creator/complex.ycp";
- 
- // how to show and handle pattern keys
- map pattern_descr	= AddOnCreator::pattern_descr;
 diff --git a/testsuite/Makefile.am b/testsuite/Makefile.am
 index d9b12b0..e85fbc8 100644
 --- a/testsuite/Makefile.am
