@@ -9,8 +9,21 @@ index 2a6f678..9de7be0 100644
 +# TODO FIXME: temporarily disabled
 +
 +#include $(top_srcdir)/autodocs-ycp.ami
+diff --git a/testsuite/Makefile.am b/testsuite/Makefile.am
+index d9b12b0..e85fbc8 100644
+--- a/testsuite/Makefile.am
++++ b/testsuite/Makefile.am
+@@ -5,7 +5,7 @@
+ #
+ 
+ AUTOMAKE_OPTIONS = dejagnu
+-EXTRA_DIST = $(wildcard tests/*.out) $(wildcard tests/*.err) $(wildcard tests/*.ycp) $(wildcard tests/*.yh)
++EXTRA_DIST = $(wildcard tests/*.out) $(wildcard tests/*.err) $(wildcard tests/*.rb)
+ 
+ testsuite_prepare = @ydatadir@/testsuite/Makefile.testsuite
+ 
 diff --git a/yast2-tftp-server.spec.in b/yast2-tftp-server.spec.in
-index 96e62f9..9b2e3b6 100644
+index 96e62f9..3522501 100644
 --- a/yast2-tftp-server.spec.in
 +++ b/yast2-tftp-server.spec.in
 @@ -14,6 +14,8 @@ Requires:	lsof

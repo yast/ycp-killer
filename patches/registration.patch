@@ -20,8 +20,21 @@ index 0fcd3e0..e69de29 100644
 -scrconf_DATA = $(wildcard *.scr)
 -
 -EXTRA_DIST = $(agent_SCRIPTS) $(scrconf_DATA)
+diff --git a/testsuite/Makefile.am b/testsuite/Makefile.am
+index d9b12b0..e85fbc8 100644
+--- a/testsuite/Makefile.am
++++ b/testsuite/Makefile.am
+@@ -5,7 +5,7 @@
+ #
+ 
+ AUTOMAKE_OPTIONS = dejagnu
+-EXTRA_DIST = $(wildcard tests/*.out) $(wildcard tests/*.err) $(wildcard tests/*.ycp) $(wildcard tests/*.yh)
++EXTRA_DIST = $(wildcard tests/*.out) $(wildcard tests/*.err) $(wildcard tests/*.rb)
+ 
+ testsuite_prepare = @ydatadir@/testsuite/Makefile.testsuite
+ 
 diff --git a/yast2-registration.spec.in b/yast2-registration.spec.in
-index a6554c2..2620a7a 100644
+index a6554c2..7568cb8 100644
 --- a/yast2-registration.spec.in
 +++ b/yast2-registration.spec.in
 @@ -31,11 +31,15 @@ Requires(post): sed grep

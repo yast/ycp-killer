@@ -22,6 +22,19 @@ index c23b5dc..fe2f2f1 100644
      });
      return TRUE;
  }
+diff --git a/testsuite/Modules/Makefile.am b/testsuite/Modules/Makefile.am
+index d9b12b0..e85fbc8 100644
+--- a/testsuite/Modules/Makefile.am
++++ b/testsuite/Modules/Makefile.am
+@@ -5,7 +5,7 @@
+ #
+ 
+ AUTOMAKE_OPTIONS = dejagnu
+-EXTRA_DIST = $(wildcard tests/*.out) $(wildcard tests/*.err) $(wildcard tests/*.ycp) $(wildcard tests/*.yh)
++EXTRA_DIST = $(wildcard tests/*.out) $(wildcard tests/*.err) $(wildcard tests/*.rb)
+ 
+ testsuite_prepare = @ydatadir@/testsuite/Makefile.testsuite
+ 
 diff --git a/testsuite/YaPI/Makefile.am b/testsuite/YaPI/Makefile.am
 index d9b12b0..956c637 100644
 --- a/testsuite/YaPI/Makefile.am

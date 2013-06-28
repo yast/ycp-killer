@@ -39,8 +39,21 @@ index 2189d55..7fe38e7 100644
      /* Ramote Administration dialog caption */
      string caption = _("Remote Administration");
  
+diff --git a/testsuite/Makefile.am b/testsuite/Makefile.am
+index d9b12b0..e85fbc8 100644
+--- a/testsuite/Makefile.am
++++ b/testsuite/Makefile.am
+@@ -5,7 +5,7 @@
+ #
+ 
+ AUTOMAKE_OPTIONS = dejagnu
+-EXTRA_DIST = $(wildcard tests/*.out) $(wildcard tests/*.err) $(wildcard tests/*.ycp) $(wildcard tests/*.yh)
++EXTRA_DIST = $(wildcard tests/*.out) $(wildcard tests/*.err) $(wildcard tests/*.rb)
+ 
+ testsuite_prepare = @ydatadir@/testsuite/Makefile.testsuite
+ 
 diff --git a/yast2-rdp.spec.in b/yast2-rdp.spec.in
-index 3e26290..4645afb 100644
+index 3e26290..147372d 100644
 --- a/yast2-rdp.spec.in
 +++ b/yast2-rdp.spec.in
 @@ -6,6 +6,8 @@ BuildRequires:	perl-XML-Writer update-desktop-files yast2 yast2-devtools yast2-t

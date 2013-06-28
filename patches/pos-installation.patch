@@ -1,5 +1,18 @@
+diff --git a/pos-installation/testsuite/Makefile.am b/pos-installation/testsuite/Makefile.am
+index d9b12b0..e85fbc8 100644
+--- a/pos-installation/testsuite/Makefile.am
++++ b/pos-installation/testsuite/Makefile.am
+@@ -5,7 +5,7 @@
+ #
+ 
+ AUTOMAKE_OPTIONS = dejagnu
+-EXTRA_DIST = $(wildcard tests/*.out) $(wildcard tests/*.err) $(wildcard tests/*.ycp) $(wildcard tests/*.yh)
++EXTRA_DIST = $(wildcard tests/*.out) $(wildcard tests/*.err) $(wildcard tests/*.rb)
+ 
+ testsuite_prepare = @ydatadir@/testsuite/Makefile.testsuite
+ 
 diff --git a/pos-installation/yast2-pos-installation.spec.in b/pos-installation/yast2-pos-installation.spec.in
-index 3ec00b7..53e7eea 100644
+index 3ec00b7..2a5dc4d 100644
 --- a/pos-installation/yast2-pos-installation.spec.in
 +++ b/pos-installation/yast2-pos-installation.spec.in
 @@ -6,6 +6,8 @@ BuildRequires:	perl-XML-Writer update-desktop-files yast2 yast2-devtools yast2-t
@@ -11,8 +24,21 @@ index 3ec00b7..53e7eea 100644
  Summary:	POS Installation and Upgrade
  
  %description
+diff --git a/testsuite/Makefile.am b/testsuite/Makefile.am
+index d9b12b0..e85fbc8 100644
+--- a/testsuite/Makefile.am
++++ b/testsuite/Makefile.am
+@@ -5,7 +5,7 @@
+ #
+ 
+ AUTOMAKE_OPTIONS = dejagnu
+-EXTRA_DIST = $(wildcard tests/*.out) $(wildcard tests/*.err) $(wildcard tests/*.ycp) $(wildcard tests/*.yh)
++EXTRA_DIST = $(wildcard tests/*.out) $(wildcard tests/*.err) $(wildcard tests/*.rb)
+ 
+ testsuite_prepare = @ydatadir@/testsuite/Makefile.testsuite
+ 
 diff --git a/yast2-pos-installation.spec.in b/yast2-pos-installation.spec.in
-index 3ec00b7..9e8d79f 100644
+index 3ec00b7..25f2cbc 100644
 --- a/yast2-pos-installation.spec.in
 +++ b/yast2-pos-installation.spec.in
 @@ -6,6 +6,8 @@ BuildRequires:	perl-XML-Writer update-desktop-files yast2 yast2-devtools yast2-t

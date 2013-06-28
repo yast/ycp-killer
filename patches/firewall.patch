@@ -59,8 +59,21 @@ index ccbb1a4..039e8a9 100644
  
      include "firewall/helps.ycp";
  
+diff --git a/testsuite/Makefile.am b/testsuite/Makefile.am
+index d9b12b0..e85fbc8 100644
+--- a/testsuite/Makefile.am
++++ b/testsuite/Makefile.am
+@@ -5,7 +5,7 @@
+ #
+ 
+ AUTOMAKE_OPTIONS = dejagnu
+-EXTRA_DIST = $(wildcard tests/*.out) $(wildcard tests/*.err) $(wildcard tests/*.ycp) $(wildcard tests/*.yh)
++EXTRA_DIST = $(wildcard tests/*.out) $(wildcard tests/*.err) $(wildcard tests/*.rb)
+ 
+ testsuite_prepare = @ydatadir@/testsuite/Makefile.testsuite
+ 
 diff --git a/yast2-firewall.spec.in b/yast2-firewall.spec.in
-index d1c1669..c9097f0 100644
+index d1c1669..672f7e4 100644
 --- a/yast2-firewall.spec.in
 +++ b/yast2-firewall.spec.in
 @@ -20,6 +20,8 @@ Obsoletes:	yast2-trans-firewall

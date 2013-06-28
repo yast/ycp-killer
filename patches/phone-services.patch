@@ -25,7 +25,7 @@ index a708e92..4b93a56 100644
 +#AUTODOCS_YCP = $(srcdir)/../../src/*/*.ycp
 +#include $(top_srcdir)/autodocs-ycp.ami
 diff --git a/yast2-phone-services.spec.in b/yast2-phone-services.spec.in
-index 14daa0e..5cc23df 100644
+index 14daa0e..f053352 100644
 --- a/yast2-phone-services.spec.in
 +++ b/yast2-phone-services.spec.in
 @@ -9,6 +9,8 @@ Requires:       yast2 > 2.21.22

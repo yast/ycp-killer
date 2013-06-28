@@ -141,8 +141,21 @@ index c29640e..1adbc3f 100644
  
  include "network/routines.ycp";
  include "network/widgets.ycp";
+diff --git a/testsuite/Makefile.am b/testsuite/Makefile.am
+index d9b12b0..e85fbc8 100644
+--- a/testsuite/Makefile.am
++++ b/testsuite/Makefile.am
+@@ -5,7 +5,7 @@
+ #
+ 
+ AUTOMAKE_OPTIONS = dejagnu
+-EXTRA_DIST = $(wildcard tests/*.out) $(wildcard tests/*.err) $(wildcard tests/*.ycp) $(wildcard tests/*.yh)
++EXTRA_DIST = $(wildcard tests/*.out) $(wildcard tests/*.err) $(wildcard tests/*.rb)
+ 
+ testsuite_prepare = @ydatadir@/testsuite/Makefile.testsuite
+ 
 diff --git a/yast2-network.spec.in b/yast2-network.spec.in
-index de9eec7..885c977 100644
+index de9eec7..58b5a66 100644
 --- a/yast2-network.spec.in
 +++ b/yast2-network.spec.in
 @@ -29,10 +29,14 @@ PreReq:         /bin/rm

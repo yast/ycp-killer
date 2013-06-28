@@ -60,8 +60,21 @@ index f1943dd..59885c1 100644
  
      textdomain "product-creator";
  
+diff --git a/testsuite/Makefile.am b/testsuite/Makefile.am
+index d9b12b0..e85fbc8 100644
+--- a/testsuite/Makefile.am
++++ b/testsuite/Makefile.am
+@@ -5,7 +5,7 @@
+ #
+ 
+ AUTOMAKE_OPTIONS = dejagnu
+-EXTRA_DIST = $(wildcard tests/*.out) $(wildcard tests/*.err) $(wildcard tests/*.ycp) $(wildcard tests/*.yh)
++EXTRA_DIST = $(wildcard tests/*.out) $(wildcard tests/*.err) $(wildcard tests/*.rb)
+ 
+ testsuite_prepare = @ydatadir@/testsuite/Makefile.testsuite
+ 
 diff --git a/yast2-product-creator.spec.in b/yast2-product-creator.spec.in
-index 87e9116..47fdf27 100644
+index 87e9116..f676347 100644
 --- a/yast2-product-creator.spec.in
 +++ b/yast2-product-creator.spec.in
 @@ -31,6 +31,8 @@ Recommends:	kiwi-config-openSUSE

@@ -24,8 +24,21 @@ index 7d55a84..7ce8d69 100644
 +#AUTODOCS_YCP = $(srcdir)/../../src/*/*.ycp
 +#include $(top_srcdir)/autodocs-ycp.ami
  
+diff --git a/testsuite/Makefile.am b/testsuite/Makefile.am
+index d9b12b0..e85fbc8 100644
+--- a/testsuite/Makefile.am
++++ b/testsuite/Makefile.am
+@@ -5,7 +5,7 @@
+ #
+ 
+ AUTOMAKE_OPTIONS = dejagnu
+-EXTRA_DIST = $(wildcard tests/*.out) $(wildcard tests/*.err) $(wildcard tests/*.ycp) $(wildcard tests/*.yh)
++EXTRA_DIST = $(wildcard tests/*.out) $(wildcard tests/*.err) $(wildcard tests/*.rb)
+ 
+ testsuite_prepare = @ydatadir@/testsuite/Makefile.testsuite
+ 
 diff --git a/yast2-s390.spec.in b/yast2-s390.spec.in
-index 9f098e9..cb5012f 100644
+index 9f098e9..99d445e 100644
 --- a/yast2-s390.spec.in
 +++ b/yast2-s390.spec.in
 @@ -5,9 +5,13 @@ Group:		System/YaST

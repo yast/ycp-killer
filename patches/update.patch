@@ -33,8 +33,21 @@ index 9a2350a..b464f78 100644
 +
 +#AUTODOCS_YCP=$(top_srcdir)/src/*/*.ycp
 +#include $(top_srcdir)/autodocs-ycp.ami
+diff --git a/testsuite/Makefile.am b/testsuite/Makefile.am
+index d9b12b0..e85fbc8 100644
+--- a/testsuite/Makefile.am
++++ b/testsuite/Makefile.am
+@@ -5,7 +5,7 @@
+ #
+ 
+ AUTOMAKE_OPTIONS = dejagnu
+-EXTRA_DIST = $(wildcard tests/*.out) $(wildcard tests/*.err) $(wildcard tests/*.ycp) $(wildcard tests/*.yh)
++EXTRA_DIST = $(wildcard tests/*.out) $(wildcard tests/*.err) $(wildcard tests/*.rb)
+ 
+ testsuite_prepare = @ydatadir@/testsuite/Makefile.testsuite
+ 
 diff --git a/yast2-update.spec.in b/yast2-update.spec.in
-index 07df4cc..9283ea3 100644
+index 07df4cc..faf4488 100644
 --- a/yast2-update.spec.in
 +++ b/yast2-update.spec.in
 @@ -39,6 +39,8 @@ Conflicts:	yast2-pkg-bindings < 2.15.11

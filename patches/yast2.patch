@@ -797,6 +797,19 @@ index 7d43508..b282ae4 100644
 +
 +#AUTODOCS_SUBDIR=gpg
 +#include $(top_srcdir)/autodocs-ycp.ami
+diff --git a/library/gpg/testsuite/Makefile.am b/library/gpg/testsuite/Makefile.am
+index d9b12b0..e85fbc8 100644
+--- a/library/gpg/testsuite/Makefile.am
++++ b/library/gpg/testsuite/Makefile.am
+@@ -5,7 +5,7 @@
+ #
+ 
+ AUTOMAKE_OPTIONS = dejagnu
+-EXTRA_DIST = $(wildcard tests/*.out) $(wildcard tests/*.err) $(wildcard tests/*.ycp) $(wildcard tests/*.yh)
++EXTRA_DIST = $(wildcard tests/*.out) $(wildcard tests/*.err) $(wildcard tests/*.rb)
+ 
+ testsuite_prepare = @ydatadir@/testsuite/Makefile.testsuite
+ 
 diff --git a/library/log/doc/autodocs/Makefile.am b/library/log/doc/autodocs/Makefile.am
 index a64d647..957be1f 100644
 --- a/library/log/doc/autodocs/Makefile.am

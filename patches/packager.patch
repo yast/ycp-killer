@@ -14,8 +14,34 @@ index f8be896..87a7241 100644
 +#AUTODOCS_YCP = $(wildcard $(srcdir)/../../src/*/*.ycp)
 +#AUTODOCS_PM  = $(wildcard $(srcdir)/../../src/*/*.pm)
 +#include $(top_srcdir)/autodocs-ycp.ami
+diff --git a/testsuite/Makefile.am b/testsuite/Makefile.am
+index d9b12b0..e85fbc8 100644
+--- a/testsuite/Makefile.am
++++ b/testsuite/Makefile.am
+@@ -5,7 +5,7 @@
+ #
+ 
+ AUTOMAKE_OPTIONS = dejagnu
+-EXTRA_DIST = $(wildcard tests/*.out) $(wildcard tests/*.err) $(wildcard tests/*.ycp) $(wildcard tests/*.yh)
++EXTRA_DIST = $(wildcard tests/*.out) $(wildcard tests/*.err) $(wildcard tests/*.rb)
+ 
+ testsuite_prepare = @ydatadir@/testsuite/Makefile.testsuite
+ 
+diff --git a/testsuite/spkg/Makefile.am b/testsuite/spkg/Makefile.am
+index d9b12b0..e85fbc8 100644
+--- a/testsuite/spkg/Makefile.am
++++ b/testsuite/spkg/Makefile.am
+@@ -5,7 +5,7 @@
+ #
+ 
+ AUTOMAKE_OPTIONS = dejagnu
+-EXTRA_DIST = $(wildcard tests/*.out) $(wildcard tests/*.err) $(wildcard tests/*.ycp) $(wildcard tests/*.yh)
++EXTRA_DIST = $(wildcard tests/*.out) $(wildcard tests/*.err) $(wildcard tests/*.rb)
+ 
+ testsuite_prepare = @ydatadir@/testsuite/Makefile.testsuite
+ 
 diff --git a/yast2-packager.spec.in b/yast2-packager.spec.in
-index 6510846..3777b63 100644
+index 6510846..b10665e 100644
 --- a/yast2-packager.spec.in
 +++ b/yast2-packager.spec.in
 @@ -58,11 +58,15 @@ Obsoletes:	y2t_spkg y2t_inst-packages y2pkginf y2c_spkg

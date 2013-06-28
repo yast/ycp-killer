@@ -182,8 +182,21 @@ index b9bce1d..e8a30cf 100644
  
 -
 +}
+diff --git a/testsuite/Makefile.am b/testsuite/Makefile.am
+index d9b12b0..e85fbc8 100644
+--- a/testsuite/Makefile.am
++++ b/testsuite/Makefile.am
+@@ -5,7 +5,7 @@
+ #
+ 
+ AUTOMAKE_OPTIONS = dejagnu
+-EXTRA_DIST = $(wildcard tests/*.out) $(wildcard tests/*.err) $(wildcard tests/*.ycp) $(wildcard tests/*.yh)
++EXTRA_DIST = $(wildcard tests/*.out) $(wildcard tests/*.err) $(wildcard tests/*.rb)
+ 
+ testsuite_prepare = @ydatadir@/testsuite/Makefile.testsuite
+ 
 diff --git a/yast2-multipath.spec.in b/yast2-multipath.spec.in
-index 07a0732..6b4e689 100644
+index 07a0732..9af7857 100644
 --- a/yast2-multipath.spec.in
 +++ b/yast2-multipath.spec.in
 @@ -9,6 +9,8 @@ BuildRequires:	yast2-storage

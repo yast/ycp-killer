@@ -41,6 +41,19 @@ index b28f038..dac9a4a 100644
   *	Michael Hager <mike@suse.de>
   *	Stefan  Hundhammer <sh@suse.de>
   *
+diff --git a/keyboard/testsuite/Makefile.am b/keyboard/testsuite/Makefile.am
+index d9b12b0..e85fbc8 100644
+--- a/keyboard/testsuite/Makefile.am
++++ b/keyboard/testsuite/Makefile.am
+@@ -5,7 +5,7 @@
+ #
+ 
+ AUTOMAKE_OPTIONS = dejagnu
+-EXTRA_DIST = $(wildcard tests/*.out) $(wildcard tests/*.err) $(wildcard tests/*.ycp) $(wildcard tests/*.yh)
++EXTRA_DIST = $(wildcard tests/*.out) $(wildcard tests/*.err) $(wildcard tests/*.rb)
+ 
+ testsuite_prepare = @ydatadir@/testsuite/Makefile.testsuite
+ 
 diff --git a/language/Makefile.am b/language/Makefile.am
 index d90959c..9903361 100644
 --- a/language/Makefile.am
@@ -84,6 +97,19 @@ index cd0c0c7..7194f02 100644
  			Language::WfmSetGivenLanguage ("nb_NO");
  		    }
  		    else
+diff --git a/language/testsuite/Makefile.am b/language/testsuite/Makefile.am
+index d9b12b0..e85fbc8 100644
+--- a/language/testsuite/Makefile.am
++++ b/language/testsuite/Makefile.am
+@@ -5,7 +5,7 @@
+ #
+ 
+ AUTOMAKE_OPTIONS = dejagnu
+-EXTRA_DIST = $(wildcard tests/*.out) $(wildcard tests/*.err) $(wildcard tests/*.ycp) $(wildcard tests/*.yh)
++EXTRA_DIST = $(wildcard tests/*.out) $(wildcard tests/*.err) $(wildcard tests/*.rb)
+ 
+ testsuite_prepare = @ydatadir@/testsuite/Makefile.testsuite
+ 
 diff --git a/timezone/Makefile.am b/timezone/Makefile.am
 index 53f3572..ce84dc6 100644
 --- a/timezone/Makefile.am
@@ -106,7 +132,7 @@ index e7ddf79..78b57df 100644
 +# AUTODOCS_YCP=$(srcdir)/../../src/*.ycp
 +# include $(top_srcdir)/autodocs-ycp.ami
 diff --git a/timezone/src/include/timezone/dialogs.ycp b/timezone/src/include/timezone/dialogs.ycp
-index 7cf268b..329d1e9 100644
+index 0e1a7fa..dbab02c 100644
 --- a/timezone/src/include/timezone/dialogs.ycp
 +++ b/timezone/src/include/timezone/dialogs.ycp
 @@ -23,7 +23,7 @@
@@ -433,8 +459,21 @@ index 7cf268b..329d1e9 100644
  
      // help for timezone screen
      string help_text = _("
+diff --git a/timezone/testsuite/Makefile.am b/timezone/testsuite/Makefile.am
+index d9b12b0..e85fbc8 100644
+--- a/timezone/testsuite/Makefile.am
++++ b/timezone/testsuite/Makefile.am
+@@ -5,7 +5,7 @@
+ #
+ 
+ AUTOMAKE_OPTIONS = dejagnu
+-EXTRA_DIST = $(wildcard tests/*.out) $(wildcard tests/*.err) $(wildcard tests/*.ycp) $(wildcard tests/*.yh)
++EXTRA_DIST = $(wildcard tests/*.out) $(wildcard tests/*.err) $(wildcard tests/*.rb)
+ 
+ testsuite_prepare = @ydatadir@/testsuite/Makefile.testsuite
+ 
 diff --git a/yast2-country.spec.in b/yast2-country.spec.in
-index 2361cda..b6eebe8 100644
+index 2361cda..669eb09 100644
 --- a/yast2-country.spec.in
 +++ b/yast2-country.spec.in
 @@ -50,6 +50,8 @@ Obsoletes:	y2t_inst-language
