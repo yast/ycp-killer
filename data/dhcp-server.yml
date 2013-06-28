@@ -23,3 +23,10 @@ moves:
 
 include_wrappers:
   src/include/dhcp-server/commandline.ycp: src/clients/dhcp-server.ycp
+  src/include/dhcp-server/dialogs.ycp: src/modules/DhcpServerUI.ycp
+  src/include/dhcp-server/dialogs2.ycp: src/modules/DhcpServerUI.ycp
+  src/include/dhcp-server/widgets.ycp: src/modules/DhcpServerUI.ycp
+  src/include/dhcp-server/wizards.ycp: src/modules/DhcpServerUI.ycp
+  src/include/dhcp-server/routines.ycp: src/modules/DhcpServerUI.ycp
+  src/include/dhcp-server/options.ycp: src/modules/DhcpServerUI.ycp
+
