@@ -35,18 +35,6 @@ index 2f8c84a..6510afa 100644
 +# TODO
 +# FIXME temporarily disabled
 +# include $(top_srcdir)/autodocs-ycp.ami
-diff --git a/src/include/ftp-server/wid_functions.ycp b/src/include/ftp-server/wid_functions.ycp
-index 592e527..fe65d56 100644
---- a/src/include/ftp-server/wid_functions.ycp
-+++ b/src/include/ftp-server/wid_functions.ycp
-@@ -11,6 +11,7 @@
- 
- textdomain "ftp-server";
- 
-+import "FtpServer";
- import "Popup";
- import "Wizard";
- import "Report";
 diff --git a/testsuite/Makefile.am b/testsuite/Makefile.am
 index d9b12b0..e85fbc8 100644
 --- a/testsuite/Makefile.am
