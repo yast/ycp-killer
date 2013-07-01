@@ -141,3 +141,15 @@ index 122bf19..af37a7e 100644
 +<1> [Ruby] tests/Types2.rb:13 termloop: `MyTerm ("Hi", "42")
 +<1> [Ruby] tests/Types2.rb:14 termloop nt: `NestedTerm (`id ("42"), `MyTerm ("Hi", "42"))
 +<1> [Ruby] tests/Types2.rb:15 termreverse: `mreTyM ("42", "Hi")
+diff --git a/yast2-perl-bindings.spec.in b/yast2-perl-bindings.spec.in
+index bb09b7b..e747aae 100644
+--- a/yast2-perl-bindings.spec.in
++++ b/yast2-perl-bindings.spec.in
+@@ -4,6 +4,7 @@
+ Group:	System/YaST
+ License: GPL-2.0+
+ BuildRequires:	gcc-c++ yast2-core-devel yast2-devtools yast2-ycp-ui-bindings-devel libtool
++BuildRequires:  yast2-ruby-bindings >= 1.0.0
+ 
+ # YCPValue::valuetype_str()
+ Requires:	yast2-core >= 2.16.37
