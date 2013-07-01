@@ -28,19 +28,6 @@ index e7ddf79..78b57df 100644
 -include $(top_srcdir)/autodocs-ycp.ami
 +# AUTODOCS_YCP=$(srcdir)/../../src/*.ycp
 +# include $(top_srcdir)/autodocs-ycp.ami
-diff --git a/keyboard/src/include/keyboard/dialogs.ycp b/keyboard/src/include/keyboard/dialogs.ycp
-index b28f038..dac9a4a 100644
---- a/keyboard/src/include/keyboard/dialogs.ycp
-+++ b/keyboard/src/include/keyboard/dialogs.ycp
-@@ -23,7 +23,7 @@
-  *	keyboard/dialogs.ycp
-  *
-  * Authors:
-- *	Klaus   Kämpf <kkaempf@suse.de>
-+ *	Klaus   KÃ¤mpf <kkaempf@suse.de>
-  *	Michael Hager <mike@suse.de>
-  *	Stefan  Hundhammer <sh@suse.de>
-  *
 diff --git a/keyboard/testsuite/Makefile.am b/keyboard/testsuite/Makefile.am
 index d9b12b0..e85fbc8 100644
 --- a/keyboard/testsuite/Makefile.am
@@ -75,28 +62,6 @@ index e7ddf79..78b57df 100644
 -include $(top_srcdir)/autodocs-ycp.ami
 +# AUTODOCS_YCP=$(srcdir)/../../src/*.ycp
 +# include $(top_srcdir)/autodocs-ycp.ami
-diff --git a/language/src/clients/select_language.ycp b/language/src/clients/select_language.ycp
-index cd0c0c7..7194f02 100644
---- a/language/src/clients/select_language.ycp
-+++ b/language/src/clients/select_language.ycp
-@@ -27,7 +27,7 @@
-  *	yast2-country
-  *
-  * Authors:
-- *	Klaus   Kämpf <kkaempf@suse.de>
-+ *	Klaus   KÃ¤mpf <kkaempf@suse.de>
-  *	Michael Hager <mike@suse.de>
-  *	Stefan  Hundhammer <sh@suse.de>
-  *	Thomas Roelz <tom@suse.de>
-@@ -561,7 +561,7 @@ In the selection box, specify additional languages to use on your system.
- 		    // no yast translation for nn_NO, use nb_NO as a backup
- 		    if (language == "nn_NO")
- 		    {
--			y2milestone ("Nynorsk not translated, using Bokmål");
-+			y2milestone ("Nynorsk not translated, using BokmÃ¥l");
- 			Language::WfmSetGivenLanguage ("nb_NO");
- 		    }
- 		    else
 diff --git a/language/testsuite/Makefile.am b/language/testsuite/Makefile.am
 index d9b12b0..e85fbc8 100644
 --- a/language/testsuite/Makefile.am
@@ -135,15 +100,6 @@ diff --git a/timezone/src/include/timezone/dialogs.ycp b/timezone/src/include/ti
 index 0e1a7fa..dbab02c 100644
 --- a/timezone/src/include/timezone/dialogs.ycp
 +++ b/timezone/src/include/timezone/dialogs.ycp
-@@ -23,7 +23,7 @@
-  *	timezone/dialogs.ycp
-  *
-  * Authors:
-- *	Klaus   Kämpf <kkaempf@suse.de>
-+ *	Klaus   KÃ¤mpf <kkaempf@suse.de>
-  *	Michael Hager <mike@suse.de>
-  *	Stefan  Hundhammer <sh@suse.de>
-  *	Jiri Suchomel <jsuchome@suse.cz>
 @@ -124,20 +124,6 @@
        return ret;
    }
