@@ -1,3 +1,12 @@
+src/modules/AutoinstDrive.ycp:
+
+  The comment patch is needed because Y2R doesn't handle multiline comments that
+  are placed *after* some code very well and emits invalid Ruby code. The proper
+  solution would be fixing Y2R, but that would require some rearchitecturing of
+  comment processing code, which we don't want to do in this stage. Because of
+  that, and because this is the only known occurrence of this problem, it is
+  fixed here.
+
 diff --git a/agents/Makefile.am b/agents/Makefile.am
 index 4110426..e69de29 100644
 --- a/agents/Makefile.am
@@ -422,6 +431,24 @@ index 6e4f464..4eb2077 100644
  
  
      /**
+diff --git a/src/modules/AutoinstDrive.ycp b/src/modules/AutoinstDrive.ycp
+index 68b213e..5b6ca4c 100644
+--- a/src/modules/AutoinstDrive.ycp
++++ b/src/modules/AutoinstDrive.ycp
+@@ -29,11 +29,8 @@
+       "initialize"  : true,	  /* wipe out disk			    */
+       "partitions"  : [],	  /* list of partitions on this drive	    */
+       "type"	    : `CT_DISK,	  /* type of drive, see diskTypes below	    */
+-      "use"	    : `all,	  /* `all, `linux, `free, or list of
+-				      partition numbers to use		    */
+-      "pesize"	    : ""	  /* size of physical extents
+-				    (currently no GUI support for this
+-				    setting				    */
++      "use"	    : `all,	  /* `all, `linux, `free, or list of partition numbers to use */
++      "pesize"	    : ""	  /* size of physical extents (currently no GUI support for this setting) */
+    ];
+ 
+   /* Every drive created gets an id. */
 diff --git a/testsuite/Makefile.am b/testsuite/Makefile.am
 index d9b12b0..e85fbc8 100644
 --- a/testsuite/Makefile.am
