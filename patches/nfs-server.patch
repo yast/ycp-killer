@@ -1,16 +1,15 @@
 diff --git a/agents/Makefile.am b/agents/Makefile.am
-index 5a24d19..e69de29 100644
+index 71f2253..e69de29 100644
 --- a/agents/Makefile.am
 +++ b/agents/Makefile.am
-@@ -1,14 +0,0 @@
+@@ -1,13 +0,0 @@
 -#
 -# Makefile.am for nfs-server/agents
 -#
 -# $Id$
 -#
 -
--agent_SCRIPTS = ag_exports\
--		ag_idmapd_conf
+-agent_SCRIPTS = ag_exports
 -
 -scrconf_DATA = etc_exports.scr\
 -		etc_idmapd_conf.scr\
@@ -58,7 +57,7 @@ index 3f8d61e..637ac16 100644
  Return	true
  Return	true
 diff --git a/yast2-nfs-server.spec.in b/yast2-nfs-server.spec.in
-index 1949add..c2741d2 100644
+index d723fa4..c9169f1 100644
 --- a/yast2-nfs-server.spec.in
 +++ b/yast2-nfs-server.spec.in
 @@ -14,6 +14,8 @@ Recommends:     nfs-kernel-server
@@ -70,7 +69,7 @@ index 1949add..c2741d2 100644
  Summary:	YaST2 - NFS Server Configuration
  
  %description
-@@ -42,11 +44,10 @@ Requires:       limal-nfs-server-perl
+@@ -40,11 +42,10 @@ Group:		System/YaST
  %defattr(-,root,root)
  %dir @yncludedir@/nfs_server
  @yncludedir@/nfs_server/*
