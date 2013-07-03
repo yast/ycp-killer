@@ -14,3 +14,6 @@ moves:
   - from: "agents/*.scr"
     to: src/scrconf
 
+include_wrappers:
+  src/include/slp-server/dialogs.ycp: src/include/slp-server/wizards.ycp
+
