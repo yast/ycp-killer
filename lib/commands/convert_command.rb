@@ -25,6 +25,8 @@ module Commands
       MakefileCommand.new.apply(mod)
       PackageCommand.new.apply(mod)
 
+      TestCommand.new.apply(mod)
+
       @counts
     end
 
