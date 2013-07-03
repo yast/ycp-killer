@@ -13,3 +13,6 @@ moves:
     to: src/desktop
   - from: "src/*.rnc"
     to: "src/autoyast-rnc"
+
+include_wrappers:
+  src/include/security/users.ycp: src/include/security/wizards.ycp

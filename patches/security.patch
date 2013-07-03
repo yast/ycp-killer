@@ -7,19 +7,6 @@ index 2a6f678..19b5419 100644
  
 -include $(top_srcdir)/autodocs-ycp.ami
 +# include $(top_srcdir)/autodocs-ycp.ami
-diff --git a/src/include/security/users.ycp b/src/include/security/users.ycp
-index b54cdda..7b53634 100644
---- a/src/include/security/users.ycp
-+++ b/src/include/security/users.ycp
-@@ -37,6 +37,8 @@ import "Wizard";
- 
- include "security/helps.ycp";
- include "security/routines.ycp";
-+include "security/dialogs.ycp";
-+
- 
- /**
-  * Adduser dialog
 diff --git a/testsuite/Makefile.am b/testsuite/Makefile.am
 index d9b12b0..e85fbc8 100644
 --- a/testsuite/Makefile.am
