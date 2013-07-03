@@ -1,5 +1,3 @@
-TODO: update BuildRequires upstream
-
 diff --git a/agents/Makefile.am b/agents/Makefile.am
 index fffe01f..e69de29 100644
 --- a/agents/Makefile.am
@@ -23,20 +21,6 @@ index 5e4329f..783afb4 100644
 +# TODO FIXME: temporarily disabled
 +
 +#include $(top_srcdir)/autodocs-ycp.ami
-diff --git a/src/include/slp-server/dialogs.ycp b/src/include/slp-server/dialogs.ycp
-index 5004c0f..cc955c9 100644
---- a/src/include/slp-server/dialogs.ycp
-+++ b/src/include/slp-server/dialogs.ycp
-@@ -23,7 +23,9 @@ import "LogView";
- import "IP";
- import "String";
- import "Address";
-+import "Popup";
- include "slp-server/helps.ycp";
-+include "slp-server/complex.ycp";
- 
- void initServerSettings(string key);
- symbol handleServerSettings(string key, map event );
 diff --git a/testsuite/Makefile.am b/testsuite/Makefile.am
 index d9b12b0..e85fbc8 100644
 --- a/testsuite/Makefile.am
@@ -54,15 +38,6 @@ diff --git a/yast2-slp-server.spec.in b/yast2-slp-server.spec.in
 index 9d75923..d32fe16 100644
 --- a/yast2-slp-server.spec.in
 +++ b/yast2-slp-server.spec.in
-@@ -4,7 +4,7 @@
- @HEADER@
- Group:	System/YaST
- License: GPL-2.0+
--BuildRequires:	docbook-xsl-stylesheets doxygen libxslt perl-XML-Writer popt-devel sgml-skel update-desktop-files yast2 yast2-devtools yast2-packagemanager-devel yast2-perl-bindings yast2-testsuite
-+BuildRequires:	docbook-xsl-stylesheets doxygen libxslt perl-XML-Writer popt-devel sgml-skel update-desktop-files yast2 yast2-devtools yast2-testsuite
- 
- # network needs Wizard::OpenCancelOKDialog()
- #  function from yast2-2.18.2
 @@ -13,6 +13,8 @@ Requires:       yast2 >= 2.21.22
  
  BuildArchitectures:	noarch
