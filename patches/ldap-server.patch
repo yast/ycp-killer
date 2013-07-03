@@ -86,18 +86,6 @@ index 26f55d7..0000000
 -EXTRA_DIST = $(client_DATA) $(ynclude_DATA) $(module_DATA) $(desktop_DATA)
 -
 -include $(top_srcdir)/Makefile.am.common
-diff --git a/src/include/ldap-server/widgets.ycp b/src/include/ldap-server/widgets.ycp
-index fa64d62..5a5347e 100644
---- a/src/include/ldap-server/widgets.ycp
-+++ b/src/include/ldap-server/widgets.ycp
-@@ -4,6 +4,7 @@
-     import "CWMFirewallInterfaces";
-     import "Label";
-     import "Ldap";
-+    import "LdapServer";
-     import "Popup";
-     import "Wizard";
- 
 diff --git a/yast2-ldap-server.spec.in b/yast2-ldap-server.spec.in
 index f289990..12df00f 100644
 --- a/yast2-ldap-server.spec.in
