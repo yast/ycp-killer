@@ -16,7 +16,3 @@ moves:
   - from: "src/yastbrowser"
     to:   "."
 
-excluded:
-  # TODO: The testsuite seems to be broken (it includes non-existing
-  #       "Registration" module). Fix it in upstream.
-  - testsuite/tests/Registration.ycp

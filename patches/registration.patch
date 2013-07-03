@@ -1,6 +1,3 @@
-TODO FIXME: The patch also moves from PolicyKit-devel to polkit,
-fix this upstream.
-
 diff --git a/SUBDIRS b/SUBDIRS
 index 8d9a14f..3508cf2 100644
 --- a/SUBDIRS
@@ -20,53 +17,19 @@ index 0fcd3e0..e69de29 100644
 -scrconf_DATA = $(wildcard *.scr)
 -
 -EXTRA_DIST = $(agent_SCRIPTS) $(scrconf_DATA)
-diff --git a/testsuite/Makefile.am b/testsuite/Makefile.am
-index d9b12b0..e85fbc8 100644
---- a/testsuite/Makefile.am
-+++ b/testsuite/Makefile.am
-@@ -5,7 +5,7 @@
- #
- 
- AUTOMAKE_OPTIONS = dejagnu
--EXTRA_DIST = $(wildcard tests/*.out) $(wildcard tests/*.err) $(wildcard tests/*.ycp) $(wildcard tests/*.yh)
-+EXTRA_DIST = $(wildcard tests/*.out) $(wildcard tests/*.err) $(wildcard tests/*.rb)
- 
- testsuite_prepare = @ydatadir@/testsuite/Makefile.testsuite
- 
 diff --git a/yast2-registration.spec.in b/yast2-registration.spec.in
-index a6554c2..7568cb8 100644
+index c4bce6a..bb37fa1 100644
 --- a/yast2-registration.spec.in
 +++ b/yast2-registration.spec.in
-@@ -31,11 +31,15 @@ Requires(post): sed grep
- PreReq:         %fillup_prereq
- BuildRequires:  yast2 >= 2.23.13
- BuildRequires:  perl-XML-Writer update-desktop-files yast2-devtools yast2-packager yast2-testsuite
--BuildRequires:  limal limal-ca-mgm-perl limal-perl perl-TimeDate
-+BuildRequires:  limal limal-perl perl-TimeDate
-+# TODO FIXME: disabled actually not needed for build (not available in Factory/openSUSE-12.3)
-+#Buildrequires:  limal-ca-mgm-perl
- BuildRequires:  yast2-pkg-bindings >= 2.17.20
- BuildRequires:  suseRegister
--Buildrequires:  PolicyKit-devel
-+Buildrequires:  polkit
- BuildArch:      noarch
+@@ -26,6 +26,7 @@ Requires:       suseRegister
+ Requires:       perl-camgm perl-TimeDate
+ Requires:       yast2-pkg-bindings >= 2.17.20
+ Requires:       yast2-registration-branding
 +Requires:       yast2-ruby-bindings >= 1.0.0
-+
- Summary:        YaST2 - Registration Module
- 
- Source1:        org.opensuse.yast.modules.ysr.policy
-@@ -54,8 +58,8 @@ Authors:
- 
- @INSTALL@
- 
--mkdir -p $RPM_BUILD_ROOT/usr/share/PolicyKit/policy
--install -m 0644 %SOURCE1 $RPM_BUILD_ROOT/usr/share/PolicyKit/policy/
-+mkdir -p $RPM_BUILD_ROOT/usr/share/polkit-1/actions
-+install -m 0644 %SOURCE1 $RPM_BUILD_ROOT/usr/share/polkit-1/actions
- 
- 
- @CLEAN@
-@@ -113,19 +117,18 @@ fi
+ Requires(post): sed grep
+ ## do never require "mozilla-xulrunner190" (bnc#436900)
+ PreReq:         %fillup_prereq
+@@ -110,12 +111,11 @@ fi
  %files
  %defattr(-,root,root)
  %doc @docdir@
@@ -82,11 +45,3 @@ index a6554c2..7568cb8 100644
  @schemadir@/autoyast/rnc/*.rnc
  /usr/share/YaST2/yastbrowser
  # agents
- @scrconfdir@/cfg_suse_register.scr
- #fillup
- @fillupdir@/sysconfig.suse_register-yast2-registration
--%attr(644,root,root) %config /usr/share/PolicyKit/policy/org.opensuse.yast.modules.*.policy
-+%attr(644,root,root) %config /usr/share/polkit-1/actions/org.opensuse.yast.modules.*.policy
- 
- %files branding-SLE
- %defattr(-,root,root)
