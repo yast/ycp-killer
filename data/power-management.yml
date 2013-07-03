@@ -16,3 +16,6 @@ moves:
   - from: "agents/*.scr"
     to: src/scrconf
 
+include_wrappers:
+  src/include/power-management/commandline.ycp: src/clients/power-management.ycp 
+
