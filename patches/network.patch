@@ -34,21 +34,6 @@ index a708e92..4b93a56 100644
 +
 +#AUTODOCS_YCP = $(srcdir)/../../src/*/*.ycp
 +#include $(top_srcdir)/autodocs-ycp.ami
-diff --git a/src/include/network/lan/bridge.ycp b/src/include/network/lan/bridge.ycp
-index e597956..ec028b3 100644
---- a/src/include/network/lan/bridge.ycp
-+++ b/src/include/network/lan/bridge.ycp
-@@ -30,6 +30,10 @@
- {
- textdomain "network";
- 
-+import "LanItems";
-+import "NetworkInterfaces";
-+import "Map";
-+import "Popup";
- 
- /**
-  * Initializes widget (BRIDGE_PORTS) which contains list of devices available
 diff --git a/src/include/network/lan/complex.ycp b/src/include/network/lan/complex.ycp
 index e11a8a4..0dc4672 100644
 --- a/src/include/network/lan/complex.ycp
@@ -98,49 +83,6 @@ index e11a8a4..0dc4672 100644
  	    }
  
  	    LanItems::DeleteItem();
-diff --git a/src/include/network/lan/s390.ycp b/src/include/network/lan/s390.ycp
-index 2d55233..02723df 100644
---- a/src/include/network/lan/s390.ycp
-+++ b/src/include/network/lan/s390.ycp
-@@ -6,7 +6,7 @@
-  *
-  * Functions for accessing and handling s390 specific needs.
-  */
--
-+{
- import "FileUtils";
- 
- include "network/routines.ycp";
-@@ -89,3 +89,5 @@ define map<string, any> s390_ReadQethConfig( string devname)
- 
-     return result;
- }
-+
-+}
-diff --git a/src/include/network/lan/virtual.ycp b/src/include/network/lan/virtual.ycp
-index cde9148..cb979fa 100644
---- a/src/include/network/lan/virtual.ycp
-+++ b/src/include/network/lan/virtual.ycp
-@@ -34,6 +34,7 @@ textdomain "network";
- import "IP";
- import "Label";
- import "Lan";
-+import "LanItems";
- import "Netmask";
- import "NetworkInterfaces";
- import "NetworkService";
-diff --git a/src/include/network/services/dns.ycp b/src/include/network/services/dns.ycp
-index c29640e..1adbc3f 100644
---- a/src/include/network/services/dns.ycp
-+++ b/src/include/network/services/dns.ycp
-@@ -44,6 +44,7 @@ import "NetworkConfig";
- import "Popup";
- import "Map";
- import "CWMTab";
-+import "Wizard";
- 
- include "network/routines.ycp";
- include "network/widgets.ycp";
 diff --git a/testsuite/Makefile.am b/testsuite/Makefile.am
 index d9b12b0..e85fbc8 100644
 --- a/testsuite/Makefile.am
@@ -155,10 +97,10 @@ index d9b12b0..e85fbc8 100644
  testsuite_prepare = @ydatadir@/testsuite/Makefile.testsuite
  
 diff --git a/yast2-network.spec.in b/yast2-network.spec.in
-index de9eec7..58b5a66 100644
+index de9eec7..65d4ac9 100644
 --- a/yast2-network.spec.in
 +++ b/yast2-network.spec.in
-@@ -29,10 +29,14 @@ PreReq:         /bin/rm
+@@ -29,6 +29,8 @@ PreReq:         /bin/rm
  # carrier detection
  Conflicts:      yast2-core < 2.10.6
  
@@ -167,13 +109,7 @@ index de9eec7..58b5a66 100644
  Summary:        YaST2 - Network Configuration
  
  %package devel-doc
- Group:          System/YaST
-+Requires:       yast2-ruby-bindings >= 1.0.0
-+
- Summary:        YaST2 - Developer documentation for yast2-network
- 
- %description 
-@@ -71,10 +75,9 @@ fi
+@@ -71,10 +73,9 @@ fi
  @ybindir@/*
  @ydatadir@/*
  @yncludedir@/network

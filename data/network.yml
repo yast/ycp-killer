@@ -48,6 +48,8 @@ include_wrappers:
   src/include/network/isdn/config.ycp: src/modules/ISDN.ycp
   src/include/network/lan/bridge.ycp: src/include/network/lan/address.ycp
   src/include/network/lan/wireless.ycp: src/include/network/lan/wizards.ycp
+  src/include/network/lan/virtual.ycp: src/include/network/lan/address.ycp
+  src/include/network/services/dns.ycp: src/include/network/lan/complex.ycp
   src/include/network/provider/complex.ycp: src/clients/provider.ycp
   src/include/network/provider/wizards.ycp: src/clients/provider.ycp
 
