@@ -29,12 +29,23 @@ moves:
     to: "src/autoyast-rnc"
 
 include_wrappers:
+  src/include/bootloader/grub/options.ycp: src/modules/BootGRUB.ycp
+  src/include/bootloader/grub/misc.ycp: src/modules/BootGRUB.ycp
+  src/include/bootloader/grub2/options.ycp: src/modules/BootGRUB2.ycp
+  src/include/bootloader/grub2/misc.ycp: src/modules/BootGRUB2.ycp
   src/include/bootloader/elilo/widgets.ycp: src/modules/BootELILO.ycp
+  src/include/bootloader/elilo/options.ycp: src/modules/BootELILO.ycp
   src/include/bootloader/ppc/dialogs.ycp: src/modules/BootPOWERLILO.ycp
   src/include/bootloader/ppc/options.ycp: src/modules/BootPOWERLILO.ycp
   src/include/bootloader/routines/lilolike.ycp: src/modules/BootCommon.ycp
   src/include/bootloader/routines/misc.ycp: src/modules/BootCommon.ycp
   src/include/bootloader/routines/i386.ycp: src/modules/BootCommon.ycp
+  src/include/bootloader/routines/lib_iface.ycp: src/modules/BootCommon.ycp
+  src/include/bootloader/routines/common_options.ycp: src/modules/BootGRUB.ycp
+  src/include/bootloader/routines/global_widgets.ycp: src/clients/bootloader.ycp
+  src/include/bootloader/routines/helps.ycp: src/clients/bootloader.ycp
+  src/include/bootloader/routines/popups.ycp: src/clients/bootloader.ycp
+  src/include/bootloader/routines/section_widgets.ycp: src/clients/bootloader.ycp
 
 excluded:
 
