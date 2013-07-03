@@ -33,19 +33,6 @@ index 9454e58..35c4a63 100644
 +# TODO FIXME: temporarily disabled
 +
 +# include $(top_srcdir)/autodocs-ycp.ami
-diff --git a/src/include/kdump/uifunctions.ycp b/src/include/kdump/uifunctions.ycp
-index 61fa93d..8e02d7c 100644
---- a/src/include/kdump/uifunctions.ycp
-+++ b/src/include/kdump/uifunctions.ycp
-@@ -17,6 +17,8 @@ import "Service";
- import "Package";
- import "PackageSystem";
- import "Mode";
-+import "CommandLine";
-+import "Message";
- 
-     // EXAMPLE FUNCTIONS
- /*
 diff --git a/testsuite/Makefile.am b/testsuite/Makefile.am
 index d9b12b0..e85fbc8 100644
 --- a/testsuite/Makefile.am
