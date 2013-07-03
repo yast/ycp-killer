@@ -1,6 +1,3 @@
-Move the shared code from client to an include file
-so it can be correctly accessed via "include" call.
-
 diff --git a/agents/Makefile.am b/agents/Makefile.am
 index 7522808..80fce89 100644
 --- a/agents/Makefile.am
@@ -28,53 +25,6 @@ index 417f306..2f5d3ac 100644
 +# AUTODOCS_YCP = $(top_srcdir)/src/*.ycp
 +# include $(top_srcdir)/autodocs-ycp.ami
  
-diff --git a/src/clients/power-management.ycp b/src/clients/power-management.ycp
-index 0ba7081..5436f16 100644
---- a/src/clients/power-management.ycp
-+++ b/src/clients/power-management.ycp
-@@ -46,17 +46,6 @@ import "CommandLine";
- include "power-management/wizards.ycp";
- 
- 
--/**
--  * CommandLine handler for running GUI
--  * @return boolean true if settings were saved
--  */
--define boolean GuiHandler () {
--    symbol ret = PowerManagementSequence();
--    if (ret == `abort || ret == `back || ret == `nil)
--	return false;
--    return true;
--}
--
- include "power-management/commandline.ycp";
- 
- 
-diff --git a/src/include/power-management/commandline.ycp b/src/include/power-management/commandline.ycp
-index 4c44712..9dcef54 100644
---- a/src/include/power-management/commandline.ycp
-+++ b/src/include/power-management/commandline.ycp
-@@ -36,6 +36,20 @@ import "PowerManagement";
- 
- textdomain "power-management";
- 
-+include "power-management/wizards.ycp";
-+
-+
-+/**
-+  * CommandLine handler for running GUI
-+  * @return boolean true if settings were saved
-+  */
-+define boolean GuiHandler () {
-+    symbol ret = PowerManagementSequence();
-+    if (ret == `abort || ret == `back || ret == `nil)
-+	return false;
-+    return true;
-+}
-+
- /**
-   * Handler for command line interface
-   * @param options map options from the command line
 diff --git a/testsuite/Makefile.am b/testsuite/Makefile.am
 index d9b12b0..e85fbc8 100644
 --- a/testsuite/Makefile.am
