@@ -24,3 +24,10 @@ moves:
   - from: "src/*.rnc"
     to: src/autoyast-rnc
 
+include_wrappers:
+  src/include/ca-management/ca.ycp: src/clients/ca_mgm.ycp
+  src/include/ca-management/certDefault.ycp: src/clients/ca_mgm.ycp
+  src/include/ca-management/certificate.ycp: src/clients/ca_mgm.ycp
+  src/include/ca-management/dialog-ca.ycp: src/clients/ca_mgm.ycp
+  src/include/ca-management/signRequest.ycp: src/clients/ca_mgm.ycp
+  src/include/ca-management/request.ycp: src/clients/ca_mgm.ycp
