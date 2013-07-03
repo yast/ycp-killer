@@ -1,6 +1,3 @@
-TODO FIXME: remove "testedfiles" patches once include
-files works as expected
-
 diff --git a/agents/Makefile.am b/agents/Makefile.am
 index c09e509..e69de29 100644
 --- a/agents/Makefile.am
@@ -37,45 +34,6 @@ index d9b12b0..e85fbc8 100644
  
  testsuite_prepare = @ydatadir@/testsuite/Makefile.testsuite
  
-diff --git a/testsuite/tests/Ext2Filesystems.ycp b/testsuite/tests/Ext2Filesystems.ycp
-index 646e4ae..11a6b99 100644
---- a/testsuite/tests/Ext2Filesystems.ycp
-+++ b/testsuite/tests/Ext2Filesystems.ycp
-@@ -2,7 +2,7 @@
- //
- // Ext2Filesystems function tests
- //
--// testedfiles: backup/functions.ycp
-+// testedfiles: backup/functions.ycp tests/Ext2Filesystems.rb
- //
- // $Id$
- //
-diff --git a/testsuite/tests/Ext2MountPoint.ycp b/testsuite/tests/Ext2MountPoint.ycp
-index 0e15277..6e2ded3 100644
---- a/testsuite/tests/Ext2MountPoint.ycp
-+++ b/testsuite/tests/Ext2MountPoint.ycp
-@@ -2,7 +2,7 @@
- //
- // Ext2MountPoint function tests
- //
--// testedfiles: backup/functions.ycp
-+// testedfiles: backup/functions.ycp tests/Ext2MountPoint.rb
- //
- // $Id$
- //
-diff --git a/testsuite/tests/GetMountedFilesystems.ycp b/testsuite/tests/GetMountedFilesystems.ycp
-index 1a0f628..27ee7a8 100644
---- a/testsuite/tests/GetMountedFilesystems.ycp
-+++ b/testsuite/tests/GetMountedFilesystems.ycp
-@@ -2,7 +2,7 @@
- //
- // GetMountedFilesystems function tests
- //
--// testedfiles: backup/functions.ycp
-+// testedfiles: backup/functions.ycp tests/GetMountedFilesystems.rb
- //
- // $Id$
- //
 diff --git a/yast2-backup.spec.in b/yast2-backup.spec.in
 index 3f5b8fc..6be0439 100644
 --- a/yast2-backup.spec.in
