@@ -40,8 +40,16 @@ moves:
   - from: agents/*.scr
     to: src/scrconf
 
-excluded:
-  # TODO FIXME: broken: Profile::Flat is undefined
-  - testsuite/devel/autoinst_test.ycp
-  # TODO FIXME: broken, but not used anywhere, remove in upstream?
-  - src/include/autoinstall/partition_dialogs.ycp
+include_wrappers:
+  src/include/autoinstall/conftree.ycp: src/clients/autoyast.ycp
+  src/include/autoinstall/ask.ycp: src/clients/inst_autopost.ycp
+  src/include/autoinstall/autopart.ycp: src/modules/AutoinstStorage.ycp
+  src/include/autoinstall/wizards.ycp: src/clients/autoyast.ycp
+  src/include/autoinstall/autoinst_dialogs.ycp: src/modules/ProfileLocation.ycp
+  src/include/autoinstall/PartitionDialog.ycp: src/clients/storage_auto.ycp
+  src/include/autoinstall/StorageDialog.ycp: src/clients/storage_auto.ycp
+  src/include/autoinstall/script_dialogs.ycp: src/clients/scripts_auto.ycp
+  src/include/autoinstall/general_dialogs.ycp: src/clients/general_auto.ycp
+  src/include/autoinstall/classes.ycp: src/clients/classes_auto.ycp
+  src/include/autoinstall/VolgroupDialog.ycp: src/clients/storage_auto.ycp
+  src/include/autoinstall/DriveDialog.ycp: src/clients/storage_auto.ycp
