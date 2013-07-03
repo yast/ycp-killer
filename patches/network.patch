@@ -83,25 +83,6 @@ index e11a8a4..0dc4672 100644
  	    }
  
  	    LanItems::DeleteItem();
-diff --git a/src/include/network/lan/s390.ycp b/src/include/network/lan/s390.ycp
-index 2d55233..02723df 100644
---- a/src/include/network/lan/s390.ycp
-+++ b/src/include/network/lan/s390.ycp
-@@ -6,7 +6,7 @@
-  *
-  * Functions for accessing and handling s390 specific needs.
-  */
--
-+{
- import "FileUtils";
- 
- include "network/routines.ycp";
-@@ -89,3 +89,5 @@ define map<string, any> s390_ReadQethConfig( string devname)
- 
-     return result;
- }
-+
-+}
 diff --git a/testsuite/Makefile.am b/testsuite/Makefile.am
 index d9b12b0..e85fbc8 100644
 --- a/testsuite/Makefile.am
