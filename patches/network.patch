@@ -97,10 +97,10 @@ index d9b12b0..e85fbc8 100644
  testsuite_prepare = @ydatadir@/testsuite/Makefile.testsuite
  
 diff --git a/yast2-network.spec.in b/yast2-network.spec.in
-index de9eec7..58b5a66 100644
+index de9eec7..65d4ac9 100644
 --- a/yast2-network.spec.in
 +++ b/yast2-network.spec.in
-@@ -29,10 +29,14 @@ PreReq:         /bin/rm
+@@ -29,6 +29,8 @@ PreReq:         /bin/rm
  # carrier detection
  Conflicts:      yast2-core < 2.10.6
  
@@ -109,13 +109,7 @@ index de9eec7..58b5a66 100644
  Summary:        YaST2 - Network Configuration
  
  %package devel-doc
- Group:          System/YaST
-+Requires:       yast2-ruby-bindings >= 1.0.0
-+
- Summary:        YaST2 - Developer documentation for yast2-network
- 
- %description 
-@@ -71,10 +75,9 @@ fi
+@@ -71,10 +73,9 @@ fi
  @ybindir@/*
  @ydatadir@/*
  @yncludedir@/network
