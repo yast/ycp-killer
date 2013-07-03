@@ -45,7 +45,7 @@ index c7196fd..ebb86d3 100644
  Summary:	YaST2 - Auto Installation Modules
  Group:		System/YaST
  # API for Disabled Modules (ProductControl)
-@@ -110,31 +114,32 @@ rmdir $RPM_BUILD_ROOT/@docdir@/html/autoyast
+@@ -110,30 +114,30 @@ rmdir $RPM_BUILD_ROOT/@docdir@/html/autoyast
  
  @desktopdir@/autoyast.desktop
  /usr/share/autoinstall/modules/*.desktop
@@ -55,8 +55,6 @@ index c7196fd..ebb86d3 100644
 +@yncludedir@/autoinstall/classes.rb
 +@yncludedir@/autoinstall/conftree.rb
 +@yncludedir@/autoinstall/dialogs.rb
-+# TODO FIXME: unused, remove it?
- @yncludedir@/autoinstall/partition_dialogs.ycp
 -@yncludedir@/autoinstall/script_dialogs.ycp
 -@yncludedir@/autoinstall/general_dialogs.ycp
 -@yncludedir@/autoinstall/wizards.ycp
