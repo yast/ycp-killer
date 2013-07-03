@@ -21,3 +21,7 @@ moves:
   # a C program for bindir
   - from: src/{tools,agent,lib}
     to:   .
+
+include_wrappers:
+  src/include/ldap-server/widgets.ycp: src/include/ldap-server/tree_structure.ycp
+
