@@ -14,3 +14,5 @@ moves:
   - from: "agents/*.scr"
     to: "src/scrconf"
 
+include_wrappers:
+  src/include/support/dialogs.ycp: src/clients/support.ycp
