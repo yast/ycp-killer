@@ -51,18 +51,6 @@ index b6bc8cc..1412807 100644
  
  htmldir = @docdir@
  
-diff --git a/src/include/users/routines.ycp b/src/include/users/routines.ycp
-index 84686e4..c5e262b 100644
---- a/src/include/users/routines.ycp
-+++ b/src/include/users/routines.ycp
-@@ -29,6 +29,7 @@
-  */
- {
- import "Mode";
-+import "Stage";
- 
- textdomain "users";
- 
 diff --git a/testsuite/Makefile.am b/testsuite/Makefile.am
 index 97cf756..85e8a1c 100644
 --- a/testsuite/Makefile.am
