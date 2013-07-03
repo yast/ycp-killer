@@ -16,3 +16,7 @@ moves:
   - from: "config/kdump.rnc"
     to:   src/autoyast-rnc
 
+include_wrappers:
+  src/include/kdump/uifunctions.ycp: src/clients/kdump.ycp
+  src/include/kdump/dialogs.ycp: src/include/kdump/wizards.ycp
+
