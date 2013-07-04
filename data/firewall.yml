@@ -17,3 +17,4 @@ moves:
 
 include_wrappers:
   src/include/firewall/dialogs.ycp: src/include/firewall/wizards.ycp
+  src/include/firewall/complex.ycp: src/include/firewall/wizards.ycp
