@@ -1,8 +1,3 @@
-The ScreenName function removed in this patch was removed from the "network"
-module recently.
-
-TODO: Upstream this.
-
 diff --git a/agents/Makefile.am b/agents/Makefile.am
 index d66023a..e69de29 100644
 --- a/agents/Makefile.am
@@ -26,19 +21,6 @@ index b37c4fb..bf3b5a7 100644
 +# TODO FIXME: temporarily disabled
 +
 +#include $(top_srcdir)/autodocs-ycp.ami
-diff --git a/src/include/rdp/dialogs.ycp b/src/include/rdp/dialogs.ycp
-index 2189d55..7fe38e7 100644
---- a/src/include/rdp/dialogs.ycp
-+++ b/src/include/rdp/dialogs.ycp
-@@ -23,8 +23,6 @@ include "network/routines.ycp";
-  */
- define symbol RemoteMainDialog() {
- 
--    ScreenName("rdp");
--
-     /* Ramote Administration dialog caption */
-     string caption = _("Remote Administration");
- 
 diff --git a/testsuite/Makefile.am b/testsuite/Makefile.am
 index d9b12b0..e85fbc8 100644
 --- a/testsuite/Makefile.am
