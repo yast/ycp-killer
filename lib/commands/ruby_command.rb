@@ -48,10 +48,10 @@ module Commands
                 else
                   File.basename(file)
                 end
-
-                options[:reported_file] = file
               end
             end
+
+            options[:reported_file] = file
 
             options[:export_private] = mod.export_private.include?(file)
 
