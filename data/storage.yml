@@ -37,6 +37,7 @@ include_wrappers:
   src/include/partitioning/auto_part_ui.ycp: src/clients/inst_target_part.ycp
   src/include/partitioning/custom_part_check_generated.ycp: src/include/partitioning/ep-main.ycp
   src/include/partitioning/custom_part_lib.ycp: src/include/partitioning/ep-main.ycp
+  src/include/partitioning/partition_defines.ycp: src/include/partitioning/ep-main.ycp
   src/include/partitioning/ep-all.ycp: src/include/partitioning/ep-main.ycp
   src/include/partitioning/ep-btrfs-dialogs.ycp: src/include/partitioning/ep-main.ycp
   src/include/partitioning/ep-btrfs-lib.ycp: src/include/partitioning/ep-main.ycp
@@ -71,6 +72,7 @@ include_wrappers:
   src/include/partitioning/ep-unused.ycp: src/include/partitioning/ep-main.ycp
   src/include/partitioning/lvm_lv_lib.ycp: src/include/partitioning/ep-main.ycp
   src/include/partitioning/lvm_pv_lib.ycp: src/include/partitioning/ep-main.ycp
+  src/include/partitioning/lvm_ui_dialogs.ycp: src/include/partitioning/ep-main.ycp
   src/include/partitioning/raid_lib.ycp: src/include/partitioning/ep-main.ycp
 
 excluded:
