@@ -45,7 +45,7 @@ index c7196fd..ebb86d3 100644
  Summary:	YaST2 - Auto Installation Modules
  Group:		System/YaST
  # API for Disabled Modules (ProductControl)
-@@ -110,31 +114,32 @@ rmdir $RPM_BUILD_ROOT/@docdir@/html/autoyast
+@@ -110,30 +114,30 @@ rmdir $RPM_BUILD_ROOT/@docdir@/html/autoyast
  
  @desktopdir@/autoyast.desktop
  /usr/share/autoinstall/modules/*.desktop
@@ -55,8 +55,6 @@ index c7196fd..ebb86d3 100644
 +@yncludedir@/autoinstall/classes.rb
 +@yncludedir@/autoinstall/conftree.rb
 +@yncludedir@/autoinstall/dialogs.rb
-+# TODO FIXME: unused, remove it?
- @yncludedir@/autoinstall/partition_dialogs.ycp
 -@yncludedir@/autoinstall/script_dialogs.ycp
 -@yncludedir@/autoinstall/general_dialogs.ycp
 -@yncludedir@/autoinstall/wizards.ycp
@@ -277,160 +275,6 @@ index ee0f5d4..f3914b4 100644
  
   */
  
-diff --git a/src/include/autoinstall/DriveDialog.ycp b/src/include/autoinstall/DriveDialog.ycp
-index f7dfc4d..567f816 100644
---- a/src/include/autoinstall/DriveDialog.ycp
-+++ b/src/include/autoinstall/DriveDialog.ycp
-@@ -18,6 +18,7 @@
- 
-   include "autoinstall/common.ycp";
-   include "autoinstall/types.ycp";
-+  include "autoinstall/tree.ycp";
- 
-   import "Popup";
- 
-diff --git a/src/include/autoinstall/PartitionDialog.ycp b/src/include/autoinstall/PartitionDialog.ycp
-index 9f87a71..9a9a2cc 100644
---- a/src/include/autoinstall/PartitionDialog.ycp
-+++ b/src/include/autoinstall/PartitionDialog.ycp
-@@ -18,6 +18,7 @@
- 
-   include "autoinstall/common.ycp";
-   include "autoinstall/AdvancedPartitionDialog.ycp";
-+  include "autoinstall/tree.ycp";
-   import "AutoinstPartPlan";
-   import "AutoinstDrive";
-   import "AutoinstPartition";
-diff --git a/src/include/autoinstall/VolgroupDialog.ycp b/src/include/autoinstall/VolgroupDialog.ycp
-index 11c2a68..7cbc294 100644
---- a/src/include/autoinstall/VolgroupDialog.ycp
-+++ b/src/include/autoinstall/VolgroupDialog.ycp
-@@ -18,9 +18,11 @@
- 
-   include "autoinstall/common.ycp";
-   include "autoinstall/types.ycp";
-+  include "autoinstall/tree.ycp";
- 
-   import "AutoinstPartPlan";
-   import "AutoinstDrive";
-+  import "Popup";
- 
-   /**
-    * INTERNAL STUFF
-diff --git a/src/include/autoinstall/ask.ycp b/src/include/autoinstall/ask.ycp
-index 92744e8..56afab7 100644
---- a/src/include/autoinstall/ask.ycp
-+++ b/src/include/autoinstall/ask.ycp
-@@ -14,6 +14,7 @@
-     import "Label";
-     import "Stage";
-     import "Popup";
-+    import "AutoinstConfig";
- 
-     define list<any> path2pos( string pa ) {
-         list<any> pos = [];
-diff --git a/src/include/autoinstall/autoinst_dialogs.ycp b/src/include/autoinstall/autoinst_dialogs.ycp
-index f734d34..b54bb96 100644
---- a/src/include/autoinstall/autoinst_dialogs.ycp
-+++ b/src/include/autoinstall/autoinst_dialogs.ycp
-@@ -11,6 +11,7 @@
-     textdomain "autoinst";
-     import "Label";
-     import "Storage";
-+    import "Popup";
- 
-     /**
-       * Shows a dialog when 'control file' can't be found
-diff --git a/src/include/autoinstall/autopart.ycp b/src/include/autoinstall/autopart.ycp
-index 3227f04..9fc31e1 100644
---- a/src/include/autoinstall/autopart.ycp
-+++ b/src/include/autoinstall/autopart.ycp
-@@ -9,6 +9,8 @@ $Id$
-     import "FileSystems";
-     import "Partitions";
-     import "Arch";
-+    import "Storage";
-+    import "AutoinstStorage";
- 
- 
-     map get_gap_info( map disk, map pd, boolean add_exist_linux );
-@@ -229,7 +231,7 @@ global map AddFilesysData( map st_map, map xml_map )
-         boolean root = size(filter( map e, conf["partitions"]:[], 
-                                     ``(e["mount"]:""=="/"))) > 0;
-         map tc = (map) eval(conf);
--        if( !planHasBoot && root &&
-+        if( !AutoinstStorage::planHasBoot && root &&
-             (disk["cyl_count"]:0 > Partitions::BootCyl() ||
-              Arch::ia64 () || Arch::ppc () || Arch::sparc ()) )
-         {
-diff --git a/src/include/autoinstall/classes.ycp b/src/include/autoinstall/classes.ycp
-index e97781b..d2d714b 100644
---- a/src/include/autoinstall/classes.ycp
-+++ b/src/include/autoinstall/classes.ycp
-@@ -13,6 +13,7 @@
-     import "AutoinstClass";
-     import "XML";
- 
-+    include "autoinstall/dialogs.ycp";
- 
-     /**
-      * XML_cleanup()
-diff --git a/src/include/autoinstall/conftree.ycp b/src/include/autoinstall/conftree.ycp
-index 5fa1b35..e039a4a 100644
---- a/src/include/autoinstall/conftree.ycp
-+++ b/src/include/autoinstall/conftree.ycp
-@@ -23,6 +23,7 @@
-     import "Icon";
-     import "AutoinstSoftware";
-     import "AutoinstClone";
-+    import "Y2ModuleConfig";
- 
-     string title = _("Autoinstallation - Configuration");
-     boolean show_source = false;
-diff --git a/src/include/autoinstall/general_dialogs.ycp b/src/include/autoinstall/general_dialogs.ycp
-index eb26f43..65dedcd 100644
---- a/src/include/autoinstall/general_dialogs.ycp
-+++ b/src/include/autoinstall/general_dialogs.ycp
-@@ -10,6 +10,9 @@
-     textdomain "autoinst";
-     import "GetInstArgs";
-     import "Label";
-+    import "Wizard";
-+    import "AutoinstGeneral";
-+    import "Sequencer";
- 
- 
-     /**
-diff --git a/src/include/autoinstall/script_dialogs.ycp b/src/include/autoinstall/script_dialogs.ycp
-index 916110d..bf81882 100644
---- a/src/include/autoinstall/script_dialogs.ycp
-+++ b/src/include/autoinstall/script_dialogs.ycp
-@@ -20,6 +20,9 @@
- 
-     import "Popup";
-     import "AutoinstConfig";
-+    import "AutoinstScripts";
-+    import "Label";
-+    import "Wizard";
- 
- 
-     /**
-diff --git a/src/include/autoinstall/wizards.ycp b/src/include/autoinstall/wizards.ycp
-index 6e4f464..4eb2077 100644
---- a/src/include/autoinstall/wizards.ycp
-+++ b/src/include/autoinstall/wizards.ycp
-@@ -10,8 +10,11 @@
-     textdomain "autoinst";
-     import "Wizard";
-     import "Label";
-+    import "AutoinstConfig";
-+    import "Sequencer";
-     include "autoinstall/classes.ycp";
-     include "autoinstall/dialogs.ycp";
-+    include "autoinstall/conftree.ycp";
- 
- 
-     /**
 diff --git a/src/modules/AutoinstDrive.ycp b/src/modules/AutoinstDrive.ycp
 index 68b213e..5b6ca4c 100644
 --- a/src/modules/AutoinstDrive.ycp
