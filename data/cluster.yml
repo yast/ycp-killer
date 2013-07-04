@@ -14,3 +14,7 @@ moves:
     to: "src/servers_non_y2"
   - from: "agents/*.scr"
     to: "src/scrconf"
+
+include_wrappers:
+  src/include/cluster/common.ycp: src/include/cluster/wizards.ycp
+  src/include/cluster/dialogs.ycp: src/include/cluster/wizards.ycp
