@@ -710,77 +710,6 @@ index 0f42745..0d975b6 100644
 +
 +#AUTODOCS_SUBDIR=packages
 +#include $(top_srcdir)/autodocs-ycp.ami
-diff --git a/library/packages/src/include/packages/common.ycp b/library/packages/src/include/packages/common.ycp
-index b61f038..1e0a90d 100644
---- a/library/packages/src/include/packages/common.ycp
-+++ b/library/packages/src/include/packages/common.ycp
-@@ -42,6 +42,18 @@ import "Wizard";
- import "Mode";
- import "CommandLine";
- 
-+/**
-+ * Was last operation canceled?
-+ *
-+ * Used to enhance the exit status to distinguish between package
-+ * installation fail and installation canceled by user, as in the second
-+ * case doesn't make much sense to display any error
-+ * Is set to true when user canceled package installation, from
-+ * PackageSystem::* functions
-+ */
-+boolean last_op_canceled = false;
-+
-+
- /* Main module prototypes */
- 
- global boolean Available(string package);
-diff --git a/library/packages/src/modules/Package.ycp b/library/packages/src/modules/Package.ycp
-index 55dc276..377f07b 100644
---- a/library/packages/src/modules/Package.ycp
-+++ b/library/packages/src/modules/Package.ycp
-@@ -70,8 +70,6 @@ map FunctionsAI = $[
- 
- map Functions = Mode::config () ? FunctionsAI : FunctionsSystem;
- 
--boolean last_op_canceled = false;
--
- include "packages/common.ycp";
- 
- /**
-diff --git a/library/packages/src/modules/PackageAI.ycp b/library/packages/src/modules/PackageAI.ycp
-index cc3a8e1..d2a1a38 100644
---- a/library/packages/src/modules/PackageAI.ycp
-+++ b/library/packages/src/modules/PackageAI.ycp
-@@ -38,8 +38,6 @@ textdomain "base";
- global list<string> toinstall = [];
- global list<string> toremove = [];
- 
--boolean last_op_canceled = false;
--
- include "packages/common.ycp";
- 
- /* default value of settings modified */
-diff --git a/library/packages/src/modules/PackageSystem.ycp b/library/packages/src/modules/PackageSystem.ycp
-index 9b035c1..af813bf 100644
---- a/library/packages/src/modules/PackageSystem.ycp
-+++ b/library/packages/src/modules/PackageSystem.ycp
-@@ -47,17 +47,6 @@ import "Stage";
- import "CommandLine";
- 
- /**
-- * Was last operation canceled?
-- *
-- * Used to enhance the exit status to distinguish between package
-- * installation fail and installation canceled by user, as in the second
-- * case doesn't make much sense to display any error
-- * Is set to true when user canceled package installation, from
-- * PackageSystem::* functions
-- */
--boolean last_op_canceled = false;
--
--/**
-  * Has Pkg::TargetInit run?
-  */
- boolean target_initialized = false;
 diff --git a/library/packages/testsuite/Makefile.am b/library/packages/testsuite/Makefile.am
 index d9b12b0..e85fbc8 100644
 --- a/library/packages/testsuite/Makefile.am
@@ -1089,14 +1018,6 @@ diff --git a/yast2.spec.in b/yast2.spec.in
 index 68b9f1a..72ef8e3 100644
 --- a/yast2.spec.in
 +++ b/yast2.spec.in
-@@ -78,6 +78,7 @@ Provides:       yast2-trans-menu y2t_menu
- Obsoletes:      yast2-trans-menu y2t_menu
- 
- # moved here from another packages
-+# TODO FIXME: only add *.rb files or replace existing *.ycp ??
- Provides:       yast2-installation:/usr/share/YaST2/modules/Installation.ycp
- Provides:       yast2-installation:/usr/share/YaST2/modules/Product.ycp
- Provides:       yast2-installation:/usr/share/YaST2/modules/Hotplug.ycp
 @@ -87,6 +88,8 @@ Provides:       yast2-packager:/usr/lib/YaST2/servers_non_y2/ag_anyxml
  Provides:       yast2-dns-server:/usr/share/YaST2/modules/DnsServerAPI.pm
  Provides:       yast2-mail-aliases
