@@ -88,7 +88,6 @@ moves:
     to: library/cron/src/scrconf
   - from: "library/cron/src/ag_cron"
     to: library/cron/src/servers_non_y2
-    # TODO there is strange source files in network, investigate!
   - from: "library/network/src/[A-Z]*.{ycp,pm}"
     to: library/network/src/modules
   - from: "library/network/agents/*.scr{.in,}"
@@ -97,10 +96,8 @@ moves:
     to: library/network/src/servers_non_y2
   - from: "library/gpg/src/*.ycp"
     to: library/gpg/src/modules
-  # TODO FIXME: the remote clients seem to obsolete, remove from upstream
   - from: "remote/*.ycp"
     to: library/general/src/clients
-  # TODO FIXME "remote/*.desktop" are ignored, remove from upstream
 
 export_private:
   - library/sequencer/src/modules/Sequencer.ycp
@@ -111,6 +108,7 @@ export_private:
 
 include_wrappers:
   library/sequencer/testsuite/tests/Wizard.yh: library/sequencer/testsuite/tests/Wizard0.ycp
+  library/packages/src/include/packages/common.ycp: library/packages/src/modules/Package.ycp
 
 excluded:
   # agreed to exclude doc from automatic translation
