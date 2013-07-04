@@ -95,7 +95,6 @@ module Commands
         cmd << "--include-path" << include_path
       end
 
-      cmd << "--dont-inline-include-files"
       cmd << "--as-include-file" if options[:is_include]
       cmd << "--extract-file" << options[:extracted_file] if options[:extracted_file]
       cmd << "--report-file" << options[:reported_file] if options[:reported_file]
