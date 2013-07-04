@@ -23,19 +23,6 @@ index 3dca519..c7779b2 100644
 +# TODO FIXME: temporarily disabled
 +
 +#include $(top_srcdir)/autodocs-ycp.ami
-diff --git a/src/include/drbd/common.ycp b/src/include/drbd/common.ycp
-index f5c46d3..5e7eb23 100644
---- a/src/include/drbd/common.ycp
-+++ b/src/include/drbd/common.ycp
-@@ -8,6 +8,8 @@
- 	import "Popup";
- 	import "CWM";
- 
-+        include "drbd/helps.ycp";
-+
- 	list<string> DIALOG = [
- 		"startup_conf",
- 		"global_conf",
 diff --git a/testsuite/Makefile.am b/testsuite/Makefile.am
 index d9b12b0..e85fbc8 100644
 --- a/testsuite/Makefile.am

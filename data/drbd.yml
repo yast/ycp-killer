@@ -13,3 +13,5 @@ moves:
   - from: "agents/drbd.scr"
     to:   src/scrconf
 
+include_wrappers:
+  src/include/drbd/common.ycp:   src/include/drbd/dialogs.ycp
