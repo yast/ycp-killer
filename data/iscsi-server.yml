@@ -12,3 +12,7 @@ moves:
     to:   src/desktop
   - from: agents/ietd.scr
     to:   src/scrconf
+
+include_wrappers:
+  src/include/iscsi-server/dialogs.ycp: src/clients/iscsi-server.ycp
+  src/include/iscsi-server/widgets.ycp: src/clients/iscsi-server.ycp
