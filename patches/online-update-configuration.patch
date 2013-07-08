@@ -1,15 +1,3 @@
-diff --git a/src/include/online-update-configuration/OUCDialogs.ycp b/src/include/online-update-configuration/OUCDialogs.ycp
-index 36b4715..3897b5d 100644
---- a/src/include/online-update-configuration/OUCDialogs.ycp
-+++ b/src/include/online-update-configuration/OUCDialogs.ycp
-@@ -36,6 +36,7 @@ you may find current contact information at www.novell.com
- textdomain "online-update-configuration";
- 
- import "OnlineUpdateConfiguration";
-+import "Label";
- 
- // module title
- string moduleTitle = _("Online Update Configuration");
 diff --git a/testsuite/Makefile.am b/testsuite/Makefile.am
 index d9b12b0..e85fbc8 100644
 --- a/testsuite/Makefile.am
