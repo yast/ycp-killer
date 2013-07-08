@@ -11,8 +11,8 @@ moves:
     to:   src/include/hpc
   - from: "scripts/*.{sh,pl,patch,cfg}"
     to:   src/bin
-# TODO FIXME: temporarily disabled, update-desktop-files fails with
-# "contains X-SuSE-translate - called the macro twice?" error
   - from: "src/config/hpc.desktop"
-    to:   desktop
+    to:   src/desktop
 
+include_wrappers:
+  src/include/hpc/HPCDialog.ycp: src/clients/HPCMain.ycp
