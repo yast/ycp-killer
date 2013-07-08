@@ -14,3 +14,6 @@ moves:
   - from: "agents/isnsd.scr"
     to:   src/scrconf
 
+include_wrappers:
+  src/include/isns/widgets.ycp: src/clients/isns.ycp
+  src/include/isns/dialogs.ycp: src/clients/isns.ycp
