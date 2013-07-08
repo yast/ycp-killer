@@ -19,18 +19,6 @@ index 856418a..e69de29 100644
 -	DHCPToHosts.pl \
 -	sample_hpc.cfg
 -EXTRA_DIST = $(ybin_SCRIPTS)
-diff --git a/src/include/hpc/HPCDialog.ycp b/src/include/hpc/HPCDialog.ycp
-index 2129f06..a2999af 100644
---- a/src/include/hpc/HPCDialog.ycp
-+++ b/src/include/hpc/HPCDialog.ycp
-@@ -27,6 +27,7 @@ STATUS        : Development
- 
- 	import "HPCControl";
- 	import "HPCMessages";
-+        import "Popup";
- 
- 
- 
 diff --git a/yast2-hpc.spec.in b/yast2-hpc.spec.in
 index 3a404d6..5a3c22f 100644
 --- a/yast2-hpc.spec.in
