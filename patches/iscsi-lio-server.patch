@@ -21,44 +21,6 @@ index 6461f9c..6d99b70 100644
 +# TODO FIXME: temporarily disabled
 +
 +#include $(top_srcdir)/autodocs-ycp.ami
-diff --git a/src/include/iscsi-lio-server/complex.ycp b/src/include/iscsi-lio-server/complex.ycp
-index c7edcae..6e098d2 100644
---- a/src/include/iscsi-lio-server/complex.ycp
-+++ b/src/include/iscsi-lio-server/complex.ycp
-@@ -37,7 +37,6 @@ textdomain "iscsi-lio-server";
- import "Label";
- import "Popup";
- import "Wizard";
--import "Wizard_hw";
- import "IscsiLioServer";
- 
- include "iscsi-lio-server/helps.ycp";
-diff --git a/src/include/iscsi-lio-server/dialogs.ycp b/src/include/iscsi-lio-server/dialogs.ycp
-index 4b2622c..0440f3b 100644
---- a/src/include/iscsi-lio-server/dialogs.ycp
-+++ b/src/include/iscsi-lio-server/dialogs.ycp
-@@ -47,6 +47,7 @@ import "TablePopup";
- 
- include "iscsi-lio-server/helps.ycp";
- include "iscsi-lio-server/widgets.ycp";
-+include "iscsi-lio-server/complex.ycp";
- 
- // store current here
- string current_tab = "service";
-diff --git a/src/include/iscsi-lio-server/widgets.ycp b/src/include/iscsi-lio-server/widgets.ycp
-index 5539378..8f476e9 100644
---- a/src/include/iscsi-lio-server/widgets.ycp
-+++ b/src/include/iscsi-lio-server/widgets.ycp
-@@ -29,6 +29,9 @@ import "Label";
- import "Event";
- import "ContextMenu";
- import "IP";
-+import "Popup";
-+import "String";
-+
- //	**************** global funcions and variables *****
- string curr_target = "";
- integer curr_tpg = 1;
 diff --git a/testsuite/Makefile.am b/testsuite/Makefile.am
 index d9b12b0..e85fbc8 100644
 --- a/testsuite/Makefile.am
