@@ -16,3 +16,5 @@ moves:
   - from: "src/scripts/*"
     to: src/bin
 
+include_wrappers:
+  src/include/online-update-configuration/OUCDialogs.ycp: src/clients/online_update_configuration.ycp
