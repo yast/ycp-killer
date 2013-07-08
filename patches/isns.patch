@@ -21,30 +21,6 @@ index a5421e3..af859b1 100644
 +# TODO FIXME: temporarily disabled
 +
 +#include $(top_srcdir)/autodocs-ycp.ami
-diff --git a/src/include/isns/dialogs.ycp b/src/include/isns/dialogs.ycp
-index 309ade0..244253d 100644
---- a/src/include/isns/dialogs.ycp
-+++ b/src/include/isns/dialogs.ycp
-@@ -22,6 +22,7 @@ import "TablePopup";
- 
- include "isns/helps.ycp";
- include "isns/widgets.ycp";
-+include "isns/complex.ycp";
- 
- // store current here
- string current_tab = "service";
-diff --git a/src/include/isns/widgets.ycp b/src/include/isns/widgets.ycp
-index 3cbab5e..2e5d255 100644
---- a/src/include/isns/widgets.ycp
-+++ b/src/include/isns/widgets.ycp
-@@ -5,6 +5,7 @@ import "Label";
- import "IsnsServer";
- import "String";
- import "Report";
-+import "Popup";
- 
- string address = "";  //global
- 
 diff --git a/testsuite/Makefile.am b/testsuite/Makefile.am
 index d9b12b0..e85fbc8 100644
 --- a/testsuite/Makefile.am
