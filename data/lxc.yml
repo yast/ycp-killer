@@ -12,3 +12,5 @@ moves:
   - from: "src/lxc.desktop"
     to:   src/desktop
 
+include_wrappers:
+  src/include/lxc/dialogs.ycp: src/clients/lxc.ycp

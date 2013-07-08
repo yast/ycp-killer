@@ -9,18 +9,6 @@ index 2175008..05b5d02 100644
 +# TODO FIXME: temporarily disabled
 +
 +#include $(top_srcdir)/autodocs-ycp.ami
-diff --git a/src/include/lxc/dialogs.ycp b/src/include/lxc/dialogs.ycp
-index a58f723..4206737 100644
---- a/src/include/lxc/dialogs.ycp
-+++ b/src/include/lxc/dialogs.ycp
-@@ -40,6 +40,7 @@ import "Report";
- import "Security";
- import "String";
- import "Wizard";
-+import "Lxc";
- 
- include "lxc/helps.ycp";
- 
 diff --git a/testsuite/Makefile.am b/testsuite/Makefile.am
 index d9b12b0..e85fbc8 100644
 --- a/testsuite/Makefile.am
