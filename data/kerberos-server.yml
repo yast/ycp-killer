@@ -16,3 +16,7 @@ moves:
   - from: "src/scrconf/ag_*"
     to: src/servers_non_y2
 
+include_wrappers:
+  src/include/kerberos-server/wizards.ycp: src/clients/kerberos-server.ycp
+  src/include/kerberos-server/complex.ycp: src/clients/kerberos-server.ycp
+  src/include/kerberos-server/advanced_items.ycp: src/clients/kerberos-server.ycp
