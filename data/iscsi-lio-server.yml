@@ -13,3 +13,8 @@ moves:
   - from: "agents/ietd.scr"
     to:   src/scrconf
 
+include_wrappers:
+  src/include/iscsi-lio-server/wizards.ycp: src/clients/iscsi-lio-server.ycp
+  src/include/iscsi-lio-server/widgets.ycp: src/clients/iscsi-lio-server.ycp
+  src/include/iscsi-lio-server/dialogs.ycp: src/clients/iscsi-lio-server.ycp
+  src/include/iscsi-lio-server/complex.ycp: src/clients/iscsi-lio-server.ycp
