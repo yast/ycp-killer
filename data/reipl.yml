@@ -12,3 +12,5 @@ moves:
   - from: "src/reipl.desktop"
     to:   src/desktop
 
+include_wrappers:
+  src/include/reipl/dialogs.ycp: src/clients/reipl.ycp

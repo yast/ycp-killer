@@ -21,18 +21,6 @@ index 26d35b7..4709d9d 100644
 +# TODO FIXME: temporary disabled
 +
 +#include $(top_srcdir)/autodocs-ycp.ami
-diff --git a/src/include/reipl/dialogs.ycp b/src/include/reipl/dialogs.ycp
-index 83bbbd9..464185d 100644
---- a/src/include/reipl/dialogs.ycp
-+++ b/src/include/reipl/dialogs.ycp
-@@ -36,6 +36,7 @@ import "Wizard";
- import "Reipl";
- 
- include "reipl/helps.ycp";
-+include "reipl/complex.ycp";
- 
- /**
-  * Configure dialog
 diff --git a/testsuite/Makefile.am b/testsuite/Makefile.am
 index 7ca744c..f19f3d3 100644
 --- a/testsuite/Makefile.am
