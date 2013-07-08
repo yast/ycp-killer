@@ -13,3 +13,12 @@ moves:
     to:   src/modules
   - from: src/heartbeat.desktop
     to:   src/desktop
+
+include_wrappers:
+  src/include/heartbeat/wizards.ycp: src/clients/heartbeat.ycp
+  src/include/heartbeat/dialogs.ycp: src/clients/heartbeat.ycp
+  src/include/heartbeat/stonith_conf.ycp: src/clients/heartbeat.ycp
+  src/include/heartbeat/startup_conf.ycp: src/clients/heartbeat.ycp
+  src/include/heartbeat/auth_conf.ycp: src/clients/heartbeat.ycp
+  src/include/heartbeat/common.ycp: src/clients/heartbeat.ycp
+  src/include/heartbeat/ipfail_conf.ycp: src/clients/heartbeat.ycp
