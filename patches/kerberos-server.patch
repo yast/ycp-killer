@@ -9,31 +9,6 @@ index 754a2e6..70bbab6 100644
 +# TODO FIXME: temporarily disabled
 +
 +#include $(top_srcdir)/autodocs-ycp.ami
-diff --git a/src/include/kerberos-server/advanced_items.ycp b/src/include/kerberos-server/advanced_items.ycp
-index 8920b44..50156a9 100644
---- a/src/include/kerberos-server/advanced_items.ycp
-+++ b/src/include/kerberos-server/advanced_items.ycp
-@@ -35,6 +35,8 @@ import "Wizard";
- import "Label";
- import "KerberosServer";
- 
-+include "kerberos-server/helps.ycp";
-+
- // #################################################################################
- // #################################################################################
- // #################################################################################
-diff --git a/src/include/kerberos-server/complex.ycp b/src/include/kerberos-server/complex.ycp
-index 64a5036..74b6629 100644
---- a/src/include/kerberos-server/complex.ycp
-+++ b/src/include/kerberos-server/complex.ycp
-@@ -32,6 +32,7 @@ textdomain "kerberos-server";
- 
- import "Label";
- import "Popup";
-+import "Report";
- import "Wizard";
- import "Confirm";
- import "KerberosServer";
 diff --git a/testsuite/Makefile.am b/testsuite/Makefile.am
 index d9b12b0..e85fbc8 100644
 --- a/testsuite/Makefile.am
