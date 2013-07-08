@@ -14,3 +14,7 @@ moves:
     to:   src/desktop
   - from: src/*.rnc
     to:   src/autoyast-rnc
+
+include_wrappers:
+  src/include/iscsi-client/widgets.ycp: src/clients/iscsi-client.ycp
+  src/include/iscsi-client/dialogs.ycp: src/clients/iscsi-client.ycp
