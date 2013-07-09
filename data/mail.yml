@@ -33,8 +33,10 @@ moves:
     to:   src/modules
   - from: src/YaPI/MailServer.pm
     to:   src/modules/YaPI
-  #FIXME not in Makefile
   - from: src/mail-server.ycp
     to:   src/clients
   - from: src/{suse-mailserver.schema,Makefile.am}
     to:   schema
+
+include_wrappers:
+  src/include/mail/mail-server_dialogs.ycp: src/clients/mail-server.ycp

@@ -122,29 +122,6 @@ index 5093469..749104b 100644
 +EXTRA_DIST = $(ldapschema_DATA)
  
  include $(top_srcdir)/Makefile.am.common
-diff --git a/src/include/mail/mail-server_dialogs.ycp b/src/include/mail/mail-server_dialogs.ycp
-index 1aa3e3b..05d8c27 100644
---- a/src/include/mail/mail-server_dialogs.ycp
-+++ b/src/include/mail/mail-server_dialogs.ycp
-@@ -13,13 +13,17 @@ textdomain "mail";
- 
- import "Label";
- import "Ldap";
--import "Wizard";
-+import "MailServer";
-+import "Popup";
-+import "Progress";
- import "Report";
- import "Service";
- import "Users";
-+import "Wizard";
- import "YaPI::MailServer";
- 
- include "mail/helps.ycp";
-+include "mail/mail-server_helps.ycp";
- 
- boolean ReallyAbort() {
-     return !MailServer::Modified() || Popup::ReallyAbort(true);
 diff --git a/testsuite/Makefile.am b/testsuite/Makefile.am
 index 02a627f..06bc411 100644
 --- a/testsuite/Makefile.am
