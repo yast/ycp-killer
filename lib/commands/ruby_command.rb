@@ -21,20 +21,20 @@ module Commands
         ENV["Y2ALLGLOBAL"] = "1"
 
         Dir.chdir mod.work_dir do
-          Threading.in_parallel Dir["**/*.y{cp,h}"] do |file|
+          Threading.in_parallel Dir["**/*.y{cp,h}{.in,}"] do |file|
             next if mod.excluded.include?(file)
 
             converted_file = mod.include_wrappers[file] || file
             work_file = "#{mod.work_dir}/#{converted_file}"
             FileUtils.rm "#{mod.result_dir}/#{file}"
-            result_file = "#{mod.result_dir}/#{file}".sub(/\.y(cp|h)$/, ".rb")
+            result_file = "#{mod.result_dir}/#{file}".sub(/\.y(cp|h)$/, ".rb").sub(/\.y(cp|h)\.in$/, ".rb.in")
 
             options = {}
 
             is_in_include_dir = mod.exports.any? do |export|
               file.start_with?("#{export}/include")
             end
-            is_yh = file.end_with?(".yh")
+            is_yh = file.end_with?(".yh") || file.end_with?(".yh.in")
 
             options[:is_include] = is_in_include_dir || is_yh
 
