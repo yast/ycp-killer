@@ -21,19 +21,6 @@ index 15ffd95..e69de29 100644
 -
 -ydata_DATA = modem-t35-keys.ycp phone-codes.ycp
 -EXTRA_DIST = $(ydata_DATA)
-diff --git a/doc/autodocs/Makefile.am b/doc/autodocs/Makefile.am
-index a708e92..4b93a56 100644
---- a/doc/autodocs/Makefile.am
-+++ b/doc/autodocs/Makefile.am
-@@ -1,4 +1,6 @@
- # Makefile.am for YCP module .../doc/autodocs
- 
--AUTODOCS_YCP = $(srcdir)/../../src/*/*.ycp
--include $(top_srcdir)/autodocs-ycp.ami
-+# TODO FIXME: temporarily disabled
-+
-+#AUTODOCS_YCP = $(srcdir)/../../src/*/*.ycp
-+#include $(top_srcdir)/autodocs-ycp.ami
 diff --git a/src/include/network/lan/complex.ycp b/src/include/network/lan/complex.ycp
 index e11a8a4..0dc4672 100644
 --- a/src/include/network/lan/complex.ycp

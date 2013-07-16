@@ -49,36 +49,6 @@ index d7a786a..c928825 100644
  
  EXTRA_DIST = $(client_DATA)
  
-diff --git a/doc/autodocs/Makefile.am b/doc/autodocs/Makefile.am
-index d153b93..0125218 100644
---- a/doc/autodocs/Makefile.am
-+++ b/doc/autodocs/Makefile.am
-@@ -1,15 +1,19 @@
- # Makefile.am for y2m_inst/doc/autodocs
- 
--htmldir = $(docdir)/autodocs
-+##htmldir = $(docdir)/autodocs
- 
--html_DATA = $(wildcard *.html)
--CLEANFILES = $(html_DATA)
-+#html_DATA = $(wildcard *.html)
-+#CLEANFILES = $(html_DATA)
- 
--all-local: index.html
-+#all-local: index.html
- 
- # Note that we look one _and_ two subdirectories deep.
- # There might be some duplicate filenames
- # but let's solve that later. For now we want to find all Modules::.
--index.html: $(srcdir)/../../src/*/*.ycp
--	${YCPDOC} -d. $^
-+
-+# TODO FIXME: temporarily disabled, enable back when autodocs
-+# support is implemented
-+
-+#index.html: $(srcdir)/../../src/*/*.ycp
-+#	${YCPDOC} -d. $^
- 
 diff --git a/doc/proposal/Makefile.am b/doc/proposal/Makefile.am
 index a8733bf..58fc742 100644
 --- a/doc/proposal/Makefile.am

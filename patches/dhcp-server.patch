@@ -13,16 +13,6 @@ index c22e4db..e69de29 100644
 -agent_SCRIPTS =		ag_dhcpd_conf
 -
 -EXTRA_DIST = $(scrconf_DATA) $(agent_SCRIPTS)
-diff --git a/doc/autodocs/Makefile.am b/doc/autodocs/Makefile.am
-index 2a6f678..6fade89 100644
---- a/doc/autodocs/Makefile.am
-+++ b/doc/autodocs/Makefile.am
-@@ -1,3 +1,3 @@
- # Makefile.am for YCP module .../doc/autodocs
--
--include $(top_srcdir)/autodocs-ycp.ami
-+# FIXME autodocs temporarily disabled
-+# include $(top_srcdir)/autodocs-ycp.ami
 diff --git a/testsuite/Makefile.am b/testsuite/Makefile.am
 index d9b12b0..e85fbc8 100644
 --- a/testsuite/Makefile.am

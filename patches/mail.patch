@@ -54,17 +54,6 @@ index 5a6dbe5..fd6424b 100644
  
 -EXTRA_DIST = $(agent_SCRIPTS) $(scrconf_DATA) $(TESTS) $(testdata) $(fillup_DATA)
 +EXTRA_DIST = $(TESTS) $(testdata)
-diff --git a/doc/autodocs/Makefile.am b/doc/autodocs/Makefile.am
-index df3ffca..9de7be0 100644
---- a/doc/autodocs/Makefile.am
-+++ b/doc/autodocs/Makefile.am
-@@ -1,2 +1,5 @@
- # Makefile.am for YCP module .../doc/autodocs
--include $(top_srcdir)/autodocs-ycp.ami
-+
-+# TODO FIXME: temporarily disabled
-+
-+#include $(top_srcdir)/autodocs-ycp.ami
 diff --git a/schema/Makefile.am b/schema/Makefile.am
 index 5093469..749104b 100644
 --- a/schema/Makefile.am

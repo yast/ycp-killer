@@ -27,17 +27,6 @@ index 627c681..39cfe13 100644
  
  htmldir = $(docdir)
  
-diff --git a/doc/autodocs/Makefile.am b/doc/autodocs/Makefile.am
-index 1bb2081..7784d62 100644
---- a/doc/autodocs/Makefile.am
-+++ b/doc/autodocs/Makefile.am
-@@ -1,3 +1,4 @@
- # Makefile.am for cluster/doc/autodocs
--
--include $(top_srcdir)/autodocs-ycp.ami
-+# TODO
-+# FIXME disabling autodocs temporarily
-+# include $(top_srcdir)/autodocs-ycp.ami
 diff --git a/yast2-cluster.spec.in b/yast2-cluster.spec.in
 index 6063b4e..8c80699 100644
 --- a/yast2-cluster.spec.in

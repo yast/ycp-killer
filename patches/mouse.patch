@@ -1,14 +1,3 @@
-diff --git a/doc/autodocs/Makefile.am b/doc/autodocs/Makefile.am
-index 10187ee..7ec4a56 100644
---- a/doc/autodocs/Makefile.am
-+++ b/doc/autodocs/Makefile.am
-@@ -1,4 +1,4 @@
- # Makefile.am for YCP module .../doc/autodocs
- 
--AUTODOCS_YCP=$(srcdir)/../../src/*.ycp $(srcdir)/../../src/*/*.ycp
--include $(top_srcdir)/autodocs-ycp.ami
-+# AUTODOCS_YCP=$(srcdir)/../../src/*.ycp $(srcdir)/../../src/*/*.ycp
-+# include $(top_srcdir)/autodocs-ycp.ami
 diff --git a/yast2-mouse.spec.in b/yast2-mouse.spec.in
 index 441235f..023bad4 100644
 --- a/yast2-mouse.spec.in
