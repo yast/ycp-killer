@@ -1,14 +1,3 @@
-diff --git a/doc/autodocs/Makefile.am b/doc/autodocs/Makefile.am
-index 2a6f678..4cb582c 100644
---- a/doc/autodocs/Makefile.am
-+++ b/doc/autodocs/Makefile.am
-@@ -1,3 +1,5 @@
- # Makefile.am for YCP module .../doc/autodocs
- 
--include $(top_srcdir)/autodocs-ycp.ami
-+# TODO FIXME: temporarily disabled
-+
-+# include $(top_srcdir)/autodocs-ycp.ami
 diff --git a/skel/Makefile_am b/skel/Makefile_am
 index d9b12b0..de7f5c5 100644
 --- a/skel/Makefile_am

@@ -22,18 +22,14 @@ index 15ffd95..e69de29 100644
 -ydata_DATA = modem-t35-keys.ycp phone-codes.ycp
 -EXTRA_DIST = $(ydata_DATA)
 diff --git a/doc/autodocs/Makefile.am b/doc/autodocs/Makefile.am
-index a708e92..4b93a56 100644
+index a708e92..2a6f678 100644
 --- a/doc/autodocs/Makefile.am
 +++ b/doc/autodocs/Makefile.am
-@@ -1,4 +1,6 @@
+@@ -1,4 +1,3 @@
  # Makefile.am for YCP module .../doc/autodocs
  
 -AUTODOCS_YCP = $(srcdir)/../../src/*/*.ycp
--include $(top_srcdir)/autodocs-ycp.ami
-+# TODO FIXME: temporarily disabled
-+
-+#AUTODOCS_YCP = $(srcdir)/../../src/*/*.ycp
-+#include $(top_srcdir)/autodocs-ycp.ami
+ include $(top_srcdir)/autodocs-ycp.ami
 diff --git a/src/include/network/lan/complex.ycp b/src/include/network/lan/complex.ycp
 index e11a8a4..0dc4672 100644
 --- a/src/include/network/lan/complex.ycp
@@ -97,10 +93,10 @@ index d9b12b0..e85fbc8 100644
  testsuite_prepare = @ydatadir@/testsuite/Makefile.testsuite
  
 diff --git a/yast2-network.spec.in b/yast2-network.spec.in
-index de9eec7..65d4ac9 100644
+index b41414a..f5e8688 100644
 --- a/yast2-network.spec.in
 +++ b/yast2-network.spec.in
-@@ -29,6 +29,8 @@ PreReq:         /bin/rm
+@@ -30,6 +30,8 @@ PreReq:         /bin/rm
  # carrier detection
  Conflicts:      yast2-core < 2.10.6
  
@@ -109,7 +105,7 @@ index de9eec7..65d4ac9 100644
  Summary:        YaST2 - Network Configuration
  
  %package devel-doc
-@@ -71,10 +73,9 @@ fi
+@@ -72,10 +74,9 @@ fi
  @ybindir@/*
  @ydatadir@/*
  @yncludedir@/network

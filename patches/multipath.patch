@@ -19,19 +19,6 @@ index 5d589cd..0000000
 -scrconf_DATA = etc_multipath.scr multipath.scr
 -
 -EXTRA_DIST = $(agent_SCRIPTS) $(scrconf_DATA)
-diff --git a/doc/Makefile.am b/doc/Makefile.am
-index 4ab8f24..eb43d2a 100644
---- a/doc/Makefile.am
-+++ b/doc/Makefile.am
-@@ -1,6 +1,7 @@
- # Makefile.am for multipath/doc
- 
--SUBDIRS = autodocs
-+# TODO missing support of ruby in auto-docs
-+#SUBDIRS = autodocs
- 
- htmldir = $(docdir)
- 
 diff --git a/testsuite/Makefile.am b/testsuite/Makefile.am
 index d9b12b0..e85fbc8 100644
 --- a/testsuite/Makefile.am

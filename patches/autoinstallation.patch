@@ -24,7 +24,7 @@ index 4110426..e69de29 100644
 -
 -EXTRA_DIST = $(scrconf_DATA)  $(agent_SCRIPTS)
 diff --git a/autoyast2.spec.in b/autoyast2.spec.in
-index c7196fd..ebb86d3 100644
+index 18d4384..83e3e90 100644
 --- a/autoyast2.spec.in
 +++ b/autoyast2.spec.in
 @@ -27,6 +27,8 @@ PreReq:		%insserv_prereq %fillup_prereq
@@ -52,13 +52,13 @@ index c7196fd..ebb86d3 100644
 -@yncludedir@/autoinstall/classes.ycp
 -@yncludedir@/autoinstall/conftree.ycp
 -@yncludedir@/autoinstall/dialogs.ycp
-+@yncludedir@/autoinstall/classes.rb
-+@yncludedir@/autoinstall/conftree.rb
-+@yncludedir@/autoinstall/dialogs.rb
 -@yncludedir@/autoinstall/script_dialogs.ycp
 -@yncludedir@/autoinstall/general_dialogs.ycp
 -@yncludedir@/autoinstall/wizards.ycp
 -@yncludedir@/autoinstall/helps.ycp
++@yncludedir@/autoinstall/classes.rb
++@yncludedir@/autoinstall/conftree.rb
++@yncludedir@/autoinstall/dialogs.rb
 +@yncludedir@/autoinstall/script_dialogs.rb
 +@yncludedir@/autoinstall/general_dialogs.rb
 +@yncludedir@/autoinstall/wizards.rb
@@ -94,7 +94,7 @@ index c7196fd..ebb86d3 100644
  @agentdir@/ag_ksimport
  
  
-@@ -168,58 +173,58 @@ rmdir $RPM_BUILD_ROOT/@docdir@/html/autoyast
+@@ -167,58 +171,58 @@ rmdir $RPM_BUILD_ROOT/@docdir@/html/autoyast
  /usr/share/autoinstall/xslt/merge.xslt
  # config file
  
@@ -224,19 +224,15 @@ index db3f28c..e7e794d 100644
 -
  include $(top_srcdir)/Makefile.am.common
 diff --git a/doc/autodocs/Makefile.am b/doc/autodocs/Makefile.am
-index 9a2350a..b464f78 100644
+index 9a2350a..dfb28c7 100644
 --- a/doc/autodocs/Makefile.am
 +++ b/doc/autodocs/Makefile.am
-@@ -2,5 +2,7 @@
+@@ -2,5 +2,4 @@
  # Makefile.am for .../doc/autodocs
  #
  
 -AUTODOCS_YCP=$(top_srcdir)/src/*/*.ycp
--include $(top_srcdir)/autodocs-ycp.ami
-+# TODO FIXME: temporarily disabled
-+
-+#AUTODOCS_YCP=$(top_srcdir)/src/*/*.ycp
-+#include $(top_srcdir)/autodocs-ycp.ami
+ include $(top_srcdir)/autodocs-ycp.ami
 diff --git a/modconfig/Makefile.am b/modconfig/Makefile.am
 index 8e75e4e..87c47ba 100644
 --- a/modconfig/Makefile.am
