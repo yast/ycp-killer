@@ -10,17 +10,6 @@ index 18ebdc2..e69de29 100644
 -scrconf_DATA = probe.scr
 -
 -EXTRA_DIST = $(scrconf_DATA)
-diff --git a/doc/autodocs/Makefile.am b/doc/autodocs/Makefile.am
-index 842d408..6f679e5 100644
---- a/doc/autodocs/Makefile.am
-+++ b/doc/autodocs/Makefile.am
-@@ -1,3 +1,5 @@
- # Makefile.am for .../agent-hardware-detection/doc/autodocs
- 
--include $(top_srcdir)/autodocs-cc.ami
-+# TODO FIXME: temporarily disabled
-+
-+#include $(top_srcdir)/autodocs-cc.ami
 diff --git a/testsuite/Makefile.am b/testsuite/Makefile.am
 index a710e62..20ad188 100644
 --- a/testsuite/Makefile.am

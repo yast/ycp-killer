@@ -1,19 +1,3 @@
-diff --git a/doc/autodocs/Makefile.am b/doc/autodocs/Makefile.am
-index f8be896..87a7241 100644
---- a/doc/autodocs/Makefile.am
-+++ b/doc/autodocs/Makefile.am
-@@ -1,5 +1,8 @@
- # Makefile.am for YCP module .../doc/autodocs
- 
--AUTODOCS_YCP = $(wildcard $(srcdir)/../../src/*/*.ycp)
--AUTODOCS_PM  = $(wildcard $(srcdir)/../../src/*/*.pm)
--include $(top_srcdir)/autodocs-ycp.ami
-+# TODO FIXME: temporarily disabled, enable back when autodocs
-+# support is implemented
-+
-+#AUTODOCS_YCP = $(wildcard $(srcdir)/../../src/*/*.ycp)
-+#AUTODOCS_PM  = $(wildcard $(srcdir)/../../src/*/*.pm)
-+#include $(top_srcdir)/autodocs-ycp.ami
 diff --git a/testsuite/Makefile.am b/testsuite/Makefile.am
 index d9b12b0..e85fbc8 100644
 --- a/testsuite/Makefile.am

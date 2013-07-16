@@ -17,17 +17,6 @@ index 4e2769f..f0f8114 100644
 -SUBDIRS = agents data doc src testsuite
 +SUBDIRS = doc src testsuite
  
-diff --git a/keyboard/doc/autodocs/Makefile.am b/keyboard/doc/autodocs/Makefile.am
-index e7ddf79..78b57df 100644
---- a/keyboard/doc/autodocs/Makefile.am
-+++ b/keyboard/doc/autodocs/Makefile.am
-@@ -1,4 +1,4 @@
- # Makefile.am for YCP module .../doc/autodocs
- 
--AUTODOCS_YCP=$(srcdir)/../../src/*.ycp
--include $(top_srcdir)/autodocs-ycp.ami
-+# AUTODOCS_YCP=$(srcdir)/../../src/*.ycp
-+# include $(top_srcdir)/autodocs-ycp.ami
 diff --git a/keyboard/testsuite/Makefile.am b/keyboard/testsuite/Makefile.am
 index d9b12b0..e85fbc8 100644
 --- a/keyboard/testsuite/Makefile.am
@@ -51,17 +40,6 @@ index d90959c..9903361 100644
 -SUBDIRS = agents data doc src testsuite
 +SUBDIRS = doc src testsuite
  
-diff --git a/language/doc/autodocs/Makefile.am b/language/doc/autodocs/Makefile.am
-index e7ddf79..78b57df 100644
---- a/language/doc/autodocs/Makefile.am
-+++ b/language/doc/autodocs/Makefile.am
-@@ -1,4 +1,4 @@
- # Makefile.am for YCP module .../doc/autodocs
- 
--AUTODOCS_YCP=$(srcdir)/../../src/*.ycp
--include $(top_srcdir)/autodocs-ycp.ami
-+# AUTODOCS_YCP=$(srcdir)/../../src/*.ycp
-+# include $(top_srcdir)/autodocs-ycp.ami
 diff --git a/language/testsuite/Makefile.am b/language/testsuite/Makefile.am
 index d9b12b0..e85fbc8 100644
 --- a/language/testsuite/Makefile.am
@@ -85,17 +63,6 @@ index 53f3572..ce84dc6 100644
 -SUBDIRS = agents data doc src testsuite
 +SUBDIRS = doc src testsuite
  
-diff --git a/timezone/doc/autodocs/Makefile.am b/timezone/doc/autodocs/Makefile.am
-index e7ddf79..78b57df 100644
---- a/timezone/doc/autodocs/Makefile.am
-+++ b/timezone/doc/autodocs/Makefile.am
-@@ -1,4 +1,4 @@
- # Makefile.am for YCP module .../doc/autodocs
- 
--AUTODOCS_YCP=$(srcdir)/../../src/*.ycp
--include $(top_srcdir)/autodocs-ycp.ami
-+# AUTODOCS_YCP=$(srcdir)/../../src/*.ycp
-+# include $(top_srcdir)/autodocs-ycp.ami
 diff --git a/timezone/testsuite/Makefile.am b/timezone/testsuite/Makefile.am
 index d9b12b0..e85fbc8 100644
 --- a/timezone/testsuite/Makefile.am

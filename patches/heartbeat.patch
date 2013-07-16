@@ -1,24 +1,3 @@
-diff --git a/doc/autodocs/Makefile.am b/doc/autodocs/Makefile.am
-index 6152b88..425ed35 100644
---- a/doc/autodocs/Makefile.am
-+++ b/doc/autodocs/Makefile.am
-@@ -1,10 +1,11 @@
- # Makefile.am for heartbeat/doc/autodocs
- 
--htmldir = $(docdir)/autodocs
-+# FIXME temporarily disabled
-+# htmldir = $(docdir)/autodocs
- 
--index.html: $(srcdir)/../../src/*.ycp
--	$(ybindir)/ycpdoc -d. $(srcdir)/../../src/*.ycp
-+# index.html: $(srcdir)/../../src/*.rb
-+# 	$(ybindir)/ycpdoc -d. $(srcdir)/../../src/*.rb
- 
--html_DATA = index.html $(wildcard *.html)
-+# html_DATA = index.html $(wildcard *.html)
- 
--CLEANFILES = $(html_DATA)
-+# CLEANFILES = $(html_DATA)
 diff --git a/testsuite/Makefile.am b/testsuite/Makefile.am
 index d9b12b0..e85fbc8 100644
 --- a/testsuite/Makefile.am

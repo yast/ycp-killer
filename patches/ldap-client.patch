@@ -31,16 +31,6 @@ index dc4947b..94296e3 100644
  
  htmldir = @docdir@
  html_DATA =
-diff --git a/doc/autodocs/Makefile.am b/doc/autodocs/Makefile.am
-index 2a6f678..6e53ae0 100644
---- a/doc/autodocs/Makefile.am
-+++ b/doc/autodocs/Makefile.am
-@@ -1,3 +1,4 @@
- # Makefile.am for YCP module .../doc/autodocs
- 
--include $(top_srcdir)/autodocs-ycp.ami
-+# ycpdoc does not work on ruby
-+#include $(top_srcdir)/autodocs-ycp.ami
 diff --git a/src/Makefile.am b/src/Makefile.am
 deleted file mode 100644
 index 39c0d4c..0000000
