@@ -11,7 +11,7 @@ index e109945..26050d7 100644
  clean-local:
  	rm -f tmp.out.* tmp.err.*
 diff --git a/testsuite/test-yast b/testsuite/test-yast
-index 52f39d5..59bd745 100755
+index 52f39d5..38cbd39 100755
 --- a/testsuite/test-yast
 +++ b/testsuite/test-yast
 @@ -28,8 +28,8 @@ ln -s $PLUGDIR $Y2DIR/plugin
@@ -25,17 +25,19 @@ index 52f39d5..59bd745 100755
      OUT=$BASE.out
      ERR=$BASE.err
      BASE=${BASE#$TDIR/}
-@@ -42,6 +42,8 @@ for SCRIPT in $TDIR/*.ycp; do
+@@ -42,6 +42,10 @@ for SCRIPT in $TDIR/*.ycp; do
      sed --in-place -e 's/^....-..-.. ..:..:.. \(<.> \)[^ ]* /\1/' tmp.err.$BASE
      sed --in-place -e 's/\(([^)]*)\):[0-9]\+/\1:XXX/' tmp.err.$BASE
      sed --in-place -e '/^<[0-9]> \[\(liby2\|wfm\|ui-component\)\] /d' tmp.err.$BASE
++    sed --in-place -e 's/^\(<[0-5]> \[.*\] [^:]*\):[0-9]\+ /\1:XXX /' tmp.err.$BASE
++
 +    # client call contains absolute path, ignore the line
-+    sed --in-place '/^<1> \[Ruby\] yast\/wfm.rb:[0-9]\+ Call client /d' tmp.err.$BASE
++    sed --in-place '/^<1> \[Ruby\] yast\/wfm.rb:XXX Call client /d' tmp.err.$BASE
      diff -Nu $ERR tmp.err.$BASE || CASEOK=false
      diff -Nu $OUT tmp.out.$BASE || CASEOK=false
  
 diff --git a/testsuite/tests/Long.err b/testsuite/tests/Long.err
-index 349b262..ea6c886 100644
+index 349b262..a758756 100644
 --- a/testsuite/tests/Long.err
 +++ b/testsuite/tests/Long.err
 @@ -1,25 +1,25 @@
@@ -64,40 +66,40 @@ index 349b262..ea6c886 100644
 -<1> [YCP] tests/Long.ycp:19 loop 3 * 2**30: 3221225472 class
 -<1> [YCP] tests/Long.ycp:18 loop 7 * 2**30: 7516192768
 -<1> [YCP] tests/Long.ycp:19 loop 7 * 2**30: 7516192768 class
-+<1> [Ruby] tests/Long.rb:12 3*2**30: 3221225472
-+<1> [Ruby] tests/Long.rb:13 3*2**30: 3221225472 (class)
-+<1> [Ruby] tests/Long.rb:14 3*2**40: 3298534883328
-+<1> [Ruby] tests/Long.rb:15 3*2**40: 3298534883328 (class)
-+<1> [Ruby] tests/Long.rb:20 -7 * 2**30: -7516192768
-+<1> [Ruby] tests/Long.rb:21 -7 * 2**30: -7516192768 class
-+<1> [Ruby] tests/Long.rb:20 -1 * 2**30: -1073741824
-+<1> [Ruby] tests/Long.rb:21 -1 * 2**30: -1073741824 class
-+<1> [Ruby] tests/Long.rb:20 1 * 2**30: 1073741824
-+<1> [Ruby] tests/Long.rb:21 1 * 2**30: 1073741824 class
-+<1> [Ruby] tests/Long.rb:20 3 * 2**30: 3221225472
-+<1> [Ruby] tests/Long.rb:21 3 * 2**30: 3221225472 class
-+<1> [Ruby] tests/Long.rb:20 7 * 2**30: 7516192768
-+<1> [Ruby] tests/Long.rb:21 7 * 2**30: 7516192768 class
-+<1> [Ruby] tests/Long.rb:26 loop -7 * 2**30: -7516192768
-+<1> [Ruby] tests/Long.rb:31 loop -7 * 2**30: -7516192768 class
-+<1> [Ruby] tests/Long.rb:26 loop -1 * 2**30: -1073741824
-+<1> [Ruby] tests/Long.rb:31 loop -1 * 2**30: -1073741824 class
-+<1> [Ruby] tests/Long.rb:26 loop 1 * 2**30: 1073741824
-+<1> [Ruby] tests/Long.rb:31 loop 1 * 2**30: 1073741824 class
-+<1> [Ruby] tests/Long.rb:26 loop 3 * 2**30: 3221225472
-+<1> [Ruby] tests/Long.rb:31 loop 3 * 2**30: 3221225472 class
-+<1> [Ruby] tests/Long.rb:26 loop 7 * 2**30: 7516192768
-+<1> [Ruby] tests/Long.rb:31 loop 7 * 2**30: 7516192768 class
++<1> [Ruby] tests/Long.rb:XXX 3*2**30: 3221225472
++<1> [Ruby] tests/Long.rb:XXX 3*2**30: 3221225472 (class)
++<1> [Ruby] tests/Long.rb:XXX 3*2**40: 3298534883328
++<1> [Ruby] tests/Long.rb:XXX 3*2**40: 3298534883328 (class)
++<1> [Ruby] tests/Long.rb:XXX -7 * 2**30: -7516192768
++<1> [Ruby] tests/Long.rb:XXX -7 * 2**30: -7516192768 class
++<1> [Ruby] tests/Long.rb:XXX -1 * 2**30: -1073741824
++<1> [Ruby] tests/Long.rb:XXX -1 * 2**30: -1073741824 class
++<1> [Ruby] tests/Long.rb:XXX 1 * 2**30: 1073741824
++<1> [Ruby] tests/Long.rb:XXX 1 * 2**30: 1073741824 class
++<1> [Ruby] tests/Long.rb:XXX 3 * 2**30: 3221225472
++<1> [Ruby] tests/Long.rb:XXX 3 * 2**30: 3221225472 class
++<1> [Ruby] tests/Long.rb:XXX 7 * 2**30: 7516192768
++<1> [Ruby] tests/Long.rb:XXX 7 * 2**30: 7516192768 class
++<1> [Ruby] tests/Long.rb:XXX loop -7 * 2**30: -7516192768
++<1> [Ruby] tests/Long.rb:XXX loop -7 * 2**30: -7516192768 class
++<1> [Ruby] tests/Long.rb:XXX loop -1 * 2**30: -1073741824
++<1> [Ruby] tests/Long.rb:XXX loop -1 * 2**30: -1073741824 class
++<1> [Ruby] tests/Long.rb:XXX loop 1 * 2**30: 1073741824
++<1> [Ruby] tests/Long.rb:XXX loop 1 * 2**30: 1073741824 class
++<1> [Ruby] tests/Long.rb:XXX loop 3 * 2**30: 3221225472
++<1> [Ruby] tests/Long.rb:XXX loop 3 * 2**30: 3221225472 class
++<1> [Ruby] tests/Long.rb:XXX loop 7 * 2**30: 7516192768
++<1> [Ruby] tests/Long.rb:XXX loop 7 * 2**30: 7516192768 class
 diff --git a/testsuite/tests/Simple1.err b/testsuite/tests/Simple1.err
-index 52b766b..d25a924 100644
+index 52b766b..334cdcc 100644
 --- a/testsuite/tests/Simple1.err
 +++ b/testsuite/tests/Simple1.err
 @@ -1,2 +1,2 @@
  <1> [Y2Perl] Y2PerlComponent.cc(Y2PerlComponent):XXX Creating Y2PerlComponent
 -<1> [YCP] tests/Simple1.ycp:6 Hello, world
-+<1> [Ruby] tests/Simple1.rb:14 Hello, world
++<1> [Ruby] tests/Simple1.rb:XXX Hello, world
 diff --git a/testsuite/tests/Testpfunc1.err b/testsuite/tests/Testpfunc1.err
-index 268320a..a39e2d6 100644
+index 268320a..100b0fe 100644
 --- a/testsuite/tests/Testpfunc1.err
 +++ b/testsuite/tests/Testpfunc1.err
 @@ -1,5 +1,5 @@
@@ -106,31 +108,31 @@ index 268320a..a39e2d6 100644
 -<1> [YCP] tests/Testpfunc1.ycp:7 rxmatch (abracadabra, ^[a-d]*$): false
 -<1> [YCP] tests/Testpfunc1.ycp:10 lengths (["one", "two", "three"]): [3, 3, 5]
 -<1> [YCP] tests/Testpfunc1.ycp:13 amap ($["one":"two"]): $["a":"1", "b":"two"]
-+<1> [Ruby] tests/Testpfunc1.rb:13 rxmatch (abracadabra, [a-d]*): true
-+<1> [Ruby] tests/Testpfunc1.rb:19 rxmatch (abracadabra, ^[a-d]*$): false
-+<1> [Ruby] tests/Testpfunc1.rb:26 lengths (["one", "two", "three"]): [3, 3, 5]
-+<1> [Ruby] tests/Testpfunc1.rb:32 amap ($["one":"two"]): $["a":"1", "b":"two"]
++<1> [Ruby] tests/Testpfunc1.rb:XXX rxmatch (abracadabra, [a-d]*): true
++<1> [Ruby] tests/Testpfunc1.rb:XXX rxmatch (abracadabra, ^[a-d]*$): false
++<1> [Ruby] tests/Testpfunc1.rb:XXX lengths (["one", "two", "three"]): [3, 3, 5]
++<1> [Ruby] tests/Testpfunc1.rb:XXX amap ($["one":"two"]): $["a":"1", "b":"two"]
 diff --git a/testsuite/tests/Testpfunc2.err b/testsuite/tests/Testpfunc2.err
-index 02da8ed..595ee3a 100644
+index 02da8ed..ebd2e38 100644
 --- a/testsuite/tests/Testpfunc2.err
 +++ b/testsuite/tests/Testpfunc2.err
 @@ -1,3 +1,3 @@
  <1> [Y2Perl] Y2PerlComponent.cc(Y2PerlComponent):XXX Creating Y2PerlComponent
 -<1> [YCP] tests/Testpfunc2.ycp:5 nested: Hello, world
-+<1> [Ruby] tests/Testpfunc2.rb:13 nested: Hello, world
++<1> [Ruby] tests/Testpfunc2.rb:XXX nested: Hello, world
  <1> [Y2Perl] YPerl.cc(destroy):XXX Shutting down embedded Perl interpreter.
 diff --git a/testsuite/tests/Types.err b/testsuite/tests/Types.err
-index 692ad1a..f38aafe 100644
+index 692ad1a..d8cc5b4 100644
 --- a/testsuite/tests/Types.err
 +++ b/testsuite/tests/Types.err
 @@ -1,3 +1,3 @@
  <1> [Y2Perl] Y2PerlComponent.cc(Y2PerlComponent):XXX Creating Y2PerlComponent
 -<1> [YCP] tests/Types.ycp:4 bool1: false
 -<1> [YCP] tests/Types.ycp:5 bool2: false
-+<1> [Ruby] tests/Types.rb:12 bool1: false
-+<1> [Ruby] tests/Types.rb:13 bool2: false
++<1> [Ruby] tests/Types.rb:XXX bool1: false
++<1> [Ruby] tests/Types.rb:XXX bool2: false
 diff --git a/testsuite/tests/Types2.err b/testsuite/tests/Types2.err
-index 122bf19..af37a7e 100644
+index 122bf19..61b139d 100644
 --- a/testsuite/tests/Types2.err
 +++ b/testsuite/tests/Types2.err
 @@ -1,4 +1,4 @@
@@ -138,9 +140,9 @@ index 122bf19..af37a7e 100644
 -<1> [YCP] tests/Types2.ycp:6 termloop: `MyTerm ("Hi", "42")
 -<1> [YCP] tests/Types2.ycp:7 termloop nt: `NestedTerm (`id ("42"), `MyTerm ("Hi", "42"))
 -<1> [YCP] tests/Types2.ycp:8 termreverse: `mreTyM ("42", "Hi")
-+<1> [Ruby] tests/Types2.rb:14 termloop: `MyTerm ("Hi", "42")
-+<1> [Ruby] tests/Types2.rb:15 termloop nt: `NestedTerm (`id ("42"), `MyTerm ("Hi", "42"))
-+<1> [Ruby] tests/Types2.rb:16 termreverse: `mreTyM ("42", "Hi")
++<1> [Ruby] tests/Types2.rb:XXX termloop: `MyTerm ("Hi", "42")
++<1> [Ruby] tests/Types2.rb:XXX termloop nt: `NestedTerm (`id ("42"), `MyTerm ("Hi", "42"))
++<1> [Ruby] tests/Types2.rb:XXX termreverse: `mreTyM ("42", "Hi")
 diff --git a/yast2-perl-bindings.spec.in b/yast2-perl-bindings.spec.in
 index bb09b7b..e747aae 100644
 --- a/yast2-perl-bindings.spec.in
