@@ -36,21 +36,16 @@ index 78c0fff..ea980c5 100644
 +scrconf_DATA = #uid.scr
  
  EXTRA_DIST = $(agent_SCRIPTS) $(scrconf_DATA)
-diff --git a/doc/Makefile.am b/doc/Makefile.am
-index b6bc8cc..1412807 100644
---- a/doc/Makefile.am
-+++ b/doc/Makefile.am
-@@ -1,8 +1,8 @@
- #
- # Makefile.am for y2c_users/doc
- #
--
--SUBDIRS = autodocs
-+# TODO no autodocs for rb yet
-+SUBDIRS = #autodocs
+diff --git a/doc/autodocs/Makefile.am b/doc/autodocs/Makefile.am
+index 99a5370..72b515e 100644
+--- a/doc/autodocs/Makefile.am
++++ b/doc/autodocs/Makefile.am
+@@ -1,4 +1,4 @@
+ # Makefile.am for YCP module .../doc/autodocs
  
- htmldir = @docdir@
- 
+-AUTODOCS_PM = $(srcdir)/../../src/*.pm $(srcdir)/../../src/YaPI/*.pm
++AUTODOCS_PM = $(srcdir)/../../src/modules/*.pm $(srcdir)/../../src/modules/YaPI/*.pm
+ include $(top_srcdir)/autodocs-ycp.ami
 diff --git a/testsuite/Makefile.am b/testsuite/Makefile.am
 index 97cf756..85e8a1c 100644
 --- a/testsuite/Makefile.am

@@ -20,19 +20,15 @@ index f5a7abb..2f1bc4a 100644
  check-local:
  	xmllint --relaxng $(controldir)/control.rng --noout $(control_DATA)
 diff --git a/doc/autodocs/Makefile.am b/doc/autodocs/Makefile.am
-index 9a2350a..b464f78 100644
+index 9a2350a..dfb28c7 100644
 --- a/doc/autodocs/Makefile.am
 +++ b/doc/autodocs/Makefile.am
-@@ -2,5 +2,7 @@
+@@ -2,5 +2,4 @@
  # Makefile.am for .../doc/autodocs
  #
  
 -AUTODOCS_YCP=$(top_srcdir)/src/*/*.ycp
--include $(top_srcdir)/autodocs-ycp.ami
-+# TODO FIXME: temporarily disabled
-+
-+#AUTODOCS_YCP=$(top_srcdir)/src/*/*.ycp
-+#include $(top_srcdir)/autodocs-ycp.ami
+ include $(top_srcdir)/autodocs-ycp.ami
 diff --git a/testsuite/Makefile.am b/testsuite/Makefile.am
 index d9b12b0..e85fbc8 100644
 --- a/testsuite/Makefile.am

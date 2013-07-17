@@ -10,19 +10,6 @@ index cc3cb74..d223884 100644
 +scrconf_DATA =
  
  EXTRA_DIST = $(agent_SCRIPTS) $(scrconf_DATA)
-diff --git a/doc/Makefile.am b/doc/Makefile.am
-index 942c239..33acb79 100644
---- a/doc/Makefile.am
-+++ b/doc/Makefile.am
-@@ -1,6 +1,7 @@
- # Makefile.am for support/doc
- 
--SUBDIRS = autodocs
-+# TODO autodocs is not yet supported for ruby
-+SUBDIRS =# autodocs
- 
- htmldir = $(docdir)
- 
 diff --git a/testsuite/Makefile.am b/testsuite/Makefile.am
 index d9b12b0..e85fbc8 100644
 --- a/testsuite/Makefile.am

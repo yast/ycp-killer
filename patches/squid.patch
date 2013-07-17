@@ -37,17 +37,6 @@ index 293b916..cdbfd1f 100644
 -EXTRA_DIST = $(desktop_DATA) $(rnc_DATA) $(pkgdata_DATA)
 +EXTRA_DIST = $(pkgdata_DATA)
  
-diff --git a/doc/autodocs/Makefile.am b/doc/autodocs/Makefile.am
-index 5c90780..e70ce9c 100644
---- a/doc/autodocs/Makefile.am
-+++ b/doc/autodocs/Makefile.am
-@@ -1,3 +1,5 @@
- # Makefile.am for squid/doc/autodocs
- 
--include $(top_srcdir)/autodocs-ycp.ami
-+# TODO FIXME: temporarily disabled
-+
-+# include $(top_srcdir)/autodocs-ycp.ami
 diff --git a/testsuite/Makefile.am b/testsuite/Makefile.am
 index d9b12b0..e85fbc8 100644
 --- a/testsuite/Makefile.am
