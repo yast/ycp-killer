@@ -33,16 +33,15 @@ index 05267a4..0000000
 -
 -EXTRA_DIST = $(scrconf_DATA)
 diff --git a/doc/autodocs/Makefile.am b/doc/autodocs/Makefile.am
-index dca717a..2c5d040 100644
+index dca717a..0f67d40 100644
 --- a/doc/autodocs/Makefile.am
 +++ b/doc/autodocs/Makefile.am
-@@ -1,4 +1,5 @@
+@@ -1,4 +1,4 @@
  # Makefile.am for YCP module .../doc/autodocs
  
- AUTODOCS_PM = $(srcdir)/../../src/YaPI/*.pm
--include $(top_srcdir)/autodocs-ycp.ami
-+# ycpdoc does not work on ruby
-+#include $(top_srcdir)/autodocs-ycp.ami
+-AUTODOCS_PM = $(srcdir)/../../src/YaPI/*.pm
++AUTODOCS_PM = $(srcdir)/../../src/modules/YaPI/*.pm
+ include $(top_srcdir)/autodocs-ycp.ami
 diff --git a/src/Makefile.am b/src/Makefile.am
 deleted file mode 100644
 index 26f55d7..0000000
@@ -87,10 +86,10 @@ index 26f55d7..0000000
 -
 -include $(top_srcdir)/Makefile.am.common
 diff --git a/yast2-ldap-server.spec.in b/yast2-ldap-server.spec.in
-index f289990..12df00f 100644
+index 3b7d684..572317d 100644
 --- a/yast2-ldap-server.spec.in
 +++ b/yast2-ldap-server.spec.in
-@@ -11,6 +11,8 @@ Requires:       yast2-users >= 2.22.3
+@@ -12,6 +12,8 @@ Requires:       yast2-users >= 2.22.3
  
  # Wizard::SetDesktopTitleAndIcon
  Requires:       yast2 >= 2.21.22
@@ -99,7 +98,7 @@ index f289990..12df00f 100644
  Summary:	YaST2 - OpenLDAP Server Configuration
  
  %description
-@@ -36,9 +38,9 @@ rm -f $RPM_BUILD_ROOT/@plugindir@/libpy2ag_slapdconfig.so
+@@ -37,9 +39,9 @@ rm -f $RPM_BUILD_ROOT/@plugindir@/libpy2ag_slapdconfig.so
  %dir @yncludedir@/ldap-server
  %dir @moduledir@/YaPI
  @yncludedir@/ldap-server/*

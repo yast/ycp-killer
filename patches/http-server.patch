@@ -12,17 +12,6 @@ index 3ee8332..e69de29 100644
 -scrconf_DATA = cfg_http_server.scr
 -
 -EXTRA_DIST = $(agent_SCRIPTS) $(scrconf_DATA)
-diff --git a/doc/autodocs/Makefile.am b/doc/autodocs/Makefile.am
-index 2a6f678..3ae3ce2 100644
---- a/doc/autodocs/Makefile.am
-+++ b/doc/autodocs/Makefile.am
-@@ -1,3 +1,4 @@
- # Makefile.am for YCP module .../doc/autodocs
--
--include $(top_srcdir)/autodocs-ycp.ami
-+# TODO disable autodocs temporarily
-+# FIXME
-+# include $(top_srcdir)/autodocs-ycp.ami
 diff --git a/src/include/http-server/dialogs.ycp b/src/include/http-server/dialogs.ycp
 index bc7845f..3793b8a 100644
 --- a/src/include/http-server/dialogs.ycp

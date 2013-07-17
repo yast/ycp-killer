@@ -5,31 +5,6 @@ index 7cc37fd..b6fdb32 100644
 @@ -1 +1 @@
 -SUBDIRS = conf doc src testsuite
 +SUBDIRS = doc src testsuite
-diff --git a/agent-fprint/doc/autodocs/Makefile.am b/agent-fprint/doc/autodocs/Makefile.am
-index e4bab2c..bec31c5 100644
---- a/agent-fprint/doc/autodocs/Makefile.am
-+++ b/agent-fprint/doc/autodocs/Makefile.am
-@@ -2,5 +2,7 @@
- # Makefile.am for .../agent-fprint/doc/autodocs
- #
- 
--AUTODOCS_SUBDIR=agent-fprint
--include $(top_srcdir)/autodocs-cc.ami
-+# TODO FIXME: temporarily disabled
-+
-+#AUTODOCS_SUBDIR=agent-fprint
-+#include $(top_srcdir)/autodocs-cc.ami
-diff --git a/doc/autodocs/Makefile.am b/doc/autodocs/Makefile.am
-index 6233695..96989d4 100644
---- a/doc/autodocs/Makefile.am
-+++ b/doc/autodocs/Makefile.am
-@@ -1,3 +1,5 @@
- # Makefile.am for fingerprint-reader/doc/autodocs
- 
--include $(top_srcdir)/autodocs-ycp.ami
-+# TODO FIXME: temporarily disabled
-+
-+#include $(top_srcdir)/autodocs-ycp.ami
 diff --git a/testsuite/Makefile.am b/testsuite/Makefile.am
 index d9b12b0..e85fbc8 100644
 --- a/testsuite/Makefile.am

@@ -10,20 +10,6 @@ index badb685..50d0e44 100644
 +scrconf_DATA =
  
  EXTRA_DIST = $(agent_SCRIPTS) $(scrconf_DATA)
-diff --git a/doc/Makefile.am b/doc/Makefile.am
-index 1ec3fcb..6bae5a9 100644
---- a/doc/Makefile.am
-+++ b/doc/Makefile.am
-@@ -2,7 +2,8 @@
- # Makefile.am for devtools/devtools/skeletons/config/doc
- #
- 
--SUBDIRS = autodocs
-+# TODO add ruby support to autodocs
-+#SUBDIRS = autodocs
- 
- htmldir = $(docdir)
- 
 diff --git a/yast2-vm.spec.in b/yast2-vm.spec.in
 index 9ee2661..4d7511a 100644
 --- a/yast2-vm.spec.in

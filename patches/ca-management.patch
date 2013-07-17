@@ -1,31 +1,15 @@
-diff --git a/doc/Makefile.am b/doc/Makefile.am
-index 2458fd5..7eac0e6 100644
---- a/doc/Makefile.am
-+++ b/doc/Makefile.am
-@@ -1,6 +1,7 @@
- # Makefile.am for ca-management/doc
- 
--SUBDIRS = autodocs
-+# TODO ruby is not supported by autodocs
-+#SUBDIRS = autodocs
- 
- htmldir = $(docdir)
- 
 diff --git a/doc/autodocs/Makefile.am b/doc/autodocs/Makefile.am
-index dca717a..0600442 100644
+index dca717a..0f67d40 100644
 --- a/doc/autodocs/Makefile.am
 +++ b/doc/autodocs/Makefile.am
-@@ -1,4 +1,6 @@
+@@ -1,4 +1,4 @@
  # Makefile.am for YCP module .../doc/autodocs
  
 -AUTODOCS_PM = $(srcdir)/../../src/YaPI/*.pm
--include $(top_srcdir)/autodocs-ycp.ami
-+# TODO FIXME: temporarily disabled
-+
-+#AUTODOCS_PM = $(srcdir)/../../src/YaPI/*.pm
-+#include $(top_srcdir)/autodocs-ycp.ami
++AUTODOCS_PM = $(srcdir)/../../src/modules/YaPI/*.pm
+ include $(top_srcdir)/autodocs-ycp.ami
 diff --git a/yast2-ca-management.spec.in b/yast2-ca-management.spec.in
-index 05afd3f..04a8c8e 100644
+index 05afd3f..dce42da 100644
 --- a/yast2-ca-management.spec.in
 +++ b/yast2-ca-management.spec.in
 @@ -27,6 +27,8 @@ Requires:       perl-gettext

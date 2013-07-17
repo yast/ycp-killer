@@ -12,18 +12,14 @@ index 76caaab..e69de29 100644
 -scrconf_DATA = $(wildcard *.scr)
 -EXTRA_DIST = $(scrconf_DATA)
 diff --git a/doc/autodocs/Makefile.am b/doc/autodocs/Makefile.am
-index a708e92..4b93a56 100644
+index a708e92..2a6f678 100644
 --- a/doc/autodocs/Makefile.am
 +++ b/doc/autodocs/Makefile.am
-@@ -1,4 +1,6 @@
+@@ -1,4 +1,3 @@
  # Makefile.am for YCP module .../doc/autodocs
  
 -AUTODOCS_YCP = $(srcdir)/../../src/*/*.ycp
--include $(top_srcdir)/autodocs-ycp.ami
-+# TODO FIXME: temporarily disabled
-+
-+#AUTODOCS_YCP = $(srcdir)/../../src/*/*.ycp
-+#include $(top_srcdir)/autodocs-ycp.ami
+ include $(top_srcdir)/autodocs-ycp.ami
 diff --git a/yast2-phone-services.spec.in b/yast2-phone-services.spec.in
 index 14daa0e..f053352 100644
 --- a/yast2-phone-services.spec.in

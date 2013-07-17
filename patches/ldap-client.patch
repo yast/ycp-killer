@@ -17,30 +17,6 @@ index 26da395..0000000
 -fillup_DATA = sysconfig.ldap
 -
 -EXTRA_DIST = $(scrconf_DATA) $(fillup_DATA)
-diff --git a/doc/Makefile.am b/doc/Makefile.am
-index dc4947b..94296e3 100644
---- a/doc/Makefile.am
-+++ b/doc/Makefile.am
-@@ -2,7 +2,8 @@
- # Makefile.am for y2c_nisplus/doc
- #
- 
--SUBDIRS = autodocs
-+# ycpdoc does not work on ruby
-+#SUBDIRS = autodocs
- 
- htmldir = @docdir@
- html_DATA =
-diff --git a/doc/autodocs/Makefile.am b/doc/autodocs/Makefile.am
-index 2a6f678..6e53ae0 100644
---- a/doc/autodocs/Makefile.am
-+++ b/doc/autodocs/Makefile.am
-@@ -1,3 +1,4 @@
- # Makefile.am for YCP module .../doc/autodocs
- 
--include $(top_srcdir)/autodocs-ycp.ami
-+# ycpdoc does not work on ruby
-+#include $(top_srcdir)/autodocs-ycp.ami
 diff --git a/src/Makefile.am b/src/Makefile.am
 deleted file mode 100644
 index 39c0d4c..0000000

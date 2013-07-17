@@ -11,20 +11,6 @@ index 77a568c..bbcd6d6 100644
 -
 -EXTRA_DIST = $(rnc_DATA)
 +# moved
-diff --git a/doc/Makefile.am b/doc/Makefile.am
-index 406af07..4df4944 100644
---- a/doc/Makefile.am
-+++ b/doc/Makefile.am
-@@ -4,7 +4,8 @@
- # $Id$
- #
- 
--SUBDIRS = autodocs
-+# Caanot generate autodocs for ruby now
-+#SUBDIRS = autodocs
- 
- htmldir = @docdir@
- html_DATA =
 diff --git a/src/clients/firewall.ycp b/src/clients/firewall.ycp
 index b6ec9d2..0ad6b3e 100644
 --- a/src/clients/firewall.ycp
