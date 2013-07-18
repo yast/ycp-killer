@@ -11,7 +11,7 @@ module Commands
           # do not check for configured
           # rubygems in external ruby scripts called during packaging
           disable_bundler do
-            Cheetah.run "make", "-f", "Makefile.cvs" # TODO will not work for cmake based ones
+            Cheetah.run "make", "-f", "Makefile.cvs"
             Cheetah.run "make", "package-local", "CHECK_SYNTAX=false"
           end
         end
