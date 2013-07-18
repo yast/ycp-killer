@@ -622,14 +622,6 @@ index 8ae9071..cad9820 100644
  Summary:        YaST2 - Storage Library Headers and Documentation
  Group:          Development/Libraries/YaST
  
-@@ -100,5 +103,6 @@ to develop a program using libstorage.
- 
- %files devel
- %defattr(-,root,root)
--%doc @docdir@/autodocs
-+# TODO ruby autodocs support
-+#%doc @docdir@/autodocs
- %doc @docdir@/config.xml.description
 diff --git a/src/include/partitioning/ep-unused.ycp b/src/include/partitioning/ep-unused.ycp
 index 0ab4427..d7bb75e 100644
 --- a/src/include/partitioning/ep-unused.ycp
