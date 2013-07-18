@@ -11,7 +11,7 @@ index e109945..26050d7 100644
  clean-local:
  	rm -f tmp.out.* tmp.err.*
 diff --git a/testsuite/test-yast b/testsuite/test-yast
-index c478299..09696db 100755
+index c478299..4d33072 100755
 --- a/testsuite/test-yast
 +++ b/testsuite/test-yast
 @@ -28,8 +28,8 @@ ln -s $PLUGDIR $Y2DIR/plugin
@@ -88,6 +88,24 @@ index bb143d8..a758756 100644
 +<1> [Ruby] tests/Long.rb:XXX loop 3 * 2**30: 3221225472 class
 +<1> [Ruby] tests/Long.rb:XXX loop 7 * 2**30: 7516192768
 +<1> [Ruby] tests/Long.rb:XXX loop 7 * 2**30: 7516192768 class
+diff --git a/testsuite/tests/Reference.err b/testsuite/tests/Reference.err
+index 6cbee40..40b4773 100644
+--- a/testsuite/tests/Reference.err
++++ b/testsuite/tests/Reference.err
+@@ -1,7 +1,7 @@
+ <1> [Y2Perl] Y2PerlComponent.cc(Y2PerlComponent):XXX Creating Y2PerlComponent
+-<1> [YCP] tests/Reference.ycp:XXX integer: 20
+-<1> [YCP] tests/Reference.ycp:XXX float: 6.28
+-<1> [YCP] tests/Reference.ycp:XXX boolean: true
+-<1> [YCP] tests/Reference.ycp:XXX string: hu-ok
+-<1> [YCP] tests/Reference.ycp:XXX list: [8, 2, 2, 3, 4, -3]
+-<1> [YCP] tests/Reference.ycp:XXX map: $["a":"A", "b":"y-ok", "d":"123"]
++<1> [Ruby] tests/Reference.rb:XXX integer: 20
++<1> [Ruby] tests/Reference.rb:XXX float: 6.28
++<1> [Ruby] tests/Reference.rb:XXX boolean: true
++<1> [Ruby] tests/Reference.rb:XXX string: hu-ok
++<1> [Ruby] tests/Reference.rb:XXX list: [8, 2, 2, 3, 4, -3]
++<1> [Ruby] tests/Reference.rb:XXX map: $["a":"A", "b":"y-ok", "d":"123"]
 diff --git a/testsuite/tests/Simple1.err b/testsuite/tests/Simple1.err
 index fb04f65..334cdcc 100644
 --- a/testsuite/tests/Simple1.err
