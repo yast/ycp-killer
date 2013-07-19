@@ -60,21 +60,6 @@ index 69ea25b..0000000
 -desktop_DATA = disk.desktop
 -
 -EXTRA_DIST = $(client_DATA) $(desktop_DATA)
-diff --git a/doc/Makefile.am b/doc/Makefile.am
-index e34ad2b..60ebcd3 100644
---- a/doc/Makefile.am
-+++ b/doc/Makefile.am
-@@ -1,8 +1,8 @@
- #
- # Makefile.am for storage/storage/doc
- #
--
--SUBDIRS = autodocs
-+# TODO autodocs not yet support ruby
-+# SUBDIRS = autodocs
- 
- htmldir = $(docdir)
- 
 diff --git a/multipath-simple/Makefile.am b/multipath-simple/Makefile.am
 deleted file mode 100644
 index 77cf4ba..0000000
