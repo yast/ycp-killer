@@ -36,7 +36,7 @@ class BuildOrder
     end
 
   private
-    # return ["Report", "Popup", "FIXME: Foo::Bar or Foo/Bar"]
+    # return ["Report", "Popup", "Foo::Bar"]
     def direct_imports(lines)
       import_lines = lines.grep(/^\s*import[\s"\(]/)
       import_lines.map do |line|
