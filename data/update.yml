@@ -14,9 +14,3 @@ moves:
     to:   control
   - from: "src/config/Makefile.am"
     to:   control
-
-  # TODO FIXME: src/clients/kernel-update.ycp is not installed/packaged
-  # fix it in upstream (remove?)
-  - from: "src/clients/kernel-update.ycp"
-    to: "."
-
