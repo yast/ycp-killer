@@ -20,7 +20,6 @@ moves:
     to:   src/bin
   - from: "src/data/sysconfig.product-creator"
     to:   src/fillup
-  # TODO FIXME: data are in a subdir
   - from: "src/data"
     to: "."
 

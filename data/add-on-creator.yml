@@ -10,7 +10,6 @@ moves:
     to:   src/include/add-on-creator
   - from: "src/add-on-creator.desktop"
     to:   src/desktop
-  # TODO FIXME: it is in a data/ subdirectory
   - from: "src/{template.prod,Makefile.am}"
     to:   data
   - from: "agents/ag_*"
