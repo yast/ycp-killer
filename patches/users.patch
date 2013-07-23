@@ -1,41 +1,73 @@
+diff --git a/agent-nis/.cvsignore b/agent-nis/.cvsignore
+deleted file mode 100644
+index 282522d..0000000
+--- a/agent-nis/.cvsignore
++++ /dev/null
+@@ -1,2 +0,0 @@
+-Makefile
+-Makefile.in
 diff --git a/agent-nis/Makefile.am b/agent-nis/Makefile.am
-index fab125c..0d39f54 100644
+deleted file mode 100644
+index fab125c..0000000
 --- a/agent-nis/Makefile.am
-+++ b/agent-nis/Makefile.am
-@@ -1,10 +1,10 @@
- #
- # Makefile.am for users/agent-nis
- #
-+# moved
-+# agentdir = @execcompdir@/servers_non_y2
- 
++++ /dev/null
+@@ -1,10 +0,0 @@
+-#
+-# Makefile.am for users/agent-nis
+-#
+-
 -agentdir = @execcompdir@/servers_non_y2
 -
 -agent_SCRIPTS = ag_nis
 -scrconf_DATA = nis.scr
-+agent_SCRIPTS = # ag_nis
-+scrconf_DATA = # nis.scr
- 
- EXTRA_DIST = $(agent_SCRIPTS) $(scrconf_DATA)
+-
+-EXTRA_DIST = $(agent_SCRIPTS) $(scrconf_DATA)
+diff --git a/agent-uid/.cvsignore b/agent-uid/.cvsignore
+deleted file mode 100644
+index 282522d..0000000
+--- a/agent-uid/.cvsignore
++++ /dev/null
+@@ -1,2 +0,0 @@
+-Makefile
+-Makefile.in
 diff --git a/agent-uid/Makefile.am b/agent-uid/Makefile.am
-index 78c0fff..ea980c5 100644
+deleted file mode 100644
+index 78c0fff..0000000
 --- a/agent-uid/Makefile.am
-+++ b/agent-uid/Makefile.am
-@@ -1,10 +1,10 @@
- #
- # Makefile.am for users/agent-uid
- #
-+# moved
-+# agentdir = @execcompdir@/servers_non_y2
- 
++++ /dev/null
+@@ -1,10 +0,0 @@
+-#
+-# Makefile.am for users/agent-uid
+-#
+-
 -agentdir = @execcompdir@/servers_non_y2
 -
 -agent_SCRIPTS = ag_uid
 -scrconf_DATA = uid.scr
-+agent_SCRIPTS = #ag_uid
-+scrconf_DATA = #uid.scr
- 
- EXTRA_DIST = $(agent_SCRIPTS) $(scrconf_DATA)
+-
+-EXTRA_DIST = $(agent_SCRIPTS) $(scrconf_DATA)
+diff --git a/agents/.cvsignore b/agents/.cvsignore
+deleted file mode 100644
+index 282522d..0000000
+--- a/agents/.cvsignore
++++ /dev/null
+@@ -1,2 +0,0 @@
+-Makefile
+-Makefile.in
+diff --git a/agents/Makefile.am b/agents/Makefile.am
+deleted file mode 100644
+index da36e63..0000000
+--- a/agents/Makefile.am
++++ /dev/null
+@@ -1,8 +0,0 @@
+-#
+-# Makefile.am for y2m_inst/ycp/general/agents
+-#
+-
+-
+-scrconf_DATA = $(patsubst $(srcdir)/%,%,$(wildcard $(srcdir)/*.scr))
+-
+-EXTRA_DIST = $(scrconf_DATA)
 diff --git a/doc/autodocs/Makefile.am b/doc/autodocs/Makefile.am
 index 99a5370..72b515e 100644
 --- a/doc/autodocs/Makefile.am

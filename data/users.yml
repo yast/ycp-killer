@@ -9,7 +9,6 @@ moves:
     to: src/scrconf
   - from: agent-*/*.scr
     to: src/scrconf
-  # TODO handle agent-crack
   - from: agent-*/ag_*
     to: src/servers_non_y2
   - from: src/[A-Z]*.{pm,ycp}
