@@ -21,3 +21,9 @@ moves:
     to:   src/servers_non_y2
   - from: src/http-server.rnc
     to:   src/autoyast-rnc
+
+include_wrappers:
+  src/include/http-server/routines.ycp: src/modules/HttpServer.ycp
+  src/include/http-server/dialogs.ycp: src/include/http-server/complex.ycp
+  src/include/http-server/wizard-dialog.ycp: src/include/http-server/complex.ycp
+
