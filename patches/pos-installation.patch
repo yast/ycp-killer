@@ -1,29 +1,3 @@
-diff --git a/pos-installation/testsuite/Makefile.am b/pos-installation/testsuite/Makefile.am
-index d9b12b0..e85fbc8 100644
---- a/pos-installation/testsuite/Makefile.am
-+++ b/pos-installation/testsuite/Makefile.am
-@@ -5,7 +5,7 @@
- #
- 
- AUTOMAKE_OPTIONS = dejagnu
--EXTRA_DIST = $(wildcard tests/*.out) $(wildcard tests/*.err) $(wildcard tests/*.ycp) $(wildcard tests/*.yh)
-+EXTRA_DIST = $(wildcard tests/*.out) $(wildcard tests/*.err) $(wildcard tests/*.rb)
- 
- testsuite_prepare = @ydatadir@/testsuite/Makefile.testsuite
- 
-diff --git a/pos-installation/yast2-pos-installation.spec.in b/pos-installation/yast2-pos-installation.spec.in
-index 3ec00b7..2a5dc4d 100644
---- a/pos-installation/yast2-pos-installation.spec.in
-+++ b/pos-installation/yast2-pos-installation.spec.in
-@@ -6,6 +6,8 @@ BuildRequires:	perl-XML-Writer update-desktop-files yast2 yast2-devtools yast2-t
- 
- BuildArchitectures:	noarch
- 
-+Requires:       yast2-ruby-bindings >= 1.0.0
-+
- Summary:	POS Installation and Upgrade
- 
- %description
 diff --git a/testsuite/Makefile.am b/testsuite/Makefile.am
 index d9b12b0..e85fbc8 100644
 --- a/testsuite/Makefile.am
@@ -50,15 +24,3 @@ index 3ec00b7..25f2cbc 100644
  Summary:	POS Installation and Upgrade
  
  %description
-@@ -23,9 +25,8 @@ mkdir -p "$RPM_BUILD_ROOT"/etc/SLEPOS
- 
- %files
- %defattr(-,root,root)
--@clientdir@/*.ycp
--@moduledir@/*.ycp
--@moduledir@/*.ybc
-+@clientdir@/*.rb
-+@moduledir@/*.rb
- #@desktopdir@/*.desktop
- %dir /etc/SLEPOS
- /etc/SLEPOS/*
