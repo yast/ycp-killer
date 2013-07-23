@@ -1,17 +1,2 @@
 ybc_deps:
   - yast2
-
-moves:
-  # TODO FIXME: the desktop file is not installed/packaged, ignore it for now
-  - from: "config/pos_migration_assistent.desktop"
-    to:   desktop
-
-excluded:
-  # TODO: The pos-installation directory looks like an old copy of the whole
-  #       module embedded in itself. It is probably a mistake and it should be
-  #       deleted in upstream.
-  - pos-installation/src/clients/inst_slepos_detection.ycp
-  - pos-installation/src/clients/inst_slepos_initialization.ycp
-  - pos-installation/src/clients/inst_slepos_migration.ycp
-  - pos-installation/src/clients/inst_slepos_server_selection.ycp
-  - pos-installation/src/modules/POSInstallation.ycp
