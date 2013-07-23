@@ -6,6 +6,3 @@ moves:
     to: src/modules
   - from: "src/slp.ycp"
     to: src/clients
-  # FIXME: don't move the *.desktop file
-  # it's not installed/packaged, just leave it, it'll be ignored
-  # remove it from upstream later
