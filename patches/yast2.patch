@@ -838,10 +838,20 @@ index d4ecbd3..e69de29 100644
 -
 -include $(top_srcdir)/Makefile.am.common
 diff --git a/yast2.spec.in b/yast2.spec.in
-index 68b9f1a..304c448 100644
+index 68b9f1a..63f769c 100644
 --- a/yast2.spec.in
 +++ b/yast2.spec.in
-@@ -87,6 +87,8 @@ Provides:       yast2-packager:/usr/lib/YaST2/servers_non_y2/ag_anyxml
+@@ -9,6 +9,9 @@ BuildRequires:  perl-XML-Writer update-desktop-files yast2-devtools yast2-perl-b
+ # Needed already in build time
+ BuildRequires:  yast2-core >= 2.18.12 yast2-pkg-bindings >= 2.20.3 yast2-ycp-ui-bindings >= 2.18.4
+ 
++# for symlinking yardoc duplicates
++BuildRequires:  fdupes
++
+ # pre-requires for filling the sysconfig template (sysconfig.yast2)
+ PreReq:         %fillup_prereq
+ 
+@@ -87,6 +90,8 @@ Provides:       yast2-packager:/usr/lib/YaST2/servers_non_y2/ag_anyxml
  Provides:       yast2-dns-server:/usr/share/YaST2/modules/DnsServerAPI.pm
  Provides:       yast2-mail-aliases
  
@@ -850,7 +860,19 @@ index 68b9f1a..304c448 100644
  Summary:        YaST2 - Main Package
  
  %description
-@@ -180,15 +182,15 @@ mkdir -p "$RPM_BUILD_ROOT"/etc/YaST2
+@@ -130,6 +135,11 @@ mkdir -p "$RPM_BUILD_ROOT"@schemadir@/control/rnc
+ mkdir -p "$RPM_BUILD_ROOT"@schemadir@/autoyast/rnc
+ mkdir -p "$RPM_BUILD_ROOT"/etc/YaST2
+ 
++# symlink the yardoc duplicates, saves over 2MB in installed system
++# (the RPM package size is decreased just by few kilobytes
++# because of the compression)
++%fdupes -s %buildroot/%_prefix/share/doc/packages/yast2
++
+ @CLEAN@
+ 
+ %post
+@@ -180,15 +190,15 @@ mkdir -p "$RPM_BUILD_ROOT"/etc/YaST2
  
  # wizard
  %dir @yncludedir@/wizard
