@@ -10,7 +10,6 @@ moves:
     to:   src/include/wagon
   - from: "src/config/cd_update.desktop"
     to:   src/desktop
-  # TODO FIXME: add support for control files?
   - from: "src/config/online_migration-*.xml"
     to:   control
   - from: "src/config/Makefile.am"
