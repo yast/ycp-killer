@@ -12,7 +12,7 @@ index d9b12b0..e85fbc8 100644
  testsuite_prepare = @ydatadir@/testsuite/Makefile.testsuite
  
 diff --git a/yast2-pos-installation.spec.in b/yast2-pos-installation.spec.in
-index 3ec00b7..25f2cbc 100644
+index c64df3d..2b084b9 100644
 --- a/yast2-pos-installation.spec.in
 +++ b/yast2-pos-installation.spec.in
 @@ -6,6 +6,8 @@ BuildRequires:	perl-XML-Writer update-desktop-files yast2 yast2-devtools yast2-t
@@ -24,3 +24,15 @@ index 3ec00b7..25f2cbc 100644
  Summary:	POS Installation and Upgrade
  
  %description
+@@ -23,9 +25,8 @@ mkdir -p "$RPM_BUILD_ROOT"/etc/SLEPOS
+ 
+ %files
+ %defattr(-,root,root)
+-@clientdir@/*.ycp
+-@moduledir@/*.ycp
+-@moduledir@/*.ybc
++@clientdir@/*.rb
++@moduledir@/*.rb
+ %dir /etc/SLEPOS
+ /etc/SLEPOS/*
+ %doc @docdir@
