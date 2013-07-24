@@ -16,6 +16,16 @@ index a2c2946..0000000
 -	       sysconfig_storage.scr
 -
 -EXTRA_DIST = $(scrconf_DATA)
+diff --git a/bindings/ycp/Makefile.am b/bindings/ycp/Makefile.am
+index 7968bc0..a5f0232 100644
+--- a/bindings/ycp/Makefile.am
++++ b/bindings/ycp/Makefile.am
+@@ -11,4 +11,4 @@ PLUGLIB_DEPEND =					\
+ 
+ include $(top_srcdir)/pluglib-bindings.ami
+ 
+-EXTRA_DIST = LibStorage.i example.ycp
++EXTRA_DIST = LibStorage.i example.rb callback.rb
 diff --git a/data/Makefile.am b/data/Makefile.am
 deleted file mode 100644
 index 1e7e401..0000000
