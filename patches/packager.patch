@@ -35,7 +35,7 @@ index d9b12b0..e85fbc8 100644
  testsuite_prepare = @ydatadir@/testsuite/Makefile.testsuite
  
 diff --git a/yast2-packager.spec.in b/yast2-packager.spec.in
-index 6510846..b10665e 100644
+index a1d4e67..de774fa 100644
 --- a/yast2-packager.spec.in
 +++ b/yast2-packager.spec.in
 @@ -58,11 +58,15 @@ Obsoletes:	y2t_spkg y2t_inst-packages y2pkginf y2c_spkg
@@ -53,8 +53,8 @@ index 6510846..b10665e 100644
 +
  Summary:	YaST2 - Webpin package search client
  
- %description
-@@ -87,11 +91,10 @@ This package contains a client for searching packages in online repositories
+ %package devel-doc
+@@ -95,11 +99,10 @@ provided by this package.
  %dir @yncludedir@/packager
  @yncludedir@/checkmedia/*
  @yncludedir@/packager/*
@@ -69,7 +69,7 @@ index 6510846..b10665e 100644
  @desktopdir@/*.desktop
  @scrconfdir@/*
  @execcompdir@/servers_non_y2/ag_*
-@@ -99,6 +102,6 @@ This package contains a client for searching packages in online repositories
+@@ -109,6 +112,6 @@ provided by this package.
  
  %files webpin
  %defattr(-,root,root)
