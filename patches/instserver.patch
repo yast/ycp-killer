@@ -24,7 +24,7 @@ index d9b12b0..e85fbc8 100644
  testsuite_prepare = @ydatadir@/testsuite/Makefile.testsuite
  
 diff --git a/yast2-instserver.spec.in b/yast2-instserver.spec.in
-index e452ea7..9e39b33 100644
+index e719eeb..cb1c263 100644
 --- a/yast2-instserver.spec.in
 +++ b/yast2-instserver.spec.in
 @@ -12,6 +12,8 @@ Requires:	yast2-slp
@@ -36,7 +36,7 @@ index e452ea7..9e39b33 100644
  Summary:	YaST2 - Installation Server Configuration and Management
  
  %description
-@@ -31,7 +33,7 @@ NFS sources are supported.
+@@ -41,7 +43,7 @@ provided by this package.
  %defattr(-,root,root)
  %dir @yncludedir@/instserver
  @yncludedir@/instserver/*
@@ -44,4 +44,4 @@ index e452ea7..9e39b33 100644
 +@clientdir@/instserver.rb
  @moduledir@/Instserver.*
  @desktopdir@/instserver.desktop
- %doc @docdir@
+ /etc/YaST2/instserver
