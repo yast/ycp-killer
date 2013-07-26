@@ -10,6 +10,8 @@ module Commands
       Messages.item message do
         begin
           yield
+        rescue Interrupt
+          raise
         rescue Exception => e
           Messages.error "#{message} failed."
           raise
@@ -22,6 +24,8 @@ module Commands
         begin
           yield
           @counts[:ok] += 1
+        rescue Interrupt
+          raise
         rescue Exception => e
           Messages.error "#{message} #{file} failed."
           handle_exception(e, phase, mod, file)
@@ -42,8 +46,6 @@ module Commands
     end
 
     def handle_exception(e, phase, mod, file)
-      raise if e.is_a? Interrupt
-
       if ! e.is_a? Cheetah::ExecutionFailed
         phase = :other
       end
