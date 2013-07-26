@@ -20,6 +20,7 @@ $yast_modules = Hash.new do |hash, missing_key|
   raise "Unknown yast module #{missing_key}"
 end
 
+require_relative "lib/exceptions"
 require_relative "lib/messages"
 require_relative "lib/tsorter"
 require_relative "lib/yast_module"
@@ -292,16 +293,11 @@ end
 
 begin
   CLI.start(ARGV)
-rescue Cheetah::ExecutionFailed => e
-  $stderr.puts
-  $stderr.puts "Command #{e.commands[0][0]} failed:".red
-  $stderr.puts e.stderr.red
-  exit 1
 rescue Interrupt
   puts # ^C is printed already
 rescue SystemExit
   raise
-rescue Exception
-  $stderr.puts $!.to_s.red
+rescue Exception => e
+  $stderr.print print_exception(e).red
   exit 1
 end

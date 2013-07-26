@@ -1,5 +1,6 @@
 # encoding: utf-8
 
+require_relative "../exceptions"
 require_relative "../messages"
 
 module Commands
@@ -58,15 +59,7 @@ module Commands
         f.puts header
         f.puts "-" * header.size
         f.puts
-        if e.is_a?(Cheetah::ExecutionFailed)
-          f.puts "STDERR:"
-          f.puts e.stderr
-          f.puts "STDOUT:"
-          f.puts e.stdout
-        else
-          f.puts e.message
-          e.backtrace.each { |l| f.puts l }
-        end
+        f.puts print_exception(e)
         f.puts
       end
     end
