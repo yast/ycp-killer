@@ -7,7 +7,7 @@ module Commands
   class TestCommand < Command
     def apply(mod)
       reset_counts(mod)
-      file_action "Testing", :other, mod, "some files" do
+      file_action "Running", :other, mod, "testsuite" do
         # Otherwise YaST will not find fast_gettext.gem
         disable_bundler do
           Dir.chdir mod.result_dir do
