@@ -295,6 +295,8 @@ rescue Cheetah::ExecutionFailed => e
   exit 1
 rescue Interrupt
   puts # ^C is printed already
+rescue SystemExit
+  raise
 rescue Exception
   $stderr.puts $!.to_s.red
   exit 1
