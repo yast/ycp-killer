@@ -171,6 +171,10 @@ class CLI < Thor
 
   private
 
+  def colorize_error_count(n)
+    n == 0 ? n.to_s.green : n.to_s.red
+  end
+
   def report_results(module_names) # :yields: mod
     compile_stubs
 
@@ -194,12 +198,12 @@ class CLI < Thor
     Messages.info ""
     Messages.info "-----"
     Messages.info ""
-    Messages.info "Total OK:           #{counts[:ok]}"
-    Messages.info "Total EXCLUDED:     #{counts[:excluded]}"
-    Messages.info "Total ERROR(ybc):   #{counts[:error_ybc]}"
-    Messages.info "Total ERROR(y2r):   #{counts[:error_y2r]}"
-    Messages.info "Total ERROR(ruby):  #{counts[:error_ruby]}"
-    Messages.info "Total ERROR(other): #{counts[:error_other]}"
+    Messages.info "Total OK:           #{counts[:ok].to_s.green}"
+    Messages.info "Total EXCLUDED:     #{counts[:excluded].to_s.green}"
+    Messages.info "Total ERROR(ybc):   #{colorize_error_count(counts[:error_ybc])}"
+    Messages.info "Total ERROR(y2r):   #{colorize_error_count(counts[:error_y2r])}"
+    Messages.info "Total ERROR(ruby):  #{colorize_error_count(counts[:error_ruby])}"
+    Messages.info "Total ERROR(other): #{colorize_error_count(counts[:error_other])}"
 
     error_counts = counts.values_at(
       :error_ybc,
