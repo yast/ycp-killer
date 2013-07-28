@@ -185,13 +185,13 @@ Overview
 YCP Killer is a command-line tool built around tasks that are applied on YaST
 module source code. Some of these tasks are driven by *module metadata files*
 which contain various information about all the translated modules (see [Module
-Metadata](#module-metadata).
+Metadata](#module-metadata)).
 
 The usual YCP Killer usage workflow is:
 
   * Clone YaST module Git repository.
   * Restructure the YaST module source code to match the new structure (see [New
-    YaST Module Structure](#new-yast-module-structure).
+    YaST Module Structure](#new-yast-module-structure)).
   * Apply patches to the restructured YaST module source code (typically to
     adapt Makefiles to Ruby translation and to work around Y2R deficiencies).
   * Compile YaST module's YCP modules (without this any code depending on them
