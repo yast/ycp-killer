@@ -44,15 +44,15 @@ class CLI < Thor
 
   class_option :debug,
                :type => :boolean,
-               :desc => "verbosely log what commands are run"
+               :desc => "Log executed external commands"
 
   class_option :with_deps,
                :type => :boolean,
-               :desc => "also include module dependencies in operations"
+               :desc => "Operate also on dependencies (ybc_deps) of specified modules"
 
   class_option :threads,
                :type => :numeric,
-               :desc => "limit the number of threads in parallel tasks (default: all detected CPUs)"
+               :desc => "Use max. N threads for parallelized commands (default: N = number of CPUs)"
 
   def initialize(*args)
     super *args
