@@ -52,8 +52,8 @@ things get gemified, packaged, etc.
 
   2. **Update `ycpc`**
 
-     Updated `ycpc` is needed because Y2R relies on some features that
-     are not present in `ycpc` bundled with openSUSE 12.3.
+     Updated `ycpc` is needed because Y2R uses it internally and it relies on
+     some features that are not present in `ycpc` bundled with openSUSE 12.3.
 
      To install updated `ycpc`, install the `yast2-core` package from
      `YaST:Head:ruby`:
