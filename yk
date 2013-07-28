@@ -42,9 +42,17 @@ require_relative "lib/commands/test_command"
 
 class CLI < Thor
 
-  class_option :debug, :type => :boolean, :desc => "verbosely log what commands are run"
-  class_option :with_deps, :type => :boolean, :desc => "also include module dependencies in operations"
-  class_option :threads, :type => :numeric, :desc => "limit the number of threads in parallel tasks (default: all detected CPUs)"
+  class_option :debug,
+               :type => :boolean,
+               :desc => "verbosely log what commands are run"
+
+  class_option :with_deps,
+               :type => :boolean,
+               :desc => "also include module dependencies in operations"
+
+  class_option :threads,
+               :type => :numeric,
+               :desc => "limit the number of threads in parallel tasks (default: all detected CPUs)"
 
   def initialize(*args)
     super *args
