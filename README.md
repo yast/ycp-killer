@@ -189,19 +189,19 @@ Metadata](#module-metadata)).
 
 The usual YCP Killer usage workflow is:
 
-  * Clone YaST module Git repository.
-  * Restructure the YaST module source code to match the new structure (see [New
-    YaST Module Structure](#new-yast-module-structure)).
-  * Apply patches to the restructured YaST module source code (typically to
+  * Clone YaST module source from its Git repository.
+  * Restructure the YaST module source code to fit the [new
+    structure](#new-yast-module-structure).
+  * Apply patches to the restructured YaST module source (typically to
     adapt Makefiles to Ruby translation and to work around Y2R deficiencies).
   * Compile YaST module's YCP modules (without this any code depending on them
     can't be translated by Y2R).
-  * Convert the YaST module source code into Ruby.
+  * Convert YaST module YCP files into Ruby.
   * Generate `Makefile.am` files in all source directories matching the new
     structure (usually only `src`).
   * Create a YaST module package source.
   * Build the package locally.
-  * Submit a package into OBS.
+  * Submit the package source to OBS.
 
 All these tasks (and some more) can be executed by commands described in the
 [Usage](#usage) section.
