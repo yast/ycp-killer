@@ -58,7 +58,9 @@ things get gemified, packaged, etc.
      To install updated `ycpc`, install the `yast2-core` package from
      `YaST:Head:ruby`:
 
-         $ sudo zypper ar -f http://download.opensuse.org/repositories/YaST:/Head:/ruby/openSUSE_12.3/ YaST:Head:ruby
+         $ sudo zypper ar -f \
+             http://download.opensuse.org/repositories/YaST:/Head:/ruby/openSUSE_12.3/ \
+             YaST:Head:ruby
          $ sudo zypper in -f -r YaST:Head:ruby yast2-core
 
   3. **Install basic Ruby environment**
