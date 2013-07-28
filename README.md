@@ -106,6 +106,27 @@ things get gemified, packaged, etc.
                                                          # a C part, so let's use
                                                          # already built one)
 
+     Install packages needed to test YaST modules in general:
+
+         $ sudo zypper in yast2-testsuite                # Needed to run the testsuite
+
+     Install packages needed to test specific YaST modules:
+
+         $ sudo zypper in doxygen                        # Needed by slp, transfer,
+                                                         # users, profile-manager and
+                                                         # sound
+         $ sudo zypper in openslp-devel                  # Needed by slp
+         $ sudo zypper in curl-devel                     # Needed by transfer
+         $ sudo zypper in libstorage-devel               # Needed by storage
+         $ sudo zypper in dbus-1-python                  # Needed by dbus-server
+         $ sudo zypper in libfprint-devel                # Needed by fingerprint-reader
+         $ sudo zypper in yast2-ycp-ui-bindings-devel    # Needed by perl-bindings
+         $ sudo zypper in scpm-devel                     # Needed by profile-manager
+         $ sudo zypper in libsnapper-devel               # Needed by snapper
+         $ sudo zypper in yast2-installation             # Needed by update,
+                                                         # autoinstallation, dirinstall
+                                                         # and wagon
+
      Install packages needed to build YaST modules in general:
 
          $ sudo zypper in yast2-devtools                 # Needed to create package source
@@ -117,7 +138,6 @@ things get gemified, packaged, etc.
 
      Install packages needed to build specific YaST modules:
 
-         $ sudo zypper in openslp-devel                  # Needed by slp
          $ sudo zypper in swig                           # Needed by storage
          $ sudo zypper in dia                            # Needed by nfs-client
          $ sudo zypper in docbook-xsl-stylesheets        # Needed by dbus-server
