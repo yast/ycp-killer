@@ -254,9 +254,9 @@ The `help` command can be used to display a short overview of available commands
       yk ybc <module>...          # Compile module's YCP modules into YCP bytecode
 
     Options:
-      [--debug]      # verbosely log what commands are run
-      [--with-deps]  # also include module dependencies in operations
-      [--threads=N]  # limit the number of threads in parallel tasks (default: all detected CPUs)
+      [--debug]      # Log executed external commands
+      [--with-deps]  # Operate also on dependencies (ybc_deps) of specified modules
+      [--threads=N]  # Use <= N threads for parallelized commands (default: N = number of CPUs)
 
 ### Commands
 
