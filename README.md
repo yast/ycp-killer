@@ -183,9 +183,9 @@ Overview
 --------
 
 YCP Killer is a command-line tool built around tasks that are applied on YaST
-module source code. Some of these tasks are driven by *module metadata files*
-which contain various information about all the translated modules (see [Module
-Metadata](#module-metadata)).
+module source code. Some of these tasks are driven by *[module metadata
+files](#module-metadata)* which contain various information about all the
+translated modules.
 
 The usual YCP Killer usage workflow is:
 
