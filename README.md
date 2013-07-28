@@ -185,7 +185,8 @@ Overview
 YCP Killer is a command-line tool built around tasks that are applied on YaST
 module source code. Some of these tasks are driven by *[module metadata
 files](#module-metadata)* which contain various information about all the
-translated modules.
+translated modules. In general, YCP Killer supports only YaST modules for which
+is has metadata available.
 
 The usual YCP Killer usage workflow is:
 
@@ -224,7 +225,7 @@ YCP Killer stores its data in `$XDG_DATA_HOME/ycp-killer` (usually
           ├─ ...
           └─ yast2-ycp-ui-bindings
 
-For each YaST module, YCP Killer creates three directories:
+For each supported YaST module, YCP Killer creates three directories:
 
   * **Work directory** (`$XDG_DATA_HOME/ycp-killer/work/<module-name>`)
 
@@ -251,9 +252,9 @@ The entry point to YCP Killer is the `yk` script. It accepts commands (like
 `git` or `bundler`).
 
 Each command (except `help`) can be applied to a set of YaST modules passed as
-arguments. A special value `all` will apply a command to all YaST modules. If
-you don't specify any module name and you are in a work directory of some
-module, the command is applied to that module.
+arguments. A special value `all` will apply a command to all supported YaST
+modules. If you don't specify any module name and you are in a work directory of
+some module, the command is applied to that module.
 
 The `help` command can be used to display a short overview of available commands:
 
