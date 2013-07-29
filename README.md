@@ -4,10 +4,10 @@ YCP Killer
 YCP Killer is a tool that manages tasks related to translation of
 [YCP](http://doc.opensuse.org/projects/YaST/SLES10/tdg/Book-YCPLanguage.html)
 code in [YaST](http://en.opensuse.org/Portal:YaST) modules into Ruby. It will be
-used to translate the whole YaST codebase into Ruby, which will allow us to get
-rid of YCP completely.
+used to translate YCP-based parts YaST codebase into Ruby, which will allow us
+to get rid of YCP completely.
 
-To do the actual translation, YCP Killer uses
+To perform the actual translation, YCP Killer uses
 [Y2R](https://github.com/yast/y2r).
 
 **YCP Killer is still work in progress.**
@@ -52,13 +52,15 @@ things get gemified, packaged, etc.
 
   2. **Update `ycpc`**
 
-     Updated `ycpc` is needed because Y2R relies on some features that
-     are not present in `ycpc` bundled with openSUSE 12.3.
+     Updated `ycpc` is needed because Y2R uses it internally and it relies on
+     some features that are not present in `ycpc` bundled with openSUSE 12.3.
 
      To install updated `ycpc`, install the `yast2-core` package from
      `YaST:Head:ruby`:
 
-         $ sudo zypper ar -f http://download.opensuse.org/repositories/YaST:/Head:/ruby/openSUSE_12.3/ YaST:Head:ruby
+         $ sudo zypper ar -f \
+             http://download.opensuse.org/repositories/YaST:/Head:/ruby/openSUSE_12.3/ \
+             YaST:Head:ruby
          $ sudo zypper in -f -r YaST:Head:ruby yast2-core
 
   3. **Install basic Ruby environment**
@@ -104,6 +106,27 @@ things get gemified, packaged, etc.
                                                          # a C part, so let's use
                                                          # already built one)
 
+     Install packages needed to test YaST modules in general:
+
+         $ sudo zypper in yast2-testsuite                # Needed to run the testsuite
+
+     Install packages needed to test specific YaST modules:
+
+         $ sudo zypper in doxygen                        # Needed by slp, transfer,
+                                                         # users, profile-manager and
+                                                         # sound
+         $ sudo zypper in openslp-devel                  # Needed by slp
+         $ sudo zypper in curl-devel                     # Needed by transfer
+         $ sudo zypper in libstorage-devel               # Needed by storage
+         $ sudo zypper in dbus-1-python                  # Needed by dbus-server
+         $ sudo zypper in libfprint-devel                # Needed by fingerprint-reader
+         $ sudo zypper in yast2-ycp-ui-bindings-devel    # Needed by perl-bindings
+         $ sudo zypper in scpm-devel                     # Needed by profile-manager
+         $ sudo zypper in libsnapper-devel               # Needed by snapper
+         $ sudo zypper in yast2-installation             # Needed by update,
+                                                         # autoinstallation, dirinstall
+                                                         # and wagon
+
      Install packages needed to build YaST modules in general:
 
          $ sudo zypper in yast2-devtools                 # Needed to create package source
@@ -115,7 +138,6 @@ things get gemified, packaged, etc.
 
      Install packages needed to build specific YaST modules:
 
-         $ sudo zypper in openslp-devel                  # Needed by slp
          $ sudo zypper in swig                           # Needed by storage
          $ sudo zypper in dia                            # Needed by nfs-client
          $ sudo zypper in docbook-xsl-stylesheets        # Needed by dbus-server
@@ -161,25 +183,26 @@ Overview
 --------
 
 YCP Killer is a command-line tool built around tasks that are applied on YaST
-module source code. Some of these tasks are driven by *module metadata files*
-which contain various information about all the translated modules (see [Module
-Metadata](#module-metadata).
+module source code. Some of these tasks are driven by *[module metadata
+files](#module-metadata)* which contain various information about all the
+translated modules. In general, YCP Killer supports only YaST modules for which
+it has metadata available.
 
 The usual YCP Killer usage workflow is:
 
-  * Clone YaST module Git repository.
-  * Restructure the YaST module source code to match the new structure (see [New
-    YaST Module Structure](#new-yast-module-structure).
-  * Apply patches to the restructured YaST module source code (typically to
+  * Clone YaST module source from its Git repository.
+  * Restructure the YaST module source code to fit the [new
+    structure](#new-yast-module-structure).
+  * Apply patches to the restructured YaST module source (typically to
     adapt Makefiles to Ruby translation and to work around Y2R deficiencies).
   * Compile YaST module's YCP modules (without this any code depending on them
     can't be translated by Y2R).
-  * Convert the YaST module source code into Ruby.
+  * Convert YaST module YCP files into Ruby.
   * Generate `Makefile.am` files in all source directories matching the new
     structure (usually only `src`).
   * Create a YaST module package source.
   * Build the package locally.
-  * Submit a package into OBS.
+  * Submit the package source to OBS.
 
 All these tasks (and some more) can be executed by commands described in the
 [Usage](#usage) section.
@@ -202,7 +225,7 @@ YCP Killer stores its data in `$XDG_DATA_HOME/ycp-killer` (usually
           ├─ ...
           └─ yast2-ycp-ui-bindings
 
-For each YaST module, YCP Killer creates three directories:
+For each supported YaST module, YCP Killer creates three directories:
 
   * **Work directory** (`$XDG_DATA_HOME/ycp-killer/work/<module-name>`)
 
@@ -229,9 +252,9 @@ The entry point to YCP Killer is the `yk` script. It accepts commands (like
 `git` or `bundler`).
 
 Each command (except `help`) can be applied to a set of YaST modules passed as
-arguments. A special value `all` will apply a command to all YaST modules. If
-you don't specify any module name and you are in a work directory of some
-module, the command is applied to that module.
+arguments. A special value `all` will apply a command to all supported YaST
+modules. If you don't specify any module name and you are in a work directory of
+some module, the command is applied to that module.
 
 The `help` command can be used to display a short overview of available commands:
 
