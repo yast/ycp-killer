@@ -1,5 +1,6 @@
 # encoding: utf-8
 
+require_relative "../exceptions"
 require_relative "../messages"
 
 module Commands
@@ -10,6 +11,8 @@ module Commands
       Messages.item message do
         begin
           yield
+        rescue Interrupt
+          raise
         rescue Exception => e
           Messages.error "#{message} failed."
           raise
@@ -22,6 +25,8 @@ module Commands
         begin
           yield
           @counts[:ok] += 1
+        rescue Interrupt
+          raise
         rescue Exception => e
           Messages.error "#{message} #{file} failed."
           handle_exception(e, phase, mod, file)
@@ -42,8 +47,6 @@ module Commands
     end
 
     def handle_exception(e, phase, mod, file)
-      raise if e.is_a? Interrupt
-
       if ! e.is_a? Cheetah::ExecutionFailed
         phase = :other
       end
@@ -56,15 +59,7 @@ module Commands
         f.puts header
         f.puts "-" * header.size
         f.puts
-        if e.is_a?(Cheetah::ExecutionFailed)
-          f.puts "STDERR:"
-          f.puts e.stderr
-          f.puts "STDOUT:"
-          f.puts e.stdout
-        else
-          f.puts e.message
-          e.backtrace.each { |l| f.puts l }
-        end
+        f.puts print_exception(e)
         f.puts
       end
     end
