@@ -12,6 +12,19 @@ index 28b8611..31180cb 100644
 +scrconf_DATA =
  
  EXTRA_DIST = $(agent_SCRIPTS) $(scrconf_DATA)
+diff --git a/src/modules/Sudo.ycp b/src/modules/Sudo.ycp
+index dfa02b9..2e7fd16 100644
+--- a/src/modules/Sudo.ycp
++++ b/src/modules/Sudo.ycp
+@@ -145,8 +145,6 @@ boolean ReadSudoSettings2() {
+ 			m["comment"] = line[0]:"";
+ 
+ 			rules = add(rules,m);
+-			break;
+-	
+ 			}
+ 		    }
+ 		}
 diff --git a/testsuite/Makefile.am b/testsuite/Makefile.am
 index d9b12b0..e85fbc8 100644
 --- a/testsuite/Makefile.am
