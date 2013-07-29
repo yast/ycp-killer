@@ -1,11 +1,3 @@
-diff --git a/agent-nis/.cvsignore b/agent-nis/.cvsignore
-deleted file mode 100644
-index 282522d..0000000
---- a/agent-nis/.cvsignore
-+++ /dev/null
-@@ -1,2 +0,0 @@
--Makefile
--Makefile.in
 diff --git a/agent-nis/Makefile.am b/agent-nis/Makefile.am
 deleted file mode 100644
 index fab125c..0000000
@@ -22,14 +14,6 @@ index fab125c..0000000
 -scrconf_DATA = nis.scr
 -
 -EXTRA_DIST = $(agent_SCRIPTS) $(scrconf_DATA)
-diff --git a/agent-uid/.cvsignore b/agent-uid/.cvsignore
-deleted file mode 100644
-index 282522d..0000000
---- a/agent-uid/.cvsignore
-+++ /dev/null
-@@ -1,2 +0,0 @@
--Makefile
--Makefile.in
 diff --git a/agent-uid/Makefile.am b/agent-uid/Makefile.am
 deleted file mode 100644
 index 78c0fff..0000000
@@ -46,14 +30,6 @@ index 78c0fff..0000000
 -scrconf_DATA = uid.scr
 -
 -EXTRA_DIST = $(agent_SCRIPTS) $(scrconf_DATA)
-diff --git a/agents/.cvsignore b/agents/.cvsignore
-deleted file mode 100644
-index 282522d..0000000
---- a/agents/.cvsignore
-+++ /dev/null
-@@ -1,2 +0,0 @@
--Makefile
--Makefile.in
 diff --git a/agents/Makefile.am b/agents/Makefile.am
 deleted file mode 100644
 index da36e63..0000000
