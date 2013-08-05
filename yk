@@ -70,10 +70,13 @@ class CLI < Thor
   end
 
   desc "clone <module>...", "Clone module source from Git repository"
+  option :ref,    :type => :string, :desc => "A ref to clone from"
+  option :branch, :type => :string, :desc => "A branch to clone from"
+  option :tag,    :type => :string, :desc => "A tag to clone from"
   def clone(*module_names)
     modules = modules_from_names(module_names)
     with_modules modules do |mod|
-      Commands::CloneCommand.new.apply(mod)
+      Commands::CloneCommand.new(options).apply(mod)
     end
   end
 
