@@ -294,6 +294,9 @@ Clones module source from Git repository for each specified module using `git
 clone`. The clone is placed into module's work directory. If the work directory
 already exists, it is deleted before cloning.
 
+Use the `--ref=REF`, `--branch=BRANCH`, or `--tag=TAG` option to specify a ref,
+branch, or tag to clone.
+
 #### yk convert
 
 Runs all conversion-related tasks for each specified module. Rough equivalent of
