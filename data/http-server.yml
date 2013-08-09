@@ -24,6 +24,6 @@ moves:
 
 include_wrappers:
   src/include/http-server/routines.ycp: src/modules/HttpServer.ycp
-  src/include/http-server/dialogs.ycp: src/include/http-server/complex.ycp
-  src/include/http-server/wizard-dialog.ycp: src/include/http-server/complex.ycp
+  src/include/http-server/dialogs.ycp: src/include/http-server/wizards.ycp
+  src/include/http-server/wizard-dialog.ycp: src/include/http-server/wizards.ycp
 
