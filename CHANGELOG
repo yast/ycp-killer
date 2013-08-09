@@ -1,0 +1,11 @@
+1.1.0 (2013-08-09)
+------------------
+
+* Fixed include wrappers for http-server and multipath.
+* Added --ref, --branch and --tag options to "yk clone".
+* Small updates in README.md.
+
+1.0.0 (2013-07-29)
+------------------
+
+* Initial release.
