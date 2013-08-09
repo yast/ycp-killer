@@ -18,6 +18,3 @@ moves:
   - from: "agents/ag*"
     to:   src/servers_non_y2
 
-include_wrappers:
-  src/include/multipath/options.ycp: src/clients/multipath.ycp
-  src/include/multipath/complex.ycp: src/clients/multipath.ycp
