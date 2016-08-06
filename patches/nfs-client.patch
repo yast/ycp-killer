@@ -2,8 +2,7 @@ diff --git a/testsuite/Makefile.am b/testsuite/Makefile.am
 index d9b12b0..e85fbc8 100644
 --- a/testsuite/Makefile.am
 +++ b/testsuite/Makefile.am
-@@ -5,7 +5,7 @@
- #
+@@ -6,6 +6,6 @@
  
  AUTOMAKE_OPTIONS = dejagnu
 -EXTRA_DIST = $(wildcard tests/*.out) $(wildcard tests/*.err) $(wildcard tests/*.ycp) $(wildcard tests/*.yh)
@@ -15,8 +14,7 @@ diff --git a/testsuite/tests/r-check.out b/testsuite/tests/r-check.out
 index 7182678..4047e4f 100644
 --- a/testsuite/tests/r-check.out
 +++ b/testsuite/tests/r-check.out
-@@ -11,17 +11,24 @@ Return	Empty value for option: rsize
- Return	Unknown option: two
+@@ -1,16 +1,23 @@ Return	Empty value for option: rsize
  Dump	CheckHostName
  Return	true
 +Log	The hostname entered is invalid. It must be
@@ -76,7 +74,7 @@ index facbd30..fc1dff9 100644
  Summary:        YaST2 - NFS Configuration
  Url:            http://en.opensuse.org/Portal:YaST
  
-@@ -46,13 +48,12 @@ file system access. It allows access to files on remote machines.
+@@ -46,15 +48,13 @@ file system access. It allows access to files on remote machines.
  %dir @yncludedir@/nfs
  @yncludedir@/nfs/*
  %dir @clientdir@
@@ -92,6 +90,9 @@ index facbd30..fc1dff9 100644
 -@moduledir@/Nfs.ycp
 -@moduledir@/Nfs.ybc
 +@moduledir@/Nfs.rb
+-@moduledir@/NfsOptions.ycp
+-@moduledir@/NfsOptions.ybc
++@moduledir@/NfsOptions.rb
  %dir @desktopdir@
  @desktopdir@/nfs.desktop
  %doc @docdir@

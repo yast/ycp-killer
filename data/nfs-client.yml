@@ -2,12 +2,6 @@ ybc_deps:
   - yast2
 
 moves:
-  - from: src/Nfs.ycp
-    to: src/modules
-  - from: src/nfs{,-client,-client4part,_auto}.ycp
-    to: src/clients
-  - from: src/*.ycp
-    to: src/include/nfs
   - from: src/*.desktop
     to: src/desktop
   - from: src/*.rnc
